@@ -1,0 +1,30 @@
+/**
+ * Android Gradle Config for All Modules
+ */
+apply from: "$rootDir/constants.gradle"
+
+android {
+    compileSdkVersion moduleCompileSdkVersion
+    defaultConfig {
+        minSdkVersion moduleMinSdkVersion
+        targetSdkVersion moduleCompileSdkVersion
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    compileOptions {
+        coreLibraryDesugaringEnabled true
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8.toString()
+    }
+
+    buildFeatures {
+        viewBinding true
+        dataBinding true
+    }
+
+}
