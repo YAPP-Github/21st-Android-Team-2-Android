@@ -1,0 +1,22 @@
+name: Link Jira issue key in PR
+
+on: 
+  pull_request:
+    types: [opened]
+
+jobs:
+  link_jira_issue:  # 작업 이름
+    runs-on: ubuntu-latest
+    steps:
+      - name: Find Jira Issue
+        uses: cybervoid/gajira-get-issue@v1.1
+        id: find
+        with:
+          input-text: ${{ github.head_ref }}
+
+      - name: Update PR body
+        uses: AsasInnab/pr-body-action@v1
+        if: steps.find.outputs.issue != ''
+        with:
+          body: "[${{ steps.find.outputs.issue }}](${{ secrets.JIRA_BASE_URL }}/browse/${{ steps.find.outputs.issue }})\n${{ github.event.pull_request.body }}"
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
