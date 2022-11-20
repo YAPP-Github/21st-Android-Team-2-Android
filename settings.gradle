@@ -16,3 +16,4 @@ rootProject.name = "Item-Finder-Android"
 include ':app'
 include ':testbase'
 include ':data'
+include ':domain'
