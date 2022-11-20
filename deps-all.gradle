@@ -1,0 +1,9 @@
+apply plugin: 'kotlin-kapt'
+
+/**
+ * Dependencies for All Modules
+ */
+dependencies {
+    testImplementation project(':testbase')
+
+}
