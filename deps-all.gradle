@@ -6,4 +6,11 @@ apply plugin: 'kotlin-kapt'
 dependencies {
     testImplementation project(':testbase')
 
+    // Hilt
+    implementation "com.google.dagger:hilt-android:$hiltVersion"
+    testImplementation "com.google.dagger:hilt-android-testing:$hiltVersion"
+    kapt "com.google.dagger:hilt-android-compiler:$hiltVersion"
+    kaptTest "com.google.dagger:hilt-android-compiler:$hiltVersion"
+    kapt "androidx.hilt:hilt-compiler:$hiltAndroidXCompilerVersion"
+
 }

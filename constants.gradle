@@ -24,4 +24,8 @@ ext {
     mockkVersion = '1.11.0'
     turbinVersion = '0.8.0'
 
+    /* Hilt */
+    hiltVersion = '2.40.5'
+    hiltAndroidXCompilerVersion = '1.0.0'
+
 }
