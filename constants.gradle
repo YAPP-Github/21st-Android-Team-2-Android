@@ -11,7 +11,7 @@ ext {
     gradleVersion = '7.1.3'
 
     /* Kotlin */
-    kotlinVersion = '1.6.21'
+    kotlinVersion = '1.7.10'
 
     /* Coroutines */
     coroutinesVersion = '1.6.1'
@@ -58,11 +58,12 @@ ext {
     androidxSecurityCryptoVersion = '1.0.0'
     androidxCoordinatorlayout = '1.2.0'
     androidxSwiperefreshlayout = '1.1.0'
-    androidxCoreVersion = '1.7.0'
+    androidxCoreVersion = '1.9.0'
     androidLifecycleRuntimeVersion = '2.4.1'
     androidWorkManagerVersion = '1.0.0'
     androidWorkRuntimeVersion = '2.7.0'
     androidxStartupVersion = '1.1.1'
+    androidLifeCycleViewModelKTXVersion = '2.5.1'
 
     /* Image */
     glideVersion = '4.12.0'

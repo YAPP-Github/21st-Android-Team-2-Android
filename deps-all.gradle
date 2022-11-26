@@ -14,4 +14,11 @@ dependencies {
     kaptTest "com.google.dagger:hilt-android-compiler:$hiltVersion"
     kapt "androidx.hilt:hilt-compiler:$hiltAndroidXCompilerVersion"
 
+    // Coroutines
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$androidLifeCycleViewModelKTXVersion"
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutinesVersion"
+    testImplementation "app.cash.turbine:turbine:$turbinVersion"
+    testImplementation "com.github.ologe:flow-test-observer:$coroutinesTestObserverVersion"
+
 }
