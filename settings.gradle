@@ -8,8 +8,11 @@ pluginManagement {
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
-        google()
         mavenCentral()
+        mavenLocal()
+        google()
+
+        maven { url 'https://jitpack.io' }
     }
 }
 rootProject.name = "Item-Finder-Android"
@@ -17,3 +20,4 @@ include ':app'
 include ':testbase'
 include ':data'
 include ':domain'
+include ':feature:common'

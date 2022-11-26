@@ -1,0 +1,28 @@
+plugins {
+    id 'com.android.library'
+    id 'org.jetbrains.kotlin.android'
+}
+
+apply from: "$rootDir/module.gradle"
+apply from: "$rootDir/deps-all.gradle"
+
+android {
+    lint {
+        abortOnError true
+        lintConfig file('lint.xml')
+    }
+}
+
+dependencies {
+
+    implementation project(':domain')
+
+    implementation "androidx.core:core-ktx:$androidxCoreVersion"
+
+    implementation 'androidx.appcompat:appcompat:1.5.1'
+    implementation 'com.google.android.material:material:1.5.0'
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+
+}

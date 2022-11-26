@@ -5,17 +5,17 @@ plugins {
 
 apply from: "$rootDir/module.gradle"
 apply from: "$rootDir/deps-all.gradle"
+apply from: "$rootDir/deps-feature.gradle"
 
 android {
-    namespace 'com.yapp.itemfinder'
-    compileSdk 32
+
+    namespace itemFinderApplicationId
 
     defaultConfig {
-        applicationId "com.yapp.itemfinder"
-        minSdk 31
-        targetSdk 32
-        versionCode 1
-        versionName "1.0"
+        applicationId itemFinderApplicationId
+
+        versionCode itemFinderVersionCode.toInteger()
+        versionName itemFinderVersionName
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -25,6 +25,10 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+    }
+
+    applicationVariants.all { variant ->
+        variant.buildConfigField "String", "API_URL", "\"https://api.itemfinder.com/\""
     }
 
 }
