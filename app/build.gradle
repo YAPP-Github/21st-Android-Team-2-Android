@@ -5,6 +5,7 @@ plugins {
 
 apply from: "$rootDir/module.gradle"
 apply from: "$rootDir/deps-all.gradle"
+apply from: "$rootDir/deps-feature.gradle"
 
 android {
 
@@ -24,6 +25,10 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+    }
+
+    applicationVariants.all { variant ->
+        variant.buildConfigField "String", "API_URL", "\"https://api.itemfinder.com/\""
     }
 
 }

@@ -6,19 +6,18 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
-import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
 
-@AndroidEntryPoint
 abstract class BaseFragment<VM: BaseViewModel, VB: ViewBinding>: Fragment() {
 
-    abstract val vm: VM
+    abstract val viewModel: VM
 
     abstract val binding: VB
 
     private lateinit var fetchJob: Job
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? = binding.root
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -27,7 +26,7 @@ abstract class BaseFragment<VM: BaseViewModel, VB: ViewBinding>: Fragment() {
 
     open fun initState() {
         initViews()
-        fetchJob = vm.fetchData()
+        fetchJob = viewModel.fetchData()
         observeData()
     }
 

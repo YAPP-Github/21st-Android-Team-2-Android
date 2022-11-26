@@ -4,11 +4,11 @@ ext {
     itemFinderApplicationId = 'com.yapp.itemfinder'
 
     /* Module */
-    moduleCompileSdkVersion = 32
+    moduleCompileSdkVersion = 33
     moduleMinSdkVersion = 24
 
     /* Gradle */
-    gradleVersion = '7.1.3'
+    gradleVersion = '7.3.1'
 
     /* Kotlin */
     kotlinVersion = '1.7.10'
@@ -39,7 +39,7 @@ ext {
     turbinVersion = '0.8.0'
 
     /* DI */
-    hiltVersion = '2.40.5'
+    hiltVersion = '2.44.2'
     hiltAndroidXCompilerVersion = '1.0.0'
 
     /* AndroidX */
@@ -72,10 +72,8 @@ ext {
     materialVersion = '1.6.0'
 
     /* Network */
-    okioVersion = '2.4.3'
     okHttpVersion = '4.9.3'
     retrofitVersion = '2.9.0'
-    retrofitScalarConverterVersion = '2.9.0'
     gsonVersion = '2.8.9'
 
 

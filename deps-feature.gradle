@@ -6,13 +6,10 @@ dependencies {
     implementation project(':feature:common')
     implementation project(':domain')
 
-    testImplementation project(':feature:testbase')
-
     implementation "com.google.android.material:material:$materialVersion"
 
     // KTX
     implementation "androidx.core:core-ktx:$androidxCoreVersion"
-    implementation "androidx.fragment:fragment-ktx:$androidxFragmentKtxVersion"
 
     // Glide
     implementation "com.github.bumptech.glide:glide:$glideVersion"

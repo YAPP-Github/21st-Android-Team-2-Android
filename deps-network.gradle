@@ -1,0 +1,15 @@
+/**
+ * Data layer의 network 통신 구현을 위한 Dependency 모음
+ */
+dependencies {
+    implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
+    implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofitVersion"
+    implementation("com.squareup.retrofit2:converter-gson:$retrofitVersion") {
+        exclude group: 'com.google.code.gson', module: 'gson'
+    }
+
+    implementation "com.squareup.okhttp3:okhttp:$okHttpVersion"
+    implementation "com.squareup.okhttp3:logging-interceptor:$okHttpVersion"
+
+    implementation "com.google.code.gson:gson:$gsonVersion"
+}
