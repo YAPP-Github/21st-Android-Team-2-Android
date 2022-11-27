@@ -13,4 +13,10 @@
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
     </style>
+    
+    <style name="Theme.ItemFinderAndroid.Splash" parent="Theme.ItemFinderAndroid">
+        <item name="android:windowSplashScreenBackground" tools:targetApi="s">@color/black</item>
+        <item name="android:windowSplashScreenIconBackgroundColor" tools:targetApi="s">@color/black</item>
+        <item name="android:windowSplashScreenAnimatedIcon" tools:targetApi="s">@drawable/ic_launcher_foreground</item>
+    </style>
 </resources>

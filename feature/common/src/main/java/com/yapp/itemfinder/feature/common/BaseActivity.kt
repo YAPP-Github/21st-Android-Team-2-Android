@@ -7,7 +7,7 @@ import kotlinx.coroutines.Job
 
 abstract class BaseActivity<VM: BaseViewModel, VB: ViewBinding>: AppCompatActivity() {
 
-    abstract val viewModel: VM
+    abstract val vm: VM
 
     abstract val binding: VB
 
@@ -20,9 +20,11 @@ abstract class BaseActivity<VM: BaseViewModel, VB: ViewBinding>: AppCompatActivi
 
     open fun initState() {
         initViews()
-        fetchJob = viewModel.fetchData()
+        fetchJob = vm.fetchData()
         observeData()
     }
+
+    open fun preload() = Unit
 
     abstract fun initViews()
 
