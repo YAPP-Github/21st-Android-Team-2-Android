@@ -64,6 +64,7 @@ ext {
     androidWorkRuntimeVersion = '2.7.0'
     androidxStartupVersion = '1.1.1'
     androidLifeCycleViewModelKTXVersion = '2.5.1'
+    androidxActivityTTXVersion = '1.6.1'
 
     /* Image */
     glideVersion = '4.12.0'
