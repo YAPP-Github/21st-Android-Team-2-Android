@@ -9,12 +9,11 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.ItemFinderAndroid"
+        android:theme="@style/Theme.ItemFinderAndroid.Splash"
         android:name=".ItemFinderApp">
         <activity
             android:name=".deeplink.DeeplinkActivity"
-            android:exported="true"
-            android:theme="@style/Theme.ItemFinderAndroid.Splash">
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

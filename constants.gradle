@@ -65,6 +65,7 @@ ext {
     androidxStartupVersion = '1.1.1'
     androidLifeCycleViewModelKTXVersion = '2.5.1'
     androidxActivityTTXVersion = '1.6.1'
+    androidCoreSplashScreenVersion = '1.0.0'
 
     /* Image */
     glideVersion = '4.12.0'

@@ -1,14 +1,18 @@
 package com.yapp.itemfinder.deeplink
 
+import android.animation.ObjectAnimator
+import android.os.Build
 import android.os.Bundle
+import android.view.View
 import android.view.ViewTreeObserver.OnPreDrawListener
+import android.view.animation.AnticipateInterpolator
 import androidx.activity.viewModels
-import androidx.lifecycle.lifecycleScope
+import androidx.core.animation.doOnEnd
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.yapp.itemfinder.databinding.ActivityDeeplinkBinding
 import com.yapp.itemfinder.feature.common.BaseActivity
 import com.yapp.itemfinder.feature.common.binding.viewBinding
 import com.yapp.itemfinder.feature.common.coroutines.coroutineExceptionHandler
-import com.yapp.itemfinder.feature.common.extension.findContentView
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
 import kotlin.coroutines.CoroutineContext
@@ -24,17 +28,29 @@ class DeeplinkActivity : BaseActivity<DeeplinkViewModel, ActivityDeeplinkBinding
     override val binding by viewBinding(ActivityDeeplinkBinding::inflate)
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        installSplashScreen().setKeepOnScreenCondition { vm.keepScreen }
         super.onCreate(savedInstanceState)
     }
 
     override fun preload() {
-        findContentView()?.viewTreeObserver?.addOnPreDrawListener(
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            splashScreen.setOnExitAnimationListener { splashScreenView ->
+                ObjectAnimator.ofFloat(splashScreenView, View.ALPHA, 1f, 0f).run {
+                    interpolator = AnticipateInterpolator()
+                    duration = 200L
+                    doOnEnd { splashScreenView.remove() }
+                    start()
+                }
+            }
+        }
+
+        binding.root.viewTreeObserver.addOnPreDrawListener(
             object : OnPreDrawListener {
                 override fun onPreDraw(): Boolean {
                     // Check if the initial data is ready.
-                    return if (vm.isReadyToStart()) {
+                    return if (vm.keepScreen.not()) {
                         // The content is ready; start drawing.
-                        afterPreDraw(this)
+                        binding.root.viewTreeObserver?.removeOnPreDrawListener(this)
                         true
                     } else {
                         // The content is not ready; suspend.
@@ -44,13 +60,8 @@ class DeeplinkActivity : BaseActivity<DeeplinkViewModel, ActivityDeeplinkBinding
 
             }
         )
-    }
 
-    private fun afterPreDraw(preDrawListener: OnPreDrawListener) {
-        lifecycleScope.launch {
-            delay(2000L)
-            findContentView()?.viewTreeObserver?.removeOnPreDrawListener(preDrawListener)
-        }
+        vm.readyToStart()
     }
 
     override fun initViews() {
