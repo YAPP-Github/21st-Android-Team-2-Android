@@ -30,7 +30,7 @@ ext {
     junitVersion = '4.13.2'
     mockitoVersion = '3.8.0'
     mockitoKotlinVersion = '2.2.0'
-    androidxTestCoreVersion = '1.3.0'
+    androidxTestCoreVersion = '1.4.0'
     androidxTestTruthVersion = '1.4.0'
     androidxTestJUnitVersion = '1.1.3'
     espressoVersion = '3.4.0'
@@ -64,6 +64,8 @@ ext {
     androidWorkRuntimeVersion = '2.7.0'
     androidxStartupVersion = '1.1.1'
     androidLifeCycleViewModelKTXVersion = '2.5.1'
+    androidxActivityTTXVersion = '1.6.1'
+    androidCoreSplashScreenVersion = '1.0.0'
 
     /* Image */
     glideVersion = '4.12.0'

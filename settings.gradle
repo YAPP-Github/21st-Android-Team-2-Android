@@ -5,15 +5,20 @@ pluginManagement {
         mavenCentral()
     }
 }
+
+/**
+ * It has still duplicate on build.gradle in Project scope.
+ * Reference : https://github.com/gradle/gradle/issues/19327
+ */
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
-        mavenCentral()
-        mavenLocal()
         google()
-
+        mavenCentral()
         maven { url 'https://jitpack.io' }
+        mavenLocal()
     }
+
 }
 rootProject.name = "Item-Finder-Android"
 include ':app'
@@ -21,3 +26,4 @@ include ':testbase'
 include ':data'
 include ':domain'
 include ':feature:common'
+include ':feature:home'
