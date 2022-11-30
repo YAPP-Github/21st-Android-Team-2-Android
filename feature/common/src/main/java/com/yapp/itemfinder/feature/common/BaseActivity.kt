@@ -24,8 +24,6 @@ abstract class BaseActivity<VM: BaseViewModel, VB: ViewBinding>: AppCompatActivi
         observeData()
     }
 
-    open fun preload() = Unit
-
     abstract fun initViews()
 
     abstract fun observeData(): Job

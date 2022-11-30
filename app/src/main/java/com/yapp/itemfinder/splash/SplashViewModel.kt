@@ -1,19 +1,20 @@
-package com.yapp.itemfinder.deeplink
+package com.yapp.itemfinder.splash
 
 import androidx.lifecycle.viewModelScope
 import com.yapp.itemfinder.feature.common.BaseViewModel
 import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.MutableSharedFlow
 
-class DeeplinkViewModel: BaseViewModel() {
+class SplashViewModel: BaseViewModel() {
 
-    var keepScreen: Boolean = true
+    val splashEventSharedFlow = MutableSharedFlow<SplashEvent>()
 
     /**
      * This is the splash delay test
      */
     fun readyToStart() = viewModelScope.launch {
         delay(2000L)
-        keepScreen = false
+        splashEventSharedFlow.emit(SplashEvent.StartHome)
     }
 
 }

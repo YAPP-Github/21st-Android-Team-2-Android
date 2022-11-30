@@ -36,5 +36,6 @@ android {
 dependencies {
 
     implementation "androidx.core:core-splashscreen:$androidCoreSplashScreenVersion"
+    implementation project(':feature:home')
 
 }
