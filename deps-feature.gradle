@@ -12,6 +12,7 @@ dependencies {
 
     // KTX
     implementation "androidx.core:core-ktx:$androidxCoreVersion"
+    implementation "androidx.fragment:fragment-ktx:$androidxFragmentVersion"
 
     // Glide
     implementation "com.github.bumptech.glide:glide:$glideVersion"

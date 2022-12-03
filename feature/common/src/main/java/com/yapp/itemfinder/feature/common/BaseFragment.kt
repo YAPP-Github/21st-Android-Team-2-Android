@@ -10,7 +10,7 @@ import kotlinx.coroutines.Job
 
 abstract class BaseFragment<VM: BaseViewModel, VB: ViewBinding>: Fragment() {
 
-    abstract val viewModel: VM
+    abstract val vm: VM
 
     abstract val binding: VB
 
@@ -26,7 +26,7 @@ abstract class BaseFragment<VM: BaseViewModel, VB: ViewBinding>: Fragment() {
 
     open fun initState() {
         initViews()
-        fetchJob = viewModel.fetchData()
+        fetchJob = vm.fetchData()
         observeData()
     }
 
