@@ -7,6 +7,7 @@ import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.yapp.itemfinder.feature.common.BaseActivity
 import com.yapp.itemfinder.feature.common.binding.viewBinding
+import com.yapp.itemfinder.feature.home.R
 import com.yapp.itemfinder.feature.home.databinding.ActivityHomeBinding
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
@@ -22,6 +23,28 @@ class HomeActivity : BaseActivity<HomeViewModel, ActivityHomeBinding>() {
     }
 
     override fun initViews() {
+        initNavigationBar()
+    }
+
+    private fun initNavigationBar() {
+        binding.bottomNav.setOnItemSelectedListener { item ->
+            val navigationId = item.itemId
+            when (navigationId) {
+                R.id.menu_home -> {
+                    true
+                }
+                R.id.menu_space -> {
+                    true
+                }
+                R.id.menu_product -> {
+                    true
+                }
+                R.id.menu_like -> {
+                    true
+                }
+                else -> false
+            }
+        }
     }
 
     override fun observeData(): Job = lifecycleScope.launch {

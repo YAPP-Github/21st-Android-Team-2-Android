@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/menu_home"
+        android:icon="@drawable/ic_home"
+        android:title="@string/tab_home" />
+
+    <item
+        android:id="@+id/menu_space"
+        android:icon="@drawable/ic_home"
+        android:title="@string/tab_space" />
+
+    <item
+        android:id="@+id/menu_product"
+        android:icon="@drawable/ic_home"
+        android:title="@string/tab_product" />
+
+    <item
+        android:id="@+id/menu_like"
+        android:icon="@drawable/ic_home"
+        android:title="@string/tab_like" />
+
+</menu>
