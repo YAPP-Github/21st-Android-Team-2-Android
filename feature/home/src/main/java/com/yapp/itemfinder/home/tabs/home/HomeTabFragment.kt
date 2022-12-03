@@ -4,6 +4,8 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.yapp.itemfinder.feature.common.BaseFragment
 import com.yapp.itemfinder.feature.common.binding.viewBinding
+import com.yapp.itemfinder.feature.common.datalist.adapter.DataListAdapter
+import com.yapp.itemfinder.feature.common.datalist.model.Data
 import com.yapp.itemfinder.feature.home.databinding.FragmentHomeTabBinding
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.launchIn
@@ -16,8 +18,13 @@ class HomeTabFragment: BaseFragment<HomeTabViewModel, FragmentHomeTabBinding>() 
 
     override val binding by viewBinding(FragmentHomeTabBinding::inflate)
 
-    override fun initViews() = with(binding) {
+    private var dataListAdapter: DataListAdapter<Data>? = null
 
+    override fun initViews() = with(binding) {
+        if (dataListAdapter == null) {
+            dataListAdapter = DataListAdapter()
+            recyclerView.adapter = dataListAdapter
+        }
     }
 
     override fun observeData(): Job = lifecycleScope.launch {
@@ -36,7 +43,7 @@ class HomeTabFragment: BaseFragment<HomeTabViewModel, FragmentHomeTabBinding>() 
     }
 
     private fun handleSuccess(homeTabState: HomeTabState.Success) {
-
+        dataListAdapter?.submitList(homeTabState.dataList)
     }
 
     private fun handleError(homeTabState: HomeTabState.Error) {
