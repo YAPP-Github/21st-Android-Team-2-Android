@@ -4,7 +4,6 @@ import com.google.gson.Gson
 import com.google.gson.JsonObject
 import com.yapp.itemfinder.domain.model.CellType
 import com.yapp.itemfinder.domain.model.Data
-import com.yapp.itemfinder.domain.model.Food
 import kotlin.reflect.KClass
 
 object DataMapper {
@@ -17,7 +16,6 @@ object DataMapper {
 
     return when (type) {
       CellType.EMPTY_CELL.name -> convertJsonType(json, Data::class)
-      CellType.FOOD.name -> convertJsonType(json, Food::class)
       else -> null
     }
   }
