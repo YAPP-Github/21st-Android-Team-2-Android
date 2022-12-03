@@ -5,7 +5,7 @@ import androidx.lifecycle.lifecycleScope
 import com.yapp.itemfinder.feature.common.BaseFragment
 import com.yapp.itemfinder.feature.common.binding.viewBinding
 import com.yapp.itemfinder.feature.common.datalist.adapter.DataListAdapter
-import com.yapp.itemfinder.feature.common.datalist.model.Data
+import com.yapp.itemfinder.domain.model.Data
 import com.yapp.itemfinder.feature.home.databinding.FragmentHomeTabBinding
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.launchIn

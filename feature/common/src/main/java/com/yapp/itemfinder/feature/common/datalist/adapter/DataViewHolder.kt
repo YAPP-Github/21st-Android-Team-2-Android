@@ -2,7 +2,7 @@ package com.yapp.itemfinder.feature.common.datalist.adapter
 
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
-import com.yapp.itemfinder.feature.common.datalist.model.Data
+import com.yapp.itemfinder.domain.model.Data
 
 abstract class DataViewHolder<D: Data>(
     binding: ViewBinding

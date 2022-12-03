@@ -1,6 +1,6 @@
 package com.yapp.itemfinder.home.tabs.home
 
-import com.yapp.itemfinder.feature.common.datalist.model.Data
+import com.yapp.itemfinder.domain.model.Data
 
 sealed class HomeTabState {
 

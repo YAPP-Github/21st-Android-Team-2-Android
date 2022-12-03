@@ -1,4 +1,4 @@
-package com.yapp.itemfinder.feature.common.datalist.model
+package com.yapp.itemfinder.domain.model
 
 typealias DataHandler = (Data) -> Unit
 typealias ActionHandler = () -> Unit
