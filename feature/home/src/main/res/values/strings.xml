@@ -1,6 +1,5 @@
 <resources>
+    <string name="tab_reminder">알리미</string>
     <string name="tab_home">홈</string>
-    <string name="tab_space">공간</string>
-    <string name="tab_product">물건</string>
     <string name="tab_like">즐겨찾기</string>
 </resources>

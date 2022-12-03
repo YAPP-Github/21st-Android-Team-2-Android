@@ -11,6 +11,8 @@ import com.yapp.itemfinder.feature.common.extension.hideSoftInput
 import com.yapp.itemfinder.feature.home.R
 import com.yapp.itemfinder.feature.home.databinding.ActivityHomeBinding
 import com.yapp.itemfinder.home.tabs.home.HomeTabFragment
+import com.yapp.itemfinder.home.tabs.like.LikeTabFragment
+import com.yapp.itemfinder.home.tabs.reminder.ReminderTabFragment
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
@@ -33,17 +35,16 @@ class HomeActivity : BaseActivity<HomeViewModel, ActivityHomeBinding>() {
         binding.bottomNav.setOnItemSelectedListener { item ->
             val navigationId = item.itemId
             when (navigationId) {
+                R.id.menu_reminder -> {
+                    showFragment(ReminderTabFragment.TAG)
+                    true
+                }
                 R.id.menu_home -> {
                     showFragment(HomeTabFragment.TAG)
                     true
                 }
-                R.id.menu_space -> {
-                    true
-                }
-                R.id.menu_product -> {
-                    true
-                }
                 R.id.menu_like -> {
+                    showFragment(LikeTabFragment.TAG)
                     true
                 }
                 else -> false
@@ -78,7 +79,9 @@ class HomeActivity : BaseActivity<HomeViewModel, ActivityHomeBinding>() {
 
     private fun getFragmentByTag(tag: String): Fragment? =
         when (tag) {
+            ReminderTabFragment.TAG -> ReminderTabFragment.newInstance()
             HomeTabFragment.TAG -> HomeTabFragment.newInstance()
+            LikeTabFragment.TAG -> LikeTabFragment.newInstance()
             else -> null
         }
 
