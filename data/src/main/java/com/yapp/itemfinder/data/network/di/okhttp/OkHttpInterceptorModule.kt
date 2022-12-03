@@ -27,6 +27,7 @@ class OkHttpInterceptorModule {
     @DataParseInterceptorQualifier
     @Provides
     fun provideDataParseInterceptorQualifier(
+        dataMapper: DataMapper
     ): Interceptor = Interceptor { chain ->
         val gson = Gson()
         val request = chain.request().newBuilder()
@@ -46,13 +47,13 @@ class OkHttpInterceptorModule {
                  * ]
                  */
                 jsonObject.asJsonArray.map {
-                    DataMapper.map(it.asJsonObject)
+                    dataMapper.map(it.asJsonObject)
                 }
             } else {
                 /**
                  * {id, type}
                  */
-                DataMapper.map(jsonObject) ?: jsonObject
+                dataMapper.map(jsonObject) ?: jsonObject
             }
         } else {
             ErrorResponse(
