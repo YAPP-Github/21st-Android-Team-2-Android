@@ -1,29 +1,31 @@
 package com.yapp.itemfinder.home.tabs.home
 
-import com.yapp.itemfinder.feature.common.datalist.DataListViewModel
-import com.yapp.itemfinder.feature.common.datalist.model.ActionHandler
-import com.yapp.itemfinder.feature.common.datalist.model.Data
+import androidx.lifecycle.viewModelScope
+import com.yapp.itemfinder.feature.common.BaseViewModel
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.launch
 
-class HomeTabViewModel: DataListViewModel() {
+class HomeTabViewModel: BaseViewModel() {
 
     val homeTabStateFlow = MutableStateFlow<HomeTabState>(HomeTabState.Uninitialized)
 
-    override fun fetchDataList(
-        startHandler: ActionHandler?,
-        successHandler: ActionHandler?,
-        failureHandler: ActionHandler?,
-        endHandler: ActionHandler?
-    ) {
-        startHandler?.invoke()
-        successHandler?.invoke()
-        onResponseWith(listOf())
-        failureHandler?.invoke()
-        endHandler?.invoke()
+    override fun fetchData(): Job = viewModelScope.launch {
+        setState(HomeTabState.Loading)
+        // call API
+        setState(
+            HomeTabState.Success(
+                dataList = listOf()
+            )
+        )
+        // Error
+        setState(
+            HomeTabState.Error(Exception())
+        )
     }
 
-    override fun onResponseWith(dataList: List<Data>) {
-        homeTabStateFlow.value = HomeTabState.Success(dataList)
+    private fun setState(state: HomeTabState) {
+        homeTabStateFlow.value = state
     }
 
 }
