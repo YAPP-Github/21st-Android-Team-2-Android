@@ -2,8 +2,8 @@ package com.yapp.itemfinder.feature.common.datalist.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import com.yapp.itemfinder.feature.common.datalist.model.CellType
-import com.yapp.itemfinder.feature.common.datalist.model.Data
+import com.yapp.itemfinder.domain.model.CellType
+import com.yapp.itemfinder.domain.model.Data
 
 object DataViewHolderMapper {
 

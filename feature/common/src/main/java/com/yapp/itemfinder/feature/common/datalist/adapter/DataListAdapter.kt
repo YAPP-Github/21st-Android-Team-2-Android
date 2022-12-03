@@ -5,8 +5,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.yapp.itemfinder.feature.common.datalist.model.CellType
-import com.yapp.itemfinder.feature.common.datalist.model.Data
+import com.yapp.itemfinder.domain.model.CellType
+import com.yapp.itemfinder.domain.model.Data
 
 
 class DataListAdapter<D : Data>: ListAdapter<D, DataViewHolder<D>>(

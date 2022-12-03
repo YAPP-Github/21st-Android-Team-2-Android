@@ -1,4 +1,4 @@
-package com.yapp.itemfinder.feature.common.datalist.model
+package com.yapp.itemfinder.domain.model
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
@@ -10,7 +10,5 @@ open class Data(
 ) : Parcelable {
 
     var handler: DataHandler = { }
-
-
 
 }
