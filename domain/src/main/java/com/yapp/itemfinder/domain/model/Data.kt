@@ -10,5 +10,11 @@ open class Data(
 ) : Parcelable {
 
     var handler: DataHandler = { }
+}
 
+data class Category(
+    var name: String = "default_name"
+) : Data() {
+
+    fun goCategoryPage() = handler.invoke(this)
 }

@@ -1,6 +1,7 @@
 package com.yapp.itemfinder.home.tabs.home
 
 import androidx.lifecycle.viewModelScope
+import com.yapp.itemfinder.domain.model.Category
 import com.yapp.itemfinder.feature.common.BaseViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,13 +16,10 @@ class HomeTabViewModel: BaseViewModel() {
         // call API
         setState(
             HomeTabState.Success(
-                dataList = listOf()
+                dataList = listOf(Category(),Category(),Category())
             )
         )
         // Error
-        setState(
-            HomeTabState.Error(Exception())
-        )
     }
 
     private fun setState(state: HomeTabState) {
