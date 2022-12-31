@@ -1,19 +1,19 @@
 package com.yapp.itemfinder.home.tabs.like
 
 import androidx.lifecycle.viewModelScope
-import com.yapp.itemfinder.domain.model.CellType
-import com.yapp.itemfinder.domain.model.Data
 import com.yapp.itemfinder.domain.model.LikeItem
-import com.yapp.itemfinder.feature.common.BaseViewModel
+import com.yapp.itemfinder.feature.common.BaseStateViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
-class LikeTabViewModel : BaseViewModel() {
+class LikeTabViewModel : BaseStateViewModel<LikeTabState, LikeTabSideEffect>() {
 
-    val likeTabStateFlow = MutableStateFlow<LikeTabState>(LikeTabState.Uninitialized)
-    val likeTabSideEffect = MutableSharedFlow<LikeTabSideEffect>()
+    override val _stateFlow: MutableStateFlow<LikeTabState>
+        get() = MutableStateFlow(LikeTabState.Uninitialized)
+    override val _sideEffectFlow: MutableSharedFlow<LikeTabSideEffect>
+        get() = MutableSharedFlow()
 
     override fun fetchData(): Job = viewModelScope.launch {
         setState(LikeTabState.Loading)
@@ -82,22 +82,6 @@ class LikeTabViewModel : BaseViewModel() {
                 )
             )
         }
-    }
-
-    private inline fun <reified S: LikeTabState> withState(accessState: (S) -> Unit): Boolean {
-        if (likeTabStateFlow.value is S) {
-            accessState(likeTabStateFlow.value as S)
-            return true
-        }
-        return false
-    }
-
-    private fun setState(state: LikeTabState) {
-        likeTabStateFlow.value = state
-    }
-
-    private fun postSideEffect(sideEffect: LikeTabSideEffect) = viewModelScope.launch {
-        likeTabSideEffect.emit(sideEffect)
     }
 
 }
