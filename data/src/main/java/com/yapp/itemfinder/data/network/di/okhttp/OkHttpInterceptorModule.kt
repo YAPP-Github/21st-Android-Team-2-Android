@@ -56,10 +56,8 @@ class OkHttpInterceptorModule {
                 dataMapper.map(jsonObject) ?: jsonObject
             }
         } else {
-            ErrorResponse(
-                code = response.code,
-                message = response.message,
-            )
+            val rawJson = response.body?.string() ?: "{}"
+            gson.fromJson(rawJson, ErrorResponse::class.java)
         }
 
         response.newBuilder()
