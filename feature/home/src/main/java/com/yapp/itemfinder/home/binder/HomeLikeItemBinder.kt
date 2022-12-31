@@ -34,3 +34,20 @@ class HomeLikeItemBinder @Inject constructor(): LikeItemBinder {
     }
 
 }
+
+@Singleton
+class ContainerLikeItemBinder @Inject constructor(): LikeItemBinder {
+
+    override fun bindData(data: LikeItem, viewModel: BaseViewModel) {
+        when (viewModel) {
+            is ContaomerAddViewModel -> setContaomerAddViewModelHandler(data, viewModel)
+        }
+    }
+
+    private fun setContaomerAddViewModelHandler(item: LikeItem, viewModel: ContaomerAddViewModel) {
+        item.deleteHandler = { data ->
+            viewModel.deleteItem(data as LikeItem)
+        }
+    }
+
+}

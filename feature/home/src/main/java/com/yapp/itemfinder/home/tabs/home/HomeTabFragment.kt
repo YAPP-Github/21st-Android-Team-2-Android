@@ -1,5 +1,6 @@
 package com.yapp.itemfinder.home.tabs.home
 
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.yapp.itemfinder.feature.common.BaseFragment
@@ -12,7 +13,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
-class HomeTabFragment: BaseFragment<HomeTabViewModel, FragmentHomeTabBinding>() {
+class HomeTabFragment : BaseFragment<HomeTabViewModel, FragmentHomeTabBinding>() {
 
     override val vm by viewModels<HomeTabViewModel>()
 
@@ -39,15 +40,17 @@ class HomeTabFragment: BaseFragment<HomeTabViewModel, FragmentHomeTabBinding>() 
     }
 
     private fun handleLoading(homeTabState: HomeTabState.Loading) {
-
     }
 
     private fun handleSuccess(homeTabState: HomeTabState.Success) {
         dataListAdapter?.submitList(homeTabState.dataList)
+        homeTabState.dataList.forEach { data ->
+            data.handler =
+                { data -> Toast.makeText(requireContext(), "버튼 클릭", Toast.LENGTH_SHORT).show(); }
+        }
     }
 
     private fun handleError(homeTabState: HomeTabState.Error) {
-
     }
 
     companion object {
@@ -55,7 +58,5 @@ class HomeTabFragment: BaseFragment<HomeTabViewModel, FragmentHomeTabBinding>() 
         val TAG = HomeTabFragment::class.simpleName.toString()
 
         fun newInstance() = HomeTabFragment()
-
     }
-
 }
