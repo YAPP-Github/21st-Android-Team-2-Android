@@ -1,23 +1,17 @@
 package com.yapp.itemfinder.home.tabs.like
 
-import android.annotation.SuppressLint
-import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import com.yapp.itemfinder.domain.model.CellType
 import com.yapp.itemfinder.domain.model.Data
-import com.yapp.itemfinder.domain.model.LikeItem
 import com.yapp.itemfinder.feature.common.BaseFragment
 import com.yapp.itemfinder.feature.common.binding.viewBinding
 import com.yapp.itemfinder.feature.common.datalist.adapter.DataListAdapter
 import com.yapp.itemfinder.feature.common.datalist.binder.DataBindHelper
-import com.yapp.itemfinder.feature.home.databinding.FragmentHomeTabBinding
 import com.yapp.itemfinder.feature.home.databinding.FragmentLikeTabBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
