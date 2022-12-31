@@ -1,20 +1,30 @@
 package com.yapp.itemfinder.splash
 
 import androidx.lifecycle.viewModelScope
+import com.yapp.itemfinder.feature.common.BaseStateViewModel
 import com.yapp.itemfinder.feature.common.BaseViewModel
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
 
-class SplashViewModel: BaseViewModel() {
+class SplashViewModel : BaseStateViewModel<SplashScreenState, SplashScreenSideEffect>() {
 
-    val splashEventSharedFlow = MutableSharedFlow<SplashEvent>()
+    override val _stateFlow: MutableStateFlow<SplashScreenState> =
+        MutableStateFlow<SplashScreenState>(SplashScreenState.Uninitialized)
+    override val _sideEffectFlow: MutableSharedFlow<SplashScreenSideEffect> = MutableSharedFlow()
 
-    /**
-     * This is the splash delay test
-     */
-    fun readyToStart() = viewModelScope.launch {
+    override fun fetchData(): Job = viewModelScope.launch {
+        setState(SplashScreenState.Loading)
         delay(2000L)
-        splashEventSharedFlow.emit(SplashEvent.StartHome)
+        setState(SplashScreenState.Success)
+    }
+
+    fun startHome(): Job = viewModelScope.launch{
+        withState<SplashScreenState.Success> { state ->
+            postSideEffect(
+                SplashScreenSideEffect.StartHome
+            )
+        }
     }
 
 }

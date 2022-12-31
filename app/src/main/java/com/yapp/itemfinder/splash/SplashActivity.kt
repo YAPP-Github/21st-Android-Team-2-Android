@@ -6,11 +6,13 @@ import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.yapp.itemfinder.databinding.ActivitySplashBinding
 import com.yapp.itemfinder.feature.common.BaseActivity
+import com.yapp.itemfinder.feature.common.BaseStateActivity
 import com.yapp.itemfinder.feature.common.binding.viewBinding
 import com.yapp.itemfinder.feature.common.coroutines.coroutineExceptionHandler
 import com.yapp.itemfinder.utility.DefaultScreenNavigator
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
@@ -19,7 +21,7 @@ import kotlin.coroutines.CoroutineContext
 
 @AndroidEntryPoint
 @SuppressLint("CustomSplashScreen")
-class SplashActivity : BaseActivity<SplashViewModel, ActivitySplashBinding>(), CoroutineScope {
+class SplashActivity : BaseStateActivity<SplashViewModel, ActivitySplashBinding>(), CoroutineScope {
 
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.Main.immediate + coroutineExceptionHandler
@@ -34,21 +36,44 @@ class SplashActivity : BaseActivity<SplashViewModel, ActivitySplashBinding>(), C
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-        vm.readyToStart()
     }
 
     override fun initViews() {
     }
 
     override fun observeData(): Job = lifecycleScope.launch {
-        vm.splashEventSharedFlow.onEach {
-            when(it) {
-                SplashEvent.StartHome -> {
-                    startActivity(screenNavigator.newIntentHomeActivity(this@SplashActivity))
-                    finish()
+        launch {
+            vm.stateFlow.collect { state ->
+                when (state) {
+                    is SplashScreenState.Uninitialized -> Unit
+                    is SplashScreenState.Loading -> handleLoading(state)
+                    is SplashScreenState.Success -> handleSuccess(state)
+                    is SplashScreenState.Error -> handleError(state)
                 }
             }
-        }.launchIn(this)
+        }
+        launch {
+            vm.sideEffectFlow.collect { sideEffect ->
+                when (sideEffect) {
+                    is SplashScreenSideEffect.StartHome -> {
+                        startActivity(screenNavigator.newIntentHomeActivity(this@SplashActivity))
+                        finish()
+                    }
+                }
+            }
+        }
+    }
+
+    private fun handleLoading(splashScreenState: SplashScreenState) {
+
+    }
+
+    private fun handleSuccess(splashScreenState: SplashScreenState.Success) {
+        vm.startHome()
+    }
+
+    private fun handleError(splashScreenState: SplashScreenState) {
+
     }
 
 }
