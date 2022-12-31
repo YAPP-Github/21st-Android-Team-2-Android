@@ -5,7 +5,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.yapp.itemfinder.domain.model.Category
 import com.yapp.itemfinder.domain.model.CellType
 import com.yapp.itemfinder.domain.model.Data
 
@@ -34,12 +33,6 @@ class DataListAdapter<D : Data> : ListAdapter<D, DataViewHolder<D>>(
             with(holder) {
                 bindData(model)
                 bindViews(model)
-                holder.itemView.setOnClickListener {
-                    when (model) {
-                        is Category -> model.goCategoryPage()
-                    }
-
-                }
             }
         }
     }

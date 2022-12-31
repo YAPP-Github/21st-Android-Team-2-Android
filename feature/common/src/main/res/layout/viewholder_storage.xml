@@ -27,7 +27,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@id/iv_storage_viewholder"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="ㅇㅏㄴ뇽" />
+            tools:text="홈 아이템" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
