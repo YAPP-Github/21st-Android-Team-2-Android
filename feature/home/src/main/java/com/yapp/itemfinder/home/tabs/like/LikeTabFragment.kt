@@ -1,5 +1,6 @@
 package com.yapp.itemfinder.home.tabs.like
 
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -12,8 +13,6 @@ import com.yapp.itemfinder.feature.common.datalist.binder.DataBindHelper
 import com.yapp.itemfinder.feature.home.databinding.FragmentLikeTabBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -38,20 +37,24 @@ class LikeTabFragment : BaseFragment<LikeTabViewModel, FragmentLikeTabBinding>()
 
     override fun observeData(): Job {
         val job = viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
-                    vm.likeTabStateFlow.onEach {
-                        when (it) {
+                    vm.likeTabStateFlow.collect { state ->
+                        when (state) {
                             is LikeTabState.Uninitialized -> Unit
-                            is LikeTabState.Loading -> handleLoading(it)
-                            is LikeTabState.Success -> handleSuccess(it)
-                            is LikeTabState.Error -> handleError(it)
+                            is LikeTabState.Loading -> handleLoading(state)
+                            is LikeTabState.Success -> handleSuccess(state)
+                            is LikeTabState.Error -> handleError(state)
                         }
-                    }.launchIn(this)
+                    }
                 }
                 launch {
-                    vm.likeTabSideEffect.collect {
-
+                    vm.likeTabSideEffect.collect { sideEffect ->
+                        when (sideEffect) {
+                            is LikeTabSideEffect.ShowToast -> {
+                                Toast.makeText(requireContext(), sideEffect.message, Toast.LENGTH_SHORT).show()
+                            }
+                        }
                     }
                 }
             }

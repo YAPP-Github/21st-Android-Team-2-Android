@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
 class LikeTabViewModel : BaseViewModel() {
+
     val likeTabStateFlow = MutableStateFlow<LikeTabState>(LikeTabState.Uninitialized)
     val likeTabSideEffect = MutableSharedFlow<LikeTabSideEffect>()
 
@@ -53,6 +54,11 @@ class LikeTabViewModel : BaseViewModel() {
                     }
                 )
             )
+            postSideEffect(
+                LikeTabSideEffect.ShowToast(
+                    "${item}이 삭제됐습니다."
+                )
+            )
         }
     }
 
@@ -70,10 +76,15 @@ class LikeTabViewModel : BaseViewModel() {
                     }
                 )
             )
+            postSideEffect(
+                LikeTabSideEffect.ShowToast(
+                    "${item}이 업데이트 됐습니다."
+                )
+            )
         }
     }
 
-    inline fun <reified S: LikeTabState> withState(accessState: (S) -> Unit): Boolean {
+    private inline fun <reified S: LikeTabState> withState(accessState: (S) -> Unit): Boolean {
         if (likeTabStateFlow.value is S) {
             accessState(likeTabStateFlow.value as S)
             return true
@@ -81,11 +92,11 @@ class LikeTabViewModel : BaseViewModel() {
         return false
     }
 
-    fun setState(state: LikeTabState) {
+    private fun setState(state: LikeTabState) {
         likeTabStateFlow.value = state
     }
 
-    fun postSideEffect(sideEffect: LikeTabSideEffect) = viewModelScope.launch {
+    private fun postSideEffect(sideEffect: LikeTabSideEffect) = viewModelScope.launch {
         likeTabSideEffect.emit(sideEffect)
     }
 
