@@ -6,7 +6,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.yapp.itemfinder.domain.model.Data
-import com.yapp.itemfinder.feature.common.BaseFragment
+import com.yapp.itemfinder.feature.common.BaseStateFragment
 import com.yapp.itemfinder.feature.common.binding.viewBinding
 import com.yapp.itemfinder.feature.common.datalist.adapter.DataListAdapter
 import com.yapp.itemfinder.feature.common.datalist.binder.DataBindHelper
@@ -17,7 +17,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class LikeTabFragment : BaseFragment<LikeTabViewModel, FragmentLikeTabBinding>() {
+class LikeTabFragment : BaseStateFragment<LikeTabViewModel, FragmentLikeTabBinding>() {
 
     override val vm by viewModels<LikeTabViewModel>()
 
@@ -39,7 +39,7 @@ class LikeTabFragment : BaseFragment<LikeTabViewModel, FragmentLikeTabBinding>()
         val job = viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
-                    vm.likeTabStateFlow.collect { state ->
+                    vm.stateFlow.collect { state ->
                         when (state) {
                             is LikeTabState.Uninitialized -> Unit
                             is LikeTabState.Loading -> handleLoading(state)
@@ -49,7 +49,7 @@ class LikeTabFragment : BaseFragment<LikeTabViewModel, FragmentLikeTabBinding>()
                     }
                 }
                 launch {
-                    vm.likeTabSideEffect.collect { sideEffect ->
+                    vm.sideEffectFlow.collect { sideEffect ->
                         when (sideEffect) {
                             is LikeTabSideEffect.ShowToast -> {
                                 Toast.makeText(requireContext(), sideEffect.message, Toast.LENGTH_SHORT).show()
