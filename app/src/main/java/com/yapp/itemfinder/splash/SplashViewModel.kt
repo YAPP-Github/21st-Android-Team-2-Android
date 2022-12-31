@@ -2,12 +2,16 @@ package com.yapp.itemfinder.splash
 
 import androidx.lifecycle.viewModelScope
 import com.yapp.itemfinder.feature.common.BaseStateViewModel
-import com.yapp.itemfinder.feature.common.BaseViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import javax.inject.Inject
 
-class SplashViewModel : BaseStateViewModel<SplashScreenState, SplashScreenSideEffect>() {
+@HiltViewModel
+class SplashViewModel @Inject constructor(
+    private val splashScreenRepository: SplashScreenRepository
+) : BaseStateViewModel<SplashScreenState, SplashScreenSideEffect>() {
 
     override val _stateFlow: MutableStateFlow<SplashScreenState> =
         MutableStateFlow<SplashScreenState>(SplashScreenState.Uninitialized)
@@ -15,11 +19,11 @@ class SplashViewModel : BaseStateViewModel<SplashScreenState, SplashScreenSideEf
 
     override fun fetchData(): Job = viewModelScope.launch {
         setState(SplashScreenState.Loading)
-        delay(2000L)
+        splashScreenRepository.getAppData()
         setState(SplashScreenState.Success)
     }
 
-    fun startHome(): Job = viewModelScope.launch{
+    fun startHome(): Job = viewModelScope.launch {
         withState<SplashScreenState.Success> { state ->
             postSideEffect(
                 SplashScreenSideEffect.StartHome
