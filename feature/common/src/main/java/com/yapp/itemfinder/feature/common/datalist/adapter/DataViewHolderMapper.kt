@@ -4,6 +4,8 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.yapp.itemfinder.domain.model.CellType
 import com.yapp.itemfinder.domain.model.Data
+import com.yapp.itemfinder.feature.common.databinding.LikeItemBinding
+import com.yapp.itemfinder.feature.common.databinding.ViewholderStorageBinding
 
 object DataViewHolderMapper {
 
@@ -14,7 +16,9 @@ object DataViewHolderMapper {
     ): DataViewHolder<D> {
         val inflater = LayoutInflater.from(parent.context)
         val viewHolder = when (type) {
-            CellType.EMPTY_CELL -> null // TODO: Implementation for nonnull
+            CellType.EMPTY_CELL -> null
+            CellType.CATEGORY_CELL -> CategoryViewHolder(ViewholderStorageBinding.inflate(inflater,parent,false))
+            CellType.LIKE_CELL -> LikeViewHolder(LikeItemBinding.inflate(inflater, parent, false))
         }
 
         return viewHolder as DataViewHolder<D>
