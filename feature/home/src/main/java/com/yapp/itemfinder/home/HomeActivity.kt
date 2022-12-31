@@ -13,9 +13,11 @@ import com.yapp.itemfinder.feature.home.databinding.ActivityHomeBinding
 import com.yapp.itemfinder.home.tabs.home.HomeTabFragment
 import com.yapp.itemfinder.home.tabs.like.LikeTabFragment
 import com.yapp.itemfinder.home.tabs.reminder.ReminderTabFragment
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class HomeActivity : BaseActivity<HomeViewModel, ActivityHomeBinding>() {
 
     override val vm by viewModels<HomeViewModel>()
