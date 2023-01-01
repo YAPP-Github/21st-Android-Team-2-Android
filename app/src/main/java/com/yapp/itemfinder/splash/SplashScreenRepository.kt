@@ -10,8 +10,8 @@ import javax.inject.Singleton
 class SplashScreenRepository @Inject constructor(
     private val api: AppApi
 ) {
-    suspend fun getAppData(): List<Any> {
+    suspend fun getAppData(): Int {
         delay(2000L)
-        return listOf()
+        return 200
     }
 }

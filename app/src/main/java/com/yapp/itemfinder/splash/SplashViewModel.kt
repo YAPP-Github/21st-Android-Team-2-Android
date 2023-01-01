@@ -18,15 +18,32 @@ class SplashViewModel @Inject constructor(
     override val _sideEffectFlow: MutableSharedFlow<SplashScreenSideEffect> = MutableSharedFlow()
 
     override fun fetchData(): Job = viewModelScope.launch {
-        setState(SplashScreenState.Loading)
-        splashScreenRepository.getAppData()
-        setState(SplashScreenState.Success)
+        when (splashScreenRepository.getAppData()) {
+            500 -> setState(SplashScreenState.Error(Exception()))
+            404 -> {
+                setState(SplashScreenState.Success)
+                startSignUp()
+            }
+            200 -> {
+                setState(SplashScreenState.Success)
+                startHome()
+            }
+            else -> {}
+        }
     }
 
-    fun startHome(): Job = viewModelScope.launch {
+    private fun startHome(): Job = viewModelScope.launch {
         withState<SplashScreenState.Success> { state ->
             postSideEffect(
                 SplashScreenSideEffect.StartHome
+            )
+        }
+    }
+
+    private fun startSignUp() {
+        withState<SplashScreenState.Success> { state ->
+            postSideEffect(
+                SplashScreenSideEffect.StartSignUp
             )
         }
     }

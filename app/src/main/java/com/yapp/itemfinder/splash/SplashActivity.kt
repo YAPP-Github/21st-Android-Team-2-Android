@@ -59,6 +59,9 @@ class SplashActivity : BaseStateActivity<SplashViewModel, ActivitySplashBinding>
                         startActivity(screenNavigator.newIntentHomeActivity(this@SplashActivity))
                         finish()
                     }
+                    is SplashScreenSideEffect.StartSignUp -> {
+                        // TODO: 회원가입 페이지로 이동
+                    }
                 }
             }
         }
@@ -69,7 +72,7 @@ class SplashActivity : BaseStateActivity<SplashViewModel, ActivitySplashBinding>
     }
 
     private fun handleSuccess(splashScreenState: SplashScreenState.Success) {
-        vm.startHome()
+
     }
 
     private fun handleError(splashScreenState: SplashScreenState) {
