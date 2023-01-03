@@ -1,4 +1,4 @@
-package com.yapp.itemfinder.feature.common.coroutines
+package com.yapp.itemfinder.feature.common.exception
 
 import kotlinx.coroutines.CoroutineExceptionHandler
 

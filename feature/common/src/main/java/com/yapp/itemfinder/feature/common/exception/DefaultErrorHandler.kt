@@ -1,7 +1,11 @@
-package com.yapp.itemfinder.feature.common.coroutines
+package com.yapp.itemfinder.feature.common.exception
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics
+import com.google.gson.Gson
+import com.yapp.itemfinder.data.network.response.ErrorCode
+import com.yapp.itemfinder.data.network.response.ErrorResultEntity
 import com.yapp.itemfinder.feature.common.BuildConfig
+import okhttp3.ResponseBody
 import retrofit2.HttpException
 import java.net.ConnectException
 import java.net.UnknownHostException
@@ -22,6 +26,33 @@ object DefaultErrorHandler {
                 // Implicit Empty
             }
         }
+    }
+
+    fun parseErrorResult(e: Throwable): ErrorResultEntity =
+        parseNetworkErrorResultInternal(e)
+            ?: e.cause?.let { parseNetworkErrorResultInternal(it) }
+            ?: if (e is UnknownHostException || e is ConnectException) {
+                ErrorResultEntity(
+                    code = ErrorCode.CAN_NOT_CONNECT.code,
+                    message = null,
+                )
+            } else {
+                ErrorResultEntity(
+                    code = ErrorCode.UNKNOWN.code,
+                    message = null,
+                )
+            }
+
+    private fun parseNetworkErrorResultInternal(e: Throwable): ErrorResultEntity? =
+        if (e is HttpException) {
+            e.response()?.errorBody()?.let { responseBody ->
+                parseNetworkErrorBodyResultInternal(responseBody)
+            }
+        } else null
+
+    private fun parseNetworkErrorBodyResultInternal(responseBody: ResponseBody): ErrorResultEntity {
+        val rawJson = responseBody.string()
+        return Gson().fromJson(rawJson, ErrorResultEntity::class.java)
     }
 
     fun isNetworkException(e: Throwable) = e is HttpException
