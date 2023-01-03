@@ -23,8 +23,4 @@ dependencies {
 
     testImplementation "io.mockk:mockk:$mockkVersion"
 
-    // Retfofit2
-    implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
-    implementation "com.google.code.gson:gson:$gsonVersion"
-
 }
