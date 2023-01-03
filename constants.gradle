@@ -26,7 +26,7 @@ ext {
     googleOssLicensesPluginVersion = '0.10.5'
 
     /* Firebase */
-    FirebaseCrashlyticsVersion = '18.3.2'
+    firebaseCrashlyticsVersion = '18.3.2'
 
     /* Test */
     junit5Version = '5.8.2'
