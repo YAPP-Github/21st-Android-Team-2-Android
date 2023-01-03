@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="purple_200">#FFBB86FC</color>
-    <color name="purple_500">#FF6200EE</color>
-    <color name="purple_700">#FF3700B3</color>
-    <color name="teal_200">#FF03DAC5</color>
-    <color name="teal_700">#FF018786</color>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <color name="orange">#F2742E</color>
+    <color name="orange_20">#33F2742E</color>
 
-    <color name="gray_900">#171A19</color>
-    <color name="gray_800">#303735</color>
-    <color name="gray_700">#4B5350</color>
-    <color name="gray_600">#717B78</color>
-    <color name="gray_500">#8A9591</color>
-    <color name="gray_400">#A8B1AE</color>
-    <color name="gray_300">#CAD0CE</color>
-    <color name="gray_200">#EAEDEB</color>
-    <color name="gray_100">#F6F7F7</color>
-    <color name="green_text">#00CA81</color>
-    <color name="green_main">#00E190</color>
-    <color name="green_sub">#00F29B</color>
+    <color name="gray_06">#323130</color>
+    <color name="gray_05">#494847</color>
+    <color name="gray_04">#767473</color>
+    <color name="gray_03">#A09E9C</color>
+    <color name="gray_02">#DAD7D5</color>
+    <color name="gray_01">#E8E6E5</color>
+
+    <color name="brown_07">#413C39</color>
+    <color name="brown_06">#72675F</color>
+    <color name="brown_05">#B0A08F</color>
+    <color name="brown_04">#DECFBE</color>
+    <color name="brown_03">#E0D9D0</color>
+    <color name="brown_02">#F2EFEA</color>
+    <color name="brown_01">#FCFBF9</color>
+
+    <color name="white">#FFFFFFFF</color>
+    <color name="black">#FF000000</color>
 </resources>
