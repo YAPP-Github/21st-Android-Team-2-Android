@@ -1,6 +1,5 @@
 package com.yapp.itemfinder.home.lockerlist
 
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -10,13 +9,9 @@ import com.yapp.itemfinder.feature.common.BaseStateFragment
 import com.yapp.itemfinder.feature.common.binding.viewBinding
 import com.yapp.itemfinder.feature.common.datalist.adapter.DataListAdapter
 import com.yapp.itemfinder.feature.common.datalist.binder.DataBindHelper
-import com.yapp.itemfinder.feature.home.databinding.FragmentHomeTabBinding
 import com.yapp.itemfinder.feature.home.databinding.FragmentLockerListBinding
-import com.yapp.itemfinder.home.tabs.home.HomeTabViewModel
-import com.yapp.itemfinder.home.tabs.like.LikeTabState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
