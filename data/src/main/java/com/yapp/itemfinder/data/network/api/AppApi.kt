@@ -1,7 +1,12 @@
 package com.yapp.itemfinder.data.network.api
 
+import com.google.gson.JsonObject
+import retrofit2.Response
+import retrofit2.http.GET
+
 interface AppApi {
 
-    // TODO@SODA1127 : Implement API List...
+    @GET("/")
+    suspend fun fetchHealthCheck(): Response<JsonObject>
 
 }
