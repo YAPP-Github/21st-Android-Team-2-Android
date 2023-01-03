@@ -1,7 +1,10 @@
 package com.yapp.itemfinder.splash
 
 import androidx.lifecycle.viewModelScope
+import com.yapp.itemfinder.domain.repository.AppRepository
 import com.yapp.itemfinder.feature.common.BaseStateViewModel
+import com.yapp.itemfinder.feature.common.extension.onErrorWithResult
+import com.yapp.itemfinder.feature.common.extension.runCatchingWithErrorHandler
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -10,38 +13,21 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SplashViewModel @Inject constructor(
-    private val splashScreenRepository: SplashScreenRepository
+    private val appRepository: AppRepository
 ) : BaseStateViewModel<SplashScreenState, SplashScreenSideEffect>() {
 
-    override val _stateFlow: MutableStateFlow<SplashScreenState> =
-        MutableStateFlow<SplashScreenState>(SplashScreenState.Uninitialized)
+    override val _stateFlow: MutableStateFlow<SplashScreenState> =MutableStateFlow(SplashScreenState.Uninitialized)
     override val _sideEffectFlow: MutableSharedFlow<SplashScreenSideEffect> = MutableSharedFlow()
 
     override fun fetchData(): Job = viewModelScope.launch {
-        when (splashScreenRepository.getAppData()) {
-            500 -> setState(SplashScreenState.Error(Exception()))
-            404 -> {
-                setState(SplashScreenState.Success)
-                startSignUp()
-            }
-            200 -> {
-                setState(SplashScreenState.Success)
-                startHome()
-            }
-            else -> {}
-        }
-    }
-
-    private fun startHome(): Job = viewModelScope.launch {
-        withState<SplashScreenState.Success> { state ->
+        runCatchingWithErrorHandler {
+            appRepository.fetchHealthCheck()
+        }.onSuccess {
             postSideEffect(
                 SplashScreenSideEffect.StartHome
             )
-        }
-    }
-
-    private fun startSignUp() {
-        withState<SplashScreenState.Success> { state ->
+        }.onErrorWithResult {
+            it.errorInfoEntity
             postSideEffect(
                 SplashScreenSideEffect.StartSignUp
             )

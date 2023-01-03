@@ -6,8 +6,6 @@ sealed class SplashScreenState : State {
 
     object Uninitialized : SplashScreenState()
 
-    object Loading : SplashScreenState()
-
     object Success : SplashScreenState()
 
     data class Error(
