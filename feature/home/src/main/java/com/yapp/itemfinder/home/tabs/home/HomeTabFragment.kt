@@ -1,9 +1,12 @@
 package com.yapp.itemfinder.home.tabs.home
 
+import android.app.Activity
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.GridLayoutManager.SpanSizeLookup
 import com.yapp.itemfinder.feature.common.binding.viewBinding
 import com.yapp.itemfinder.feature.common.datalist.adapter.DataListAdapter
 import com.yapp.itemfinder.domain.model.Data
@@ -30,10 +33,19 @@ class HomeTabFragment : BaseStateFragment<HomeTabViewModel, FragmentHomeTabBindi
     @Inject
     lateinit var dataBindHelper: DataBindHelper
 
+    private val activity: Activity by lazy { requireActivity() }
+
     override fun initViews() = with(binding) {
         if (dataListAdapter == null) {
             dataListAdapter = DataListAdapter()
             recyclerView.adapter = dataListAdapter
+            recyclerView.layoutManager = GridLayoutManager(activity, 2).apply {
+                spanSizeLookup = object : SpanSizeLookup(){
+                    override fun getSpanSize(position: Int): Int {
+                        return 1
+                    }
+                }
+            }
         }
     }
 
@@ -65,9 +77,8 @@ class HomeTabFragment : BaseStateFragment<HomeTabViewModel, FragmentHomeTabBindi
         }
     }
     private fun moveSpaceDetail(space: SpaceItem){
-        val activity = requireActivity()
         when (activity){
-            is HomeActivity -> activity.addFragmentBackStack(LockerListFragment.TAG)
+            is HomeActivity -> (activity as HomeActivity).addFragmentBackStack(LockerListFragment.TAG)
         }
     }
     private fun handleLoading(homeTabState: HomeTabState.Loading) {

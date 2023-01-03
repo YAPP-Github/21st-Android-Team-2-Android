@@ -36,7 +36,10 @@
                 android:id="@+id/spaceSecondViewImage"
                 android:layout_width="56dp"
                 android:layout_height="56dp"
-                tools:src="@color/black" />
+                android:layout_marginRight="16dp"
+                android:layout_marginBottom="16dp"
+
+                 />
 
             <ImageView
                 android:id="@+id/spaceThirdImageView"
