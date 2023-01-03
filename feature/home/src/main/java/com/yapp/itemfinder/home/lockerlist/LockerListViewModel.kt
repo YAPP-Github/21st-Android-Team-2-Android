@@ -1,6 +1,7 @@
 package com.yapp.itemfinder.home.lockerlist
 
 import androidx.lifecycle.viewModelScope
+import com.yapp.itemfinder.domain.model.Locker
 import com.yapp.itemfinder.domain.repository.LockerRepository
 import com.yapp.itemfinder.feature.common.BaseStateViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -20,12 +21,40 @@ class LockerListViewModel @Inject constructor(
         setState(LockerListState.Loading)
 
         val lockers = withContext(Dispatchers.IO) { lockerMockRepository.getAllLockers() }
-        // val lockers = async { lockerMockRepository.getAllLockers() }.await()
         setState(
             LockerListState.Success(
                 dataList = lockers
             )
         )
+    }
 
+    fun addItem(): Job = viewModelScope.launch {
+        withState<LockerListState.Success> { state ->
+            setState(
+                state.copy(
+                    ArrayList(state.dataList).apply {
+                        add(
+                            Locker(name = "새로운 locker")
+                        )
+                    }
+                )
+            )
+        }
+    }
+
+    fun editItem(item: Locker): Job = viewModelScope.launch{
+
+    }
+
+    fun deleteItem(item: Locker): Job = viewModelScope.launch {
+        withState<LockerListState.Success> { state ->
+            setState(
+                state.copy(
+                    state.dataList.toMutableList().apply {
+                        remove(item)
+                    }
+                )
+            )
+        }
     }
 }
