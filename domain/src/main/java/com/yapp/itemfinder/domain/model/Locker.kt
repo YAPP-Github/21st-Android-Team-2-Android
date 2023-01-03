@@ -1,6 +1,6 @@
 package com.yapp.itemfinder.domain.model
 
-class Locker(
+data class Locker(
     val name: String,
-    val url: String? = null
-): Data()
+    override var type: CellType = CellType.LOCKER_CELL
+) : Data()

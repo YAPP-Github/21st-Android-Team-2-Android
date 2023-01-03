@@ -2,7 +2,6 @@ package com.yapp.itemfinder.home
 
 import android.content.Context
 import android.content.Intent
-import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
@@ -28,10 +27,6 @@ class HomeActivity : BaseActivity<HomeViewModel, ActivityHomeBinding>() {
 
     override fun initViews() {
         initNavigationBar()
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
     }
 
     override fun initState() {
