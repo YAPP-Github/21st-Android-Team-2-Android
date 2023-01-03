@@ -4,13 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="16dp">
+    android:paddingHorizontal="16dp"
+    android:paddingVertical="8dp">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/lockerItemCardView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:backgroundTint="#F2EFEA"
+        app:cardElevation="0dp"
         app:cardCornerRadius="12dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -28,6 +30,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
+        android:textColor="@color/black"
+        android:textFontWeight="600"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@id/lockerItemCardView"
