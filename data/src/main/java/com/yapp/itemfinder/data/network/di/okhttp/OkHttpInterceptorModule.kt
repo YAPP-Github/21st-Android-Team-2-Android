@@ -4,7 +4,7 @@ import androidx.viewbinding.BuildConfig
 import com.google.gson.Gson
 import com.google.gson.JsonObject
 import com.yapp.itemfinder.data.network.mapper.DataMapper
-import com.yapp.itemfinder.data.network.response.ErrorResponse
+import com.yapp.itemfinder.data.network.response.ErrorResultEntity
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -35,7 +35,10 @@ class OkHttpInterceptorModule {
             .build()
         val response = chain.proceed(request)
         val responseData = if (response.isSuccessful) {
-            val rawJson = response.body?.string() ?: "{}"
+
+            val rawJson =
+                if (response.body?.string() == "okay") "{}"
+                else response.body?.string() ?: "{}"
             val jsonObject = gson.fromJson(rawJson, JsonObject::class.java)
             if (jsonObject.isJsonArray) {
                 /**
@@ -57,7 +60,7 @@ class OkHttpInterceptorModule {
             }
         } else {
             val rawJson = response.body?.string() ?: "{}"
-            gson.fromJson(rawJson, ErrorResponse::class.java)
+            gson.fromJson(rawJson, ErrorResultEntity::class.java)
         }
 
         response.newBuilder()
