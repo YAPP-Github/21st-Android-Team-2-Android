@@ -1,10 +1,7 @@
 package com.yapp.itemfinder.feature.common.datalist.binder
 
 import android.annotation.SuppressLint
-import com.yapp.itemfinder.domain.model.CellType
-import com.yapp.itemfinder.domain.model.Data
-import com.yapp.itemfinder.domain.model.LikeItem
-import com.yapp.itemfinder.domain.model.SpaceItem
+import com.yapp.itemfinder.domain.model.*
 import com.yapp.itemfinder.feature.common.BaseViewModel
 import com.yapp.itemfinder.feature.common.datalist.binder.di.HomeLikeItemQualifier
 import javax.inject.Inject
@@ -14,7 +11,8 @@ import javax.inject.Singleton
 class DataBindHelper @Inject constructor(
     @HomeLikeItemQualifier
     private val homeLikeItemBinder: LikeItemBinder,
-    var homeSpaceItemBinder: SpaceItemBinder
+    var homeSpaceItemBinder: SpaceItemBinder,
+    var lockerItemBinder: LockerItemBinder
 ) {
 
 
@@ -32,6 +30,9 @@ class DataBindHelper @Inject constructor(
             }
             CellType.SPACE_CELL -> {
                 homeSpaceItemBinder.bindData(data as SpaceItem, viewModel)
+            }
+            CellType.LOCKER_CELL -> {
+                lockerItemBinder.bindData(data as Locker, viewModel)
             }
             else -> { }
         }
