@@ -5,6 +5,7 @@
 dependencies {
     implementation project(':feature:common')
     implementation project(':domain')
+    implementation project(':data')
 
     implementation "com.google.android.material:material:$materialVersion"
 
