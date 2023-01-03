@@ -45,16 +45,6 @@ class HomeTabFragment : BaseStateFragment<HomeTabViewModel, FragmentHomeTabBindi
         if (dataListAdapter == null) {
             dataListAdapter = DataListAdapter()
             recyclerView.adapter = dataListAdapter
-            recyclerView.layoutManager = GridLayoutManager(activity, 2).apply {
-
-                spanSizeLookup = object : SpanSizeLookup() {
-                    override fun getSpanSize(position: Int): Int {
-
-                        return dataListWithSpan[position].span
-                    }
-                }
-            }
-            recyclerView.addItemDecoration(GridSpacing(2, 16, true))
         }
     }
 
@@ -92,11 +82,6 @@ class HomeTabFragment : BaseStateFragment<HomeTabViewModel, FragmentHomeTabBindi
         when (activity) {
             is HomeActivity -> (activity as HomeActivity).addFragmentBackStack(LockerListFragment.TAG)
         }
-    }
-
-    private fun moveSpaceManage(){
-        startActivity(SpaceManageActivity.newIntent(this@HomeTabFragment.requireActivity()))
-
     }
 
     private fun handleLoading(homeTabState: HomeTabState.Loading) {
