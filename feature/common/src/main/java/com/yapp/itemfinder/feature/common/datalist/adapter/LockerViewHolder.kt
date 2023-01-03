@@ -15,6 +15,8 @@ class LockerViewHolder(
     }
 
     override fun bindViews(data: Locker) {
-        // setOnClickListener
+        binding.spinnerImageButton.setOnClickListener {
+
+        }
     }
 }
