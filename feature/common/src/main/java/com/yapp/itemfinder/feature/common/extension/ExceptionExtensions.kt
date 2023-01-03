@@ -63,6 +63,6 @@ fun <T> Flow<T>.catchWithErrorHandler(action: suspend FlowCollector<T>.(Throwabl
 }
 
 data class ErrorWithResultException(val throwable: Throwable): Exception(throwable) {
-    val errorInfoEntity: ErrorResultEntity
+    val errorResultEntity: ErrorResultEntity
         get() = DefaultErrorHandler.parseErrorResult(throwable)
 }

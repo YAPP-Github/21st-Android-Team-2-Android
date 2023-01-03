@@ -27,7 +27,6 @@ class SplashViewModel @Inject constructor(
                 SplashScreenSideEffect.StartHome
             )
         }.onErrorWithResult {
-            it.errorInfoEntity
             postSideEffect(
                 SplashScreenSideEffect.StartSignUp
             )
