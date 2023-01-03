@@ -93,7 +93,8 @@ class HomeActivity : BaseActivity<HomeViewModel, ActivityHomeBinding>() {
                 beginTransaction()
                 .apply {
                     fragments.forEach { fragment ->
-                        hide(fragment)
+                        if (fragment.isHidden.not())
+                            hide(fragment)
                     }
                 }.add(R.id.fragmentContainer, foundFragment)
                     .addToBackStack(null)

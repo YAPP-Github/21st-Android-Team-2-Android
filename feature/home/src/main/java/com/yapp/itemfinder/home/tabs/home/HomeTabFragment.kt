@@ -1,6 +1,5 @@
 package com.yapp.itemfinder.home.tabs.home
 
-import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -65,24 +64,23 @@ class HomeTabFragment : BaseStateFragment<HomeTabViewModel, FragmentHomeTabBindi
 
         }
     }
-
     private fun moveSpaceDetail(space: SpaceItem){
         val activity = requireActivity()
         when (activity){
-            is HomeActivity -> activity.showFragment(LockerListFragment.TAG)
+            is HomeActivity -> activity.addFragmentBackStack(LockerListFragment.TAG)
         }
     }
-
     private fun handleLoading(homeTabState: HomeTabState.Loading) {
     }
 
     private fun handleSuccess(homeTabState: HomeTabState.Success) {
         dataBindHelper.bindList(homeTabState.dataList, vm)
         dataListAdapter?.submitList(homeTabState.dataList)
-        homeTabState.dataList.forEach { data ->
-            data.handler =
-                { data -> Toast.makeText(requireContext(), "버튼 클릭", Toast.LENGTH_SHORT).show(); }
-        }
+
+//        homeTabState.dataList.forEach { data ->
+//            data.handler =
+//                { data -> Toast.makeText(requireContext(), "$data.", Toast.LENGTH_SHORT).show(); }
+//        }
     }
 
     private fun handleError(homeTabState: HomeTabState.Error) {
