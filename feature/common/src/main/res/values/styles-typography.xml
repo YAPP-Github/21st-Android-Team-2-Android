@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="ItemFinderTypography">
+        <item name="android:fontFamily">@font/pretendard_medium</item>
+    </style>
+
+    <style name="ItemFinderTypography.Body4">
+        <item name="android:textSize">@dimen/typography_body4</item>
+        <item name="android:lineSpacingMultiplier">1.3</item>
+    </style>
+
+    <style name="ItemFinderTypography.Body3">
+        <item name="android:textSize">@dimen/typography_body3</item>
+        <item name="android:lineSpacingMultiplier">1.4</item>
+    </style>
+
+    <style name="ItemFinderTypography.Body2">
+        <item name="android:fontFamily">@font/pretendard_semibold</item>
+        <item name="android:textSize">@dimen/typography_body2</item>
+        <item name="android:lineSpacingMultiplier">1.4</item>
+    </style>
+
+    <style name="ItemFinderTypography.Body1">
+        <item name="android:textSize">@dimen/typography_body1</item>
+        <item name="android:lineSpacingMultiplier">1.5</item>
+    </style>
+
+    <style name="ItemFinderTypography.Subhead">
+        <item name="android:fontFamily">@font/pretendard_semibold</item>
+        <item name="android:textSize">@dimen/typography_subhead</item>
+        <item name="android:lineSpacingMultiplier">1.5</item>
+    </style>
+
+    <style name="ItemFinderTypography.Head">
+        <item name="android:fontFamily">@font/pretendard_bold</item>
+        <item name="android:textSize">@dimen/typography_head</item>
+        <item name="android:lineSpacingMultiplier">1.35</item>
+    </style>
+
+    <style name="ItemFinderTypography.Title">
+        <item name="android:fontFamily">@font/pretendard_bold</item>
+        <item name="android:textSize">@dimen/typography_title</item>
+        <item name="android:lineSpacingMultiplier">1.2</item>
+    </style>
+
+</resources>
