@@ -11,7 +11,9 @@ class AddLockerViewHolder(
     }
 
     override fun bindViews(data: AddLocker) {
-
+        binding.addIconCardView.setOnClickListener {
+            data.addLocker()
+        }
     }
 
 }

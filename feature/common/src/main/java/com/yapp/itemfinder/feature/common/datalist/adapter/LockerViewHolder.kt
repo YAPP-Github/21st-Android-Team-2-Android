@@ -1,6 +1,8 @@
 package com.yapp.itemfinder.feature.common.datalist.adapter
 
+import android.widget.PopupMenu
 import com.yapp.itemfinder.domain.model.Locker
+import com.yapp.itemfinder.feature.common.R
 import com.yapp.itemfinder.feature.common.databinding.LockerItemBinding
 
 class LockerViewHolder(
@@ -16,7 +18,23 @@ class LockerViewHolder(
 
     override fun bindViews(data: Locker) {
         binding.spinnerImageButton.setOnClickListener {
-
+            val con = itemView.context
+            val popupMenu = PopupMenu(itemView.context, binding.spinnerImageButton)
+            popupMenu.inflate(R.menu.pop_up_menu)
+            popupMenu.setOnMenuItemClickListener { menuItem ->
+                when(menuItem.itemId){
+                    R.id.edit_menu -> {
+                        data.editLocker()
+                        true
+                    }
+                    R.id.delete_menu -> {
+                        data.deleteLocker()
+                        true
+                    }
+                    else -> false
+                }
+            }
+            popupMenu.show()
         }
     }
 }

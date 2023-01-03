@@ -1,9 +1,11 @@
 package com.yapp.itemfinder.home.binder.di
 
+import com.yapp.itemfinder.feature.common.datalist.binder.AddLockerItemBinder
 import com.yapp.itemfinder.feature.common.datalist.binder.LikeItemBinder
 import com.yapp.itemfinder.feature.common.datalist.binder.LockerItemBinder
 import com.yapp.itemfinder.feature.common.datalist.binder.SpaceItemBinder
 import com.yapp.itemfinder.feature.common.datalist.binder.di.HomeLikeItemQualifier
+import com.yapp.itemfinder.home.binder.HomeAddLockerItemBinder
 import com.yapp.itemfinder.home.binder.HomeLikeItemBinder
 import com.yapp.itemfinder.home.binder.HomeLockerItemBinder
 import com.yapp.itemfinder.home.binder.HomeSpaceItemBinder
@@ -35,5 +37,11 @@ abstract class HomeDataBinderModule {
     abstract fun bindLockerItemBinder(
         homeLockerItemBinder: HomeLockerItemBinder
     ): LockerItemBinder
+
+    @Binds
+    @Singleton
+    abstract fun bindAddLockerBinder(
+        homeAddLockerItemBinder: HomeAddLockerItemBinder
+    ): AddLockerItemBinder
 
 }

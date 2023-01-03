@@ -12,7 +12,8 @@ class DataBindHelper @Inject constructor(
     @HomeLikeItemQualifier
     private val homeLikeItemBinder: LikeItemBinder,
     var homeSpaceItemBinder: SpaceItemBinder,
-    var lockerItemBinder: LockerItemBinder
+    var lockerItemBinder: LockerItemBinder,
+    var addLockerItemBinder: AddLockerItemBinder
 ) {
 
 
@@ -33,6 +34,9 @@ class DataBindHelper @Inject constructor(
             }
             CellType.LOCKER_CELL -> {
                 lockerItemBinder.bindData(data as Locker, viewModel)
+            }
+            CellType.ADD_LOCKER_CELL -> {
+                addLockerItemBinder.bindData(data as AddLocker, viewModel)
             }
             else -> { }
         }
