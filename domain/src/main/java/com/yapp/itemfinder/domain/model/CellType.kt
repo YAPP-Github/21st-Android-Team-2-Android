@@ -6,6 +6,7 @@ enum class CellType {
     CATEGORY_CELL,
     LIKE_CELL,
     SPACE_CELL,
-    LOCKER_CELL
+    LOCKER_CELL,
+    ADD_LOCKER_CELL
 
 }
