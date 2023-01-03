@@ -9,5 +9,4 @@ enum class CellType {
     LOCKER_CELL,
     ADD_LOCKER_CELL,
     HOMETAB_MYSPACE_UPPER_CELL
-
 }

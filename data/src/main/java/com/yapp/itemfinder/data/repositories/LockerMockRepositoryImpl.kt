@@ -12,9 +12,10 @@ import javax.inject.Singleton
 class LockerMockRepositoryImpl @Inject constructor(
     private val appApi: AppApi
 ): LockerRepository{
-    override suspend fun getAllLockers(): List<Locker> {
+    override suspend fun getAllLockers(): List<Data> {
         // api call
         return listOf(
+            AddLocker(),
             Locker(name = "화장대"),
             Locker(name = "냉장고"),
             Locker(name = "옷장")
