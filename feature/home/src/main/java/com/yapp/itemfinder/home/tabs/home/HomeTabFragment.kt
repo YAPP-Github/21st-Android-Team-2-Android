@@ -84,6 +84,7 @@ class HomeTabFragment : BaseStateFragment<HomeTabViewModel, FragmentHomeTabBindi
                     }
                 }
             }
+
         }
     }
 
