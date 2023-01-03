@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import com.yapp.itemfinder.domain.model.CellType
 import com.yapp.itemfinder.domain.model.Data
 import com.yapp.itemfinder.feature.common.databinding.LikeItemBinding
+import com.yapp.itemfinder.feature.common.databinding.SpaceItemBinding
 import com.yapp.itemfinder.feature.common.databinding.ViewholderStorageBinding
 
 object DataViewHolderMapper {
@@ -19,6 +20,7 @@ object DataViewHolderMapper {
             CellType.EMPTY_CELL -> null
             CellType.CATEGORY_CELL -> CategoryViewHolder(ViewholderStorageBinding.inflate(inflater,parent,false))
             CellType.LIKE_CELL -> LikeViewHolder(LikeItemBinding.inflate(inflater, parent, false))
+            CellType.SPACE_CELL -> SpaceViewHolder(SpaceItemBinding.inflate(inflater,parent,false))
         }
 
         return viewHolder as DataViewHolder<D>

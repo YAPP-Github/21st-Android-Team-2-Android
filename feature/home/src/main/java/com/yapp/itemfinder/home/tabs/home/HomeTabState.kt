@@ -1,8 +1,9 @@
 package com.yapp.itemfinder.home.tabs.home
 
 import com.yapp.itemfinder.domain.model.Data
+import com.yapp.itemfinder.feature.common.State
 
-sealed class HomeTabState {
+sealed class HomeTabState: State {
 
     object Uninitialized: HomeTabState()
 

@@ -10,6 +10,7 @@ import com.yapp.itemfinder.feature.common.binding.viewBinding
 import com.yapp.itemfinder.feature.common.extension.hideSoftInput
 import com.yapp.itemfinder.feature.home.R
 import com.yapp.itemfinder.feature.home.databinding.ActivityHomeBinding
+import com.yapp.itemfinder.home.tabs.LockerListFragment
 import com.yapp.itemfinder.home.tabs.home.HomeTabFragment
 import com.yapp.itemfinder.home.tabs.like.LikeTabFragment
 import com.yapp.itemfinder.home.tabs.reminder.ReminderTabFragment
@@ -61,7 +62,7 @@ class HomeActivity : BaseActivity<HomeViewModel, ActivityHomeBinding>() {
         }
     }
 
-    private fun showFragment(tag: String) {
+    fun showFragment(tag: String) {
         binding.root.hideSoftInput()
         val foundFragment = supportFragmentManager.findFragmentByTag(tag)
         supportFragmentManager.fragments.forEach { fm ->
@@ -84,6 +85,7 @@ class HomeActivity : BaseActivity<HomeViewModel, ActivityHomeBinding>() {
             ReminderTabFragment.TAG -> ReminderTabFragment.newInstance()
             HomeTabFragment.TAG -> HomeTabFragment.newInstance()
             LikeTabFragment.TAG -> LikeTabFragment.newInstance()
+            LockerListFragment.TAG -> LockerListFragment.newInstance()
             else -> null
         }
 
