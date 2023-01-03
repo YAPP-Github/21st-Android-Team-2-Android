@@ -14,10 +14,12 @@ import javax.inject.Inject
 class LockerListViewModel @Inject constructor(
     private val lockerMockRepository: LockerRepository
 ) : BaseStateViewModel<LockerListState, LockerListSideEffect>() {
-    override val _stateFlow: MutableStateFlow<LockerListState> = MutableStateFlow(LockerListState.Uninitialized)
+    override val _stateFlow: MutableStateFlow<LockerListState> =
+        MutableStateFlow(LockerListState.Uninitialized)
     override val _sideEffectFlow: MutableSharedFlow<LockerListSideEffect> = MutableSharedFlow()
 
-    override fun fetchData(): Job = viewModelScope.launch{
+    var tmpId = 4L
+    override fun fetchData(): Job = viewModelScope.launch {
         setState(LockerListState.Loading)
 
         val lockers = withContext(Dispatchers.IO) { lockerMockRepository.getAllLockers() }
@@ -34,7 +36,7 @@ class LockerListViewModel @Inject constructor(
                 state.copy(
                     ArrayList(state.dataList).apply {
                         add(
-                            Locker(name = "새로운 locker")
+                            Locker(id = tmpId++, name = "새로운 locker")
                         )
                     }
                 )
@@ -42,7 +44,7 @@ class LockerListViewModel @Inject constructor(
         }
     }
 
-    fun editItem(item: Locker): Job = viewModelScope.launch{
+    fun editItem(item: Locker): Job = viewModelScope.launch {
 
     }
 
