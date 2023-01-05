@@ -40,4 +40,11 @@
         <item name="android:fontFamily">@font/pretendard_regular</item>
     </style>
 
+    <style name="PopupMenu" parent="@style/Widget.AppCompat.PopupMenu.Overflow">
+        <item name="android:popupBackground">@drawable/popupmenu_background</item>
+        <item name="android:dropDownHorizontalOffset">-8dp</item>
+        <item name="android:dropDownVerticalOffset">32dp</item>
+        <item name="android:shadowColor">#FCFBF9</item>
+    </style>
+
 </resources>
