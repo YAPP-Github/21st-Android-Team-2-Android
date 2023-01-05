@@ -15,7 +15,7 @@ android {
 }
 
 dependencies {
-
+    implementation project(':feature:locker')
 
 implementation 'androidx.appcompat:appcompat:1.5.1'
     implementation 'com.google.android.material:material:1.4.+'
