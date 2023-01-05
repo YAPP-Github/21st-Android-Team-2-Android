@@ -1,7 +1,6 @@
 package com.yapp.itemfinder.home.tabs.home
 
 import android.app.Activity
-import android.content.Intent
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -19,7 +18,7 @@ import com.yapp.itemfinder.feature.common.utility.GridSpacing
 import com.yapp.itemfinder.feature.home.databinding.FragmentHomeTabBinding
 import com.yapp.itemfinder.home.HomeActivity
 import com.yapp.itemfinder.home.SpaceManageActivity
-import com.yapp.itemfinder.home.lockerlist.LockerListFragment
+import com.yapp.itemfinder.locker.LockerListFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
@@ -45,6 +44,16 @@ class HomeTabFragment : BaseStateFragment<HomeTabViewModel, FragmentHomeTabBindi
         if (dataListAdapter == null) {
             dataListAdapter = DataListAdapter()
             recyclerView.adapter = dataListAdapter
+            recyclerView.layoutManager = GridLayoutManager(activity, 2).apply {
+
+                spanSizeLookup = object : SpanSizeLookup() {
+                    override fun getSpanSize(position: Int): Int {
+
+                        return dataListWithSpan[position].span
+                    }
+                }
+            }
+            recyclerView.addItemDecoration(GridSpacing(2, 16, true))
         }
     }
 
@@ -74,7 +83,6 @@ class HomeTabFragment : BaseStateFragment<HomeTabViewModel, FragmentHomeTabBindi
                     }
                 }
             }
-
         }
     }
 
@@ -82,6 +90,11 @@ class HomeTabFragment : BaseStateFragment<HomeTabViewModel, FragmentHomeTabBindi
         when (activity) {
             is HomeActivity -> (activity as HomeActivity).addFragmentBackStack(LockerListFragment.TAG)
         }
+    }
+
+    private fun moveSpaceManage(){
+        startActivity(SpaceManageActivity.newIntent(this@HomeTabFragment.requireActivity()))
+
     }
 
     private fun handleLoading(homeTabState: HomeTabState.Loading) {

@@ -1,8 +1,7 @@
-package com.yapp.itemfinder.home.lockerlist
+package com.yapp.itemfinder.locker
 
 import com.yapp.itemfinder.domain.model.Data
 import com.yapp.itemfinder.feature.common.State
-import com.yapp.itemfinder.home.tabs.like.LikeTabState
 
 sealed class LockerListState: State {
     object Uninitialized : LockerListState()

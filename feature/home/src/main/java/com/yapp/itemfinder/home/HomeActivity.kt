@@ -10,10 +10,10 @@ import com.yapp.itemfinder.feature.common.binding.viewBinding
 import com.yapp.itemfinder.feature.common.extension.hideSoftInput
 import com.yapp.itemfinder.feature.home.R
 import com.yapp.itemfinder.feature.home.databinding.ActivityHomeBinding
-import com.yapp.itemfinder.home.lockerlist.LockerListFragment
 import com.yapp.itemfinder.home.tabs.home.HomeTabFragment
 import com.yapp.itemfinder.home.tabs.like.LikeTabFragment
 import com.yapp.itemfinder.home.tabs.reminder.ReminderTabFragment
+import com.yapp.itemfinder.locker.LockerListFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch

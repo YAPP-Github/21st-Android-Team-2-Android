@@ -49,6 +49,6 @@ class SpaceMockRepositoryImpl @Inject constructor() : SpaceRepository {
                     Locker(id = 14L, Math.random().toString())
                 )
             )
-        }
+        )
     }
 }

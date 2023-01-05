@@ -1,4 +1,4 @@
-package com.yapp.itemfinder.home.lockerlist
+package com.yapp.itemfinder.locker
 
 import androidx.lifecycle.viewModelScope
 import com.yapp.itemfinder.domain.model.Locker
