@@ -37,6 +37,7 @@ dependencies {
 
     implementation "androidx.core:core-splashscreen:$androidCoreSplashScreenVersion"
     implementation project(':feature:home')
+    implementation project(':data')
     implementation project(':feature:locker')
 
 }

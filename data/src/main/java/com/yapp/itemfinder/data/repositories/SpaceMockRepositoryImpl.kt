@@ -13,10 +13,10 @@ class SpaceMockRepositoryImpl @Inject constructor() : SpaceRepository {
             SpaceItem(
                 name = "$it 번째 공간",
                 lockerList = listOf(
-                    Locker(id = 1L,Math.random().toString()),
-                    Locker(id = 2L,Math.random().toString()),
-                    Locker(id = 3L,Math.random().toString()),
-                    Locker(id = 4L,Math.random().toString())
+                    Locker(id = 1L,Math.random().toString(), com.yapp.itemfinder.domain.R.drawable.box),
+                    Locker(id = 2L,Math.random().toString(), com.yapp.itemfinder.domain.R.drawable.box),
+                    Locker(id = 3L,Math.random().toString(), com.yapp.itemfinder.domain.R.drawable.box),
+                    Locker(id = 4L,Math.random().toString(), com.yapp.itemfinder.domain.R.drawable.box)
                 )
             )
         }

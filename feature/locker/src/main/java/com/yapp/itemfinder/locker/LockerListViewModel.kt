@@ -36,7 +36,7 @@ class LockerListViewModel @Inject constructor(
                 state.copy(
                     ArrayList(state.dataList).apply {
                         add(
-                            Locker(id = tmpId++, name = "새로운 locker")
+                            Locker(id = tmpId++, name = "새로운 locker", com.yapp.itemfinder.domain.R.drawable.box)
                         )
                     }
                 )

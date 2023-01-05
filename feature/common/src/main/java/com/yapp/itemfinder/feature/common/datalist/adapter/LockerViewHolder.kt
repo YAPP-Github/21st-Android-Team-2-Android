@@ -17,6 +17,7 @@ class LockerViewHolder(
     override fun bindData(data: Locker) {
         super.bindData(data)
         binding.lockerItemTextView.text = data.name
+        binding.lockerItemImageView.setImageResource(data.icon)
     }
 
     @RequiresApi(Build.VERSION_CODES.Q)
