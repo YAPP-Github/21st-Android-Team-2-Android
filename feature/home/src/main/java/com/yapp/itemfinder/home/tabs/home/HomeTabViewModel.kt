@@ -1,6 +1,7 @@
 package com.yapp.itemfinder.home.tabs.home
 
 import androidx.lifecycle.viewModelScope
+import com.yapp.itemfinder.domain.model.CellItem
 import com.yapp.itemfinder.domain.model.Data
 import com.yapp.itemfinder.domain.model.LikeItem
 import com.yapp.itemfinder.domain.model.SpaceItem
@@ -37,6 +38,7 @@ class HomeTabViewModel @Inject constructor(
         setState(
             HomeTabState.Success(
                 dataListWithSpan = mutableListOf<DataWithSpan<Data>>().apply {
+                    add(DataWithSpan(CellItem(),2))
                     spaces.forEach {
                         add(DataWithSpan(it, 1))
                     }
@@ -53,5 +55,7 @@ class HomeTabViewModel @Inject constructor(
         postSideEffect(HomeTabSideEffect.MoveSpaceDetail(space))
     }
 
+    fun goSpaceEdit(){
+        postSideEffect(HomeTabSideEffect.MoveSpacesManage)
     }
 }

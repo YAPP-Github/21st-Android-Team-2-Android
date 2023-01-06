@@ -18,7 +18,11 @@ class SpaceViewHolder(
                 getOrNull(0)?.let { Glide.with(itemView).load(it.url).into(spaceFirstImageView) }
                 getOrNull(1)?.let { Glide.with(itemView).load(it.url).into(spaceSecondViewImage) }
                 getOrNull(2)?.let { Glide.with(itemView).load(it.url).into(spaceThirdImageView) }
-                getOrNull(3)?.let { Glide.with(itemView).load(R.drawable.arrow_forward_16).into(spaceFourthImageView) }
+                if (data.lockerList.size == 4){
+                    getOrNull(3)?.let { Glide.with(itemView).load(R.drawable.arrow_forward_16).into(spaceFourthImageView) }
+                }else{
+                     Glide.with(itemView).load(R.drawable.arrow_forward_16).into(spaceFourthImageView)
+                }
             }
         }
     }

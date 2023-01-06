@@ -1,6 +1,7 @@
 package com.yapp.itemfinder.home.tabs.home
 
 import android.app.Activity
+import android.content.Intent
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -17,6 +18,7 @@ import com.yapp.itemfinder.feature.common.extension.showShortToast
 import com.yapp.itemfinder.feature.common.utility.DataWithSpan
 import com.yapp.itemfinder.feature.home.databinding.FragmentHomeTabBinding
 import com.yapp.itemfinder.home.HomeActivity
+import com.yapp.itemfinder.home.SpaceManageActivity
 import com.yapp.itemfinder.home.lockerlist.LockerListFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
@@ -89,6 +91,14 @@ class HomeTabFragment : BaseStateFragment<HomeTabViewModel, FragmentHomeTabBindi
             is HomeActivity -> (activity as HomeActivity).addFragmentBackStack(LockerListFragment.TAG)
         }
     }
+
+    private fun moveSpaceManage(){
+
+        Intent(requireActivity(), SpaceManageActivity::class.java)
+            .let { startActivity(it) }
+
+    }
+
     private fun handleLoading(homeTabState: HomeTabState.Loading) {
     }
 

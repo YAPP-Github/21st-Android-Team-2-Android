@@ -7,5 +7,5 @@ sealed class HomeTabSideEffect: SideEffect {
 
     data class ShowToast(val message: String): HomeTabSideEffect()
     data class MoveSpaceDetail(val space: SpaceItem): HomeTabSideEffect()
-
+    object MoveSpacesManage: HomeTabSideEffect()
 }
