@@ -28,7 +28,7 @@ android {
     }
 
     applicationVariants.all { variant ->
-        variant.buildConfigField "String", "API_URL", "\"https://api.itemfinder.com/\""
+        variant.buildConfigField "String", "API_URL", "\"http://3.39.124.65/\""
     }
 
 }

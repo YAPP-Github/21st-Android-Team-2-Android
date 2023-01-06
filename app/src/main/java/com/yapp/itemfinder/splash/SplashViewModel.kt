@@ -1,20 +1,36 @@
 package com.yapp.itemfinder.splash
 
 import androidx.lifecycle.viewModelScope
-import com.yapp.itemfinder.feature.common.BaseViewModel
+import com.yapp.itemfinder.domain.repository.AppRepository
+import com.yapp.itemfinder.feature.common.BaseStateViewModel
+import com.yapp.itemfinder.feature.common.extension.onErrorWithResult
+import com.yapp.itemfinder.feature.common.extension.runCatchingWithErrorHandler
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import javax.inject.Inject
 
-class SplashViewModel: BaseViewModel() {
+@HiltViewModel
+class SplashViewModel @Inject constructor(
+    private val appRepository: AppRepository
+) : BaseStateViewModel<SplashScreenState, SplashScreenSideEffect>() {
 
-    val splashEventSharedFlow = MutableSharedFlow<SplashEvent>()
+    override val _stateFlow: MutableStateFlow<SplashScreenState> =MutableStateFlow(SplashScreenState.Uninitialized)
+    override val _sideEffectFlow: MutableSharedFlow<SplashScreenSideEffect> = MutableSharedFlow()
 
-    /**
-     * This is the splash delay test
-     */
-    fun readyToStart() = viewModelScope.launch {
-        delay(2000L)
-        splashEventSharedFlow.emit(SplashEvent.StartHome)
+    override fun fetchData(): Job = viewModelScope.launch {
+        runCatchingWithErrorHandler {
+            appRepository.fetchHealthCheck()
+        }.onSuccess {
+            postSideEffect(
+                SplashScreenSideEffect.StartHome
+            )
+        }.onErrorWithResult {
+            postSideEffect(
+                SplashScreenSideEffect.StartSignUp
+            )
+        }
     }
 
 }

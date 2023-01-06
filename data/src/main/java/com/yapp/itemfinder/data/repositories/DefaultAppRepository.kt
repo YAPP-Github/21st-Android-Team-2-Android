@@ -7,11 +7,11 @@ import javax.inject.Singleton
 
 @Singleton
 class DefaultAppRepository @Inject constructor(
-    private val api: AppApi
+    private val appApi: AppApi
 ): AppRepository {
 
-    override suspend fun getAppData(): List<Any> {
-        TODO("Not yet implemented")
+    override suspend fun fetchHealthCheck(): String {
+        return appApi.fetchHealthCheck().body().toString()
     }
 
 }

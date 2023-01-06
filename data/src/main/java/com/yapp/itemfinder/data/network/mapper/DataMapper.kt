@@ -14,14 +14,16 @@ class DataMapper @Inject constructor(
     private val apiGson: Gson,
 ) {
 
-    fun map(json: JsonObject): Data? =
-        when (json.get("type").asString) {
+    fun map(json: JsonObject): Data? {
+        val type = json.get("type") ?: return null
+        return when (type.asString) {
             CellType.EMPTY_CELL.name -> convertJsonType(json, Data::class)
             CellType.CATEGORY_CELL.name -> convertJsonType(json, Category::class)
             CellType.LIKE_CELL.name -> convertJsonType(json, LikeItem::class)
             CellType.LOCKER_CELL.name -> convertJsonType(json, Locker::class)
             else -> null
         }
+    }
 
     private fun convertJsonType(json: JsonObject, clazz: KClass<out Data>): Data {
         return apiGson.fromJson(json.toString(), clazz.java)
