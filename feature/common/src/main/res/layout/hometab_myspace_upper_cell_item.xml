@@ -1,33 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:cardCornerRadius="16dp">
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="72dp"
-        android:orientation="horizontal">
+    android:layout_width="match_parent"
+    android:layout_height="64dp"
+    android:paddingTop="24dp"
+    android:paddingBottom="16dp"
+    android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/MySpaceUpperCellTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            android:layout_marginLeft="32dp"
-            android:textSize="20sp"
-            android:text="내 공간"/>
-        <ImageView
-            android:id="@+id/MySpaceUpperCellTEdit"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:src="@drawable/edit"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    <TextView
+        style="@style/ItemFinderTypography.Head"
+        android:id="@+id/MySpaceUpperCellTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="내 공간"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-</androidx.cardview.widget.CardView>
+    <ImageView
+        android:id="@+id/MySpaceUpperCellTEdit"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:src="@drawable/edit"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>
+

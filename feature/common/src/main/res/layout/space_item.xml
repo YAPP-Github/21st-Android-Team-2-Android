@@ -8,10 +8,10 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/spaceImageGridCardView"
-        android:layout_width="160dp"
-        android:layout_height="160dp"
-        android:elevation="0dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         app:cardCornerRadius="12dp"
+        app:cardElevation="0dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -21,37 +21,94 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
+            android:background="@color/white"
             android:columnCount="2"
             android:rowCount="2">
 
-            <ImageView
-                android:id="@+id/spaceFirstImageView"
+            <androidx.cardview.widget.CardView
+                android:id="@+id/spaceFirstFrame"
                 android:layout_width="56dp"
                 android:layout_height="56dp"
                 android:layout_marginRight="16dp"
                 android:layout_marginBottom="16dp"
-                tools:src="@color/black" />
+                android:visibility="invisible"
+                app:cardBackgroundColor="@color/brown_02"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="0dp"
+                tools:visibility="visible">
 
-            <ImageView
-                android:id="@+id/spaceSecondViewImage"
+                <ImageView
+                    android:id="@+id/spaceFirstImageView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@android:color/transparent" />
+
+            </androidx.cardview.widget.CardView>
+
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/spaceSecondFrame"
                 android:layout_width="56dp"
                 android:layout_height="56dp"
-                android:layout_marginRight="16dp"
                 android:layout_marginBottom="16dp"
+                android:visibility="invisible"
+                tools:visibility="visible"
+                app:cardBackgroundColor="@color/brown_02"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="0dp">
 
-                 />
+                <ImageView
+                    android:id="@+id/spaceSecondImageView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@android:color/transparent" />
 
-            <ImageView
-                android:id="@+id/spaceThirdImageView"
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/spaceThirdFrame"
                 android:layout_width="56dp"
                 android:layout_height="56dp"
-                tools:src="@color/black" />
+                android:visibility="invisible"
+                tools:visibility="visible"
+                app:cardBackgroundColor="@color/brown_02"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="0dp">
 
-            <ImageView
-                android:id="@+id/spaceFourthImageView"
+                <ImageView
+                    android:id="@+id/spaceThirdImageView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@android:color/transparent" />
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/spaceFourthFrame"
                 android:layout_width="56dp"
                 android:layout_height="56dp"
-                tools:src="@color/black" />
+                android:visibility="invisible"
+                tools:visibility="visible"
+                app:cardBackgroundColor="@color/brown_02"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="0dp">
+
+                <ImageView
+                    android:id="@+id/spaceFourthImageView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@android:color/transparent" />
+                <TextView
+                    android:id="@+id/spaceFourthTextView"
+                    style="@style/ItemFinderTypography.Subhead"
+                    tools:text="+2"
+                    android:gravity="center"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@android:color/transparent"
+                    />
+
+            </androidx.cardview.widget.CardView>
 
         </GridLayout>
 
@@ -68,10 +125,9 @@
 
         <TextView
             android:id="@+id/spaceItemName"
+            style="@style/ItemFinderTypography.Subhead"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="16dp"
-            android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -80,10 +136,9 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="144dp"
-            android:src="@drawable/arrow_forward_16"
+            android:src="@drawable/arrow_forward"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
