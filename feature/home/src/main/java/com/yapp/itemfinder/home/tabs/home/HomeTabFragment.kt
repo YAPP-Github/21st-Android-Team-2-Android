@@ -13,6 +13,8 @@ import com.yapp.itemfinder.domain.model.Data
 import com.yapp.itemfinder.domain.model.SpaceItem
 import com.yapp.itemfinder.feature.common.BaseStateFragment
 import com.yapp.itemfinder.feature.common.datalist.binder.DataBindHelper
+import com.yapp.itemfinder.feature.common.extension.showShortToast
+import com.yapp.itemfinder.feature.common.utility.DataWithSpan
 import com.yapp.itemfinder.feature.home.databinding.FragmentHomeTabBinding
 import com.yapp.itemfinder.home.HomeActivity
 import com.yapp.itemfinder.home.lockerlist.LockerListFragment
@@ -30,6 +32,8 @@ class HomeTabFragment : BaseStateFragment<HomeTabViewModel, FragmentHomeTabBindi
 
     private var dataListAdapter: DataListAdapter<Data>? = null
 
+    lateinit var dataListWithSpan: List<DataWithSpan<Data>>
+
     @Inject
     lateinit var dataBindHelper: DataBindHelper
 
@@ -40,9 +44,11 @@ class HomeTabFragment : BaseStateFragment<HomeTabViewModel, FragmentHomeTabBindi
             dataListAdapter = DataListAdapter()
             recyclerView.adapter = dataListAdapter
             recyclerView.layoutManager = GridLayoutManager(activity, 2).apply {
-                spanSizeLookup = object : SpanSizeLookup(){
+
+                spanSizeLookup = object : SpanSizeLookup() {
                     override fun getSpanSize(position: Int): Int {
-                        return 1
+
+                        return dataListWithSpan[position].span
                     }
                 }
             }
@@ -62,22 +68,24 @@ class HomeTabFragment : BaseStateFragment<HomeTabViewModel, FragmentHomeTabBindi
                 }
             }
             launch {
-                vm.sideEffectFlow.collect{ sideEffect ->
-                    when(sideEffect){
+                vm.sideEffectFlow.collect { sideEffect ->
+                    when (sideEffect) {
                         is HomeTabSideEffect.MoveSpaceDetail -> {
                             moveSpaceDetail(sideEffect.space)
                         }
                         is HomeTabSideEffect.ShowToast -> {
-
+                        }
+                        is HomeTabSideEffect.MoveSpacesManage -> {
+                            moveSpaceManage()
                         }
                     }
                 }
             }
-
         }
     }
-    private fun moveSpaceDetail(space: SpaceItem){
-        when (activity){
+
+    private fun moveSpaceDetail(space: SpaceItem) {
+        when (activity) {
             is HomeActivity -> (activity as HomeActivity).addFragmentBackStack(LockerListFragment.TAG)
         }
     }
@@ -85,13 +93,9 @@ class HomeTabFragment : BaseStateFragment<HomeTabViewModel, FragmentHomeTabBindi
     }
 
     private fun handleSuccess(homeTabState: HomeTabState.Success) {
-        dataBindHelper.bindList(homeTabState.dataList, vm)
-        dataListAdapter?.submitList(homeTabState.dataList)
-
-//        homeTabState.dataList.forEach { data ->
-//            data.handler =
-//                { data -> Toast.makeText(requireContext(), "$data.", Toast.LENGTH_SHORT).show(); }
-//        }
+        dataListWithSpan = homeTabState.dataListWithSpan
+        dataBindHelper.bindList(dataListWithSpan.map { it.data }, vm)
+        dataListAdapter?.submitList(dataListWithSpan.map { it.data })
     }
 
     private fun handleError(homeTabState: HomeTabState.Error) {
