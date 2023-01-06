@@ -11,11 +11,6 @@ class SpaceMockRepositoryImpl @Inject constructor() : SpaceRepository {
     override fun getAllSpace(): List<SpaceItem> {
         return listOf(
             SpaceItem(
-                name = "0 번째 공간",
-                lockerList = listOf(
-                )
-            ),
-            SpaceItem(
                 name = "1 번째 공간",
                 lockerList = listOf(
                     Locker(name = "화장대", "https://picsum.photos/200"),

@@ -14,8 +14,8 @@ import com.yapp.itemfinder.domain.model.Data
 import com.yapp.itemfinder.domain.model.SpaceItem
 import com.yapp.itemfinder.feature.common.BaseStateFragment
 import com.yapp.itemfinder.feature.common.datalist.binder.DataBindHelper
-import com.yapp.itemfinder.feature.common.extension.showShortToast
 import com.yapp.itemfinder.feature.common.utility.DataWithSpan
+import com.yapp.itemfinder.feature.common.utility.GridSpacing
 import com.yapp.itemfinder.feature.home.databinding.FragmentHomeTabBinding
 import com.yapp.itemfinder.home.HomeActivity
 import com.yapp.itemfinder.home.SpaceManageActivity
@@ -54,6 +54,7 @@ class HomeTabFragment : BaseStateFragment<HomeTabViewModel, FragmentHomeTabBindi
                     }
                 }
             }
+            recyclerView.addItemDecoration(GridSpacing(2, 16, true))
         }
     }
 
