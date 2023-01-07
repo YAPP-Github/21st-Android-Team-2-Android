@@ -7,8 +7,9 @@ import androidx.lifecycle.lifecycleScope
 import com.yapp.itemfinder.databinding.ActivitySplashBinding
 import com.yapp.itemfinder.feature.common.BaseStateActivity
 import com.yapp.itemfinder.feature.common.binding.viewBinding
-import com.yapp.itemfinder.feature.common.exception.coroutineExceptionHandler
+import com.yapp.itemfinder.feature.common.coroutines.coroutineExceptionHandler
 import com.yapp.itemfinder.home.HomeActivity
+import com.yapp.itemfinder.prelogin.PreloginActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
 import kotlin.coroutines.CoroutineContext
@@ -49,8 +50,9 @@ class SplashActivity : BaseStateActivity<SplashViewModel, ActivitySplashBinding>
                         startActivity(HomeActivity.newIntent(this@SplashActivity))
                         finish()
                     }
-                    is SplashScreenSideEffect.StartSignUp -> {
-                        // TODO: 회원가입 페이지로 이동
+                    is SplashScreenSideEffect.StartPrelogin -> {
+                        startActivity(PreloginActivity.newIntent(this@SplashActivity))
+                        finish()
                     }
                 }
             }

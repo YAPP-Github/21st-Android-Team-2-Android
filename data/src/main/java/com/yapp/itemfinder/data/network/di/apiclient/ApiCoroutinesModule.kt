@@ -15,19 +15,25 @@ internal class ApiCoroutinesModule {
 
     @Provides
     @Singleton
-    fun provideAppApi(apiClient: ApiClient): AppApi {
+    fun provideAppApi(
+        apiClient: ApiClient
+    ): AppApi {
         return apiClient.provideAppApi()
     }
 
     @Provides
     @Singleton
-    fun provideAuthWithoutTokenApi(apiClientWithoutAuthenticator: ApiClientWithoutAuthenticator): AuthWithoutTokenApi {
+    fun provideAuthWithoutTokenApi(
+        apiClientWithoutAuthenticator: ApiClientWithoutAuthenticator
+    ): AuthWithoutTokenApi {
         return apiClientWithoutAuthenticator.provideAuthWithoutTokenApi()
     }
 
     @Provides
     @Singleton
-    fun provideAuthWithoutTokenApi(apiClient: ApiClient): AuthApi {
+    fun provideAuthApi(
+        apiClient: ApiClient
+    ): AuthApi {
         return apiClient.provideAuthApi()
     }
 

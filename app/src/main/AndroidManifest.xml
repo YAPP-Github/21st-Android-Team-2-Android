@@ -24,6 +24,11 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
+        <activity
+            android:name=".prelogin.PreloginActivity"
+            android:exported="true"
+            android:theme="@style/ItemFinderSplashTheme">
+        </activity>
     </application>
 
 </manifest>

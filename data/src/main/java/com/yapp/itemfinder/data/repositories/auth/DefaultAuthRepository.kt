@@ -37,7 +37,7 @@ class DefaultAuthRepository @Inject constructor(
     }
 
     override suspend fun validateMember(token: AuthToken) {
-
+        authApi.validateMember()
     }
 
 }

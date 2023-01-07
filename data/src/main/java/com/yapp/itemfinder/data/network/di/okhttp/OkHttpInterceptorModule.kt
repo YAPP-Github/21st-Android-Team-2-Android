@@ -5,7 +5,6 @@ import com.google.gson.Gson
 import com.google.gson.JsonObject
 import com.yapp.itemfinder.data.network.header.HeaderKey
 import com.yapp.itemfinder.data.network.mapper.DataMapper
-import com.yapp.itemfinder.data.network.response.ErrorResultEntity
 import com.yapp.itemfinder.domain.data.SecureLocalData
 import com.yapp.itemfinder.domain.data.SecureLocalDataStore
 import dagger.Module
@@ -49,16 +48,15 @@ class OkHttpInterceptorModule {
     ): Interceptor = Interceptor { chain ->
         val gson = Gson()
         val request = chain.request().newBuilder()
-            .addHeader("Content-Type", "application/json")
+            .header(HeaderKey.CONTENT_TYPE_HEADER_KEY, HeaderKey.CONTENT_TYPE_HEADER_VALUE)
             .build()
         val response = chain.proceed(request)
-        val responseData = if (response.isSuccessful) {
-
+        if (response.isSuccessful) {
             val rawJson =
                 if (response.body?.string() == "okay") "{}"
                 else response.body?.string() ?: "{}"
             val jsonObject = gson.fromJson(rawJson, JsonObject::class.java)
-            if (jsonObject.isJsonArray) {
+            val responseData = if (jsonObject.isJsonArray) {
                 /**
                  * [
                  *   {id, type=food},
@@ -76,14 +74,12 @@ class OkHttpInterceptorModule {
                  */
                 dataMapper.map(jsonObject) ?: jsonObject
             }
+            response.newBuilder()
+                .body(gson.toJson(responseData).toResponseBody())
+                .build()
         } else {
-            val rawJson = response.body?.string() ?: "{}"
-            gson.fromJson(rawJson, ErrorResultEntity::class.java)
+            response
         }
-
-        response.newBuilder()
-            .body(gson.toJson(responseData).toResponseBody())
-            .build()
     }
 }
 
