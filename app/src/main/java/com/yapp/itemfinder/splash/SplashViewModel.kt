@@ -23,6 +23,7 @@ class SplashViewModel @Inject constructor(
         runCatchingWithErrorHandler {
             appRepository.fetchHealthCheck()
         }.onSuccess {
+            delay(2000)
             postSideEffect(
                 SplashScreenSideEffect.StartHome
             )

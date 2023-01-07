@@ -1,6 +1,7 @@
 package com.yapp.itemfinder.splash
 
 import android.annotation.SuppressLint
+import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.yapp.itemfinder.databinding.ActivitySplashBinding
@@ -24,10 +25,12 @@ class SplashActivity : BaseStateActivity<SplashViewModel, ActivitySplashBinding>
 
     override val binding by viewBinding(ActivitySplashBinding::inflate)
 
-
-    override fun initViews() {
-
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(binding.root)
     }
+
+    override fun initViews() = Unit
 
     override fun observeData(): Job = lifecycleScope.launch {
         launch {

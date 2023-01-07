@@ -19,7 +19,7 @@
     </style>
 
     <style name="ItemFinderSplashTheme" parent="ItemFinderTheme">
-        <item name="background">@color/white</item>
+        <item name="background">@color/brown_02</item>
     </style>
 
     <style name="BottomNavigationViewStyle" parent="Widget.MaterialComponents.BottomNavigationView.Colored">
