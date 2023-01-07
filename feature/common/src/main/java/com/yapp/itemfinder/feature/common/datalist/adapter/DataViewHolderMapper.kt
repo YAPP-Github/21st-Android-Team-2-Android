@@ -4,8 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.yapp.itemfinder.domain.model.CellType
 import com.yapp.itemfinder.domain.model.Data
-import com.yapp.itemfinder.feature.common.databinding.LikeItemBinding
-import com.yapp.itemfinder.feature.common.databinding.ViewholderStorageBinding
+import com.yapp.itemfinder.feature.common.databinding.*
 
 object DataViewHolderMapper {
 
@@ -19,6 +18,10 @@ object DataViewHolderMapper {
             CellType.EMPTY_CELL -> null
             CellType.CATEGORY_CELL -> CategoryViewHolder(ViewholderStorageBinding.inflate(inflater,parent,false))
             CellType.LIKE_CELL -> LikeViewHolder(LikeItemBinding.inflate(inflater, parent, false))
+            CellType.SPACE_CELL -> SpaceViewHolder(SpaceItemBinding.inflate(inflater,parent,false))
+            CellType.LOCKER_CELL -> LockerViewHolder(LockerItemBinding.inflate(inflater, parent, false))
+            CellType.ADD_LOCKER_CELL -> AddLockerViewHolder(AddLockerBinding.inflate(inflater, parent, false))
+            CellType.HOMETAB_MYSPACE_UPPER_CELL -> HomeTabMySpaceUpperCellViewHolder(HometabMyspaceUpperCellItemBinding.inflate(inflater, parent, false))
         }
 
         return viewHolder as DataViewHolder<D>

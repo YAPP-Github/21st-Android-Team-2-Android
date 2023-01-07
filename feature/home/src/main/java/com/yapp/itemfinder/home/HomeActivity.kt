@@ -13,6 +13,7 @@ import com.yapp.itemfinder.feature.home.databinding.ActivityHomeBinding
 import com.yapp.itemfinder.home.tabs.home.HomeTabFragment
 import com.yapp.itemfinder.home.tabs.like.LikeTabFragment
 import com.yapp.itemfinder.home.tabs.reminder.ReminderTabFragment
+import com.yapp.itemfinder.locker.LockerListFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
@@ -61,7 +62,7 @@ class HomeActivity : BaseActivity<HomeViewModel, ActivityHomeBinding>() {
         }
     }
 
-    private fun showFragment(tag: String) {
+    fun showFragment(tag: String) {
         binding.root.hideSoftInput()
         val foundFragment = supportFragmentManager.findFragmentByTag(tag)
         supportFragmentManager.fragments.forEach { fm ->
@@ -79,11 +80,30 @@ class HomeActivity : BaseActivity<HomeViewModel, ActivityHomeBinding>() {
         }
     }
 
+    fun addFragmentBackStack(tag: String){
+        binding.root.hideSoftInput()
+        with(supportFragmentManager){
+            val foundFragment = findFragmentByTag(tag) ?: getFragmentByTag(tag)
+            foundFragment?.let {
+                beginTransaction()
+                .apply {
+                    fragments.forEach { fragment ->
+                        if (fragment.isHidden.not())
+                            hide(fragment)
+                    }
+                }.add(R.id.fragmentContainer, foundFragment)
+                    .addToBackStack(null)
+                    .commitAllowingStateLoss()
+            }
+        }
+    }
+
     private fun getFragmentByTag(tag: String): Fragment? =
         when (tag) {
             ReminderTabFragment.TAG -> ReminderTabFragment.newInstance()
             HomeTabFragment.TAG -> HomeTabFragment.newInstance()
             LikeTabFragment.TAG -> LikeTabFragment.newInstance()
+            LockerListFragment.TAG -> LockerListFragment.newInstance()
             else -> null
         }
 
