@@ -8,10 +8,6 @@
             android:exported="true"
             android:theme="@style/ItemFinderTheme"/>
 
-        <activity
-            android:name="com.yapp.itemfinder.home.SpaceManageActivity"
-            android:exported="true"
-            android:theme="@style/ItemFinderTheme"/>
     </application>
 
 </manifest>
