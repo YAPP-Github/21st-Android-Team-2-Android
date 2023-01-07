@@ -34,7 +34,7 @@ class DataBindHelper @Inject constructor(
                 homeSpaceItemBinder.bindData(data as SpaceItem, viewModel)
             }
             CellType.HOMETAB_MYSPACE_UPPER_CELL -> {
-                homeMySpaceUpperCellItemBinder.bindData(data as CellItem, viewModel)
+                homeMySpaceUpperCellItemBinder.bindData(data as MySpaceUpperCellItem, viewModel)
             }
             else -> { }
         }

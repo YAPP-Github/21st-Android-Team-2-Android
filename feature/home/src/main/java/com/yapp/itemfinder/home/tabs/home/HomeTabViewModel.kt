@@ -1,7 +1,7 @@
 package com.yapp.itemfinder.home.tabs.home
 
 import androidx.lifecycle.viewModelScope
-import com.yapp.itemfinder.domain.model.CellItem
+import com.yapp.itemfinder.domain.model.MySpaceUpperCellItem
 import com.yapp.itemfinder.domain.model.Data
 import com.yapp.itemfinder.domain.model.LikeItem
 import com.yapp.itemfinder.domain.model.SpaceItem
@@ -14,7 +14,6 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -39,7 +38,7 @@ class HomeTabViewModel @Inject constructor(
         setState(
             HomeTabState.Success(
                 dataListWithSpan = mutableListOf<DataWithSpan<Data>>().apply {
-                    add(DataWithSpan(CellItem(),2))
+                    add(DataWithSpan(MySpaceUpperCellItem("내 공간"),2))
                     spaces.forEach {
                         add(DataWithSpan(it, 1))
                     }
@@ -56,7 +55,7 @@ class HomeTabViewModel @Inject constructor(
         postSideEffect(HomeTabSideEffect.MoveSpaceDetail(space))
     }
 
-    fun goSpaceEdit(){
+    fun runSpaceManagementPage(){
         postSideEffect(HomeTabSideEffect.MoveSpacesManage)
     }
 }

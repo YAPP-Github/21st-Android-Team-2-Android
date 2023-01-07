@@ -1,6 +1,6 @@
 package com.yapp.itemfinder.home.binder
 
-import com.yapp.itemfinder.domain.model.CellItem
+import com.yapp.itemfinder.domain.model.MySpaceUpperCellItem
 import com.yapp.itemfinder.feature.common.BaseViewModel
 import com.yapp.itemfinder.feature.common.datalist.binder.CellItemBinder
 import com.yapp.itemfinder.home.tabs.home.HomeTabViewModel
@@ -9,7 +9,7 @@ import javax.inject.Singleton
 
 @Singleton
 class HomeMySpaceUpperCellItemBinder @Inject constructor(): CellItemBinder{
-    override fun bindData(data: CellItem, viewModel: BaseViewModel) {
+    override fun bindData(data: MySpaceUpperCellItem, viewModel: BaseViewModel) {
         when (viewModel){
             is HomeTabViewModel -> setHomeTabViewModelHandler(data,viewModel)
         }

@@ -10,7 +10,7 @@
 
     <TextView
         style="@style/ItemFinderTypography.Head"
-        android:id="@+id/MySpaceUpperCellTextView"
+        android:id="@+id/MySpaceUpperCellNameTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="내 공간"

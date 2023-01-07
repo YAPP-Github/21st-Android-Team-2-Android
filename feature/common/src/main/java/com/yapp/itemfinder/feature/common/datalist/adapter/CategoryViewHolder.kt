@@ -5,11 +5,11 @@ import com.yapp.itemfinder.feature.common.databinding.ViewholderStorageBinding
 
 class CategoryViewHolder(binding: ViewholderStorageBinding) : DataViewHolder<Category>(binding) {
     override fun reset() {
-        // TODO
+        return
     }
 
     override fun bindViews(data: Category) {
-        // TODO
+        return
     }
 
 

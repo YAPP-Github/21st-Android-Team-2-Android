@@ -1,7 +1,8 @@
 package com.yapp.itemfinder.domain.model
 
-class CellItem(
+class MySpaceUpperCellItem(
+    val title: String,
     override var type: CellType = CellType.HOMETAB_MYSPACE_UPPER_CELL
 ): Data() {
-    var action: ActionHandler = {}
+    var runSpaceManagementPage: ActionHandler = {}
 }
