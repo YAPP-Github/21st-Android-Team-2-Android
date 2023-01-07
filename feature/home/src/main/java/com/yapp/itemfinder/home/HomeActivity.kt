@@ -13,7 +13,8 @@ import com.yapp.itemfinder.feature.home.databinding.ActivityHomeBinding
 import com.yapp.itemfinder.home.tabs.home.HomeTabFragment
 import com.yapp.itemfinder.home.tabs.like.LikeTabFragment
 import com.yapp.itemfinder.home.tabs.reminder.ReminderTabFragment
-import com.yapp.itemfinder.locker.LockerListFragment
+import com.yapp.itemfinder.space.LockerListFragment
+import com.yapp.itemfinder.space.managespace.ManageSpaceFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
@@ -104,6 +105,7 @@ class HomeActivity : BaseActivity<HomeViewModel, ActivityHomeBinding>() {
             HomeTabFragment.TAG -> HomeTabFragment.newInstance()
             LikeTabFragment.TAG -> LikeTabFragment.newInstance()
             LockerListFragment.TAG -> LockerListFragment.newInstance()
+            ManageSpaceFragment.TAG -> ManageSpaceFragment.newInstance()
             else -> null
         }
 
