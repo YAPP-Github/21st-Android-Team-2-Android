@@ -15,5 +15,4 @@ class AddLockerViewHolder(
             data.addLocker()
         }
     }
-
 }
