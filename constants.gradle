@@ -82,6 +82,4 @@ ext {
     retrofitVersion = '2.9.0'
     gsonVersion = '2.8.9'
 
-
-
 }

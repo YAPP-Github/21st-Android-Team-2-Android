@@ -14,6 +14,18 @@ class OkHttpClientModule {
     @OkHttpClientQualifier
     @Provides
     fun provideOkHttpClientBuilder(
+        @HeaderInterceptorQualifier headerInterceptor: Interceptor,
+        @HttpLoggingInterceptorQualifier httpLoggingInterceptor: Interceptor,
+        @DataParseInterceptorQualifier dataParseInterceptor: Interceptor
+    ) = OkHttpClient.Builder()
+        .addInterceptor(headerInterceptor)
+        .addInterceptor(httpLoggingInterceptor)
+        .addInterceptor(dataParseInterceptor)
+        .build()
+
+    @OkHttpClientWithoutAuthenticatorQualifier
+    @Provides
+    fun provideOkHttpClientWithoutAuthenticatorBuilder(
         @HttpLoggingInterceptorQualifier httpLoggingInterceptor: Interceptor,
         @DataParseInterceptorQualifier dataParseInterceptor: Interceptor
     ) = OkHttpClient.Builder()

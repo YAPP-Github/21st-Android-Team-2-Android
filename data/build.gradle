@@ -18,6 +18,7 @@ android {
 dependencies {
 
     implementation project(':domain')
+    implementation "androidx.security:security-crypto:$androidxSecurityCryptoVersion"
 
 
 }

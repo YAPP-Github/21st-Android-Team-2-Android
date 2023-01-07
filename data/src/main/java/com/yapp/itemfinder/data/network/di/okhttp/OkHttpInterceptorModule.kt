@@ -3,8 +3,11 @@ package com.yapp.itemfinder.data.network.di.okhttp
 import androidx.viewbinding.BuildConfig
 import com.google.gson.Gson
 import com.google.gson.JsonObject
+import com.yapp.itemfinder.data.network.header.HeaderKey
 import com.yapp.itemfinder.data.network.mapper.DataMapper
 import com.yapp.itemfinder.data.network.response.ErrorResultEntity
+import com.yapp.itemfinder.domain.data.SecureLocalData
+import com.yapp.itemfinder.domain.data.SecureLocalDataStore
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -16,6 +19,21 @@ import okhttp3.logging.HttpLoggingInterceptor
 @Module
 @InstallIn(SingletonComponent::class)
 class OkHttpInterceptorModule {
+
+    @HeaderInterceptorQualifier
+    @Provides
+    fun provideBanksaladHeaderInterceptor(
+        secureLocalDataStore: SecureLocalDataStore
+    ): Interceptor = Interceptor { chain ->
+        val requestBuilder = chain.request().newBuilder()
+            .header(HeaderKey.CONTENT_TYPE_HEADER_KEY, HeaderKey.CONTENT_TYPE_HEADER_VALUE)
+        val accessToken = secureLocalDataStore.get(SecureLocalData.AccessToken)
+        if (accessToken.isNotEmpty()) {
+            requestBuilder.header(HeaderKey.AUTHORIZATION_HEADER_KEY, "${HeaderKey.BEARER_PREFIX} $accessToken")
+        }
+        chain.proceed(requestBuilder.build())
+
+    }
 
     @HttpLoggingInterceptorQualifier
     @Provides
