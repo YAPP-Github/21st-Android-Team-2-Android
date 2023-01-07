@@ -1,17 +1,15 @@
 package com.yapp.itemfinder.splash
 
 import android.annotation.SuppressLint
-import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.yapp.itemfinder.databinding.ActivitySplashBinding
 import com.yapp.itemfinder.feature.common.BaseStateActivity
 import com.yapp.itemfinder.feature.common.binding.viewBinding
 import com.yapp.itemfinder.feature.common.exception.coroutineExceptionHandler
-import com.yapp.itemfinder.utility.DefaultScreenNavigator
+import com.yapp.itemfinder.home.HomeActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
-import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
 
 
@@ -26,8 +24,6 @@ class SplashActivity : BaseStateActivity<SplashViewModel, ActivitySplashBinding>
 
     override val binding by viewBinding(ActivitySplashBinding::inflate)
 
-    @Inject
-    lateinit var screenNavigator: DefaultScreenNavigator
 
     override fun initViews() {
 
@@ -47,7 +43,7 @@ class SplashActivity : BaseStateActivity<SplashViewModel, ActivitySplashBinding>
             vm.sideEffectFlow.collect { sideEffect ->
                 when (sideEffect) {
                     is SplashScreenSideEffect.StartHome -> {
-                        startActivity(screenNavigator.newIntentHomeActivity(this@SplashActivity))
+                        startActivity(HomeActivity.newIntent(this@SplashActivity))
                         finish()
                     }
                     is SplashScreenSideEffect.StartSignUp -> {
