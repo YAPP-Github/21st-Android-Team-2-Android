@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="typography_body4">12dp</dimen>
+    <dimen name="typography_body3">14dp</dimen>
+    <dimen name="typography_body2">14dp</dimen>
+    <dimen name="typography_body1">16dp</dimen>
+    <dimen name="typography_subhead">16dp</dimen>
+    <dimen name="typography_head">18dp</dimen>
+    <dimen name="typography_title">20dp</dimen>
+</resources>

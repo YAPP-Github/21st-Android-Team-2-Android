@@ -2,13 +2,38 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <style name="ItemFinderTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-        <item name="colorPrimary">@color/green_main</item>
-        <item name="colorPrimaryDark">@color/green_text</item>
-        <item name="colorAccent">@color/green_sub</item>
+        <item name="colorPrimary">@color/white</item>
+        <item name="colorPrimaryDark">@color/brown_02</item>
+        <item name="colorAccent">@color/orange</item>
+
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor">@color/white</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <!-- Customize your theme here. -->
+
+        <item name="bottomNavigationStyle">@style/BottomNavigationViewStyle</item>
+
+        <!-- font -->
+        <item name="android:textViewStyle">@style/PretendardTextViewStyle</item>
+        <item name="android:buttonStyle">@style/PretendardButtonStyle</item>
     </style>
 
     <style name="ItemFinderSplashTheme" parent="ItemFinderTheme">
-        <item name="background">@color/black</item>
+        <item name="background">@color/white</item>
+    </style>
+
+    <style name="BottomNavigationViewStyle" parent="Widget.MaterialComponents.BottomNavigationView.Colored">
+        <item name="itemTextColor">@color/bottom_nav_item_color</item>
+        <item name="itemIconTint">@color/bottom_nav_item_color</item>
+        <item name="itemRippleColor">@color/orange_20</item>
+    </style>
+
+    <style name="PretendardTextViewStyle" parent="android:Widget.TextView">
+        <item name="android:fontFamily">@font/pretendard_regular</item>
+    </style>
+
+    <style name="PretendardButtonStyle" parent="android:Widget.Holo.Button">
+        <item name="android:fontFamily">@font/pretendard_regular</item>
     </style>
 
 </resources>
