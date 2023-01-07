@@ -94,9 +94,7 @@ class HomeTabFragment : BaseStateFragment<HomeTabViewModel, FragmentHomeTabBindi
     }
 
     private fun moveSpaceManage(){
-
-        Intent(requireActivity(), SpaceManageActivity::class.java)
-            .let { startActivity(it) }
+        startActivity(SpaceManageActivity.newIntent(this@HomeTabFragment.requireActivity()))
 
     }
 
