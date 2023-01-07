@@ -7,7 +7,7 @@ class AddLockerViewHolder(
     val binding: AddLockerBinding
 ) : DataViewHolder<AddLocker>(binding){
     override fun reset() {
-
+        return
     }
 
     override fun bindViews(data: AddLocker) {
