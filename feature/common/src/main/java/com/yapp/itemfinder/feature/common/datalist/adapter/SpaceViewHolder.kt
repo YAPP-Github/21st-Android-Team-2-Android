@@ -1,7 +1,5 @@
 package com.yapp.itemfinder.feature.common.datalist.adapter
 
-import android.graphics.drawable.Drawable
-import android.view.View
 import com.bumptech.glide.Glide
 import com.yapp.itemfinder.domain.model.Locker
 import com.yapp.itemfinder.domain.model.SpaceItem
@@ -41,14 +39,14 @@ class SpaceViewHolder(
                 frame.visible()
                 when (idx) {
                     0, 1, 2 -> {
-                        Glide.with(itemView).load(R.drawable.box).into(imageView)
+                        Glide.with(itemView).load(com.yapp.itemfinder.domain.R.drawable.box).into(imageView)
                     }
                     3 -> {
                         if (lockersInSpace.size > 4) {
                             spaceFourthTextView.text = "+${lockersInSpace.size - 3}"
                             frame.setCardBackgroundColor(frame.context.getColor(R.color.brown_03))
                         } else {
-                            Glide.with(itemView).load(R.drawable.box).into(imageView)
+                            Glide.with(itemView).load(com.yapp.itemfinder.domain.R.drawable.box).into(imageView)
                         }
                         return
                     }

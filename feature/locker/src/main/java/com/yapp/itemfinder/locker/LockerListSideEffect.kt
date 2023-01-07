@@ -1,4 +1,4 @@
-package com.yapp.itemfinder.home.lockerlist
+package com.yapp.itemfinder.locker
 
 import com.yapp.itemfinder.domain.model.Locker
 import com.yapp.itemfinder.feature.common.SideEffect

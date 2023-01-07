@@ -15,6 +15,8 @@ class DataBindHelper @Inject constructor(
     private val homeSpaceItemBinder: SpaceItemBinder,
     @HomeMySpaceUpperCellItemQualifier
     private val homeMySpaceUpperCellItemBinder: CellItemBinder,
+    var lockerItemBinder: LockerItemBinder,
+    var addLockerItemBinder: AddLockerItemBinder
 ) {
 
 
@@ -35,6 +37,9 @@ class DataBindHelper @Inject constructor(
             }
             CellType.HOMETAB_MYSPACE_UPPER_CELL -> {
                 homeMySpaceUpperCellItemBinder.bindData(data as MySpaceUpperCellItem, viewModel)
+            }
+            CellType.ADD_LOCKER_CELL -> {
+                addLockerItemBinder.bindData(data as AddLocker, viewModel)
             }
             else -> { }
         }
