@@ -22,8 +22,12 @@ android {
 
     buildTypes {
         release {
+            debuggable true
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            debuggable true
         }
     }
 
@@ -65,5 +69,6 @@ dependencies {
     implementation project(':feature:home')
     implementation project(':data')
     implementation project(':feature:space')
+    implementation "com.kakao.sdk:v2-user:$kakaoUserVersion" // 카카오 로그인
 
 }

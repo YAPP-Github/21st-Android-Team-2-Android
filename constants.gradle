@@ -82,4 +82,6 @@ ext {
     retrofitVersion = '2.9.0'
     gsonVersion = '2.8.9'
 
+    /* Kakako */
+    kakaoUserVersion = '2.12.0'
 }
