@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="addLocker">추가하기</string>
+    <string name="edit">수정</string>
+    <string name="delete">삭제</string>
+</resources>

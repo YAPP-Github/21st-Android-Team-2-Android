@@ -1,11 +1,10 @@
 package com.yapp.itemfinder.feature.common.datalist.binder
 
 import android.annotation.SuppressLint
-import com.yapp.itemfinder.domain.model.CellType
-import com.yapp.itemfinder.domain.model.Data
-import com.yapp.itemfinder.domain.model.LikeItem
+import com.yapp.itemfinder.domain.model.*
 import com.yapp.itemfinder.feature.common.BaseViewModel
 import com.yapp.itemfinder.feature.common.datalist.binder.di.HomeLikeItemQualifier
+import com.yapp.itemfinder.feature.common.datalist.binder.di.HomeMySpaceUpperCellItemQualifier
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -13,7 +12,13 @@ import javax.inject.Singleton
 class DataBindHelper @Inject constructor(
     @HomeLikeItemQualifier
     private val homeLikeItemBinder: LikeItemBinder,
+    private val homeSpaceItemBinder: SpaceItemBinder,
+    @HomeMySpaceUpperCellItemQualifier
+    private val homeMySpaceUpperCellItemBinder: CellItemBinder,
+    var lockerItemBinder: LockerItemBinder,
+    var addLockerItemBinder: AddLockerItemBinder
 ) {
+
 
     @SuppressLint("CheckResult")
     fun bindList(dataList: List<Data>, viewModel: BaseViewModel) {
@@ -26,6 +31,15 @@ class DataBindHelper @Inject constructor(
         when(data.type) {
             CellType.LIKE_CELL -> {
                 homeLikeItemBinder.bindData(data as LikeItem, viewModel)
+            }
+            CellType.SPACE_CELL -> {
+                homeSpaceItemBinder.bindData(data as SpaceItem, viewModel)
+            }
+            CellType.HOMETAB_MYSPACE_UPPER_CELL -> {
+                homeMySpaceUpperCellItemBinder.bindData(data as MySpaceUpperCellItem, viewModel)
+            }
+            CellType.ADD_LOCKER_CELL -> {
+                addLockerItemBinder.bindData(data as AddLocker, viewModel)
             }
             else -> { }
         }
