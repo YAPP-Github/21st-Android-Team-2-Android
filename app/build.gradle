@@ -27,6 +27,32 @@ android {
         }
     }
 
+    signingConfigs {
+        debug {
+            storeFile file('debug.keystore')
+            storePassword 'android'
+            keyAlias 'androiddebugkey'
+            keyPassword 'android'
+        }
+
+        release {
+            storeFile file('../findthings.keystore')
+            storePassword 'findthings'
+            keyAlias 'Yapp1924@'
+            keyPassword 'Yapp1924@'
+        }
+    }
+
+    buildTypes {
+        debug {
+            signingConfig signingConfigs.debug
+        }
+
+        release {
+            signingConfig signingConfigs.release
+        }
+    }
+
     applicationVariants.all { variant ->
         variant.buildConfigField "String", "API_URL", "\"http://3.39.124.65/\""
     }
