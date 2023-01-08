@@ -8,7 +8,7 @@ class LikeViewHolder(
 ) : DataViewHolder<LikeItem>(binding) {
 
     override fun reset() {
-        // TODO
+        return
     }
 
     override fun bindData(data: LikeItem) {
