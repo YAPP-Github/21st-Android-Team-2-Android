@@ -5,6 +5,7 @@ import com.google.gson.Gson
 import com.google.gson.JsonObject
 import com.yapp.itemfinder.data.network.header.HeaderKey
 import com.yapp.itemfinder.data.network.mapper.DataMapper
+import com.yapp.itemfinder.data.network.response.ErrorResultEntity
 import com.yapp.itemfinder.domain.data.SecureLocalData
 import com.yapp.itemfinder.domain.data.SecureLocalDataStore
 import dagger.Module
@@ -14,6 +15,7 @@ import dagger.hilt.components.SingletonComponent
 import okhttp3.*
 import okhttp3.ResponseBody.Companion.toResponseBody
 import okhttp3.logging.HttpLoggingInterceptor
+import java.net.ConnectException
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -31,7 +33,6 @@ class OkHttpInterceptorModule {
             requestBuilder.header(HeaderKey.AUTHORIZATION_HEADER_KEY, "${HeaderKey.BEARER_PREFIX} $accessToken")
         }
         chain.proceed(requestBuilder.build())
-
     }
 
     @HttpLoggingInterceptorQualifier
@@ -50,35 +51,53 @@ class OkHttpInterceptorModule {
         val request = chain.request().newBuilder()
             .header(HeaderKey.CONTENT_TYPE_HEADER_KEY, HeaderKey.CONTENT_TYPE_HEADER_VALUE)
             .build()
-        val response = chain.proceed(request)
-        if (response.isSuccessful) {
-            val rawJson =
-                if (response.body?.string() == "okay") "{}"
-                else response.body?.string() ?: "{}"
-            val jsonObject = gson.fromJson(rawJson, JsonObject::class.java)
-            val responseData = if (jsonObject.isJsonArray) {
-                /**
-                 * [
-                 *   {id, type=food},
-                 *   {id, type=필통},
-                 *   {id, type},
-                 *   {id, type},
-                 * ]
-                 */
-                jsonObject.asJsonArray.map {
-                    dataMapper.map(it.asJsonObject)
+        try {
+            val response = chain.proceed(request)
+            if (response.isSuccessful) {
+                val rawJson =
+                    if (response.body?.string() == "okay") "{}"
+                    else response.body?.string() ?: "{}"
+                val jsonObject = gson.fromJson(rawJson, JsonObject::class.java)
+                val responseData = if (jsonObject.isJsonArray) {
+                    /**
+                     * [
+                     *   {id, type=food},
+                     *   {id, type=필통},
+                     *   {id, type},
+                     *   {id, type},
+                     * ]
+                     */
+                    jsonObject.asJsonArray.map {
+                        dataMapper.map(it.asJsonObject)
+                    }
+                } else {
+                    /**
+                     * {id, type}
+                     */
+                    dataMapper.map(jsonObject) ?: jsonObject
                 }
+                response.newBuilder()
+                    .body(gson.toJson(responseData).toResponseBody())
+                    .build()
             } else {
-                /**
-                 * {id, type}
-                 */
-                dataMapper.map(jsonObject) ?: jsonObject
+                response
             }
-            response.newBuilder()
-                .body(gson.toJson(responseData).toResponseBody())
+        } catch (e: ConnectException) {
+            val badgateWayCode = 502
+            Response.Builder()
+                .request(request)
+                .protocol(Protocol.HTTP_1_1)
+                .code(badgateWayCode)
+                .message(e.message ?: "")
+                .body(
+                    gson.toJson(
+                        ErrorResultEntity(
+                            badgateWayCode.toString(),
+                            "현재 네트워크를 이용할 수 없습니다"
+                        )
+                    ).toResponseBody()
+                )
                 .build()
-        } else {
-            response
         }
     }
 }
