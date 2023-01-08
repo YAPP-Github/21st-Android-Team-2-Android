@@ -1,11 +1,10 @@
 package com.yapp.itemfinder.data.network.api.auth.login
 
-import com.google.gson.annotations.SerializedName
 import com.yapp.itemfinder.domain.entity.signup.SignUpEntity
 
 data class SignUpRequest(
-    @SerializedName("socialId") val socialId: String,
-    @SerializedName("socialType") val socialType: String,
+    val socialId: String,
+    val socialType: String,
     val nickname: String?,
     val email: String?,
     val gender: String?,
