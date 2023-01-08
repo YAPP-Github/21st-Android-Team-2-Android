@@ -6,4 +6,6 @@ sealed class PreloginSideEffect: SideEffect {
 
     object RequestKakaoLogin: PreloginSideEffect()
 
+    data class ShowToast(val message: String): PreloginSideEffect()
+
 }

@@ -6,4 +6,10 @@ sealed class PreloginState: State {
 
     object Uninitialized: PreloginState()
 
+    object Loading: PreloginState()
+
+    object Success: PreloginState()
+
+    object Error: PreloginState()
+
 }
