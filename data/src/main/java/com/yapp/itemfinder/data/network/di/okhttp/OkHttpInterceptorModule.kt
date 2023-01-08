@@ -21,7 +21,7 @@ class OkHttpInterceptorModule {
 
     @HeaderInterceptorQualifier
     @Provides
-    fun provideBanksaladHeaderInterceptor(
+    fun provideHeaderInterceptor(
         secureLocalDataStore: SecureLocalDataStore
     ): Interceptor = Interceptor { chain ->
         val requestBuilder = chain.request().newBuilder()
