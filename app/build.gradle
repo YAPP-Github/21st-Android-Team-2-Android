@@ -37,8 +37,8 @@ android {
 
         release {
             storeFile file('../findthings.keystore')
-            storePassword 'findthings'
-            keyAlias 'Yapp1924@'
+            storePassword 'Yapp1924@'
+            keyAlias 'findthings'
             keyPassword 'Yapp1924@'
         }
     }
