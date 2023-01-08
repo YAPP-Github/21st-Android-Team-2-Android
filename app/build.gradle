@@ -61,6 +61,25 @@ android {
         variant.buildConfigField "String", "API_URL", "\"http://3.39.124.65/\""
     }
 
+    flavorDimensions "version"
+
+    productFlavors {
+        var kakaoAppKey = '9d9f2c06711f35c769f88f53e1ca3765'
+        dev {
+            dimension "version"
+            applicationIdSuffix ".dev"
+            manifestPlaceholders = [appLabel: "Findthings Dev"]
+            resValue("string", "kakao_app_key", kakaoAppKey)
+            resValue("string", "kakao_app_key_for_manifest", "kakao${kakaoAppKey}")
+        }
+        prod {
+            dimension "version"
+            manifestPlaceholders = [appLabel: "Findthings"]
+            resValue("string", "kakao_app_key", kakaoAppKey)
+            resValue("string", "kakao_app_key_for_manifest", "kakao${kakaoAppKey}")
+        }
+    }
+
 }
 
 dependencies {
