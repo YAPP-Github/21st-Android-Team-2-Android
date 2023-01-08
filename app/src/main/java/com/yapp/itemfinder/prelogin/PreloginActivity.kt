@@ -142,19 +142,34 @@ class PreloginActivity : BaseStateActivity<PreloginViewModel, AcitivityPreloginB
         UserApiClient.instance.me { user, error ->
             if (error != null) {
                 Log.e(TAG, "사용자 정보 요청 실패", error)
-            }
-            else if (user != null) {
+            } else if (user != null) {
                 val kakaoAccount = user.kakaoAccount
                 val scopes = mutableListOf<String>().apply {
                     add("openid")
-                    if (kakaoAccount?.emailNeedsAgreement == true) { add("account_email") }
-                    if (kakaoAccount?.birthdayNeedsAgreement == true) { add("birthday") }
-                    if (kakaoAccount?.birthyearNeedsAgreement == true) { add("birthyear") }
-                    if (kakaoAccount?.genderNeedsAgreement == true) { add("gender") }
-                    if (kakaoAccount?.phoneNumberNeedsAgreement == true) { add("phone_number") }
-                    if (kakaoAccount?.profileNeedsAgreement == true) { add("profile") }
-                    if (kakaoAccount?.ageRangeNeedsAgreement == true) { add("age_range") }
-                    if (kakaoAccount?.ciNeedsAgreement == true) { add("account_ci") }
+                    if (kakaoAccount?.emailNeedsAgreement == true) {
+                        add("account_email")
+                    }
+                    if (kakaoAccount?.birthdayNeedsAgreement == true) {
+                        add("birthday")
+                    }
+                    if (kakaoAccount?.birthyearNeedsAgreement == true) {
+                        add("birthyear")
+                    }
+                    if (kakaoAccount?.genderNeedsAgreement == true) {
+                        add("gender")
+                    }
+                    if (kakaoAccount?.phoneNumberNeedsAgreement == true) {
+                        add("phone_number")
+                    }
+                    if (kakaoAccount?.profileNeedsAgreement == true) {
+                        add("profile")
+                    }
+                    if (kakaoAccount?.ageRangeNeedsAgreement == true) {
+                        add("age_range")
+                    }
+                    if (kakaoAccount?.ciNeedsAgreement == true) {
+                        add("account_ci")
+                    }
                 }
 
                 if (scopes.isNotEmpty()) {
@@ -176,8 +191,7 @@ class PreloginActivity : BaseStateActivity<PreloginViewModel, AcitivityPreloginB
                             UserApiClient.instance.me { user, error ->
                                 if (error != null) {
                                     Log.e(TAG, "사용자 정보 요청 실패", error)
-                                }
-                                else if (user != null) {
+                                } else if (user != null) {
                                     Log.i(TAG, "사용자 정보 요청 성공")
                                     accessUser(user)
                                 }
