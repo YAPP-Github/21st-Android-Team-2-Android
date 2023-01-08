@@ -19,7 +19,7 @@
     </style>
 
     <style name="ItemFinderSplashTheme" parent="ItemFinderTheme">
-        <item name="background">@color/white</item>
+        <item name="background">@color/brown_02</item>
     </style>
 
     <style name="ItemFinderHomeTabTheme" parent="ItemFinderTheme">
@@ -30,6 +30,7 @@
         <item name="itemTextColor">@color/bottom_nav_item_color</item>
         <item name="itemIconTint">@color/bottom_nav_item_color</item>
         <item name="itemRippleColor">@color/orange_20</item>
+        <item name="fontFamily">@font/unbounded_regular</item>
     </style>
 
     <style name="PretendardTextViewStyle" parent="android:Widget.TextView">

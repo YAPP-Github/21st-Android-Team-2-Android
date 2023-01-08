@@ -61,6 +61,8 @@ object DefaultErrorHandler {
 
     fun isTokenExpiredException(e: Throwable) = e is HttpException && e.code() == 401
 
+    fun isApiNotFoundException(e: Throwable) = e is HttpException && e.code() == 404
+
     fun isJobCancellationException(e: Throwable) = e is CancellationException
 
     private fun isRequiredToMonitorAsNonFatalException(rawException: Throwable): Boolean {
