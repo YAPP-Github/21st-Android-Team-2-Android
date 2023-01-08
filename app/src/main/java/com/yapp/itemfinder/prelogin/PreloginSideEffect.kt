@@ -2,5 +2,8 @@ package com.yapp.itemfinder.prelogin
 
 import com.yapp.itemfinder.feature.common.SideEffect
 
-class PreloginSideEffect: SideEffect {
+sealed class PreloginSideEffect: SideEffect {
+
+    object RequestKakaoLogin: PreloginSideEffect()
+
 }

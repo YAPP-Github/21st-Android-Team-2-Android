@@ -1,9 +1,11 @@
 package com.yapp.itemfinder.prelogin
 
+import androidx.lifecycle.viewModelScope
 import com.yapp.itemfinder.feature.common.BaseStateViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -16,6 +18,8 @@ class PreloginViewModel @Inject constructor(
     override val _sideEffectFlow: MutableSharedFlow<PreloginSideEffect>
         get() = MutableSharedFlow()
 
-
+    fun requestLogin() = viewModelScope.launch {
+        postSideEffect(PreloginSideEffect.RequestKakaoLogin)
+    }
 
 }
