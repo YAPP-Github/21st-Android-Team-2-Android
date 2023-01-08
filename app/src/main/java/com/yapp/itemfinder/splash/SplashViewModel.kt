@@ -35,10 +35,13 @@ class SplashViewModel @Inject constructor(
                 SplashScreenSideEffect.StartHome
             )
         }.onErrorWithResult {
-            if (DefaultErrorHandler.isTokenExpiredException(it.throwable)) {
-                postSideEffect(
-                    SplashScreenSideEffect.StartPrelogin
-                )
+            when {
+                DefaultErrorHandler.isTokenExpiredException(it.throwable) -> {
+                    postSideEffect(
+                        SplashScreenSideEffect.StartPrelogin
+                    )
+                }
+                else -> postSideEffect(SplashScreenSideEffect.ShowErrorToast(it.errorResultEntity.message))
             }
         }
     }

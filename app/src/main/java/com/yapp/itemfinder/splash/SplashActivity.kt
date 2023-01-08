@@ -2,8 +2,11 @@ package com.yapp.itemfinder.splash
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.yapp.itemfinder.databinding.ActivitySplashBinding
 import com.yapp.itemfinder.feature.common.BaseStateActivity
 import com.yapp.itemfinder.feature.common.binding.viewBinding
@@ -34,37 +37,27 @@ class SplashActivity : BaseStateActivity<SplashViewModel, ActivitySplashBinding>
     override fun initViews() = Unit
 
     override fun observeData(): Job = lifecycleScope.launch {
-        launch {
-            vm.stateFlow.collect { state ->
-                when (state) {
-                    is SplashScreenState.Uninitialized -> Unit
-                    is SplashScreenState.Success -> handleSuccess(state)
-                    is SplashScreenState.Error -> handleError(state)
-                }
-            }
-        }
-        launch {
-            vm.sideEffectFlow.collect { sideEffect ->
-                when (sideEffect) {
-                    is SplashScreenSideEffect.StartHome -> {
-                        startActivity(HomeActivity.newIntent(this@SplashActivity))
-                        finish()
-                    }
-                    is SplashScreenSideEffect.StartPrelogin -> {
-                        startActivity(PreloginActivity.newIntent(this@SplashActivity))
-                        finish()
+        repeatOnLifecycle(Lifecycle.State.STARTED) {
+            launch {
+                vm.sideEffectFlow.collect { sideEffect ->
+                    when (sideEffect) {
+                        is SplashScreenSideEffect.StartHome -> {
+                            startActivity(HomeActivity.newIntent(this@SplashActivity))
+                            finish()
+                        }
+                        is SplashScreenSideEffect.StartPrelogin -> {
+                            startActivity(PreloginActivity.newIntent(this@SplashActivity))
+                            finish()
+                        }
+                        is SplashScreenSideEffect.ShowErrorToast -> {
+                            if (sideEffect.message.isNullOrEmpty().not()) {
+                                Toast.makeText(this@SplashActivity, sideEffect.message, Toast.LENGTH_SHORT).show()
+                            }
+                        }
                     }
                 }
             }
         }
-    }
-
-    private fun handleSuccess(splashScreenState: SplashScreenState.Success) {
-
-    }
-
-    private fun handleError(splashScreenState: SplashScreenState) {
-
     }
 
 }
