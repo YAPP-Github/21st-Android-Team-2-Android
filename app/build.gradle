@@ -40,7 +40,7 @@ android {
         }
 
         release {
-            storeFile file(getValueFromLocalProperties('ITEMFINDER_STORE_PATH'))
+            storeFile file(getValueFromLocalProperties('ITEM_FINDER_STORE_PATH'))
             storePassword getValueFromLocalProperties('ITEM_FINDER_SIGNING_STORE_PASSWORD')
             keyAlias getValueFromLocalProperties('ITEM_FINDER_SIGNING_KEY_ALIAS')
             keyPassword getValueFromLocalProperties('ITEM_FINDER_SIGNING_KEY_PASSWORD')
