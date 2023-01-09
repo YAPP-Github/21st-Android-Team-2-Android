@@ -6,13 +6,14 @@ import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ItemDecoration
 import com.yapp.itemfinder.feature.common.extension.dpToPx
+import com.yapp.itemfinder.feature.common.extension.isOdd
+import com.yapp.itemfinder.feature.common.extension.size
 
 //https://stackoverflow.com/questions/28531996/android-recyclerview-gridlayoutmanager-column-spacing
-class GridSpacing(
-    private val spanCount: Int,
-    private val verticalSpacingDp: Int,
-    private val horizontalSpacingDp: Int,
-    private val includeEdge: Boolean
+class SpaceItemDecoration(
+    private val range: IntRange,
+    private val verticalHalfSpacingDp: Int,
+    private val horizontalHalfSpacingDp: Int,
 ) : ItemDecoration() {
     override fun getItemOffsets(
         outRect: Rect,
@@ -20,29 +21,60 @@ class GridSpacing(
         parent: RecyclerView,
         state: RecyclerView.State
     ) {
+        val position: Int = parent.getChildAdapterPosition(view) // item position
+        if (position  !in range) return
 
         super.getItemOffsets(outRect, view, parent, state)
-        val position: Int = parent.getChildAdapterPosition(view) // item position
-        val column = position % spanCount
-        val verticalSpacing = verticalSpacingDp.dpToPx(view.context)
-        val horizontalSpacing = horizontalSpacingDp.dpToPx(view.context)
 
-        if (includeEdge) {
-            outRect.left = horizontalSpacing - column * horizontalSpacing / spanCount
-            outRect.right = (column + 1) * horizontalSpacing / spanCount
 
-            if (position > spanCount) { // top edge
-                outRect.top = verticalSpacing
+        val verticalHalfSpacing = verticalHalfSpacingDp.dpToPx(view.context)
+        val horizontalHalfSpacing = horizontalHalfSpacingDp.dpToPx(view.context)
+
+        outRect.bottom = verticalHalfSpacing
+
+        if (range.first % 2 == 1){ // 짝수 번째 자리에서 시작하는 경우
+            if (position % 2 == 1){ // 왼쪽
+                outRect.right =horizontalHalfSpacing
+            }else{ // 오른쪽
+                outRect.left = horizontalHalfSpacing
             }
-            outRect.bottom = verticalSpacing // item bottom
-        } else {
-            outRect.left =
-                column * horizontalSpacing / spanCount // column * ((1f / spanCount) * horizontalSpacing)
-            outRect.right =
-                horizontalSpacing - (column + 1) * horizontalSpacing / spanCount // spacing - (column + 1) * ((1f /    spanCount) * spacing)
-            if (position >= spanCount) {
-                outRect.top = verticalSpacing // item top
+
+        }else{
+            if (position % 2 == 0){ // 왼쪽
+                outRect.right =horizontalHalfSpacing
+            }else{ // 오른쪽
+                outRect.left = horizontalHalfSpacing
             }
         }
+
+        if (range.size().isOdd()){
+            if (position != range.last){
+                outRect.bottom = 2 * verticalHalfSpacing
+            }
+        }else{
+            if (position !in range.last()-1 .. range.last())
+                outRect.bottom = 2 * verticalHalfSpacing
+        }
+
+
+//        val column = position % spanCount
+
+//        if (includeEdge) {
+//            outRect.left = horizontalSpacing - column * horizontalSpacing / spanCount
+//            outRect.right = (column + 1) * horizontalSpacing / spanCount
+//
+//            if (position > spanCount) { // top edge
+//                outRect.top = verticalSpacing
+//            }
+//            outRect.bottom = verticalSpacing // item bottom
+//        } else {
+//            outRect.left =
+//                column * horizontalSpacing / spanCount // column * ((1f / spanCount) * horizontalSpacing)
+//            outRect.right =
+//                horizontalSpacing - (column + 1) * horizontalSpacing / spanCount // spacing - (column + 1) * ((1f /    spanCount) * spacing)
+//            if (position >= spanCount) {
+//                outRect.top = verticalSpacing // item top
+//            }
+//        }
     }
 }
