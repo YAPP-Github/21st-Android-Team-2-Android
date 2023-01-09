@@ -16,7 +16,9 @@ class DataBindHelper @Inject constructor(
     @HomeMySpaceUpperCellItemQualifier
     private val homeMySpaceUpperCellItemBinder: CellItemBinder,
     var lockerItemBinder: LockerItemBinder,
-    var addLockerItemBinder: AddLockerItemBinder
+    var addLockerItemBinder: AddLockerItemBinder,
+    var manageSpaceItemBinder: ManageSpaceItemBinder,
+    var manageSpaceAddSpaceBinder: AddSpaceBinder
 ) {
 
 
@@ -28,7 +30,7 @@ class DataBindHelper @Inject constructor(
     }
 
     private fun bindData(data: Data, viewModel: BaseViewModel) {
-        when(data.type) {
+        when (data.type) {
             CellType.LIKE_CELL -> {
                 homeLikeItemBinder.bindData(data as LikeItem, viewModel)
             }
@@ -38,10 +40,19 @@ class DataBindHelper @Inject constructor(
             CellType.HOMETAB_MYSPACE_UPPER_CELL -> {
                 homeMySpaceUpperCellItemBinder.bindData(data as MySpaceUpperCellItem, viewModel)
             }
+            CellType.LOCKER_CELL -> {
+                lockerItemBinder.bindData(data as Locker, viewModel)
+            }
             CellType.ADD_LOCKER_CELL -> {
                 addLockerItemBinder.bindData(data as AddLocker, viewModel)
             }
-            else -> { }
+            CellType.ADD_SPACE_CELL -> {
+                manageSpaceAddSpaceBinder.bindData(data as AddSpace, viewModel)
+            }
+            CellType.MANAGE_SPACE_CELL -> {
+                manageSpaceItemBinder.bindData(data as ManageSpaceItem, viewModel)
+            }
+            else -> {}
         }
     }
 
