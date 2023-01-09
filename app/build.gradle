@@ -40,10 +40,10 @@ android {
         }
 
         release {
-            storeFile file('../findthings.keystore')
-            storePassword 'Yapp1924@'
-            keyAlias 'findthings'
-            keyPassword 'Yapp1924@'
+            storeFile file(System.getenv('ITEMFINDER_STORE_PATH'))
+            storePassword System.getenv('ITEM_FINDER_SIGNING_STORE_PASSWORD')
+            keyAlias System.getenv('ITEM_FINDER_SIGNING_KEY_ALIAS')
+            keyPassword System.getenv('ITEM_FINDER_SIGNING_KEY_PASSWORD')
         }
     }
 
