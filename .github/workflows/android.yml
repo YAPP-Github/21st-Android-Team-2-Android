@@ -14,7 +14,7 @@ jobs:
     - name: Generate Keystore file
       run: |
         touch $ITEMFINDER_STORE_PATH
-        echo $FINDTHINGS_KEYSTORE | base64 --decode > $ITEMFINDER_STORE_PATH
+        echo $FINDTHINGS_KEYSTORE | base64 -di > $ITEMFINDER_STORE_PATH
       env:
         FINDTHINGS_KEYSTORE: ${{ secrets.FINDTHINGS_KEYSTORE }}
         ITEMFINDER_STORE_PATH: ${{ secrets.ITEMFINDER_STORE_PATH }}
