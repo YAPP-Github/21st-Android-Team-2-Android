@@ -40,10 +40,10 @@ android {
         }
 
         release {
-            storeFile file(System.getenv('ITEMFINDER_STORE_PATH'))
-            storePassword System.getenv('ITEM_FINDER_SIGNING_STORE_PASSWORD')
-            keyAlias System.getenv('ITEM_FINDER_SIGNING_KEY_ALIAS')
-            keyPassword System.getenv('ITEM_FINDER_SIGNING_KEY_PASSWORD')
+            storeFile file(getValueFromLocalProperties('ITEMFINDER_STORE_PATH'))
+            storePassword getValueFromLocalProperties('ITEM_FINDER_SIGNING_STORE_PASSWORD')
+            keyAlias getValueFromLocalProperties('ITEM_FINDER_SIGNING_KEY_ALIAS')
+            keyPassword getValueFromLocalProperties('ITEM_FINDER_SIGNING_KEY_PASSWORD')
         }
     }
 
@@ -80,6 +80,13 @@ android {
         }
     }
 
+}
+
+String getValueFromLocalProperties(String keyName) {
+    def propFile = rootProject.file("./local.properties")
+    def properties = new Properties()
+    properties.load(new FileInputStream(propFile))
+    return properties[keyName]
 }
 
 dependencies {
