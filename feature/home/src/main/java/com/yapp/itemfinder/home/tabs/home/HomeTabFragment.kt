@@ -18,8 +18,8 @@ import com.yapp.itemfinder.feature.common.utility.DataWithSpan
 import com.yapp.itemfinder.feature.common.utility.SpaceItemDecoration
 import com.yapp.itemfinder.feature.home.databinding.FragmentHomeTabBinding
 import com.yapp.itemfinder.home.HomeActivity
-import com.yapp.itemfinder.home.SpaceManageActivity
-import com.yapp.itemfinder.locker.LockerListFragment
+import com.yapp.itemfinder.space.LockerListFragment
+import com.yapp.itemfinder.space.managespace.ManageSpaceFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
@@ -93,8 +93,11 @@ class HomeTabFragment : BaseStateFragment<HomeTabViewModel, FragmentHomeTabBindi
         }
     }
 
-    private fun moveSpaceManage() {
-        startActivity(SpaceManageActivity.newIntent(this@HomeTabFragment.requireActivity()))
+
+    private fun moveSpaceManage(){
+        when (activity) {
+            is HomeActivity -> (activity as HomeActivity).addFragmentBackStack(ManageSpaceFragment.TAG)
+        }
     }
 
     private fun handleLoading(homeTabState: HomeTabState.Loading) {
