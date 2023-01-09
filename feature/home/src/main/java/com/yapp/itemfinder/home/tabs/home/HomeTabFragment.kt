@@ -53,7 +53,14 @@ class HomeTabFragment : BaseStateFragment<HomeTabViewModel, FragmentHomeTabBindi
                     }
                 }
             }
-            recyclerView.addItemDecoration(GridSpacing(2, 16, true))
+            recyclerView.addItemDecoration(
+                GridSpacing(
+                    spanCount = 2,
+                    verticalSpacingDp = 16,
+                    horizontalSpacingDp = 12,
+                    includeEdge = true
+                )
+            )
         }
     }
 
@@ -92,9 +99,8 @@ class HomeTabFragment : BaseStateFragment<HomeTabViewModel, FragmentHomeTabBindi
         }
     }
 
-    private fun moveSpaceManage(){
+    private fun moveSpaceManage() {
         startActivity(SpaceManageActivity.newIntent(this@HomeTabFragment.requireActivity()))
-
     }
 
     private fun handleLoading(homeTabState: HomeTabState.Loading) {
