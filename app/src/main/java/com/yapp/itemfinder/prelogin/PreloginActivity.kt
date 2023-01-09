@@ -21,6 +21,7 @@ import com.yapp.itemfinder.feature.common.BaseStateActivity
 import com.yapp.itemfinder.feature.common.binding.viewBinding
 import com.yapp.itemfinder.feature.common.extension.gone
 import com.yapp.itemfinder.feature.common.extension.visible
+import com.yapp.itemfinder.home.HomeActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
@@ -57,6 +58,10 @@ class PreloginActivity : BaseStateActivity<PreloginViewModel, AcitivityPreloginB
                             is PreloginSideEffect.RequestKakaoLogin -> handleRequestKakaoLogin()
                             is PreloginSideEffect.ShowToast -> {
                                 Toast.makeText(this@PreloginActivity, sideEffect.message, Toast.LENGTH_SHORT).show()
+                            }
+                            is PreloginSideEffect.StartHome -> {
+                                startActivity(HomeActivity.newIntent(this@PreloginActivity))
+                                finish()
                             }
                         }
                     }

@@ -54,9 +54,11 @@ class OkHttpInterceptorModule {
         try {
             val response = chain.proceed(request)
             if (response.isSuccessful) {
+                val emptyJsonObjectStr = "{}"
+                val body = response.body?.string() ?: emptyJsonObjectStr
                 val rawJson =
-                    if (response.body?.string() == "okay") "{}"
-                    else response.body?.string() ?: "{}"
+                    if (!(body.startsWith("{") && body.endsWith("}"))) emptyJsonObjectStr
+                    else body
                 val jsonObject = gson.fromJson(rawJson, JsonObject::class.java)
                 val responseData = if (jsonObject.isJsonArray) {
                     /**

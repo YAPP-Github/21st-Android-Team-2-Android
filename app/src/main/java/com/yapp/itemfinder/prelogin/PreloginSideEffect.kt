@@ -8,4 +8,6 @@ sealed class PreloginSideEffect: SideEffect {
 
     data class ShowToast(val message: String): PreloginSideEffect()
 
+    object StartHome : PreloginSideEffect()
+
 }

@@ -1,5 +1,6 @@
 package com.yapp.itemfinder.prelogin
 
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.yapp.itemfinder.domain.entity.signup.SignUpEntity
 import com.yapp.itemfinder.domain.repository.auth.AuthRepository
@@ -35,10 +36,11 @@ class PreloginViewModel @Inject constructor(
         }.onSuccess { authToken ->
             authRepository.putAuthTokenToPreference(authToken)
             setState(PreloginState.Success)
-            postSideEffect(PreloginSideEffect.ShowToast("authToken : $authToken"))
-        }.onErrorWithResult {
+            Log.d("authToken", authToken.toString())
+            postSideEffect(PreloginSideEffect.StartHome)
+        }.onErrorWithResult { errorWithResult ->
             when {
-                DefaultErrorHandler.isApiNotFoundException(it.throwable) -> {
+                DefaultErrorHandler.isApiNotFoundException(errorWithResult.throwable) -> {
                     runCatchingWithErrorHandler {
                         authRepository.signUpUser(signUpEntity)
                     }.onSuccess { authToken ->
@@ -51,7 +53,7 @@ class PreloginViewModel @Inject constructor(
                     }
                 }
                 else -> {
-                    val message = it.errorResultEntity.message ?: return@launch
+                    val message = errorWithResult.errorResultEntity.message ?: return@launch
                     postSideEffect(PreloginSideEffect.ShowToast(message))
                 }
             }
