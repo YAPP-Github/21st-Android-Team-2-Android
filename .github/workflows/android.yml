@@ -13,7 +13,7 @@ jobs:
     - uses: actions/checkout@v3
     - name: Generate Keystore file
       run: |
-        echo $FINDTHINGS_KEYSTORE > ./keystore.b64
+        echo "$FINDTHINGS_KEYSTORE" > ./keystore.b64
         base64 -d -i ./keystore.b64 > $ITEMFINDER_STORE_PATH
       env:
         FINDTHINGS_KEYSTORE: ${{ secrets.FINDTHINGS_KEYSTORE }}
