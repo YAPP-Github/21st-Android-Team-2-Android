@@ -12,7 +12,7 @@ import com.yapp.itemfinder.feature.common.extension.size
 //https://stackoverflow.com/questions/28531996/android-recyclerview-gridlayoutmanager-column-spacing
 class SpaceItemDecoration(
     private val range: IntRange,
-    private val verticalHalfSpacingDp: Int,
+    private val bottomFullSpacingDp: Int,
     private val horizontalHalfSpacingDp: Int,
 ) : ItemDecoration() {
     override fun getItemOffsets(
@@ -27,10 +27,10 @@ class SpaceItemDecoration(
         super.getItemOffsets(outRect, view, parent, state)
 
 
-        val verticalHalfSpacing = verticalHalfSpacingDp.dpToPx(view.context)
+        val bottomFullSpacing = bottomFullSpacingDp.dpToPx(view.context)
         val horizontalHalfSpacing = horizontalHalfSpacingDp.dpToPx(view.context)
 
-        outRect.bottom = verticalHalfSpacing
+        outRect.bottom = bottomFullSpacing
 
         if (range.first % 2 == 1){ // 짝수 번째 자리에서 시작하는 경우
             if (position % 2 == 1){ // 왼쪽
@@ -49,11 +49,11 @@ class SpaceItemDecoration(
 
         if (range.size().isOdd()){
             if (position != range.last){
-                outRect.bottom = 2 * verticalHalfSpacing
+                outRect.bottom = bottomFullSpacing
             }
         }else{
             if (position !in range.last()-1 .. range.last())
-                outRect.bottom = 2 * verticalHalfSpacing
+                outRect.bottom = bottomFullSpacing
         }
 
 
