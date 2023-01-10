@@ -14,9 +14,9 @@ jobs:
     - name: Set Time Zone
       run: sudo ln -sf /usr/share/zoneinfo/Asia/Seoul /etc/localtime
     - name: Generate Keystore file
-      run: echo "$FINDTHINGS_KEYSTORE" > ./keystore_b64.txt
-    - name: Decode Base64 Keystore file
-      run: base64 -d -i ./keystore_b64.txt > $ITEM_FINDER_STORE_PATH
+      run: |
+        base64 -in "$FINDTHINGS_KEYSTORE" -out ./keystore.b64
+        base64 -d -i ./keystore.b64 > $ITEM_FINDER_STORE_PATH
       env:
         FINDTHINGS_KEYSTORE: ${{ secrets.FINDTHINGS_KEYSTORE }}
         ITEM_FINDER_STORE_PATH: ${{ secrets.ITEM_FINDER_STORE_PATH }}
