@@ -23,7 +23,7 @@ jobs:
     - name: Add keystore Info into local.properties
       run: |
         touch ./local.properties
-        echo -e "\nITEM_FINDER_STORE_PATH=$ITEM_FINDER_STORE_PATH" >> ./local.properties
+        echo -e "\nITEM_FINDER_STORE_PATH=.$ITEM_FINDER_STORE_PATH" >> ./local.properties
         echo -e "\nITEM_FINDER_SIGNING_STORE_PASSWORD=$ITEM_FINDER_SIGNING_STORE_PASSWORD" >> ./local.properties
         echo -e "\nITEM_FINDER_SIGNING_KEY_ALIAS=$ITEM_FINDER_SIGNING_KEY_ALIAS" >> ./local.properties
         echo -e "\nITEM_FINDER_SIGNING_KEY_PASSWORD=$ITEM_FINDER_SIGNING_KEY_PASSWORD" >> ./local.properties
