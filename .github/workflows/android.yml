@@ -8,18 +8,37 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v3
+    - name: Set Time Zone
+      run: sudo ln -sf /usr/share/zoneinfo/Asia/Seoul /etc/localtime
+    - name: Generate Keystore file
+      run: |
+        echo "$FINDTHINGS_KEYSTORE" > ./keystore.b64
+        base64 -d -i ./keystore.b64 > $ITEM_FINDER_STORE_PATH
+      env:
+        FINDTHINGS_KEYSTORE: ${{ secrets.FINDTHINGS_KEYSTORE }}
+        ITEM_FINDER_STORE_PATH: ${{ secrets.ITEM_FINDER_STORE_PATH }}
+    - name: Add keystore Info into local.properties
+      run: |
+        touch ./local.properties
+        echo -e "\nITEM_FINDER_STORE_PATH=.$ITEM_FINDER_STORE_PATH" >> ./local.properties
+        echo -e "\nITEM_FINDER_SIGNING_STORE_PASSWORD=$ITEM_FINDER_SIGNING_STORE_PASSWORD" >> ./local.properties
+        echo -e "\nITEM_FINDER_SIGNING_KEY_ALIAS=$ITEM_FINDER_SIGNING_KEY_ALIAS" >> ./local.properties
+        echo -e "\nITEM_FINDER_SIGNING_KEY_PASSWORD=$ITEM_FINDER_SIGNING_KEY_PASSWORD" >> ./local.properties
+        cat ./local.properties
+      env:
+        ITEM_FINDER_STORE_PATH: ${{ secrets.ITEM_FINDER_STORE_PATH }}
+        ITEM_FINDER_SIGNING_STORE_PASSWORD: ${{ secrets.ITEM_FINDER_SIGNING_STORE_PASSWORD }}
+        ITEM_FINDER_SIGNING_KEY_ALIAS: ${{ secrets.ITEM_FINDER_SIGNING_KEY_ALIAS }}
+        ITEM_FINDER_SIGNING_KEY_PASSWORD: ${{ secrets.ITEM_FINDER_SIGNING_KEY_PASSWORD }}
     - name: set up JDK 11
       uses: actions/setup-java@v3
       with:
         java-version: '11'
         distribution: 'temurin'
         cache: gradle
-
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
     - name: Build with Gradle

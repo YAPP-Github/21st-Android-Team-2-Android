@@ -6,6 +6,7 @@ buildscript {
     repositories {
         mavenCentral()
         google()
+        maven { url 'https://devrepo.kakao.com/nexus/content/groups/public/'}
     }
 
     dependencies {

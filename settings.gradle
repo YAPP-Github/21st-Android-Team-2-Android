@@ -17,6 +17,7 @@ dependencyResolutionManagement {
         mavenCentral()
         maven { url 'https://jitpack.io' }
         mavenLocal()
+        maven { url 'https://devrepo.kakao.com/nexus/content/groups/public/' }
     }
 
 }
