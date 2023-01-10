@@ -15,7 +15,7 @@ object DataViewHolderMapper {
     ): DataViewHolder<D> {
         val inflater = LayoutInflater.from(parent.context)
         val viewHolder = when (type) {
-            CellType.EMPTY_CELL -> null
+            CellType.EMPTY_CELL -> EmptyCellViewHolder(EmptyCellItemBinding.inflate(inflater,parent,false))
             CellType.CATEGORY_CELL -> CategoryViewHolder(ViewholderStorageBinding.inflate(inflater,parent,false))
             CellType.LIKE_CELL -> LikeViewHolder(LikeItemBinding.inflate(inflater, parent, false))
             CellType.SPACE_CELL -> SpaceViewHolder(SpaceItemBinding.inflate(inflater,parent,false))

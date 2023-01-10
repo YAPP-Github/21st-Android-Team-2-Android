@@ -7,6 +7,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.GridLayoutManager.SpanSizeLookup
+import com.yapp.itemfinder.domain.model.CellType
 import com.yapp.itemfinder.feature.common.binding.viewBinding
 import com.yapp.itemfinder.feature.common.datalist.adapter.DataListAdapter
 import com.yapp.itemfinder.domain.model.Data
@@ -14,7 +15,7 @@ import com.yapp.itemfinder.domain.model.SpaceItem
 import com.yapp.itemfinder.feature.common.BaseStateFragment
 import com.yapp.itemfinder.feature.common.datalist.binder.DataBindHelper
 import com.yapp.itemfinder.feature.common.utility.DataWithSpan
-import com.yapp.itemfinder.feature.common.utility.GridSpacing
+import com.yapp.itemfinder.feature.common.utility.SpaceItemDecoration
 import com.yapp.itemfinder.feature.home.databinding.FragmentHomeTabBinding
 import com.yapp.itemfinder.home.HomeActivity
 import com.yapp.itemfinder.space.LockerListFragment
@@ -53,7 +54,7 @@ class HomeTabFragment : BaseStateFragment<HomeTabViewModel, FragmentHomeTabBindi
                     }
                 }
             }
-            recyclerView.addItemDecoration(GridSpacing(2, 16, true))
+
         }
     }
 
@@ -92,6 +93,7 @@ class HomeTabFragment : BaseStateFragment<HomeTabViewModel, FragmentHomeTabBindi
         }
     }
 
+
     private fun moveSpaceManage(){
         when (activity) {
             is HomeActivity -> (activity as HomeActivity).addFragmentBackStack(ManageSpaceFragment.TAG)
@@ -105,6 +107,13 @@ class HomeTabFragment : BaseStateFragment<HomeTabViewModel, FragmentHomeTabBindi
         dataListWithSpan = homeTabState.dataListWithSpan
         dataBindHelper.bindList(dataListWithSpan.map { it.data }, vm)
         dataListAdapter?.submitList(dataListWithSpan.map { it.data })
+        binding.recyclerView.addItemDecoration(
+            SpaceItemDecoration(
+                bottomFullSpacingDp = 16,
+                horizontalHalfSpacingDp = 6,
+                range = dataListWithSpan.indexOfFirst { it.data.type == CellType.SPACE_CELL } .. dataListWithSpan.indexOfLast{it.data.type == CellType.SPACE_CELL}
+            )
+        )
     }
 
     private fun handleError(homeTabState: HomeTabState.Error) {

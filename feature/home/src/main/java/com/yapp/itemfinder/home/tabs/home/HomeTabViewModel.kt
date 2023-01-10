@@ -1,10 +1,7 @@
 package com.yapp.itemfinder.home.tabs.home
 
 import androidx.lifecycle.viewModelScope
-import com.yapp.itemfinder.domain.model.MySpaceUpperCellItem
-import com.yapp.itemfinder.domain.model.Data
-import com.yapp.itemfinder.domain.model.LikeItem
-import com.yapp.itemfinder.domain.model.SpaceItem
+import com.yapp.itemfinder.domain.model.*
 import com.yapp.itemfinder.domain.repository.BannerRepository
 import com.yapp.itemfinder.domain.repository.SpaceRepository
 import com.yapp.itemfinder.feature.common.BaseStateViewModel
@@ -42,6 +39,7 @@ class HomeTabViewModel @Inject constructor(
                     spaces.forEach {
                         add(DataWithSpan(it, 1))
                     }
+                    add(DataWithSpan(EmptyCellItem(heightDp = 32),2))
                 }
             )
         )
