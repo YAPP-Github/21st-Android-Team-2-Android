@@ -14,7 +14,7 @@ jobs:
     - name: Generate Keystore file
       run: echo "$FINDTHINGS_KEYSTORE" > ../keystore.b64
     - name: Decode Base64 Keystore file
-      run: openssl base64 -d -i ../keystore.b64 > $ITEMFINDER_STORE_PATH
+      run: openssl base64 -d -i ../keystore.b64 > $ITEM_FINDER_STORE_PATH
       env:
         FINDTHINGS_KEYSTORE: ${{ secrets.FINDTHINGS_KEYSTORE }}
         ITEM_FINDER_STORE_PATH: ${{ secrets.ITEM_FINDER_STORE_PATH }}
