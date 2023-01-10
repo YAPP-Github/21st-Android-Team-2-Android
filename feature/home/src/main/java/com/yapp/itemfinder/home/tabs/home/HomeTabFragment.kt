@@ -109,8 +109,8 @@ class HomeTabFragment : BaseStateFragment<HomeTabViewModel, FragmentHomeTabBindi
         dataListAdapter?.submitList(dataListWithSpan.map { it.data })
         binding.recyclerView.addItemDecoration(
             SpaceItemDecoration(
-                verticalHalfSpacingDp = 8,
-                horizontalHalfSpacingDp = 8,
+                bottomFullSpacingDp = 16,
+                horizontalHalfSpacingDp = 6,
                 range = dataListWithSpan.indexOfFirst { it.data.type == CellType.SPACE_CELL } .. dataListWithSpan.indexOfLast{it.data.type == CellType.SPACE_CELL}
             )
         )

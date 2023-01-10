@@ -30,8 +30,6 @@ class SpaceItemDecoration(
         val bottomFullSpacing = bottomFullSpacingDp.dpToPx(view.context)
         val horizontalHalfSpacing = horizontalHalfSpacingDp.dpToPx(view.context)
 
-        outRect.bottom = bottomFullSpacing
-
         if (range.first % 2 == 1){ // 짝수 번째 자리에서 시작하는 경우
             if (position % 2 == 1){ // 왼쪽
                 outRect.right =horizontalHalfSpacing
