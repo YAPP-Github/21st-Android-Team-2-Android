@@ -2,6 +2,7 @@ package com.yapp.itemfinder.data.network.di.apiclient
 
 import com.google.gson.Gson
 import com.yapp.itemfinder.data.network.api.AppApi
+import com.yapp.itemfinder.data.network.api.managespace.ManageSpaceApi
 import com.yapp.itemfinder.data.network.api.auth.AuthApi
 import com.yapp.itemfinder.data.network.di.okhttp.OkHttpClientQualifier
 import com.yapp.itemfinder.domain.di.ApiGsonQualifier
@@ -46,5 +47,8 @@ class ApiClient @Inject constructor(
 
     fun provideAuthApi(): AuthApi =
         apiAdapter.create(AuthApi::class.java)
+
+    fun provideManageSpaceApi(): ManageSpaceApi =
+        apiAdapter.create(ManageSpaceApi::class.java)
 
 }
