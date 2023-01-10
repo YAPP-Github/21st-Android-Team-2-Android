@@ -11,10 +11,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
+    - name: Set Time Zone
+      run: sudo ln -sf /usr/share/zoneinfo/Asia/Seoul /etc/localtime
     - name: Generate Keystore file
-      run: echo "$FINDTHINGS_KEYSTORE" > ../keystore.b64
+      run: openssl base64 -in $ITEM_FINDER_STORE_PATH -out ./keystore_b64.txt
     - name: Decode Base64 Keystore file
-      run: openssl base64 -d -i ../keystore.b64 > $ITEM_FINDER_STORE_PATH
+      run: base64 -d -i ./keystore_b64.txt > $ITEM_FINDER_STORE_PATH
       env:
         FINDTHINGS_KEYSTORE: ${{ secrets.FINDTHINGS_KEYSTORE }}
         ITEM_FINDER_STORE_PATH: ${{ secrets.ITEM_FINDER_STORE_PATH }}
