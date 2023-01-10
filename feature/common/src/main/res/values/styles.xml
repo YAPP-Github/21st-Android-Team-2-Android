@@ -48,4 +48,8 @@
         <item name="android:shadowColor">#FCFBF9</item>
     </style>
 
+    <style name="AlertDialog" parent="Theme.AppCompat.Dialog.Alert">
+
+    </style>
+
 </resources>
