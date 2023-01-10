@@ -3,23 +3,19 @@ package com.yapp.itemfinder.feature.common.datalist.adapter
 import android.os.Build
 import android.view.Gravity
 import android.widget.PopupMenu
-import com.yapp.itemfinder.domain.model.Locker
+import com.yapp.itemfinder.domain.model.ManageSpaceItem
 import com.yapp.itemfinder.feature.common.R
-import com.yapp.itemfinder.feature.common.databinding.LockerItemBinding
+import com.yapp.itemfinder.feature.common.databinding.ManageSpaceItemBinding
 
-class LockerViewHolder(
-    val binding: LockerItemBinding
-) : DataViewHolder<Locker>(binding) {
+class ManageSpaceViewHolder(
+    val binding: ManageSpaceItemBinding
+) : DataViewHolder<ManageSpaceItem>(binding){
     override fun reset() {
+        return
     }
 
-    override fun bindData(data: Locker) {
-        super.bindData(data)
-        binding.lockerItemTextView.text = data.name
-        binding.lockerItemImageView.setImageResource(data.icon)
-    }
-
-    override fun bindViews(data: Locker) {
+    override fun bindViews(data: ManageSpaceItem) {
+        binding.spaceName.text = data.name
         binding.spinnerImageButton.setOnClickListener {
             val popupMenu = PopupMenu(itemView.context, binding.spinnerImageButton, Gravity.END, 0, R.style.PopupMenu)
             popupMenu.inflate(R.menu.pop_up_menu)
@@ -29,11 +25,11 @@ class LockerViewHolder(
             popupMenu.setOnMenuItemClickListener { menuItem ->
                 when(menuItem.itemId){
                     R.id.edit_menu -> {
-                        data.editLocker()
+                        data.editSpaceDialog()
                         true
                     }
                     R.id.delete_menu -> {
-                        data.deleteLocker()
+                        data.deleteSpaceDialog()
                         true
                     }
                     else -> false
@@ -42,4 +38,6 @@ class LockerViewHolder(
             popupMenu.show()
         }
     }
+
+
 }

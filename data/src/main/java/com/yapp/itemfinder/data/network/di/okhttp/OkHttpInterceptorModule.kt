@@ -1,11 +1,11 @@
 package com.yapp.itemfinder.data.network.di.okhttp
 
-import androidx.viewbinding.BuildConfig
 import com.google.gson.Gson
 import com.google.gson.JsonObject
 import com.yapp.itemfinder.data.network.header.HeaderKey
 import com.yapp.itemfinder.data.network.mapper.DataMapper
 import com.yapp.itemfinder.data.network.response.ErrorResultEntity
+import com.yapp.itemfinder.domain.BuildConfig
 import com.yapp.itemfinder.domain.data.SecureLocalData
 import com.yapp.itemfinder.domain.data.SecureLocalDataStore
 import dagger.Module
@@ -54,9 +54,11 @@ class OkHttpInterceptorModule {
         try {
             val response = chain.proceed(request)
             if (response.isSuccessful) {
+                val emptyJsonObjectStr = "{}"
+                val body = response.body?.string() ?: emptyJsonObjectStr
                 val rawJson =
-                    if (response.body?.string() == "okay") "{}"
-                    else response.body?.string() ?: "{}"
+                    if (!(body.startsWith("{") && body.endsWith("}"))) emptyJsonObjectStr
+                    else body
                 val jsonObject = gson.fromJson(rawJson, JsonObject::class.java)
                 val responseData = if (jsonObject.isJsonArray) {
                     /**

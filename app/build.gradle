@@ -22,8 +22,38 @@ android {
 
     buildTypes {
         release {
+            debuggable true
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            debuggable true
+        }
+    }
+
+    signingConfigs {
+        debug {
+            storeFile file('debug.keystore')
+            storePassword 'android'
+            keyAlias 'androiddebugkey'
+            keyPassword 'android'
+        }
+
+        release {
+            storeFile file(getValueFromLocalProperties('ITEM_FINDER_STORE_PATH'))
+            storePassword getValueFromLocalProperties('ITEM_FINDER_SIGNING_STORE_PASSWORD')
+            keyAlias getValueFromLocalProperties('ITEM_FINDER_SIGNING_KEY_ALIAS')
+            keyPassword getValueFromLocalProperties('ITEM_FINDER_SIGNING_KEY_PASSWORD')
+        }
+    }
+
+    buildTypes {
+        debug {
+            signingConfig signingConfigs.debug
+        }
+
+        release {
+            signingConfig signingConfigs.release
         }
     }
 
@@ -31,6 +61,32 @@ android {
         variant.buildConfigField "String", "API_URL", "\"http://3.39.124.65/\""
     }
 
+    flavorDimensions "version"
+
+    productFlavors {
+        var kakaoAppKey = '9d9f2c06711f35c769f88f53e1ca3765'
+        dev {
+            dimension "version"
+            applicationIdSuffix ".dev"
+            manifestPlaceholders = [appLabel: "Findthings Dev"]
+            resValue("string", "kakao_app_key", kakaoAppKey)
+            resValue("string", "kakao_app_key_for_manifest", "kakao${kakaoAppKey}")
+        }
+        prod {
+            dimension "version"
+            manifestPlaceholders = [appLabel: "Findthings"]
+            resValue("string", "kakao_app_key", kakaoAppKey)
+            resValue("string", "kakao_app_key_for_manifest", "kakao${kakaoAppKey}")
+        }
+    }
+
+}
+
+String getValueFromLocalProperties(String keyName) {
+    def propFile = rootProject.file("./local.properties")
+    def properties = new Properties()
+    properties.load(new FileInputStream(propFile))
+    return properties[keyName]
 }
 
 dependencies {
@@ -39,5 +95,6 @@ dependencies {
     implementation project(':feature:home')
     implementation project(':data')
     implementation project(':feature:space')
+    implementation "com.kakao.sdk:v2-user:$kakaoUserVersion" // 카카오 로그인
 
 }

@@ -22,6 +22,8 @@ object DataViewHolderMapper {
             CellType.LOCKER_CELL -> LockerViewHolder(LockerItemBinding.inflate(inflater, parent, false))
             CellType.ADD_LOCKER_CELL -> AddLockerViewHolder(AddLockerBinding.inflate(inflater, parent, false))
             CellType.HOMETAB_MYSPACE_UPPER_CELL -> HomeTabMySpaceUpperCellViewHolder(HometabMyspaceUpperCellItemBinding.inflate(inflater, parent, false))
+            CellType.ADD_SPACE_CELL -> AddSpaceViewHolder(AddSpaceBinding.inflate(inflater, parent, false))
+            CellType.MANAGE_SPACE_CELL -> ManageSpaceViewHolder(ManageSpaceItemBinding.inflate(inflater, parent, false))
         }
 
         return viewHolder as DataViewHolder<D>

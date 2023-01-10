@@ -8,4 +8,3 @@ data class SpaceItem(
     var detailHandler: DataHandler =  {}
     fun goSpaceDetailPage() = detailHandler.invoke(this)
 }
-

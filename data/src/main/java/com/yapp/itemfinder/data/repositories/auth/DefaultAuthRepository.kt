@@ -2,11 +2,15 @@ package com.yapp.itemfinder.data.repositories.auth
 
 import com.yapp.itemfinder.data.network.api.auth.AuthApi
 import com.yapp.itemfinder.data.network.api.auth.AuthWithoutTokenApi
+import com.yapp.itemfinder.data.network.api.auth.login.SignUpRequest
+import com.yapp.itemfinder.data.network.api.auth.signup.LoginRequest
 import com.yapp.itemfinder.domain.data.SecureLocalData
 import com.yapp.itemfinder.domain.data.SecureLocalDataStore
-import com.yapp.itemfinder.domain.model.auth.AuthToken
+import com.yapp.itemfinder.domain.entity.auth.AuthTokenEntity
 import com.yapp.itemfinder.domain.coroutines.DispatcherProvider
+import com.yapp.itemfinder.domain.entity.signup.SignUpEntity
 import com.yapp.itemfinder.domain.repository.auth.AuthRepository
+import com.yapp.itemfinder.domain.type.SocialType
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -18,13 +22,13 @@ class DefaultAuthRepository @Inject constructor(
     private val authWithoutTokenApi: AuthWithoutTokenApi,
 ): AuthRepository {
 
-    override suspend fun getAuthToken(): AuthToken = withContext(dispatcherProvider.io) {
+    override suspend fun getAuthToken(): AuthTokenEntity = withContext(dispatcherProvider.io) {
         val accessToken = secureLocalDataStore.get(SecureLocalData.AccessToken)
         val refreshToken = secureLocalDataStore.get(SecureLocalData.RefreshToken)
-        AuthToken(accessToken, refreshToken)
+        AuthTokenEntity(accessToken, refreshToken)
     }
 
-    override suspend fun putAuthTokenToPreference(token: AuthToken) = withContext(dispatcherProvider.default) {
+    override suspend fun putAuthTokenToPreference(token: AuthTokenEntity) = withContext(dispatcherProvider.default) {
         val accessTokenJob = launch { secureLocalDataStore.put(SecureLocalData.AccessToken, token.accessToken) }
         launch { secureLocalDataStore.put(SecureLocalData.RefreshToken, token.refreshToken) }
 
@@ -36,8 +40,14 @@ class DefaultAuthRepository @Inject constructor(
 
     }
 
-    override suspend fun validateMember(token: AuthToken) {
+    override suspend fun validateMember(token: AuthTokenEntity) {
         authApi.validateMember()
     }
+
+    override suspend fun loginUser(socialId: String, socialType: SocialType): AuthTokenEntity =
+        authWithoutTokenApi.login(LoginRequest(socialId, socialType.name)).toAuthTokenEntity()
+
+    override suspend fun signUpUser(signUpEntity: SignUpEntity): AuthTokenEntity =
+        authWithoutTokenApi.signup(SignUpRequest.fromEntity(signUpEntity)).toAuthTokenEntity()
 
 }
