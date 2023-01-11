@@ -1,21 +1,20 @@
 package com.yapp.itemfinder.space.managespace
 
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.Window
 import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.viewModels
 import com.yapp.itemfinder.space.databinding.AddSpaceDialogBinding
+import dagger.hilt.android.AndroidEntryPoint
 
-class AddSpaceDialog: DialogFragment() {
-    private var _binding: AddSpaceDialogBinding?=null
+@AndroidEntryPoint
+class AddSpaceDialog : DialogFragment() {
+    private var _binding: AddSpaceDialogBinding? = null
     private val binding get() = _binding!!
-
-    private val vm by viewModels<ManageSpaceViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -31,16 +30,26 @@ class AddSpaceDialog: DialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.apply {
-
+            addNewSpaceButton.setOnClickListener {
+                val name = spaceNameEditText.text.toString()
+                passName(name)
+            }
+            cancelButton.setOnClickListener { dismiss() }
         }
     }
 
-    private fun addNewSpace(name: String){
-        vm.addItem(name)
+    private fun passName(name: String) {
+        val intent = Intent()
+        intent.putExtra("name", name)
+        targetFragment?.onActivityResult(
+            targetRequestCode,
+            ManageSpaceFragment.ADD_SPACE_REQUEST_CODE,
+            intent
+        )
         dismiss()
     }
 
-    fun getInstance(): AddSpaceDialog{
+    fun getInstance(): AddSpaceDialog {
         return AddSpaceDialog()
     }
 }

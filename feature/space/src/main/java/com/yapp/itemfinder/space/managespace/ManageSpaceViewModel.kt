@@ -2,7 +2,6 @@ package com.yapp.itemfinder.space.managespace
 
 import androidx.lifecycle.viewModelScope
 import com.yapp.itemfinder.domain.model.AddSpace
-import com.yapp.itemfinder.domain.model.Data
 import com.yapp.itemfinder.domain.model.ManageSpaceItem
 import com.yapp.itemfinder.domain.repository.ManageSpaceRepository
 import com.yapp.itemfinder.feature.common.BaseStateViewModel
@@ -40,7 +39,16 @@ class ManageSpaceViewModel @Inject constructor(
     }
 
     fun addItem(name: String): Job = viewModelScope.launch {
-
+        withState<ManageSpaceState.Success> { state ->
+            val space = manageSpaceRepository.addNewSpace(name)
+            setState(
+                state.copy(
+                    dataList = ArrayList(state.dataList).apply {
+                        add(space)
+                    }
+                )
+            )
+        }
     }
 
     fun editItem(space: ManageSpaceItem): Job = viewModelScope.launch {

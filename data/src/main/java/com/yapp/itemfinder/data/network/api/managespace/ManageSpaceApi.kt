@@ -11,5 +11,5 @@ interface ManageSpaceApi {
     suspend fun fetchAllSpaces(): Response<JsonObject>
 
     @POST("/spaces")
-    suspend fun addNewSpace(@Body addSpaceRequest: AddSpaceRequest): Response<Int>
+    suspend fun addNewSpace(@Body addSpaceRequest: AddSpaceRequest): AddSpaceResponse
 }

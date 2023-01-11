@@ -14,12 +14,12 @@ import javax.inject.Singleton
 class ManageSpaceRepositoryImpl @Inject constructor(
     private val dispatcherProvider: DispatcherProvider,
     private val dataMapper: DataMapper,
-    private val api: ManageSpaceApi
+    private val manageSpaceApi: ManageSpaceApi
 ) : ManageSpaceRepository {
 
     override suspend fun getAllManageSpaceItems(): List<ManageSpaceItem> =
         withContext(dispatcherProvider.io) {
-            val jsonObject = api.fetchAllSpaces().body()
+            val jsonObject = manageSpaceApi.fetchAllSpaces().body()
             val spaceList: MutableList<ManageSpaceItem> = mutableListOf()
             jsonObject?.getAsJsonArray("spaces")?.forEach {
                 spaceList.add(
@@ -32,16 +32,19 @@ class ManageSpaceRepositoryImpl @Inject constructor(
             spaceList
         }
 
-    override suspend fun addNewSpace(name: String): Int = withContext(dispatcherProvider.io) {
-        api.addNewSpace(AddSpaceRequest(name)).body()!!
-    }
+    override suspend fun addNewSpace(name: String): ManageSpaceItem =
+        withContext(dispatcherProvider.io) {
+            val response = manageSpaceApi.addNewSpace(AddSpaceRequest(name))
+            ManageSpaceItem(name = response.name, id = response.id.toLong())
+        }
 
     override fun editSpace(): Boolean {
-        //
+        // api call
         return true
     }
 
     override fun deleteSpace(): Boolean {
-        TODO("Not yet implemented")
+        // api call
+        return true
     }
 }

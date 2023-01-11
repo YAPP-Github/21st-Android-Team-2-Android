@@ -2,6 +2,7 @@ package com.yapp.itemfinder.space.managespace
 
 import android.app.AlertDialog
 import android.content.DialogInterface
+import android.content.Intent
 import android.view.ContextThemeWrapper
 import android.widget.Toast
 import androidx.fragment.app.viewModels
@@ -57,6 +58,10 @@ class ManageSpaceFragment : BaseStateFragment<ManageSpaceViewModel, FragmentMana
                             is ManageSpaceSideEffect.OpenAddSpaceDialog -> {
                                 val dialog: AddSpaceDialog = AddSpaceDialog().getInstance()
                                 activity?.supportFragmentManager?.let { fragmentManager ->
+                                    dialog.setTargetFragment(
+                                        this@ManageSpaceFragment,
+                                        ADD_SPACE_REQUEST_CODE
+                                    )
                                     dialog.show(
                                         fragmentManager, "ADD_SPACE_DIALOG"
                                     )
@@ -105,10 +110,21 @@ class ManageSpaceFragment : BaseStateFragment<ManageSpaceViewModel, FragmentMana
 
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        when (requestCode) {
+            ADD_SPACE_REQUEST_CODE -> {
+                val name = data?.getStringExtra("name")
+                if (name != null) {
+                    vm.addItem(name)
+                }
+            }
+        }
+    }
+
     companion object {
 
         val TAG = ManageSpaceFragment::class.simpleName.toString()
-
+        const val ADD_SPACE_REQUEST_CODE = 10
         fun newInstance() = ManageSpaceFragment()
 
     }

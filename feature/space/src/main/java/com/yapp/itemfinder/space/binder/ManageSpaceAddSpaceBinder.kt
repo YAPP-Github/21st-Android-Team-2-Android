@@ -1,6 +1,5 @@
 package com.yapp.itemfinder.space.binder
 
-import android.util.Log
 import com.yapp.itemfinder.domain.model.AddSpace
 import com.yapp.itemfinder.feature.common.BaseViewModel
 import com.yapp.itemfinder.feature.common.datalist.binder.AddSpaceBinder

@@ -6,7 +6,7 @@ interface ManageSpaceRepository {
 
     suspend fun getAllManageSpaceItems(): List<ManageSpaceItem>
 
-    suspend fun addNewSpace(name: String): Int
+    suspend fun addNewSpace(name: String): ManageSpaceItem
 
     fun editSpace(): Boolean
 
