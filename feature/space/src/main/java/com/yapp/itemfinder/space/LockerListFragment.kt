@@ -9,6 +9,7 @@ import com.yapp.itemfinder.feature.common.BaseStateFragment
 import com.yapp.itemfinder.feature.common.binding.viewBinding
 import com.yapp.itemfinder.feature.common.datalist.adapter.DataListAdapter
 import com.yapp.itemfinder.feature.common.datalist.binder.DataBindHelper
+import com.yapp.itemfinder.feature.common.extension.showShortToast
 import com.yapp.itemfinder.space.databinding.FragmentLockerListBinding
 import com.yapp.itemfinder.space.managespace.ManageSpaceFragment
 import dagger.hilt.android.AndroidEntryPoint
@@ -53,6 +54,8 @@ class LockerListFragment : BaseStateFragment<LockerListViewModel, FragmentLocker
                         when (sideEffect) {
                             is LockerListSideEffect.MoveToLockerDetail -> {
                                 // 이동
+                                requireActivity().showShortToast(sideEffect.locker.name)
+
                             }
                             else -> {}
                         }
@@ -61,6 +64,13 @@ class LockerListFragment : BaseStateFragment<LockerListViewModel, FragmentLocker
             }
         }
         return job
+    }
+
+    private fun moveToLockerDetail(){
+//        when (activity){
+//            is activity is HomeA
+//        }
+
     }
 
     private fun handleLoading(lockerListState: LockerListState) {

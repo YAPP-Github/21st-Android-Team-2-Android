@@ -59,4 +59,8 @@ class LockerListViewModel @Inject constructor(
             )
         }
     }
+
+    fun moveLockerDetail(locker: Locker) {
+        postSideEffect(LockerListSideEffect.MoveToLockerDetail(locker))
+    }
 }

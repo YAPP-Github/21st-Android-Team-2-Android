@@ -41,5 +41,8 @@ class LockerViewHolder(
             }
             popupMenu.show()
         }
+        binding.root.setOnClickListener {
+            data.moveLockerDetail()
+        }
     }
 }

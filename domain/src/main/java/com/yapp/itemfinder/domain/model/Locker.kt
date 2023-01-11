@@ -7,6 +7,9 @@ data class Locker(
     override var type: CellType = CellType.LOCKER_CELL
 ) : Data() {
 
+    var moveLockerDetailHandler: DataHandler = {}
+    fun moveLockerDetail() = moveLockerDetailHandler.invoke(this)
+
     var editHandler: DataHandler = {}
     fun editLocker() = editHandler.invoke(this)
 
