@@ -31,16 +31,16 @@ class ManageSpaceViewModel @Inject constructor(
         )
     }
 
-    fun addItem(): Job = viewModelScope.launch {
+    fun openAddSpaceDialog(): Job = viewModelScope.launch {
         withState<ManageSpaceState.Success> { state ->
-            setState(
-                state.copy(
-                    ArrayList(state.dataList).apply {
-                        // manageSpaceRepository.addNewSpace("작업실")
-                    }
-                )
+            postSideEffect(
+                ManageSpaceSideEffect.OpenAddSpaceDialog
             )
         }
+    }
+
+    fun addItem(name: String): Job = viewModelScope.launch {
+
     }
 
     fun editItem(space: ManageSpaceItem): Job = viewModelScope.launch {

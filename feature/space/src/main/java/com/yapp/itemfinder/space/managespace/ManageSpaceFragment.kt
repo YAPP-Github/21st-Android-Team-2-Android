@@ -54,6 +54,14 @@ class ManageSpaceFragment : BaseStateFragment<ManageSpaceViewModel, FragmentMana
                 launch {
                     vm.sideEffectFlow.collect { sideEffect ->
                         when (sideEffect) {
+                            is ManageSpaceSideEffect.OpenAddSpaceDialog -> {
+                                val dialog: AddSpaceDialog = AddSpaceDialog().getInstance()
+                                activity?.supportFragmentManager?.let { fragmentManager ->
+                                    dialog.show(
+                                        fragmentManager, "ADD_SPACE_DIALOG"
+                                    )
+                                }
+                            }
                             is ManageSpaceSideEffect.DeleteDialog -> {
                                 activity?.let {
                                     val builder = AlertDialog.Builder(
