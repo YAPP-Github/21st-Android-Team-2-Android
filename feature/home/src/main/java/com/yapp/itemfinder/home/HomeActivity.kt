@@ -2,6 +2,8 @@ package com.yapp.itemfinder.home
 
 import android.content.Context
 import android.content.Intent
+import android.os.Bundle
+import android.os.Parcelable
 import androidx.activity.viewModels
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
@@ -83,11 +85,19 @@ class HomeActivity : BaseActivity<HomeViewModel, ActivityHomeBinding>(), Fragmen
         }
     }
 
-    override fun addFragmentBackStack(tag: String){
+    override fun addFragmentBackStack(tag: String, bundlePair: Pair<String,Parcelable>?){
         binding.root.hideSoftInput()
         with(supportFragmentManager){
             val foundFragment = findFragmentByTag(tag) ?: getFragmentByTag(tag)
             foundFragment?.let {
+                it.arguments = Bundle().apply {
+
+                }
+                if (bundlePair != null){
+                    it.arguments = Bundle().apply {
+                        putParcelable(bundlePair.first,bundlePair.second)
+                    }
+                }
                 beginTransaction()
                 .apply {
                     fragments.forEach { fragment ->
