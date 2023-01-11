@@ -7,4 +7,5 @@ data class SpaceItem(
 ) : Data(){
     var detailHandler: DataHandler =  {}
     fun goSpaceDetailPage() = detailHandler.invoke(this)
+    lateinit var lockerDetailHandler: (Locker) -> Unit
 }

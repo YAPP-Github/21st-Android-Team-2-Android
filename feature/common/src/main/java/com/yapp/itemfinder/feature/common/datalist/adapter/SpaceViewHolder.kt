@@ -11,8 +11,14 @@ import com.yapp.itemfinder.feature.common.extension.visible
 class SpaceViewHolder(
     val binding: SpaceItemBinding
 ) : DataViewHolder<SpaceItem>(binding) {
+
+    private enum class State {
+        NORMAL, OVER
+    }
+
     lateinit var spaceName: String
-    lateinit var lockersInSpace: List<Locker>
+    lateinit var lockers: List<Locker>
+    private var state: State = State.NORMAL
     private val imageViews = listOf(
         binding.spaceFirstImageView,
         binding.spaceSecondImageView,
@@ -29,24 +35,33 @@ class SpaceViewHolder(
     override fun bindData(data: SpaceItem) {
         super.bindData(data)
         spaceName = data.name
-        lockersInSpace = data.lockerList
+        lockers = data.lockerList
+        if (lockers.size > 4)
+            state = State.OVER
+
         with(binding) {
             spaceItemName.text = spaceName
 
-            lockersInSpace.indices.forEach { idx ->
+            lockers.indices.forEach { idx ->
                 val frame = frames[idx]
                 val imageView = imageViews[idx]
                 frame.visible()
                 when (idx) {
                     0, 1, 2 -> {
-                        Glide.with(itemView).load(com.yapp.itemfinder.domain.R.drawable.box).into(imageView)
+                        Glide.with(itemView).load(com.yapp.itemfinder.domain.R.drawable.box)
+                            .into(imageView)
                     }
                     3 -> {
-                        if (lockersInSpace.size > 4) {
-                            spaceFourthTextView.text = "+${lockersInSpace.size - 3}"
-                            frame.setCardBackgroundColor(frame.context.getColor(R.color.brown_03))
-                        } else {
-                            Glide.with(itemView).load(com.yapp.itemfinder.domain.R.drawable.box).into(imageView)
+                        when (state) {
+                            State.NORMAL -> {
+                                Glide.with(itemView).load(com.yapp.itemfinder.domain.R.drawable.box)
+                                    .into(imageView)
+                            }
+                            State.OVER -> {
+                                spaceFourthTextView.text = "+${lockers.size - 3}"
+                                frame.setCardBackgroundColor(frame.context.getColor(R.color.brown_03))
+                            }
+
                         }
                         return
                     }
@@ -56,7 +71,19 @@ class SpaceViewHolder(
     }
 
     override fun bindViews(data: SpaceItem) {
+
         binding.root.setOnClickListener { data.goSpaceDetailPage() }
+        lockers.forEachIndexed { idx, locker ->
+            when (idx) {
+                0, 1, 2 -> frames[idx].setOnClickListener { data.lockerDetailHandler(locker) }
+                3 -> when (state) {
+                    State.NORMAL -> frames[idx].setOnClickListener { data.lockerDetailHandler(locker) }
+                    else -> Unit
+
+                }
+                4 -> return
+            }
+        }
     }
 
     override fun reset() {

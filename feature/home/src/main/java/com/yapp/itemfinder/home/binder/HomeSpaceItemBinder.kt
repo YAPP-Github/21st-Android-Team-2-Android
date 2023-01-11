@@ -1,10 +1,7 @@
 package com.yapp.itemfinder.home.binder
 
 import com.yapp.itemfinder.domain.model.SpaceItem
-import com.yapp.itemfinder.feature.common.BaseStateViewModel
 import com.yapp.itemfinder.feature.common.BaseViewModel
-import com.yapp.itemfinder.feature.common.SideEffect
-import com.yapp.itemfinder.feature.common.State
 import com.yapp.itemfinder.feature.common.datalist.binder.SpaceItemBinder
 import com.yapp.itemfinder.home.tabs.home.HomeTabViewModel
 import javax.inject.Inject
@@ -21,6 +18,9 @@ class HomeSpaceItemBinder @Inject constructor(): SpaceItemBinder{
     private fun setHomeTabViewModelHandler(item: SpaceItem, viewModel: HomeTabViewModel){
         item.detailHandler = { data ->
             viewModel.goSpaceDetail(data as SpaceItem)
+        }
+        item.lockerDetailHandler ={ locker ->
+            viewModel.moveLockerDetailPage(locker)
         }
     }
 }
