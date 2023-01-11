@@ -1,14 +1,12 @@
 package com.yapp.itemfinder.space.lockerdetail
 
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
+import androidx.lifecycle.*
 import com.yapp.itemfinder.domain.model.Data
 import com.yapp.itemfinder.feature.common.BaseStateFragment
 import com.yapp.itemfinder.feature.common.binding.viewBinding
 import com.yapp.itemfinder.feature.common.datalist.adapter.DataListAdapter
 import com.yapp.itemfinder.feature.common.datalist.binder.DataBindHelper
+import com.yapp.itemfinder.feature.common.extension.showShortToast
 import com.yapp.itemfinder.space.databinding.FragmentLockerListBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
@@ -18,7 +16,12 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class LockerDetailFragment : BaseStateFragment<LockerDetailViewModel, FragmentLockerListBinding>() {
 
-    override val vm by viewModels<LockerDetailViewModel>()
+    override val vm by lazy {
+        ViewModelProvider(
+            this,
+            LockerDetailViewModelFactory(requireArguments())
+        )[LockerDetailViewModel::class.java]
+    }
 
     override val binding by viewBinding(FragmentLockerListBinding::inflate)
 
@@ -39,12 +42,12 @@ class LockerDetailFragment : BaseStateFragment<LockerDetailViewModel, FragmentLo
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
                     vm.stateFlow.collect { state ->
-//                        when (state) {
-//                            is LockerListState.Uninitialized -> Unit
-//                            is LockerListState.Loading -> handleLoading(state)
-//                            is LockerListState.Success -> handleSuccess(state)
-//                            is LockerListState.Error -> handleError(state)
-//                        }
+                        when (state) {
+                            is LockerDetailState.Uninitialized -> handleUninitialized(state)
+                            is LockerDetailState.Loading -> Unit
+                            is LockerDetailState.Success -> Unit
+                            is LockerDetailState.Error -> Unit
+                        }
                     }
                 }
                 launch {
@@ -60,6 +63,11 @@ class LockerDetailFragment : BaseStateFragment<LockerDetailViewModel, FragmentLo
             }
         }
         return job
+    }
+
+    private fun handleUninitialized(lockerDetailState: LockerDetailState.Uninitialized){
+        requireActivity().showShortToast(lockerDetailState.locker.toString())
+
     }
 
 //    private fun handleLoading(lockerListState: LockerListState) {
@@ -80,6 +88,5 @@ class LockerDetailFragment : BaseStateFragment<LockerDetailViewModel, FragmentLo
         val TAG = LockerDetailFragment::class.simpleName.toString()
 
         fun newInstance() = LockerDetailFragment()
-
     }
 }

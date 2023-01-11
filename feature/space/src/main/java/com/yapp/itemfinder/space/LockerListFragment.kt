@@ -5,15 +5,14 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.yapp.itemfinder.domain.model.Data
+import com.yapp.itemfinder.domain.model.Locker
 import com.yapp.itemfinder.feature.common.BaseStateFragment
 import com.yapp.itemfinder.feature.common.FragmentNavigator
 import com.yapp.itemfinder.feature.common.binding.viewBinding
 import com.yapp.itemfinder.feature.common.datalist.adapter.DataListAdapter
 import com.yapp.itemfinder.feature.common.datalist.binder.DataBindHelper
-import com.yapp.itemfinder.feature.common.extension.showShortToast
 import com.yapp.itemfinder.space.databinding.FragmentLockerListBinding
 import com.yapp.itemfinder.space.lockerdetail.LockerDetailFragment
-import com.yapp.itemfinder.space.managespace.ManageSpaceFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
@@ -56,10 +55,9 @@ class LockerListFragment : BaseStateFragment<LockerListViewModel, FragmentLocker
                         when (sideEffect) {
                             is LockerListSideEffect.MoveToLockerDetail -> {
                                 // 이동
-                                moveLockerDetail()
+                                moveLockerDetail(sideEffect.locker)
 
                             }
-                            else -> {}
                         }
                     }
                 }
@@ -68,18 +66,19 @@ class LockerListFragment : BaseStateFragment<LockerListViewModel, FragmentLocker
         return job
     }
 
-    private fun moveLockerDetail(){
+    private fun moveLockerDetail(locker: Locker){
         val activity = requireActivity()
         when (activity){
             is FragmentNavigator ->{
-                activity.addFragmentBackStack(LockerDetailFragment.TAG)
+                activity.addFragmentBackStack(LockerDetailFragment.TAG, bundlePair = "locker" to locker)
             }
         }
 
     }
 
     private fun handleLoading(lockerListState: LockerListState) {
-
+        lockerListState.let {  }
+        return
     }
 
     private fun handleSuccess(lockerListState: LockerListState.Success) {
@@ -88,7 +87,7 @@ class LockerListFragment : BaseStateFragment<LockerListViewModel, FragmentLocker
     }
 
     private fun handleError(lockerListState: LockerListState.Error) {
-
+        lockerListState.let {  }
     }
 
     companion object {
