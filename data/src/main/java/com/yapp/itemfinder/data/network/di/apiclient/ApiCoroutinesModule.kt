@@ -1,6 +1,7 @@
 package com.yapp.itemfinder.data.network.di.apiclient
 
 import com.yapp.itemfinder.data.network.api.AppApi
+import com.yapp.itemfinder.data.network.api.managespace.ManageSpaceApi
 import com.yapp.itemfinder.data.network.api.auth.AuthApi
 import com.yapp.itemfinder.data.network.api.auth.AuthWithoutTokenApi
 import dagger.Module
@@ -35,6 +36,14 @@ internal class ApiCoroutinesModule {
         apiClient: ApiClient
     ): AuthApi {
         return apiClient.provideAuthApi()
+    }
+
+    @Provides
+    @Singleton
+    fun provideManageSpaceApi(
+        apiClient: ApiClient
+    ): ManageSpaceApi {
+        return apiClient.provideManageSpaceApi()
     }
 
 }
