@@ -5,4 +5,5 @@ import com.yapp.itemfinder.feature.common.SideEffect
 sealed class ManageSpaceSideEffect : SideEffect {
     object DeleteDialog : ManageSpaceSideEffect()
     object OpenAddSpaceDialog : ManageSpaceSideEffect()
+    object AddSpaceFailedToast : ManageSpaceSideEffect()
 }

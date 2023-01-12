@@ -14,6 +14,7 @@ import com.yapp.itemfinder.feature.common.BaseStateFragment
 import com.yapp.itemfinder.feature.common.binding.viewBinding
 import com.yapp.itemfinder.feature.common.datalist.adapter.DataListAdapter
 import com.yapp.itemfinder.feature.common.datalist.binder.DataBindHelper
+import com.yapp.itemfinder.space.R
 import com.yapp.itemfinder.space.databinding.FragmentManageSpaceBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
@@ -68,6 +69,9 @@ class ManageSpaceFragment : BaseStateFragment<ManageSpaceViewModel, FragmentMana
                                         fragmentManager, ADD_SPACE_DIALOG_TAG
                                     )
                                 }
+                            }
+                            is ManageSpaceSideEffect.AddSpaceFailedToast -> {
+                                Toast.makeText(requireContext(), getString(R.string.failedToAddSpace), Toast.LENGTH_SHORT )
                             }
                             is ManageSpaceSideEffect.DeleteDialog -> {
                                 activity?.let {

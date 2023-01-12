@@ -5,6 +5,7 @@ import com.yapp.itemfinder.domain.model.AddSpace
 import com.yapp.itemfinder.domain.model.ManageSpaceItem
 import com.yapp.itemfinder.domain.repository.ManageSpaceRepository
 import com.yapp.itemfinder.feature.common.BaseStateViewModel
+import com.yapp.itemfinder.feature.common.extension.runCatchingWithErrorHandler
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -22,12 +23,20 @@ class ManageSpaceViewModel @Inject constructor(
 
     override fun fetchData(): Job = viewModelScope.launch {
         setState(ManageSpaceState.Loading)
-        val spaces = manageSpaceRepository.getAllManageSpaceItems()
-        setState(
-            ManageSpaceState.Success(
-                dataList = listOf(AddSpace()) + spaces
+        var spaces = listOf<ManageSpaceItem>()
+        runCatchingWithErrorHandler {
+            spaces = manageSpaceRepository.getAllManageSpaceItems()
+        }.onSuccess {
+            setState(
+                ManageSpaceState.Success(
+                    dataList = listOf(AddSpace()) + spaces
+                )
             )
-        )
+        }.onFailure { e ->
+            setState(
+                ManageSpaceState.Error(e)
+            )
+        }
     }
 
     fun openAddSpaceDialog(): Job = viewModelScope.launch {
@@ -40,14 +49,22 @@ class ManageSpaceViewModel @Inject constructor(
 
     fun addItem(name: String): Job = viewModelScope.launch {
         withState<ManageSpaceState.Success> { state ->
-            val space = manageSpaceRepository.addNewSpace(name)
-            setState(
-                state.copy(
-                    dataList = ArrayList(state.dataList).apply {
-                        add(space)
-                    }
+            runCatchingWithErrorHandler {
+                manageSpaceRepository.addNewSpace(name)
+            }.onSuccess { space ->
+                setState(
+                    state.copy(
+                        dataList = ArrayList(state.dataList).apply {
+                            add(space)
+                        }
+                    )
                 )
-            )
+            }.onFailure { e ->
+                setState(ManageSpaceState.Error(e))
+                postSideEffect(
+                    ManageSpaceSideEffect.AddSpaceFailedToast
+                )
+            }
         }
     }
 
