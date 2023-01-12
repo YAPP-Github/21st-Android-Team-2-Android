@@ -1,13 +1,14 @@
 package com.yapp.itemfinder.space.managespace
 
-import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.setFragmentResult
 import com.yapp.itemfinder.space.databinding.AddSpaceDialogBinding
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -39,12 +40,9 @@ class AddSpaceDialog : DialogFragment() {
     }
 
     private fun passName(name: String) {
-        val intent = Intent()
-        intent.putExtra("name", name)
-        targetFragment?.onActivityResult(
-            targetRequestCode,
-            ManageSpaceFragment.ADD_SPACE_REQUEST_CODE,
-            intent
+        setFragmentResult(
+            ManageSpaceFragment.NEW_SPACE_NAME_REQUEST_KEY,
+            bundleOf(ManageSpaceFragment.NAME_KEY to name)
         )
         dismiss()
     }
