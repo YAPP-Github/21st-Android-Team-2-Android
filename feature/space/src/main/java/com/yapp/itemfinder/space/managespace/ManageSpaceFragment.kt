@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.content.DialogInterface
 import android.view.ContextThemeWrapper
 import android.widget.Toast
+import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -36,6 +37,12 @@ class ManageSpaceFragment : BaseStateFragment<ManageSpaceViewModel, FragmentMana
             dataListAdapter = DataListAdapter()
             recyclerView.adapter = dataListAdapter
         }
+        setFragmentResultListener(NEW_SPACE_NAME_REQUEST_KEY) { requestKey, bundle ->
+            val newSpaceName = bundle.getString(NAME_KEY)
+            if (newSpaceName != null) {
+                vm.addItem(newSpaceName)
+            }
+        }
     }
 
     override fun observeData(): Job {
@@ -54,6 +61,14 @@ class ManageSpaceFragment : BaseStateFragment<ManageSpaceViewModel, FragmentMana
                 launch {
                     vm.sideEffectFlow.collect { sideEffect ->
                         when (sideEffect) {
+                            is ManageSpaceSideEffect.OpenAddSpaceDialog -> {
+                                val dialog: AddSpaceDialog = AddSpaceDialog().getInstance()
+                                activity?.supportFragmentManager?.let { fragmentManager ->
+                                    dialog.show(
+                                        fragmentManager, ADD_SPACE_DIALOG_TAG
+                                    )
+                                }
+                            }
                             is ManageSpaceSideEffect.DeleteDialog -> {
                                 activity?.let {
                                     val builder = AlertDialog.Builder(
@@ -100,7 +115,9 @@ class ManageSpaceFragment : BaseStateFragment<ManageSpaceViewModel, FragmentMana
     companion object {
 
         val TAG = ManageSpaceFragment::class.simpleName.toString()
-
+        const val NEW_SPACE_NAME_REQUEST_KEY = "new space name"
+        const val ADD_SPACE_DIALOG_TAG = "add space dialog"
+        const val NAME_KEY = "name"
         fun newInstance() = ManageSpaceFragment()
 
     }
