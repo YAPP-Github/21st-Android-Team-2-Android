@@ -3,7 +3,9 @@ package com.yapp.itemfinder.domain.model
 data class Locker(
     override var id: Long,
     val name: String,
-    val icon: Int,
+    val icon: String,
+    val spaceId: Long,
+    val imageUrl: String? = null,
     override var type: CellType = CellType.LOCKER_CELL
 ) : Data() {
 
