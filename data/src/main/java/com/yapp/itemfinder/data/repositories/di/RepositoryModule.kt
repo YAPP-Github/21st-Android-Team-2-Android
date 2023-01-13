@@ -1,9 +1,6 @@
 package com.yapp.itemfinder.data.repositories.di
 
-import com.yapp.itemfinder.data.repositories.BannerMockRepositoryImpl
-import com.yapp.itemfinder.data.repositories.LockerMockRepositoryImpl
-import com.yapp.itemfinder.data.repositories.ManageSpaceRepositoryImpl
-import com.yapp.itemfinder.data.repositories.SpaceMockRepositoryImpl
+import com.yapp.itemfinder.data.repositories.*
 import com.yapp.itemfinder.domain.repository.*
 import dagger.Binds
 import dagger.Module
@@ -15,9 +12,15 @@ import javax.inject.Singleton
 @Module
 abstract class RepositoryModule {
 
+    @HomeSpaceMockRepositoryQualifier
     @Binds
     @Singleton
-    abstract fun bindMockSpaceRepository(repository: SpaceMockRepositoryImpl): HomeSpaceRepository
+    abstract fun bindHomeSpaceMockMockRepository(repository: HomeSpaceMockRepositoryImpl): HomeSpaceRepository
+
+    @HomeSpaceRepositoryQualifier
+    @Binds
+    @Singleton
+    abstract fun bindHomeSpaceRepository(repository: HomeSpaceRepositoryImpl): HomeSpaceRepository
 
     @Binds
     @Singleton

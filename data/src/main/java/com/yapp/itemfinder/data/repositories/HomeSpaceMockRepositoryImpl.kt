@@ -8,7 +8,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class SpaceMockRepositoryImpl @Inject constructor() : HomeSpaceRepository {
+class HomeSpaceMockRepositoryImpl @Inject constructor() : HomeSpaceRepository {
 
     override suspend fun getHomeSpaces(): List<SpaceItem> {
         return listOf(

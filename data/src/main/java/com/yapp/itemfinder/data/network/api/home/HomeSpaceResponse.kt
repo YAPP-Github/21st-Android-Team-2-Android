@@ -7,10 +7,9 @@ data class HomeSpaceResponse(
     val spaceId: Long,
     val spaceName: String,
     val containerCount: Int,
-    val description: String?,
     val imageUrl: String?,
     @SerializedName("topContainers")
-    val topContainers: List<HomeSpaceLockerResponse>
+    val topContainers: List<HomeSpaceTopLockerResponse>
 ) {
     fun refineToSpaceItem() = SpaceItem(
         id = spaceId,

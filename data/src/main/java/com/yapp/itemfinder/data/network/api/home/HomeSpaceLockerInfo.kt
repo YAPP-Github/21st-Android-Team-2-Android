@@ -2,7 +2,7 @@ package com.yapp.itemfinder.data.network.api.home
 
 import com.yapp.itemfinder.domain.model.Locker
 
-data class HomeSpaceLockerResponse(
+data class HomeSpaceTopLockerResponse(
     val id: Long,
     val icon: String,
     val spaceId: Long,
