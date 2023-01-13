@@ -13,6 +13,7 @@
         android:backgroundTint="@color/gray_02"
         android:hint="@string/lockerName"
         android:textSize="18sp"
+        android:textColorHint="@color/gray_03"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

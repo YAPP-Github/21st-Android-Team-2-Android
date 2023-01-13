@@ -1,11 +1,11 @@
 package com.yapp.itemfinder.space.addLocker
 
 import com.yapp.itemfinder.domain.model.AddLockerNameInput
+import com.yapp.itemfinder.domain.model.AddLockerPhoto
 import com.yapp.itemfinder.domain.model.AddLockerSpace
 import com.yapp.itemfinder.domain.model.LockerIcons
 import com.yapp.itemfinder.feature.common.BaseStateViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import javax.inject.Inject
@@ -24,7 +24,8 @@ class AddLockerViewModel @Inject constructor(
                 listOf(
                     AddLockerNameInput(),
                     AddLockerSpace(name = "옷장"),
-                    LockerIcons()
+                    LockerIcons(),
+                    AddLockerPhoto()
                 )
             )
         )
