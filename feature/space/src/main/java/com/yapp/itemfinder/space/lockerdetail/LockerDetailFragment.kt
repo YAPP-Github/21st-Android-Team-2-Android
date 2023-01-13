@@ -7,14 +7,14 @@ import com.yapp.itemfinder.feature.common.binding.viewBinding
 import com.yapp.itemfinder.feature.common.datalist.adapter.DataListAdapter
 import com.yapp.itemfinder.feature.common.datalist.binder.DataBindHelper
 import com.yapp.itemfinder.feature.common.extension.showShortToast
-import com.yapp.itemfinder.space.databinding.FragmentLockerListBinding
+import com.yapp.itemfinder.space.databinding.FragmentLockerDetailBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class LockerDetailFragment : BaseStateFragment<LockerDetailViewModel, FragmentLockerListBinding>() {
+class LockerDetailFragment : BaseStateFragment<LockerDetailViewModel, FragmentLockerDetailBinding>() {
 
     override val vm by lazy {
         ViewModelProvider(
@@ -23,7 +23,7 @@ class LockerDetailFragment : BaseStateFragment<LockerDetailViewModel, FragmentLo
         )[LockerDetailViewModel::class.java]
     }
 
-    override val binding by viewBinding(FragmentLockerListBinding::inflate)
+    override val binding by viewBinding(FragmentLockerDetailBinding::inflate)
 
     private var dataListAdapter: DataListAdapter<Data>? = null
 
