@@ -24,7 +24,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_margin="7dp"
-            tools:src="@drawable/box" />
+            tools:src="@drawable/ic_container_1" />
     </androidx.cardview.widget.CardView>
 
     <TextView

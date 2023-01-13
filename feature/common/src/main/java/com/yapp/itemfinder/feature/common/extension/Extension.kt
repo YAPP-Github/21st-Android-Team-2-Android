@@ -17,6 +17,6 @@ fun Int.isOdd() = this % 2 == 1
 fun Int.isEven() = this % 2 == 0
 
 fun String.toDrawable(context: Context): Drawable? {
-    return AppCompatResources.getDrawable(context, context.resources.getIdentifier(this, "drawable", context.packageName))
+    return AppCompatResources.getDrawable(context, context.resources.getIdentifier(this.lowercase(), "drawable", context.packageName))
 
 }
