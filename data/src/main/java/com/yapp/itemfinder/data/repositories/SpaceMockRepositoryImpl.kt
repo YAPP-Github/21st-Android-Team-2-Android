@@ -46,7 +46,8 @@ class SpaceMockRepositoryImpl @Inject constructor() : SpaceRepository {
                     Locker(id = 1L,Math.random().toString(), com.yapp.itemfinder.domain.R.drawable.box),
                     Locker(id = 2L,Math.random().toString(), com.yapp.itemfinder.domain.R.drawable.box),
                     Locker(id = 3L,Math.random().toString(), com.yapp.itemfinder.domain.R.drawable.box),
-                    Locker(id = 4L,Math.random().toString(), com.yapp.itemfinder.domain.R.drawable.box)
+                    Locker(id = 4L,Math.random().toString(), com.yapp.itemfinder.domain.R.drawable.box),
+                    Locker(id = 5L,Math.random().toString(), com.yapp.itemfinder.domain.R.drawable.box)
                 )
             ),
             SpaceItem(
@@ -55,7 +56,6 @@ class SpaceMockRepositoryImpl @Inject constructor() : SpaceRepository {
                     Locker(id = 1L,Math.random().toString(), com.yapp.itemfinder.domain.R.drawable.box),
                     Locker(id = 2L,Math.random().toString(), com.yapp.itemfinder.domain.R.drawable.box),
                     Locker(id = 3L,Math.random().toString(), com.yapp.itemfinder.domain.R.drawable.box),
-                    Locker(id = 4L,Math.random().toString(), com.yapp.itemfinder.domain.R.drawable.box)
                 )
             ),
             SpaceItem(
@@ -63,8 +63,6 @@ class SpaceMockRepositoryImpl @Inject constructor() : SpaceRepository {
                 lockerList = listOf(
                     Locker(id = 1L,Math.random().toString(), com.yapp.itemfinder.domain.R.drawable.box),
                     Locker(id = 2L,Math.random().toString(), com.yapp.itemfinder.domain.R.drawable.box),
-                    Locker(id = 3L,Math.random().toString(), com.yapp.itemfinder.domain.R.drawable.box),
-                    Locker(id = 4L,Math.random().toString(), com.yapp.itemfinder.domain.R.drawable.box)
                 )
             )
         )
