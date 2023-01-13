@@ -2,7 +2,6 @@ package com.yapp.itemfinder.space.addLocker
 
 import android.content.Context
 import android.content.Intent
-import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -26,15 +25,11 @@ class AddLockerActivity : BaseStateActivity<AddLockerViewModel, ActivityAddLocke
 
     private var dataListAdapter: DataListAdapter<Data>? = null
 
-    @Inject lateinit var dataBindHelper: DataBindHelper
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(binding.root)
-    }
+    @Inject
+    lateinit var dataBindHelper: DataBindHelper
 
     override fun initViews() = with(binding) {
-        if (dataListAdapter == null){
+        if (dataListAdapter == null) {
             dataListAdapter = DataListAdapter()
             recyclerView.adapter = dataListAdapter
         }
@@ -56,7 +51,8 @@ class AddLockerActivity : BaseStateActivity<AddLockerViewModel, ActivityAddLocke
                 when (sideEffect) {
                     is AddLockerSideEffect.OpenSelectSpace -> {
                         // 보관함 위치(selectSpace) 화면으로 이동
-                        Toast.makeText(this@AddLockerActivity, "select space", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@AddLockerActivity, "select space", Toast.LENGTH_SHORT)
+                            .show()
                     }
                     else -> {}
                 }

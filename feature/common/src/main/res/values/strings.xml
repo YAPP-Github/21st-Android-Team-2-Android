@@ -6,4 +6,5 @@
     <string name="addNewSpace">공간 추가</string>
     <string name="lockerName">보관함 이름</string>
     <string name="lockerLocation">보관함 위치</string>
+    <string name="icon">아이콘</string>
 </resources>

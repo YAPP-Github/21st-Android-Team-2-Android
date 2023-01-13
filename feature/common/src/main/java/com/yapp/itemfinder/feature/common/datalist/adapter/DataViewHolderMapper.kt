@@ -27,6 +27,7 @@ object DataViewHolderMapper {
             CellType.ADD_LOCKER_NAME_INPUT_CELL -> AddLockerNameInputViewHolder(
                 AddLockerNameInputBinding.inflate(inflater, parent, false))
             CellType.ADD_LOCKER_SPACE_CELL -> AddLockerSpaceViewHolder(AddLockerSpaceBinding.inflate(inflater, parent, false))
+            CellType.LOCKER_ICONS_CELL -> LockerIconsViewHolder(LockerIconsBinding.inflate(inflater, parent, false))
         }
 
         return viewHolder as DataViewHolder<D>
