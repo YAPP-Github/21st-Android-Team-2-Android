@@ -3,7 +3,7 @@ package com.yapp.itemfinder.home.tabs.home
 import androidx.lifecycle.viewModelScope
 import com.yapp.itemfinder.domain.model.*
 import com.yapp.itemfinder.domain.repository.BannerRepository
-import com.yapp.itemfinder.domain.repository.SpaceRepository
+import com.yapp.itemfinder.domain.repository.HomeSpaceRepository
 import com.yapp.itemfinder.feature.common.BaseStateViewModel
 import com.yapp.itemfinder.feature.common.utility.DataWithSpan
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,7 +17,7 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeTabViewModel @Inject constructor(
     private val bannerMockRepository: BannerRepository,
-    private val spaceMockRepository: SpaceRepository
+    private val homeSpaceMockRepository: HomeSpaceRepository
 ) : BaseStateViewModel<HomeTabState, HomeTabSideEffect>(
 
 ) {
@@ -30,7 +30,7 @@ class HomeTabViewModel @Inject constructor(
         setState(HomeTabState.Loading)
 
 //        val banners = async { bannerMockRepository.getAllBanner() }.await()
-        val spaces = async { spaceMockRepository.getAllSpace() }.await()
+        val spaces = async { homeSpaceMockRepository.getHomeSpaces() }.await()
         // call API
         setState(
             HomeTabState.Success(

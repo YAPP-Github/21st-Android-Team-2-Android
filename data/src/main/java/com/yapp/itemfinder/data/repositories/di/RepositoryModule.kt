@@ -4,10 +4,7 @@ import com.yapp.itemfinder.data.repositories.BannerMockRepositoryImpl
 import com.yapp.itemfinder.data.repositories.LockerMockRepositoryImpl
 import com.yapp.itemfinder.data.repositories.ManageSpaceRepositoryImpl
 import com.yapp.itemfinder.data.repositories.SpaceMockRepositoryImpl
-import com.yapp.itemfinder.domain.repository.BannerRepository
-import com.yapp.itemfinder.domain.repository.LockerRepository
-import com.yapp.itemfinder.domain.repository.ManageSpaceRepository
-import com.yapp.itemfinder.domain.repository.SpaceRepository
+import com.yapp.itemfinder.domain.repository.*
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -20,7 +17,7 @@ abstract class RepositoryModule {
 
     @Binds
     @Singleton
-    abstract fun bindMockSpaceRepository(repository: SpaceMockRepositoryImpl): SpaceRepository
+    abstract fun bindMockSpaceRepository(repository: SpaceMockRepositoryImpl): HomeSpaceRepository
 
     @Binds
     @Singleton

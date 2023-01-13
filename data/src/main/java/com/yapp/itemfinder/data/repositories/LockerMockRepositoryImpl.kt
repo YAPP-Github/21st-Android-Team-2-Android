@@ -16,9 +16,9 @@ class LockerMockRepositoryImpl @Inject constructor(
         // api call
         return listOf(
             AddLocker(),
-            Locker(id = 1L, name = "화장대", icon = com.yapp.itemfinder.domain.R.drawable.box),
-            Locker(id = 2L, name = "냉장고", icon = com.yapp.itemfinder.domain.R.drawable.box),
-            Locker(id = 3L, name = "옷장", icon = com.yapp.itemfinder.domain.R.drawable.box)
+            Locker(id = 1L, name = "화장대", icon = "box", spaceId = 999),
+            Locker(id = 2L, name = "냉장고", icon = "box", spaceId = 999),
+            Locker(id = 3L, name = "옷장", icon = "box", spaceId = 999)
         )
     }
 
