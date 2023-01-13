@@ -51,8 +51,8 @@ class AddLockerActivity : BaseStateActivity<AddLockerViewModel, ActivityAddLocke
                 when (sideEffect) {
                     is AddLockerSideEffect.OpenSelectSpace -> {
                         // 보관함 위치(selectSpace) 화면으로 이동
-                        Toast.makeText(this@AddLockerActivity, "select space", Toast.LENGTH_SHORT)
-                            .show()
+                        val name = "서재"
+                        vm.changeSpace(name)
                     }
                     else -> {}
                 }

@@ -36,4 +36,17 @@ class AddLockerViewModel @Inject constructor(
             postSideEffect(AddLockerSideEffect.OpenSelectSpace)
         }
     }
+
+    fun changeSpace(name: String) {
+        withState<AddLockerState.Success> { state ->
+            setState(
+                state.copy(
+                    dataList = ArrayList(state.dataList).apply {
+                        removeAt(1)
+                        add(1, AddLockerSpace(name = name))
+                    }
+                )
+            )
+        }
+    }
 }
