@@ -1,6 +1,7 @@
 package com.yapp.itemfinder.data.network.di.okhttp
 
 import com.google.gson.Gson
+import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import com.yapp.itemfinder.data.network.header.HeaderKey
 import com.yapp.itemfinder.data.network.mapper.DataMapper
@@ -30,7 +31,10 @@ class OkHttpInterceptorModule {
             .header(HeaderKey.CONTENT_TYPE_HEADER_KEY, HeaderKey.CONTENT_TYPE_HEADER_VALUE)
         val accessToken = secureLocalDataStore.get(SecureLocalData.AccessToken)
         if (accessToken.isNotEmpty()) {
-            requestBuilder.header(HeaderKey.AUTHORIZATION_HEADER_KEY, "${HeaderKey.BEARER_PREFIX} $accessToken")
+            requestBuilder.header(
+                HeaderKey.AUTHORIZATION_HEADER_KEY,
+                "${HeaderKey.BEARER_PREFIX} $accessToken"
+            )
         }
         chain.proceed(requestBuilder.build())
     }
@@ -39,7 +43,8 @@ class OkHttpInterceptorModule {
     @Provides
     fun provideHttpLoggingInterceptor(): Interceptor =
         HttpLoggingInterceptor().apply {
-            level = if (BuildConfig.DEBUG) HttpLoggingInterceptor.Level.BODY else HttpLoggingInterceptor.Level.NONE
+            level =
+                if (BuildConfig.DEBUG) HttpLoggingInterceptor.Level.BODY else HttpLoggingInterceptor.Level.NONE
         }
 
     @DataParseInterceptorQualifier
@@ -56,28 +61,25 @@ class OkHttpInterceptorModule {
             if (response.isSuccessful) {
                 val emptyJsonObjectStr = "{}"
                 val body = response.body?.string() ?: emptyJsonObjectStr
-                val rawJson =
-                    if (!(body.startsWith("{") && body.endsWith("}"))) emptyJsonObjectStr
-                    else body
-                val jsonObject = gson.fromJson(rawJson, JsonObject::class.java)
-                val responseData = if (jsonObject.isJsonArray) {
-                    /**
-                     * [
-                     *   {id, type=food},
-                     *   {id, type=필통},
-                     *   {id, type},
-                     *   {id, type},
-                     * ]
-                     */
-                    jsonObject.asJsonArray.map {
+
+                val responseData = if (body.isJsonArrayFormat()) {
+                    val jsonArray = gson.fromJson(body, JsonArray::class.java)
+                    val mapped = jsonArray.map {
                         dataMapper.map(it.asJsonObject)
                     }
-                } else {
-                    /**
-                     * {id, type}
-                     */
+                    if (mapped.contains(null))
+                        jsonArray
+                    else
+                        mapped
+                } else { // 비어있거나, 객체 형태로 오는 경우
+                    val jsonObject = if (body.isJsonObjectFormat())
+                        gson.fromJson(body, JsonObject::class.java)
+                    else
+                        gson.fromJson(emptyJsonObjectStr, JsonObject::class.java)
+
                     dataMapper.map(jsonObject) ?: jsonObject
                 }
+
                 response.newBuilder()
                     .body(gson.toJson(responseData).toResponseBody())
                     .build()
@@ -102,5 +104,8 @@ class OkHttpInterceptorModule {
                 .build()
         }
     }
+
+    private fun String.isJsonObjectFormat(): Boolean = this.startsWith("{") && this.endsWith("}")
+    private fun String.isJsonArrayFormat(): Boolean = this.startsWith("[") && this.endsWith("]")
 }
 
