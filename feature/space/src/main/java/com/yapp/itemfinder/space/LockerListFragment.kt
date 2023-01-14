@@ -1,5 +1,6 @@
 package com.yapp.itemfinder.space
 
+import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -11,7 +12,6 @@ import com.yapp.itemfinder.feature.common.datalist.adapter.DataListAdapter
 import com.yapp.itemfinder.feature.common.datalist.binder.DataBindHelper
 import com.yapp.itemfinder.space.addLocker.AddLockerActivity
 import com.yapp.itemfinder.space.databinding.FragmentLockerListBinding
-import com.yapp.itemfinder.space.managespace.ManageSpaceFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
@@ -28,6 +28,16 @@ class LockerListFragment : BaseStateFragment<LockerListViewModel, FragmentLocker
 
     @Inject
     lateinit var dataBindHelper: DataBindHelper
+
+    override fun initState() {
+        super.initState()
+        initViews()
+        setFragmentResultListener(SPACE_ID_REQUEST_KEY) { requestKey, bundle ->
+            val spaceId = bundle.getLong(SPACE_ID_KEY)
+            vm.fetchLockerList(spaceId)
+        }
+        observeData()
+    }
 
     override fun initViews() = with(binding) {
         if (dataListAdapter == null) {
@@ -83,6 +93,8 @@ class LockerListFragment : BaseStateFragment<LockerListViewModel, FragmentLocker
     companion object {
 
         val TAG = LockerListFragment::class.simpleName.toString()
+        const val SPACE_ID_REQUEST_KEY = "space id for locker list screen"
+        const val SPACE_ID_KEY = "spaceId"
 
         fun newInstance() = LockerListFragment()
 

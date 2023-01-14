@@ -1,6 +1,8 @@
 package com.yapp.itemfinder.home.tabs.home
 
 import android.app.Activity
+import androidx.core.os.bundleOf
+import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -88,13 +90,17 @@ class HomeTabFragment : BaseStateFragment<HomeTabViewModel, FragmentHomeTabBindi
     }
 
     private fun moveSpaceDetail(space: SpaceItem) {
+        setFragmentResult(
+            LockerListFragment.SPACE_ID_REQUEST_KEY,
+            bundleOf(LockerListFragment.SPACE_ID_KEY to space.id)
+        )
         when (activity) {
             is HomeActivity -> (activity as HomeActivity).addFragmentBackStack(LockerListFragment.TAG)
         }
     }
 
 
-    private fun moveSpaceManage(){
+    private fun moveSpaceManage() {
         when (activity) {
             is HomeActivity -> (activity as HomeActivity).addFragmentBackStack(ManageSpaceFragment.TAG)
         }
@@ -111,7 +117,7 @@ class HomeTabFragment : BaseStateFragment<HomeTabViewModel, FragmentHomeTabBindi
             SpaceItemDecoration(
                 bottomFullSpacingDp = 16,
                 horizontalHalfSpacingDp = 6,
-                range = dataListWithSpan.indexOfFirst { it.data.type == CellType.SPACE_CELL } .. dataListWithSpan.indexOfLast{it.data.type == CellType.SPACE_CELL}
+                range = dataListWithSpan.indexOfFirst { it.data.type == CellType.SPACE_CELL }..dataListWithSpan.indexOfLast { it.data.type == CellType.SPACE_CELL }
             )
         )
     }
