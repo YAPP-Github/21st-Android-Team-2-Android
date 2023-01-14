@@ -37,11 +37,14 @@ class HomeTabFragment : BaseStateFragment<HomeTabViewModel, FragmentHomeTabBindi
 
     override val binding by viewBinding(FragmentHomeTabBinding::inflate)
 
+    override val depth: Depth
+        get() = Depth.FIRST
+
     private var dataListAdapter: DataListAdapter<Data>? = null
 
     lateinit var dataListWithSpan: List<DataWithSpan<Data>>
 
-    override val onBackPressedAction = {
+    override fun onBackPressedAction() {
         requireActivity().finish()
     }
 
@@ -63,13 +66,13 @@ class HomeTabFragment : BaseStateFragment<HomeTabViewModel, FragmentHomeTabBindi
         }
     }
 
-    private fun initToolBar() = with(binding) {
-        searchTopNavigationView.leftButtonImageResId = CR.drawable.ic_menu
-        searchTopNavigationView.searchBarImageResId = CR.drawable.ic_search
-        searchTopNavigationView.searchBarBackgroundResId = CR.drawable.bg_button_brown_02_radius_8
-        searchTopNavigationView.searchBarText = getString(R.string.home_search_bar_text)
-        searchTopNavigationView.searchBarTextColor = CR.color.gray_03
-        searchTopNavigationView.leftButtonClickListener = {
+    private fun initToolBar() = with(binding.searchTopNavigationView) {
+        leftButtonImageResId = CR.drawable.ic_menu
+        searchBarImageResId = CR.drawable.ic_search
+        searchBarBackgroundResId = CR.drawable.bg_button_brown_02_radius_8
+        searchBarText = getString(R.string.home_search_bar_text)
+        searchBarTextColor = CR.color.gray_03
+        leftButtonClickListener = {
             Toast.makeText(requireContext(), "메뉴버튼 클릭", Toast.LENGTH_SHORT).show()
         }
     }

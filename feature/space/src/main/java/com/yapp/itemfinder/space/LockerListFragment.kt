@@ -1,5 +1,6 @@
 package com.yapp.itemfinder.space
 
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -7,6 +8,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.yapp.itemfinder.domain.model.Data
 import com.yapp.itemfinder.domain.model.SpaceItem
 import com.yapp.itemfinder.feature.common.BaseStateFragment
+import com.yapp.itemfinder.feature.common.R as CR
 import com.yapp.itemfinder.feature.common.binding.viewBinding
 import com.yapp.itemfinder.feature.common.datalist.adapter.DataListAdapter
 import com.yapp.itemfinder.feature.common.datalist.binder.DataBindHelper
@@ -27,15 +29,39 @@ class LockerListFragment : BaseStateFragment<LockerListViewModel, FragmentLocker
 
     private var dataListAdapter: DataListAdapter<Data>? = null
 
+    override val depth: Depth
+        get() = Depth.SECOND
+
     private val spaceItem by lazy { requireArguments().parcelable<SpaceItem>(SPACE_ITEM_KEY) }
 
     @Inject
     lateinit var dataBindHelper: DataBindHelper
 
     override fun initViews() = with(binding) {
+        initToolBar()
         if (dataListAdapter == null) {
             dataListAdapter = DataListAdapter()
             recyclerView.adapter = dataListAdapter
+        }
+    }
+
+    private fun initToolBar() = with(binding.defaultTopNavigationView) {
+        backButtonImageResId = CR.drawable.ic_back
+        backButtonClickListener = {
+            onBackPressedCallback.handleOnBackPressed()
+        }
+
+        containerColor = CR.color.brown_02
+        titleText = spaceItem?.name
+
+        rightSecondIcon = CR.drawable.ic_search
+        rightSecondIconClickListener = {
+            Toast.makeText(requireContext(), "검색 버튼 클릭", Toast.LENGTH_SHORT).show()
+        }
+
+        rightFirstIcon = CR.drawable.ic_reorder
+        rightFirstIconClickListener = {
+            Toast.makeText(requireContext(), "정렬 버튼 클릭", Toast.LENGTH_SHORT).show()
         }
     }
 
