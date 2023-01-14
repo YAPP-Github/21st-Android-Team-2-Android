@@ -7,5 +7,5 @@ data class SpaceItem(
     override var type: CellType = CellType.SPACE_CELL
 ) : Data(){
     var detailHandler: DataHandler =  {}
-    fun goSpaceDetailPage() = detailHandler.invoke(this)
+    fun moveSpaceDetailPage() = detailHandler.invoke(this)
 }

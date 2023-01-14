@@ -59,11 +59,11 @@ class HomeTabViewModel @Inject constructor(
         // 이런 식으로 분리해서 처리
     }
 
-    fun goSpaceDetail(space: SpaceItem) {
+    fun moveSpaceDetail(space: SpaceItem) {
         postSideEffect(HomeTabSideEffect.MoveSpaceDetail(space))
     }
 
-    fun runSpaceManagementPage(mySpaceUpperCellItem: MySpaceUpperCellItem) {
+    fun moveSpaceManagementPage(mySpaceUpperCellItem: MySpaceUpperCellItem) {
         postSideEffect(HomeTabSideEffect.MoveSpacesManage(mySpaceUpperCellItem))
     }
 }
