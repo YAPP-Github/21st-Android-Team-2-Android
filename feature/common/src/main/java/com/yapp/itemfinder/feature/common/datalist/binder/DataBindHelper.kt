@@ -18,7 +18,8 @@ class DataBindHelper @Inject constructor(
     var lockerItemBinder: LockerItemBinder,
     var addLockerItemBinder: AddLockerItemBinder,
     var manageSpaceItemBinder: ManageSpaceItemBinder,
-    var manageSpaceAddSpaceBinder: AddSpaceBinder
+    var manageSpaceAddSpaceBinder: AddSpaceBinder,
+    var addLockerSpaceBinder: AddLockerSpaceBinder
 ) {
 
 
@@ -51,6 +52,9 @@ class DataBindHelper @Inject constructor(
             }
             CellType.MANAGE_SPACE_CELL -> {
                 manageSpaceItemBinder.bindData(data as ManageSpaceItem, viewModel)
+            }
+            CellType.ADD_LOCKER_SPACE_CELL -> {
+                addLockerSpaceBinder.bindData(data as AddLockerSpace, viewModel)
             }
             else -> {}
         }

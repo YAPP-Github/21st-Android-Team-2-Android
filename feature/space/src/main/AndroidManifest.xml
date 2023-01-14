@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.yapp.itemfinder.space">
-    <application>
 
+    <application>
+        <activity
+            android:name=".addLocker.AddLockerActivity"
+            android:exported="true"
+            android:theme="@style/ItemFinderTheme">
+        </activity>
     </application>
 
 </manifest>

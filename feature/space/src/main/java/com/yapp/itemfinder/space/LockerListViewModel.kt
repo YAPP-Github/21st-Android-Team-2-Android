@@ -18,7 +18,6 @@ class LockerListViewModel @Inject constructor(
         MutableStateFlow(LockerListState.Uninitialized)
     override val _sideEffectFlow: MutableSharedFlow<LockerListSideEffect> = MutableSharedFlow()
 
-    var tmpId = 4L
     override fun fetchData(): Job = viewModelScope.launch {
         setState(LockerListState.Loading)
 
@@ -30,17 +29,9 @@ class LockerListViewModel @Inject constructor(
         )
     }
 
-    fun addItem(): Job = viewModelScope.launch {
+    fun toAddLockerActivity(): Job = viewModelScope.launch {
         withState<LockerListState.Success> { state ->
-            setState(
-                state.copy(
-                    ArrayList(state.dataList).apply {
-//                        add(
-//                            Locker(id = tmpId++, name = "새로운 locker", com.yapp.itemfinder.domain.R.drawable.box)
-//                        )
-                    }
-                )
-            )
+            postSideEffect(LockerListSideEffect.MoveToAddLocker)
         }
     }
 
