@@ -2,4 +2,7 @@
     <string name="tab_tags">Tags</string>
     <string name="tab_home">Home</string>
     <string name="tab_reminder">Reminder</string>
+
+    <string name="home_spaces_empty_guide">내 공간을 추가해봐요!</string>
+    <string name="home_spaces_empty_button">공간 추가하러 가기</string>
 </resources>

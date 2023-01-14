@@ -19,10 +19,9 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeTabViewModel @Inject constructor(
     private val bannerMockRepository: BannerRepository,
-    @HomeSpaceRepositoryQualifier private val homeSpaceRepository: HomeSpaceRepository
-) : BaseStateViewModel<HomeTabState, HomeTabSideEffect>(
-
-) {
+    @HomeSpaceRepositoryQualifier
+    private val homeSpaceRepository: HomeSpaceRepository
+) : BaseStateViewModel<HomeTabState, HomeTabSideEffect>() {
 
     override val _stateFlow: MutableStateFlow<HomeTabState> =
         MutableStateFlow(HomeTabState.Uninitialized)
@@ -35,16 +34,20 @@ class HomeTabViewModel @Inject constructor(
         }
         runCatchingWithErrorHandler {
             homeSpaceRepository.getHomeSpaces()
-        }.onSuccess {  spaces ->
+        }.onSuccess { spaces ->
             setState(
-                HomeTabState.Success(
-                    dataListWithSpan = dataWithSpan.apply {
-                        spaces.forEach {
-                            add(DataWithSpan(it, 1))
+                if (spaces.isEmpty()) {
+                    HomeTabState.Empty
+                } else {
+                    HomeTabState.Success(
+                        dataListWithSpan = dataWithSpan.apply {
+                            spaces.forEach {
+                                add(DataWithSpan(it, 1))
+                            }
+                            add(DataWithSpan(EmptyCellItem(heightDp = 32),2))
                         }
-                        add(DataWithSpan(EmptyCellItem(heightDp = 32),2))
-                    }
-                )
+                    )
+                }
             )
         }.onFailure {
             setState(

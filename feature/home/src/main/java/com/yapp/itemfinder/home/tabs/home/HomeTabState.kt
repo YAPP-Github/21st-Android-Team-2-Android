@@ -10,6 +10,8 @@ sealed class HomeTabState: State {
 
     object Loading: HomeTabState()
 
+    object Empty: HomeTabState()
+
     data class Success(
         val dataListWithSpan: List<DataWithSpan<Data>>
     ): HomeTabState()
