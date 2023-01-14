@@ -10,7 +10,6 @@ import com.yapp.itemfinder.feature.common.extension.runCatchingWithErrorHandler
 import com.yapp.itemfinder.feature.common.utility.DataWithSpan
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
@@ -60,11 +59,11 @@ class HomeTabViewModel @Inject constructor(
         // 이런 식으로 분리해서 처리
     }
 
-    fun goSpaceDetail(space: SpaceItem) {
+    fun moveSpaceDetail(space: SpaceItem) {
         postSideEffect(HomeTabSideEffect.MoveSpaceDetail(space))
     }
 
-    fun runSpaceManagementPage(){
+    fun moveSpaceManagementPage(){
         postSideEffect(HomeTabSideEffect.MoveSpacesManage)
     }
 }

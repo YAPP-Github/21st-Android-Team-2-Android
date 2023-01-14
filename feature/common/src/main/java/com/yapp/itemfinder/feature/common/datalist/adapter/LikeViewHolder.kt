@@ -17,7 +17,7 @@ class LikeViewHolder(
     }
 
     override fun bindViews(data: LikeItem) {
-        binding.likeItemTv.setOnClickListener { data.goLikeDetailPage() }
+        binding.likeItemTv.setOnClickListener { data.moveLikeDetailPage() }
         binding.deleteBtn.setOnClickListener {
             data.deleteLikeItem()
         }

@@ -60,7 +60,7 @@ class SpaceViewHolder(
     }
 
     override fun bindViews(data: SpaceItem) {
-        binding.root.setOnClickListener { data.goSpaceDetailPage() }
+        binding.root.setOnClickListener { data.moveSpaceDetailPage() }
     }
 
     override fun reset() {

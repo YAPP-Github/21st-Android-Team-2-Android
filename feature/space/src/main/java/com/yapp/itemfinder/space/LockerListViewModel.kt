@@ -29,7 +29,7 @@ class LockerListViewModel @Inject constructor(
         )
     }
 
-    fun toAddLockerActivity(): Job = viewModelScope.launch {
+    fun moveAddLockerActivity(): Job = viewModelScope.launch {
         withState<LockerListState.Success> { state ->
             postSideEffect(LockerListSideEffect.MoveToAddLocker)
         }
