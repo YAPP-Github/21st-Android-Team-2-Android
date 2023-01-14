@@ -1,7 +1,7 @@
 <resources>
-    <string name="addSpaceDialogTitle">새 공간 추가</string>
+    <string name="addSpaceDialogTitle">공간 추가</string>
     <string name="space_name">공간 이름</string>
-    <string name="create">만들기</string>
+    <string name="create">추가</string>
     <string name="cancel">취소</string>
     <string name="failedToAddSpace">공간 추가 실패</string>
 </resources>
