@@ -24,6 +24,11 @@ object DataViewHolderMapper {
             CellType.HOMETAB_MYSPACE_UPPER_CELL -> HomeTabMySpaceUpperCellViewHolder(HometabMyspaceUpperCellItemBinding.inflate(inflater, parent, false))
             CellType.ADD_SPACE_CELL -> AddSpaceViewHolder(AddSpaceBinding.inflate(inflater, parent, false))
             CellType.MANAGE_SPACE_CELL -> ManageSpaceViewHolder(ManageSpaceItemBinding.inflate(inflater, parent, false))
+            CellType.ADD_LOCKER_NAME_INPUT_CELL -> AddLockerNameInputViewHolder(
+                AddLockerNameInputBinding.inflate(inflater, parent, false))
+            CellType.ADD_LOCKER_SPACE_CELL -> AddLockerSpaceViewHolder(AddLockerSpaceBinding.inflate(inflater, parent, false))
+            CellType.LOCKER_ICONS_CELL -> LockerIconsViewHolder(LockerIconsBinding.inflate(inflater, parent, false))
+            CellType.ADD_LOCKER_IMAGE_CELL -> AddLockerPhotoViewHolder(AddLockerPhotoBinding.inflate(inflater, parent, false))
         }
 
         return viewHolder as DataViewHolder<D>

@@ -11,6 +11,7 @@ import com.yapp.itemfinder.feature.common.FragmentNavigator
 import com.yapp.itemfinder.feature.common.binding.viewBinding
 import com.yapp.itemfinder.feature.common.datalist.adapter.DataListAdapter
 import com.yapp.itemfinder.feature.common.datalist.binder.DataBindHelper
+import com.yapp.itemfinder.space.addLocker.AddLockerActivity
 import com.yapp.itemfinder.space.databinding.FragmentLockerListBinding
 import com.yapp.itemfinder.space.lockerdetail.LockerDetailFragment
 import dagger.hilt.android.AndroidEntryPoint
@@ -58,6 +59,10 @@ class LockerListFragment : BaseStateFragment<LockerListViewModel, FragmentLocker
                                 moveLockerDetail(sideEffect.locker)
 
                             }
+                            is LockerListSideEffect.MoveToAddLocker -> {
+                                startActivity(AddLockerActivity.newIntent(requireActivity()))
+                            }
+                            else -> {}
                         }
                     }
                 }

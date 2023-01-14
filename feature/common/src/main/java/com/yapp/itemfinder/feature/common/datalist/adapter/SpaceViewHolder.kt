@@ -6,6 +6,7 @@ import com.yapp.itemfinder.domain.model.SpaceItem
 import com.yapp.itemfinder.feature.common.R
 import com.yapp.itemfinder.feature.common.databinding.SpaceItemBinding
 import com.yapp.itemfinder.feature.common.extension.invisible
+import com.yapp.itemfinder.feature.common.extension.toDrawable
 import com.yapp.itemfinder.feature.common.extension.visible
 
 class SpaceViewHolder(
@@ -48,20 +49,17 @@ class SpaceViewHolder(
                 frame.visible()
                 when (idx) {
                     0, 1, 2 -> {
-                        Glide.with(itemView).load(com.yapp.itemfinder.domain.R.drawable.box)
-                            .into(imageView)
+                        val context = binding.root.context
+                        Glide.with(itemView).load(lockers[idx].icon.toDrawable(context)).into(imageView)
+
                     }
                     3 -> {
-                        when (state) {
-                            State.NORMAL -> {
-                                Glide.with(itemView).load(com.yapp.itemfinder.domain.R.drawable.box)
-                                    .into(imageView)
-                            }
-                            State.OVER -> {
-                                spaceFourthTextView.text = "+${lockers.size - 3}"
-                                frame.setCardBackgroundColor(frame.context.getColor(R.color.brown_03))
-                            }
-
+                        if (lockers.size > 4) {
+                            spaceFourthTextView.text = "+${lockers.size - 3}"
+                            frame.setCardBackgroundColor(frame.context.getColor(R.color.brown_03))
+                        } else {
+                            val context = binding.root.context
+                            Glide.with(itemView).load(lockers[idx].icon.toDrawable(context)).into(imageView)
                         }
                         return
                     }

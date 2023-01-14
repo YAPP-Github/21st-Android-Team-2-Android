@@ -6,6 +6,7 @@ import android.widget.PopupMenu
 import com.yapp.itemfinder.domain.model.Locker
 import com.yapp.itemfinder.feature.common.R
 import com.yapp.itemfinder.feature.common.databinding.LockerItemBinding
+import com.yapp.itemfinder.feature.common.extension.toDrawable
 
 class LockerViewHolder(
     val binding: LockerItemBinding
@@ -16,7 +17,7 @@ class LockerViewHolder(
     override fun bindData(data: Locker) {
         super.bindData(data)
         binding.lockerItemTextView.text = data.name
-        binding.lockerItemImageView.setImageResource(data.icon)
+        binding.lockerItemImageView.setImageDrawable(data.icon.toDrawable(binding.root.context))
     }
 
     override fun bindViews(data: Locker) {
