@@ -18,7 +18,7 @@
             android:layout_height="wrap_content"
             android:layout_marginVertical="20dp"
             android:layout_marginStart="20dp"
-            android:src="@drawable/plus_round"
+            android:src="@drawable/ic_plus_round"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

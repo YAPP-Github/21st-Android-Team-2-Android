@@ -22,7 +22,7 @@
         android:id="@+id/MySpaceUpperCellTEdit"
         android:layout_width="24dp"
         android:layout_height="24dp"
-        android:src="@drawable/edit"
+        android:src="@drawable/ic_edit"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
