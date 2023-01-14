@@ -2,7 +2,9 @@ package com.yapp.itemfinder.home
 
 import android.content.Context
 import android.content.Intent
+import android.os.Bundle
 import androidx.activity.viewModels
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.yapp.itemfinder.feature.common.BaseActivity
@@ -37,8 +39,7 @@ class HomeActivity : BaseActivity<HomeViewModel, ActivityHomeBinding>() {
 
     private fun initNavigationBar() {
         binding.bottomNav.setOnItemSelectedListener { item ->
-            val navigationId = item.itemId
-            when (navigationId) {
+            when (item.itemId) {
                 R.id.menu_tags -> {
                     showFragment(LikeTabFragment.TAG)
                     true
@@ -81,7 +82,7 @@ class HomeActivity : BaseActivity<HomeViewModel, ActivityHomeBinding>() {
         }
     }
 
-    fun addFragmentBackStack(tag: String){
+    fun addFragmentBackStack(tag: String, arguments: Bundle = bundleOf()){
         binding.root.hideSoftInput()
         with(supportFragmentManager){
             val foundFragment = findFragmentByTag(tag) ?: getFragmentByTag(tag)
@@ -92,6 +93,7 @@ class HomeActivity : BaseActivity<HomeViewModel, ActivityHomeBinding>() {
                         if (fragment.isHidden.not())
                             hide(fragment)
                     }
+                    it.arguments = arguments
                 }.add(R.id.fragmentContainer, foundFragment)
                     .addToBackStack(null)
                     .commitAllowingStateLoss()

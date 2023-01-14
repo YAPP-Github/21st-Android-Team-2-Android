@@ -1,6 +1,7 @@
 package com.yapp.itemfinder.home.tabs.home
 
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -39,6 +40,10 @@ class HomeTabFragment : BaseStateFragment<HomeTabViewModel, FragmentHomeTabBindi
     private var dataListAdapter: DataListAdapter<Data>? = null
 
     lateinit var dataListWithSpan: List<DataWithSpan<Data>>
+
+    override val onBackPressedAction = {
+        requireActivity().finish()
+    }
 
     @Inject
     lateinit var dataBindHelper: DataBindHelper
@@ -91,7 +96,7 @@ class HomeTabFragment : BaseStateFragment<HomeTabViewModel, FragmentHomeTabBindi
                         is HomeTabSideEffect.ShowToast -> {
                         }
                         is HomeTabSideEffect.MoveSpacesManage -> {
-                            moveSpaceManage()
+                            moveSpaceManage(sideEffect)
                         }
                     }
                 }
@@ -99,17 +104,25 @@ class HomeTabFragment : BaseStateFragment<HomeTabViewModel, FragmentHomeTabBindi
         }
     }
 
-    private fun moveSpaceDetail(space: SpaceItem) {
-        when (activity) {
-            is HomeActivity -> (activity as HomeActivity).addFragmentBackStack(LockerListFragment.TAG)
-        }
+    private fun moveSpaceDetail(spaceItem: SpaceItem) {
+        (requireActivity() as HomeActivity)
+            .addFragmentBackStack(
+                LockerListFragment.TAG,
+                arguments = bundleOf(
+                    LockerListFragment.SPACE_ITEM_KEY to spaceItem
+                )
+            )
     }
 
 
-    private fun moveSpaceManage() {
-        when (activity) {
-            is HomeActivity -> (activity as HomeActivity).addFragmentBackStack(ManageSpaceFragment.TAG)
-        }
+    private fun moveSpaceManage(sideEffect: HomeTabSideEffect.MoveSpacesManage) {
+        (requireActivity() as HomeActivity)
+            .addFragmentBackStack(
+                ManageSpaceFragment.TAG,
+                arguments = bundleOf(
+                    ManageSpaceFragment.MY_SPACE_TITLE_KEY to sideEffect.mySpaceUpperCellItem.title
+                )
+            )
     }
 
     private fun handleLoading() = with(binding) {
@@ -140,7 +153,7 @@ class HomeTabFragment : BaseStateFragment<HomeTabViewModel, FragmentHomeTabBindi
         emptyViewGroup.visible()
         recyclerView.gone()
         emptySpaceAddButton.setOnClickListener {
-            vm.runSpaceManagementPage()
+            //vm.runSpaceManagementPage(it)
         }
     }
 

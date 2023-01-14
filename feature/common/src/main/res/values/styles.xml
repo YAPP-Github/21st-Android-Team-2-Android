@@ -22,6 +22,14 @@
         <item name="background">@color/brown_02</item>
     </style>
 
+    <style name="ItemFinderSecondDepthTheme" parent="ItemFinderTheme">
+        <item name="android:statusBarColor">@color/brown_02</item>
+    </style>
+
+    <style name="ItemFinderThirdDepthTheme" parent="ItemFinderTheme">
+        <item name="android:statusBarColor">@color/brown_03</item>
+    </style>
+
     <style name="BottomNavigationViewStyle" parent="Widget.MaterialComponents.BottomNavigationView.Colored">
         <item name="itemTextColor">@color/bottom_nav_item_color</item>
         <item name="itemIconTint">@color/bottom_nav_item_color</item>

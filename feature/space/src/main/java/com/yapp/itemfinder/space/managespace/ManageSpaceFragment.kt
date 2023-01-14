@@ -30,10 +30,13 @@ class ManageSpaceFragment : BaseStateFragment<ManageSpaceViewModel, FragmentMana
 
     private var dataListAdapter: DataListAdapter<Data>? = null
 
+    private val mySpaceTitle by lazy { requireArguments().getString(MY_SPACE_TITLE_KEY) }
+
     @Inject
     lateinit var dataBindHelper: DataBindHelper
 
     override fun initViews() = with(binding) {
+        initToolBar()
         if (dataListAdapter == null) {
             dataListAdapter = DataListAdapter()
             recyclerView.adapter = dataListAdapter
@@ -43,6 +46,21 @@ class ManageSpaceFragment : BaseStateFragment<ManageSpaceViewModel, FragmentMana
             if (newSpaceName != null) {
                 vm.addItem(newSpaceName)
             }
+        }
+    }
+
+    private fun initToolBar() = with(binding) {
+        defaultTopNavigationView.backButtonImageResId = com.yapp.itemfinder.feature.common.R.drawable.ic_back
+        defaultTopNavigationView.backButtonClickListener = {
+            onBackPressedCallback.handleOnBackPressed()
+        }
+
+        defaultTopNavigationView.containerColor = com.yapp.itemfinder.feature.common.R.color.brown_02
+        defaultTopNavigationView.titleText = mySpaceTitle
+
+        defaultTopNavigationView.rightFirstIcon = com.yapp.itemfinder.feature.common.R.drawable.ic_reorder
+        defaultTopNavigationView.rightFirstIconClickListener = {
+            Toast.makeText(requireContext(), "정렬 버튼 클릭", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -119,9 +137,12 @@ class ManageSpaceFragment : BaseStateFragment<ManageSpaceViewModel, FragmentMana
     companion object {
 
         val TAG = ManageSpaceFragment::class.simpleName.toString()
+
         const val NEW_SPACE_NAME_REQUEST_KEY = "new space name"
         const val ADD_SPACE_DIALOG_TAG = "add space dialog"
         const val NAME_KEY = "name"
+        const val MY_SPACE_TITLE_KEY = "MY_SPACE_TITLE_KEY"
+
         fun newInstance() = ManageSpaceFragment()
 
     }

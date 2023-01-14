@@ -5,13 +5,14 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.yapp.itemfinder.domain.model.Data
+import com.yapp.itemfinder.domain.model.SpaceItem
 import com.yapp.itemfinder.feature.common.BaseStateFragment
 import com.yapp.itemfinder.feature.common.binding.viewBinding
 import com.yapp.itemfinder.feature.common.datalist.adapter.DataListAdapter
 import com.yapp.itemfinder.feature.common.datalist.binder.DataBindHelper
+import com.yapp.itemfinder.feature.common.extension.parcelable
 import com.yapp.itemfinder.space.addLocker.AddLockerActivity
 import com.yapp.itemfinder.space.databinding.FragmentLockerListBinding
-import com.yapp.itemfinder.space.managespace.ManageSpaceFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
@@ -25,6 +26,8 @@ class LockerListFragment : BaseStateFragment<LockerListViewModel, FragmentLocker
     override val binding by viewBinding(FragmentLockerListBinding::inflate)
 
     private var dataListAdapter: DataListAdapter<Data>? = null
+
+    private val spaceItem by lazy { requireArguments().parcelable<SpaceItem>(SPACE_ITEM_KEY) }
 
     @Inject
     lateinit var dataBindHelper: DataBindHelper
@@ -85,6 +88,8 @@ class LockerListFragment : BaseStateFragment<LockerListViewModel, FragmentLocker
         val TAG = LockerListFragment::class.simpleName.toString()
 
         fun newInstance() = LockerListFragment()
+
+        const val SPACE_ITEM_KEY = "SPACE_ITEM_KEY"
 
     }
 }

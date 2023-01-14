@@ -17,7 +17,7 @@
         <com.yapp.itemfinder.feature.common.views.SearchTopNavigationView
             android:id="@+id/searchTopNavigationView"
             android:layout_width="match_parent"
-            android:layout_height="?android:attr/actionBarSize"/>
+            android:layout_height="wrap_content"/>
     </androidx.appcompat.widget.Toolbar>
 
     <androidx.recyclerview.widget.RecyclerView

@@ -29,6 +29,12 @@ class DefaultTopNavigationView
             }
         }
 
+    var backButtonClickListener: ActionHandler? = null
+        set(value) {
+            field = value
+            binding.backButtonImageView.setOnClickListener { value?.invoke() }
+        }
+
     var containerColor: Int = -1
         set(value) {
             field = value
