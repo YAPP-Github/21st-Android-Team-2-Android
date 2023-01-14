@@ -5,6 +5,7 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
+import com.yapp.itemfinder.domain.model.ActionHandler
 import com.yapp.itemfinder.feature.common.R
 import com.yapp.itemfinder.feature.common.databinding.LayoutDefaultTopNavigationBinding
 import com.yapp.itemfinder.feature.common.databinding.LayoutSearchTopNavigationBinding
@@ -18,13 +19,13 @@ class DefaultTopNavigationView
 ) : ConstraintLayout(context, attributeSet) {
 
     private val binding: LayoutDefaultTopNavigationBinding =
-        LayoutDefaultTopNavigationBinding.inflate(LayoutInflater.from(context), this, false)
+        LayoutDefaultTopNavigationBinding.inflate(LayoutInflater.from(context), this, true)
 
     var backButtonImageResId: Int = -1
         set(value) {
             field = value
             if (value != -1) {
-                binding.backButtonImageView.setImageResource(value)
+                binding.backButtonImageView.setImageDrawable(ContextCompat.getDrawable(context, value))
             }
         }
 
@@ -32,7 +33,7 @@ class DefaultTopNavigationView
         set(value) {
             field = value
             if (value != -1) {
-                binding.topNavigationContainer.setBackgroundColor(value)
+                binding.topNavigationContainer.setBackgroundColor(ContextCompat.getColor(context, value))
             }
         }
 
@@ -54,16 +55,28 @@ class DefaultTopNavigationView
             }
         }
 
+    var rightSecondIconClickListener: ActionHandler? = null
+        set(value) {
+            field = value
+            binding.rightSecondIcon.setOnClickListener { value?.invoke() }
+        }
+
     var rightFirstIcon: Int = -1
         set(value) {
             field = value
             if (value != -1) {
-                binding.rightSecondIcon.visible()
-                binding.rightSecondIcon.background =
+                binding.rightFirstIcon.visible()
+                binding.rightFirstIcon.background =
                     ContextCompat.getDrawable(context, value)
             } else {
-                binding.rightSecondIcon.gone()
+                binding.rightFirstIcon.gone()
             }
+        }
+
+    var rightFirstIconClickListener: ActionHandler? = null
+        set(value) {
+            field = value
+            binding.rightFirstIcon.setOnClickListener { value?.invoke() }
         }
 
     init {

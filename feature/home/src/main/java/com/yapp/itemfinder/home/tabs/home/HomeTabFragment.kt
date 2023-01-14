@@ -1,6 +1,6 @@
 package com.yapp.itemfinder.home.tabs.home
 
-import android.app.Activity
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -18,9 +18,11 @@ import com.yapp.itemfinder.feature.common.extension.gone
 import com.yapp.itemfinder.feature.common.extension.visible
 import com.yapp.itemfinder.feature.common.utility.DataWithSpan
 import com.yapp.itemfinder.feature.common.utility.SpaceItemDecoration
+import com.yapp.itemfinder.feature.home.R
 import com.yapp.itemfinder.feature.home.databinding.FragmentHomeTabBinding
 import com.yapp.itemfinder.home.HomeActivity
 import com.yapp.itemfinder.space.LockerListFragment
+import com.yapp.itemfinder.feature.common.R as CR
 import com.yapp.itemfinder.space.managespace.ManageSpaceFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
@@ -41,9 +43,8 @@ class HomeTabFragment : BaseStateFragment<HomeTabViewModel, FragmentHomeTabBindi
     @Inject
     lateinit var dataBindHelper: DataBindHelper
 
-    private val activity: Activity by lazy { requireActivity() }
-
     override fun initViews() = with(binding) {
+        initToolBar()
         if (dataListAdapter == null) {
             dataListAdapter = DataListAdapter()
             recyclerView.adapter = dataListAdapter
@@ -54,6 +55,17 @@ class HomeTabFragment : BaseStateFragment<HomeTabViewModel, FragmentHomeTabBindi
                 }
             }
 
+        }
+    }
+
+    private fun initToolBar() = with(binding) {
+        searchTopNavigationView.leftButtonImageResId = CR.drawable.ic_menu
+        searchTopNavigationView.searchBarImageResId = CR.drawable.ic_search
+        searchTopNavigationView.searchBarBackgroundResId = CR.drawable.bg_button_brown_02_radius_8
+        searchTopNavigationView.searchBarText = getString(R.string.home_search_bar_text)
+        searchTopNavigationView.searchBarTextColor = CR.color.gray_03
+        searchTopNavigationView.leftButtonClickListener = {
+            Toast.makeText(requireContext(), "메뉴버튼 클릭", Toast.LENGTH_SHORT).show()
         }
     }
 

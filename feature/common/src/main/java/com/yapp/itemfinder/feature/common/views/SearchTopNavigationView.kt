@@ -5,6 +5,7 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
+import com.yapp.itemfinder.domain.model.ActionHandler
 import com.yapp.itemfinder.feature.common.R
 import com.yapp.itemfinder.feature.common.databinding.LayoutSearchTopNavigationBinding
 
@@ -15,13 +16,35 @@ class SearchTopNavigationView
 ) : ConstraintLayout(context, attributeSet) {
 
     private val binding: LayoutSearchTopNavigationBinding =
-        LayoutSearchTopNavigationBinding.inflate(LayoutInflater.from(context), this, false)
+        LayoutSearchTopNavigationBinding.inflate(LayoutInflater.from(context), this, true)
 
-    var rightButtonImageResId: Int = -1
+    var leftButtonImageResId: Int = -1
         set(value) {
             field = value
             if (field != -1) {
-                binding.rightButtonImageView.setImageResource(value)
+                binding.leftButtonImageView.setImageDrawable(ContextCompat.getDrawable(context, value))
+            }
+        }
+
+    var leftButtonClickListener: ActionHandler? = null
+        set(value) {
+            field = value
+            binding.leftButtonImageView.setOnClickListener { value?.invoke() }
+        }
+
+    var backgroundColorId: Int = -1
+        set(value) {
+            field = value
+            if (value != -1) {
+                binding.topNavigationContainer.setBackgroundColor(ContextCompat.getColor(context, value))
+            }
+        }
+
+    var searchBarImageResId: Int = -1
+        set(value) {
+            field = value
+            if (field != -1) {
+                binding.searchBarImageView.setImageDrawable(ContextCompat.getDrawable(context, value))
             }
         }
 
@@ -42,12 +65,13 @@ class SearchTopNavigationView
         set(value) {
             field = value
             if (value != -1) {
-                binding.searchBarTextView.setTextColor(value)
+                binding.searchBarTextView.setTextColor(ContextCompat.getColor(context, value))
             }
         }
 
     init {
-        rightButtonImageResId = R.drawable.ic_menu
+        backgroundColorId = R.color.white
+        leftButtonImageResId = R.drawable.ic_menu
         searchBarBackgroundResId = R.drawable.bg_button_brown_02_radius_8
     }
 }

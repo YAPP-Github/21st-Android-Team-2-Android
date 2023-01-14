@@ -2,15 +2,15 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/topNavigationContainer"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    tools:layout_height="?android:attr/actionBarSize"
+    android:layout_height="?android:attr/actionBarSize"
     tools:background="@color/brown_01">
 
     <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/rightButtonImageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/leftButtonImageView"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
         android:layout_marginStart="16dp"
         android:foreground="@drawable/ripple_black_capsule"
         app:layout_constraintTop_toTopOf="parent"
@@ -22,13 +22,13 @@
         android:id="@+id/searchBarBackgroundView"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintStart_toEndOf="@id/rightButtonImageView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
         android:layout_marginHorizontal="16dp"
         android:layout_marginVertical="8dp"
-        tools:background="@drawable/bg_button_brown_02_radius_8"/>
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toEndOf="@id/leftButtonImageView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:background="@drawable/bg_button_brown_02_radius_8" />
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/searchBarImageView"
