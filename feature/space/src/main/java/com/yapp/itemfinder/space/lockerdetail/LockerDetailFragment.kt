@@ -33,7 +33,6 @@ class LockerDetailFragment : BaseStateFragment<LockerDetailViewModel, FragmentLo
     override fun initViews() = with(binding) {
         if (dataListAdapter == null) {
             dataListAdapter = DataListAdapter()
-            recyclerView.adapter = dataListAdapter
         }
     }
 
