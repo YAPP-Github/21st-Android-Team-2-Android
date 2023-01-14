@@ -10,6 +10,7 @@ import com.yapp.itemfinder.feature.common.BaseStateFragment
 import com.yapp.itemfinder.feature.common.binding.viewBinding
 import com.yapp.itemfinder.feature.common.datalist.adapter.DataListAdapter
 import com.yapp.itemfinder.feature.common.datalist.binder.DataBindHelper
+import com.yapp.itemfinder.feature.common.extension.dpToPx
 import com.yapp.itemfinder.feature.common.extension.showShortToast
 import com.yapp.itemfinder.space.R
 import com.yapp.itemfinder.space.databinding.FragmentLockerDetailBinding
@@ -68,14 +69,18 @@ class LockerDetailFragment :
                 return
             }
         })
-        behavior.peekHeight = binding.lockerDetailImageView.height
+        // 메시지큐에 넣어서 실행 -> 뷰가 그려진 다음 위치를 알아내고 바텀 시트가 올라올 위치 계산
+        binding.root.post{
+            behavior.peekHeight = binding.root.measuredHeight - 320.dpToPx(requireContext())
+        }
+
     }
 
     @SuppressLint("ClickableViewAccessibility")
     private fun blockBottomSheetTouchIntercept() {
         with(binding.bottomSheet) {
-            rcvDouble.setOnTouchListener { _, _ ->
-                rcvDouble.parent.requestDisallowInterceptTouchEvent(true)
+            lockerDetailBottomSheetRecyclerView.setOnTouchListener { _, _ ->
+                lockerDetailBottomSheetRecyclerView.parent.requestDisallowInterceptTouchEvent(true)
                 return@setOnTouchListener false
             }
         }
