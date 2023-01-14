@@ -39,16 +39,16 @@ class HomeActivity : BaseActivity<HomeViewModel, ActivityHomeBinding>() {
         binding.bottomNav.setOnItemSelectedListener { item ->
             val navigationId = item.itemId
             when (navigationId) {
-                R.id.menu_reminder -> {
-                    showFragment(ReminderTabFragment.TAG)
+                R.id.menu_tags -> {
+                    showFragment(LikeTabFragment.TAG)
                     true
                 }
                 R.id.menu_home -> {
                     showFragment(HomeTabFragment.TAG)
                     true
                 }
-                R.id.menu_like -> {
-                    showFragment(LikeTabFragment.TAG)
+                R.id.menu_reminder -> {
+                    showFragment(ReminderTabFragment.TAG)
                     true
                 }
                 else -> false
