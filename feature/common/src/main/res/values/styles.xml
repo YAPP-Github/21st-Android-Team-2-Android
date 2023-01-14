@@ -48,8 +48,26 @@
         <item name="android:shadowColor">#FCFBF9</item>
     </style>
 
-    <style name="AlertDialog" parent="Theme.AppCompat.Dialog.Alert">
+    <style name="AlertDialog" parent="Theme.AppCompat.Dialog.Alert"/>
 
+    <style name="DefaultGray04Toolbar">
+        <item name="android:theme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
+        <item name="android:minHeight">?attr/actionBarSize</item>
+        <item name="android:textColor">@color/gray_04</item>
+        <item name="android:textAppearance">@style/ItemFinderTypography.Head</item>
+        <item name="titleTextAppearance">@style/ItemFinderTypography.Head</item>
+        <item name="popupTheme">@style/ThemeOverlay.AppCompat.Light</item>
+        <item name="titleTextColor">@color/gray_04</item>
+    </style>
+
+    <style name="DefaultGray05Toolbar">
+        <item name="android:theme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
+        <item name="android:minHeight">?attr/actionBarSize</item>
+        <item name="android:textColor">@color/gray_05</item>
+        <item name="android:textAppearance">@style/ItemFinderTypography.Head</item>
+        <item name="titleTextAppearance">@style/ItemFinderTypography.Head</item>
+        <item name="popupTheme">@style/ThemeOverlay.AppCompat.Light</item>
+        <item name="titleTextColor">@color/gray_05</item>
     </style>
 
 </resources>
