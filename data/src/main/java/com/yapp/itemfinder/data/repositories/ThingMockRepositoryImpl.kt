@@ -26,6 +26,6 @@ class ThingMockRepositoryImpl @Inject constructor() : ThingRepository {
     }
 
     override fun getThingsByLockerId(lockerId: Long): List<Thing> {
-        throw NotImplementedError("NOT IMPLEMENTED")
+        return listOf(sample,sample,sample,sample,sample,sample,sample,sample,sample,sample,sample,sample)
     }
 }

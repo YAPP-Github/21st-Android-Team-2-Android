@@ -1,6 +1,5 @@
 package com.yapp.itemfinder.data.repositories
 
-import com.yapp.itemfinder.data.network.api.AppApi
 import com.yapp.itemfinder.domain.model.AddLocker
 import com.yapp.itemfinder.domain.model.Data
 import com.yapp.itemfinder.domain.model.Locker
@@ -18,5 +17,9 @@ class LockerMockRepositoryImpl @Inject constructor() : LockerRepository {
             Locker(id = 2L, name = "냉장고", icon = "ic_container_1", spaceId = 999),
             Locker(id = 3L, name = "옷장", icon = "ic_container_1", spaceId = 999)
         )
+    }
+
+    override suspend fun getLocker(lockerId: Long): Locker {
+        return Locker(id = lockerId, name = "화장대", icon = "ic_container_1", spaceId = 999)
     }
 }
