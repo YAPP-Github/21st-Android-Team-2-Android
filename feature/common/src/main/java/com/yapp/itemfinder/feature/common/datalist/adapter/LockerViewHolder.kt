@@ -3,24 +3,24 @@ package com.yapp.itemfinder.feature.common.datalist.adapter
 import android.os.Build
 import android.view.Gravity
 import android.widget.PopupMenu
-import com.yapp.itemfinder.domain.model.Locker
+import com.yapp.itemfinder.domain.model.LockerEntity
 import com.yapp.itemfinder.feature.common.R
 import com.yapp.itemfinder.feature.common.databinding.LockerItemBinding
 import com.yapp.itemfinder.feature.common.extension.toDrawable
 
 class LockerViewHolder(
     val binding: LockerItemBinding
-) : DataViewHolder<Locker>(binding) {
+) : DataViewHolder<LockerEntity>(binding) {
     override fun reset() {
     }
 
-    override fun bindData(data: Locker) {
+    override fun bindData(data: LockerEntity) {
         super.bindData(data)
         binding.lockerItemTextView.text = data.name
         binding.lockerItemImageView.setImageDrawable(data.icon.toDrawable(binding.root.context))
     }
 
-    override fun bindViews(data: Locker) {
+    override fun bindViews(data: LockerEntity) {
         binding.spinnerImageButton.setOnClickListener {
             val popupMenu = PopupMenu(itemView.context, binding.spinnerImageButton, Gravity.END, 0, R.style.PopupMenu)
             popupMenu.inflate(R.menu.pop_up_menu)

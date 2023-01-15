@@ -2,7 +2,7 @@ package com.yapp.itemfinder.data.repositories
 
 import com.yapp.itemfinder.data.network.api.lockerlist.LockerListApi
 import com.yapp.itemfinder.domain.coroutines.DispatcherProvider
-import com.yapp.itemfinder.domain.model.Locker
+import com.yapp.itemfinder.domain.model.LockerEntity
 import com.yapp.itemfinder.domain.repository.LockerRepository
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -13,7 +13,7 @@ class LockerRepositoryImpl @Inject constructor(
     private val dispatcherProvider: DispatcherProvider,
     private val lockerListApi: LockerListApi
 ) : LockerRepository {
-    override suspend fun getLockers(spacdId: Long): List<Locker> {
+    override suspend fun getLockers(spacdId: Long): List<LockerEntity> {
         return withContext(dispatcherProvider.io) {
             val response = lockerListApi.getLockersBySpaceId(spacdId)
             val lockerList = response.map { it.refineToLocker() }

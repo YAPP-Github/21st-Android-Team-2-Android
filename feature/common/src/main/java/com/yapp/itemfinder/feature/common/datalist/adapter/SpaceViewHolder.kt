@@ -1,7 +1,7 @@
 package com.yapp.itemfinder.feature.common.datalist.adapter
 
 import com.bumptech.glide.Glide
-import com.yapp.itemfinder.domain.model.Locker
+import com.yapp.itemfinder.domain.model.LockerEntity
 import com.yapp.itemfinder.domain.model.SpaceItem
 import com.yapp.itemfinder.feature.common.R
 import com.yapp.itemfinder.feature.common.databinding.SpaceItemBinding
@@ -13,7 +13,7 @@ class SpaceViewHolder(
     val binding: SpaceItemBinding
 ) : DataViewHolder<SpaceItem>(binding) {
     lateinit var spaceName: String
-    lateinit var lockersInSpace: List<Locker>
+    lateinit var lockersInSpace: List<LockerEntity>
     private val imageViews = listOf(
         binding.spaceFirstImageView,
         binding.spaceSecondImageView,

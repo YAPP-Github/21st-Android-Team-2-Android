@@ -20,7 +20,7 @@ class DataMapper @Inject constructor(
             CellType.EMPTY_CELL.name -> convertJsonType(json, Data::class)
             CellType.CATEGORY_CELL.name -> convertJsonType(json, Category::class)
             CellType.LIKE_CELL.name -> convertJsonType(json, LikeItem::class)
-            CellType.LOCKER_CELL.name -> convertJsonType(json, Locker::class)
+            CellType.LOCKER_CELL.name -> convertJsonType(json, LockerEntity::class)
             CellType.MANAGE_SPACE_CELL.name -> convertJsonType(json, ManageSpaceItem::class)
             else -> null
         }

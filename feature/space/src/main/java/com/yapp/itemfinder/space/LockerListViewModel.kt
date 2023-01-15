@@ -3,7 +3,7 @@ package com.yapp.itemfinder.space
 import androidx.lifecycle.viewModelScope
 import com.yapp.itemfinder.data.repositories.di.LockerRepositoryQualifiers
 import com.yapp.itemfinder.domain.model.AddLocker
-import com.yapp.itemfinder.domain.model.Locker
+import com.yapp.itemfinder.domain.model.LockerEntity
 import com.yapp.itemfinder.domain.repository.LockerRepository
 import com.yapp.itemfinder.feature.common.BaseStateViewModel
 import com.yapp.itemfinder.feature.common.extension.runCatchingWithErrorHandler
@@ -46,11 +46,11 @@ class LockerListViewModel @Inject constructor(
         }
     }
 
-    fun editItem(item: Locker): Job = viewModelScope.launch {
+    fun editItem(item: LockerEntity): Job = viewModelScope.launch {
 
     }
 
-    fun deleteItem(item: Locker): Job = viewModelScope.launch {
+    fun deleteItem(item: LockerEntity): Job = viewModelScope.launch {
         withState<LockerListState.Success> { state ->
             setState(
                 state.copy(
