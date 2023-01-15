@@ -16,9 +16,8 @@ class LockerRepositoryImpl @Inject constructor(
     override suspend fun getLockers(spacdId: Long): List<Locker> {
         return withContext(dispatcherProvider.io) {
             val response = lockerListApi.getLockersBySpaceId(spacdId)
-            val lockerList = response.body() ?: listOf()
-            val result = lockerList.map { it.refineToLocker() }
-            result
+            val lockerList = response.map { it.refineToLocker() }
+            lockerList
         }
     }
 }
