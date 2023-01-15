@@ -1,11 +1,14 @@
 package com.yapp.itemfinder.space.lockerdetail
 
 import android.annotation.SuppressLint
+import android.util.Log
 import android.view.View
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.*
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetBehavior.BottomSheetCallback
 import com.yapp.itemfinder.domain.model.Data
+import com.yapp.itemfinder.domain.model.Locker
 import com.yapp.itemfinder.feature.common.BaseStateFragment
 import com.yapp.itemfinder.feature.common.binding.viewBinding
 import com.yapp.itemfinder.feature.common.datalist.adapter.DataListAdapter
@@ -23,11 +26,14 @@ import javax.inject.Inject
 class LockerDetailFragment :
     BaseStateFragment<LockerDetailViewModel, FragmentLockerDetailBinding>() {
 
-    override val vm by lazy {
-        ViewModelProvider(
-            this,
-            LockerDetailViewModelFactory(requireArguments())
-        )[LockerDetailViewModel::class.java]
+    @Inject
+    lateinit var lockerDetailViewModelFactory: LockerDetailViewModel.LockerIdAssistedFactory
+
+    override val vm by viewModels<LockerDetailViewModel> {
+        LockerDetailViewModel.provideFactory(
+            lockerDetailViewModelFactory,
+            (requireArguments().get("locker") as Locker).id
+        )
     }
 
     override val binding by viewBinding(FragmentLockerDetailBinding::inflate)
@@ -70,10 +76,10 @@ class LockerDetailFragment :
             }
         })
         // 메시지큐에 넣어서 실행 -> 뷰가 그려진 다음 위치를 알아내고 바텀 시트가 올라올 위치 계산
-        binding.root.post{
+        // 이걸 lockerDetailImage.post로 바꿔야하지 않을까?
+        binding.root.post {
             behavior.peekHeight = binding.root.measuredHeight - 320.dpToPx(requireContext())
         }
-
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -87,6 +93,7 @@ class LockerDetailFragment :
     }
 
     override fun observeData(): Job {
+        Log.i("LockerDetailFragment", "observeData: ")
         val job = viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
@@ -94,7 +101,7 @@ class LockerDetailFragment :
                         when (state) {
                             is LockerDetailState.Uninitialized -> handleUninitialized(state)
                             is LockerDetailState.Loading -> Unit
-                            is LockerDetailState.Success -> Unit
+                            is LockerDetailState.Success -> handleSuccess(state)
                             is LockerDetailState.Error -> Unit
                         }
                     }
@@ -110,17 +117,18 @@ class LockerDetailFragment :
     }
 
     private fun handleUninitialized(lockerDetailState: LockerDetailState.Uninitialized) {
-        requireActivity().showShortToast(lockerDetailState.locker.toString())
+        requireActivity().showShortToast(lockerDetailState.lockerId.toString())
     }
 
 //    private fun handleLoading(lockerListState: LockerListState) {
 //
 //    }
 //
-//    private fun handleSuccess(lockerListState: LockerListState.Success) {
+    private fun handleSuccess(lockerDetailState: LockerDetailState.Success) {
 //        dataBindHelper.bindList(lockerListState.dataList, vm)
 //        dataListAdapter?.submitList(lockerListState.dataList)
-//    }
+        requireActivity().showShortToast(lockerDetailState.dataList.toString())
+    }
 
 //    private fun handleError(lockerListState: LockerListState.Error) {
 //

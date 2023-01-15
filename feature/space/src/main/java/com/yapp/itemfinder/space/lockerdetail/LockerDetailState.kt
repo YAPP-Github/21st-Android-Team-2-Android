@@ -5,7 +5,7 @@ import com.yapp.itemfinder.feature.common.State
 
 sealed class LockerDetailState: State {
     data class Uninitialized(
-        val locker: Locker
+        val lockerId: Long
     ) : LockerDetailState()
 
     object Loading : LockerDetailState()
