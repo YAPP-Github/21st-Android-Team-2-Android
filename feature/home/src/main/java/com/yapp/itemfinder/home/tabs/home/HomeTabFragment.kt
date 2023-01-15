@@ -1,8 +1,8 @@
 package com.yapp.itemfinder.home.tabs.home
 
+import androidx.fragment.app.viewModels
 import android.widget.Toast
 import androidx.core.os.bundleOf
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -156,7 +156,7 @@ class HomeTabFragment : BaseStateFragment<HomeTabViewModel, FragmentHomeTabBindi
         emptyViewGroup.visible()
         recyclerView.gone()
         emptySpaceAddButton.setOnClickListener {
-            //vm.runSpaceManagementPage(it)
+            //vm.moveSpaceManagementPage()
         }
     }
 
