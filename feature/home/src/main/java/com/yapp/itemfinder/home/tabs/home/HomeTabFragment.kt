@@ -128,7 +128,7 @@ class HomeTabFragment : BaseStateFragment<HomeTabViewModel, FragmentHomeTabBindi
         emptyViewGroup.visible()
         recyclerView.gone()
         emptySpaceAddButton.setOnClickListener {
-            vm.runSpaceManagementPage()
+            vm.moveSpaceManagementPage()
         }
     }
 
