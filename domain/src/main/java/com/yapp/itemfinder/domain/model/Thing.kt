@@ -6,8 +6,15 @@ data class Thing(
     var name: String,
     var expirationDate: String?,
     var imageUrl: String?,
+    var thingCategory: ThingCategory?,
     var tags: List<Tag>?
 
-) : Data(){
+) : Data() {
 
+}
+
+enum class ThingCategory {
+    LIFE,
+    FOOD,
+    FASHION
 }

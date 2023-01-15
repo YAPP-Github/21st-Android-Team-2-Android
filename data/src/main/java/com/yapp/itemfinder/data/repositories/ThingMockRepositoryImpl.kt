@@ -2,6 +2,7 @@ package com.yapp.itemfinder.data.repositories
 
 import com.yapp.itemfinder.domain.model.Tag
 import com.yapp.itemfinder.domain.model.Thing
+import com.yapp.itemfinder.domain.model.ThingCategory
 import com.yapp.itemfinder.domain.repository.ThingRepository
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -12,6 +13,7 @@ class ThingMockRepositoryImpl @Inject constructor() : ThingRepository {
     private val sample = Thing(
         id = 1,
         lockerId = 1,
+        thingCategory = ThingCategory.FOOD,
         name = "선크림",
         expirationDate = "2022.12.25까지",
         imageUrl = "http://source.unsplash.com/random/150x150",
