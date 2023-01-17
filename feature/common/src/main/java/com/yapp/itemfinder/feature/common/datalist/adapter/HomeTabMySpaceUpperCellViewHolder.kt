@@ -19,6 +19,6 @@ class HomeTabMySpaceUpperCellViewHolder(
 
 
     override fun bindViews(data: MySpaceUpperCellItem) {
-        binding.MySpaceUpperCellTEdit.setOnClickListener { data.runSpaceManagementPage() }
+        binding.MySpaceUpperCellTEdit.setOnClickListener { data.runSpaceManagementDetail() }
     }
 }

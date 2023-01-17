@@ -16,6 +16,8 @@ import com.yapp.itemfinder.domain.model.Data
 import com.yapp.itemfinder.domain.model.SpaceItem
 import com.yapp.itemfinder.feature.common.BaseStateFragment
 import com.yapp.itemfinder.feature.common.datalist.binder.DataBindHelper
+import com.yapp.itemfinder.feature.common.extension.gone
+import com.yapp.itemfinder.feature.common.extension.visible
 import com.yapp.itemfinder.feature.common.utility.DataWithSpan
 import com.yapp.itemfinder.feature.common.utility.SpaceItemDecoration
 import com.yapp.itemfinder.feature.home.databinding.FragmentHomeTabBinding
@@ -48,12 +50,9 @@ class HomeTabFragment : BaseStateFragment<HomeTabViewModel, FragmentHomeTabBindi
             dataListAdapter = DataListAdapter()
             recyclerView.adapter = dataListAdapter
             recyclerView.layoutManager = GridLayoutManager(activity, 2).apply {
-
                 spanSizeLookup = object : SpanSizeLookup() {
-                    override fun getSpanSize(position: Int): Int {
-
-                        return dataListWithSpan[position].span
-                    }
+                    override fun getSpanSize(position: Int): Int =
+                        dataListWithSpan[position].span
                 }
             }
 
@@ -66,8 +65,9 @@ class HomeTabFragment : BaseStateFragment<HomeTabViewModel, FragmentHomeTabBindi
                 vm.stateFlow.collect { state ->
                     when (state) {
                         is HomeTabState.Uninitialized -> Unit
-                        is HomeTabState.Loading -> handleLoading(state)
+                        is HomeTabState.Loading -> handleLoading()
                         is HomeTabState.Success -> handleSuccess(state)
+                        is HomeTabState.Empty -> handleEmpty()
                         is HomeTabState.Error -> handleError(state)
                     }
                 }
@@ -106,10 +106,16 @@ class HomeTabFragment : BaseStateFragment<HomeTabViewModel, FragmentHomeTabBindi
         }
     }
 
-    private fun handleLoading(homeTabState: HomeTabState.Loading) {
+    private fun handleLoading() = with(binding) {
+        emptyViewGroup.gone()
+        progressBar.visible()
+        recyclerView.gone()
     }
 
     private fun handleSuccess(homeTabState: HomeTabState.Success) {
+        binding.emptyViewGroup.gone()
+        binding.progressBar.gone()
+        binding.recyclerView.visible()
         dataListWithSpan = homeTabState.dataListWithSpan
         dataBindHelper.bindList(dataListWithSpan.map { it.data }, vm)
         dataListAdapter?.submitList(dataListWithSpan.map { it.data })
@@ -117,12 +123,23 @@ class HomeTabFragment : BaseStateFragment<HomeTabViewModel, FragmentHomeTabBindi
             SpaceItemDecoration(
                 bottomFullSpacingDp = 16,
                 horizontalHalfSpacingDp = 6,
-                range = dataListWithSpan.indexOfFirst { it.data.type == CellType.SPACE_CELL }..dataListWithSpan.indexOfLast { it.data.type == CellType.SPACE_CELL }
+                range = dataListWithSpan.indexOfFirst { it.data.type == CellType.SPACE_CELL }
+                    ..dataListWithSpan.indexOfLast { it.data.type == CellType.SPACE_CELL }
             )
         )
     }
 
+    private fun handleEmpty() = with(binding) {
+        progressBar.gone()
+        emptyViewGroup.visible()
+        recyclerView.gone()
+        emptySpaceAddButton.setOnClickListener {
+            vm.moveSpaceManagementPage()
+        }
+    }
+
     private fun handleError(homeTabState: HomeTabState.Error) {
+        binding.progressBar.gone()
     }
 
     companion object {

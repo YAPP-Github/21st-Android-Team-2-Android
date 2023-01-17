@@ -32,9 +32,9 @@
             android:id="@+id/radioButton1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/locker_icon_selector"
+            android:background="@drawable/ic_locker_icon_selector"
             android:button="@null"
-            android:drawableStart="@drawable/box_large" />
+            android:drawableStart="@drawable/ic_box_large" />
 
         <Space
             android:layout_width="wrap_content"
@@ -45,9 +45,9 @@
             android:id="@+id/radioButton2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/locker_icon_selector"
+            android:background="@drawable/ic_locker_icon_selector"
             android:button="@null"
-            android:drawableStart="@drawable/basket_large" />
+            android:drawableStart="@drawable/ic_basket_large" />
 
         <Space
             android:layout_width="wrap_content"
@@ -58,9 +58,9 @@
             android:id="@+id/radioButton3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/locker_icon_selector"
+            android:background="@drawable/ic_locker_icon_selector"
             android:button="@null"
-            android:drawableStart="@drawable/drawer_large" />
+            android:drawableStart="@drawable/ic_drawer_large" />
 
         <Space
             android:layout_width="wrap_content"
@@ -71,9 +71,9 @@
             android:id="@+id/radioButton4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/locker_icon_selector"
+            android:background="@drawable/ic_locker_icon_selector"
             android:button="@null"
-            android:drawableStart="@drawable/bookshelf_large" />
+            android:drawableStart="@drawable/ic_bookshelf_large" />
 
     </RadioGroup>
 
@@ -92,9 +92,9 @@
             android:id="@+id/radioButton5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/locker_icon_selector"
+            android:background="@drawable/ic_locker_icon_selector"
             android:button="@null"
-            android:drawableStart="@drawable/fridge_large" />
+            android:drawableStart="@drawable/ic_fridge_large" />
 
         <Space
             android:layout_width="wrap_content"
@@ -105,9 +105,9 @@
             android:id="@+id/radioButton6"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/locker_icon_selector"
+            android:background="@drawable/ic_locker_icon_selector"
             android:button="@null"
-            android:drawableStart="@drawable/closet_large" />
+            android:drawableStart="@drawable/ic_closet_large" />
 
         <Space
             android:layout_width="wrap_content"
@@ -118,9 +118,9 @@
             android:id="@+id/radioButton7"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/locker_icon_selector"
+            android:background="@drawable/ic_locker_icon_selector"
             android:button="@null"
-            android:drawableStart="@drawable/dressing_table_large" />
+            android:drawableStart="@drawable/ic_dressing_table_large" />
 
         <Space
             android:layout_width="wrap_content"
@@ -131,9 +131,9 @@
             android:id="@+id/radioButton8"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/locker_icon_selector"
+            android:background="@drawable/ic_locker_icon_selector"
             android:button="@null"
-            android:drawableStart="@drawable/builtin_closet_large" />
+            android:drawableStart="@drawable/ic_builtin_closet_large" />
 
     </RadioGroup>
 </androidx.constraintlayout.widget.ConstraintLayout>

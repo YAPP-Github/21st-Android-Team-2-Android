@@ -2,9 +2,9 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/menu_reminder"
-        android:icon="@drawable/ic_home"
-        android:title="@string/tab_reminder" />
+        android:id="@+id/menu_tags"
+        android:icon="@drawable/ic_tags"
+        android:title="@string/tab_tags" />
 
     <item
         android:id="@+id/menu_home"
@@ -12,8 +12,8 @@
         android:title="@string/tab_home" />
 
     <item
-        android:id="@+id/menu_like"
-        android:icon="@drawable/ic_home"
-        android:title="@string/tab_like" />
+        android:id="@+id/menu_reminder"
+        android:icon="@drawable/ic_reminder"
+        android:title="@string/tab_reminder" />
 
 </menu>

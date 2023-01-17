@@ -6,7 +6,7 @@ data class LikeItem(
     override var type: CellType = CellType.LIKE_CELL
 ): Data(){
 
-    fun goLikeDetailPage() = handler.invoke(this)
+    fun moveLikeDetailPage() = handler.invoke(this)
 
     var deleteHandler: DataHandler = {}
     fun deleteLikeItem() = deleteHandler.invoke(this)
