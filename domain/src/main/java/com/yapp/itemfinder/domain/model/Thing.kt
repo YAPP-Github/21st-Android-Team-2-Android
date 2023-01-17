@@ -6,8 +6,9 @@ data class Thing(
     var name: String,
     var expirationDate: String?,
     var imageUrl: String?,
-    var thingCategory: ThingCategory?,
-    var tags: List<Tag>?
+    val thingCategory: ThingCategory?,
+    var tags: List<Tag>?,
+    override var type:  CellType = CellType.THING_IN_LIST_CELL
 
 ) : Data() {
 

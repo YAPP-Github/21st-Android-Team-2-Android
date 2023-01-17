@@ -47,6 +47,7 @@ class LockerDetailFragment :
         if (dataListAdapter == null) {
             dataListAdapter = DataListAdapter()
         }
+        bottomSheet.lockerDetailBottomSheetRecyclerView.adapter =dataListAdapter
         initBottomSheet()
     }
 
@@ -125,8 +126,8 @@ class LockerDetailFragment :
 //    }
 //
     private fun handleSuccess(lockerDetailState: LockerDetailState.Success) {
-//        dataBindHelper.bindList(lockerListState.dataList, vm)
-//        dataListAdapter?.submitList(lockerListState.dataList)
+        dataBindHelper.bindList(lockerDetailState.dataList, vm)
+        dataListAdapter?.submitList(lockerDetailState.dataList)
         requireActivity().showShortToast(lockerDetailState.dataList.toString())
     }
 

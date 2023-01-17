@@ -18,9 +18,9 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:id="@+id/lockerDetailThingItem"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:id="@+id/imageView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_gravity="center"
             tools:src="@drawable/icon_thing_fashion" />
     </androidx.cardview.widget.CardView>
@@ -41,7 +41,7 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/lockerItemTextView"
+                android:id="@+id/nameTextView"
                 style="@style/ItemFinderTypography.Subhead"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -52,6 +52,7 @@
                 tools:text="선크림" />
 
             <TextView
+                android:id="@+id/thingNumTextView"
                 style="@style/ItemFinderTypography.Body4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -63,6 +64,7 @@
         </LinearLayout>
 
         <TextView
+            android:id="@+id/expireDateTextView"
             style="@style/ItemFinderTypography.Body4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

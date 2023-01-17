@@ -3,6 +3,8 @@ package com.yapp.itemfinder.space.lockerdetail
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import com.yapp.itemfinder.domain.model.Data
+import com.yapp.itemfinder.domain.model.Locker
 import com.yapp.itemfinder.domain.repository.LockerRepository
 import com.yapp.itemfinder.domain.repository.ThingRepository
 import com.yapp.itemfinder.feature.common.BaseStateViewModel
@@ -30,9 +32,17 @@ class LockerDetailViewModel @AssistedInject constructor(
         // api를 붙일 경우, args의 id를 활용하세요
         runCatchingWithErrorHandler {
             setState(LockerDetailState.Loading)
-            lockerRepository.getLocker(lockerId) to thingsRepository.getThingsByLockerId(lockerId)
+            mutableListOf<Data>().apply {
+                add(lockerRepository.getLocker(lockerId))
+                addAll(thingsRepository.getThingsByLockerId(lockerId))
+            }
         }.onSuccess {
-            setState(LockerDetailState.Success(locker = it.first, dataList = it.second))
+            setState(
+                LockerDetailState.Success(
+                    locker = it.first() as Locker,
+                    dataList = it.drop(1)
+                )
+            )
 
         }.onFailure {
             setState(LockerDetailState.Error(it))
