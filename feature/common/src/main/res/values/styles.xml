@@ -68,7 +68,7 @@
         <item name="android:background">@drawable/background_chip_tag</item>
     </style>
 
-    <style name="ChipFrameStyle.EmptyTag">
+    <style name="ChipFrameStyle.Overflow">
         <item name="android:background">@drawable/background_chip_empty_tag</item>
     </style>
 
@@ -82,7 +82,7 @@
         <item name="android:textColor">@color/gray_05</item>
     </style>
 
-    <style name="ChipTextViewStyle.Empty">
+    <style name="ChipTextViewStyle.Overflow">
         <item name="android:textColor">@color/brown_05</item>
     </style>
 

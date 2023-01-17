@@ -14,8 +14,8 @@ data class Thing(
 
 }
 
-enum class ThingCategory {
-    LIFE,
-    FOOD,
-    FASHION
+enum class ThingCategory(val label: String) {
+    LIFE("생활"),
+    FOOD("식품"),
+    FASHION("패션")
 }

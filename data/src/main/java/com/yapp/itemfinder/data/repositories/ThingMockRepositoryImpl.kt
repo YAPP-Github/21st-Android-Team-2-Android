@@ -19,15 +19,36 @@ class ThingMockRepositoryImpl @Inject constructor() : ThingRepository {
         imageUrl = "http://source.unsplash.com/random/150x150",
         tags = listOf(Tag("생활"), Tag("화장품"))
     )
+    private val sampleLongTag = sample.copy(
+        tags = mutableListOf<Tag>().apply {
+            for (i in 1..5) {
+                addAll(listOf(Tag("생활"), Tag("화장품")))
+            }
+        }
+    )
 
     override fun getAllThings(): List<Thing> {
         return mutableListOf<Thing>().apply {
+            add(sampleLongTag)
             for (i in 1..10)
                 add(sample)
         }
     }
 
     override fun getThingsByLockerId(lockerId: Long): List<Thing> {
-        return listOf(sample,sample,sample,sample,sample,sample,sample,sample,sample,sample,sample,sample)
+        return listOf(
+            sampleLongTag,
+            sample,
+            sample,
+            sample,
+            sample,
+            sample,
+            sample,
+            sample,
+            sample,
+            sample,
+            sample,
+            sample
+        )
     }
 }

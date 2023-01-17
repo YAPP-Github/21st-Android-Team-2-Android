@@ -73,6 +73,7 @@
             tools:text="2022.12.25까지" />
 
         <LinearLayout
+            android:id="@+id/categoruAndTagsLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="6dp">
@@ -92,6 +93,15 @@
 
             </FrameLayout>
 
+
+            <LinearLayout
+                android:id="@+id/tagsLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+
+            </LinearLayout>
 
         </LinearLayout>
 
