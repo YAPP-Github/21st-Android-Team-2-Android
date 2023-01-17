@@ -13,6 +13,9 @@ class ReminderTabFragment: BaseFragment<ReminderTabViewModel, FragmentReminderTa
 
     override val binding by viewBinding(FragmentReminderTabBinding::inflate)
 
+    override val depth: Depth
+        get() = Depth.FIRST
+
     override fun initViews() = with(binding) {
     }
 

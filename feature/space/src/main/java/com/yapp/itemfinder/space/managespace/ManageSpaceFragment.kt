@@ -1,7 +1,6 @@
 package com.yapp.itemfinder.space.managespace
 
 import android.app.AlertDialog
-import android.content.DialogInterface
 import android.view.ContextThemeWrapper
 import android.widget.Toast
 import androidx.fragment.app.setFragmentResultListener
@@ -15,6 +14,7 @@ import com.yapp.itemfinder.feature.common.binding.viewBinding
 import com.yapp.itemfinder.feature.common.datalist.adapter.DataListAdapter
 import com.yapp.itemfinder.feature.common.datalist.binder.DataBindHelper
 import com.yapp.itemfinder.space.R
+import com.yapp.itemfinder.feature.common.R as CR
 import com.yapp.itemfinder.space.databinding.FragmentManageSpaceBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
@@ -28,12 +28,18 @@ class ManageSpaceFragment : BaseStateFragment<ManageSpaceViewModel, FragmentMana
 
     override val binding by viewBinding(FragmentManageSpaceBinding::inflate)
 
+    override val depth: Depth
+        get() = Depth.SECOND
+
     private var dataListAdapter: DataListAdapter<Data>? = null
+
+    private val mySpaceTitle by lazy { requireArguments().getString(MY_SPACE_TITLE_KEY) }
 
     @Inject
     lateinit var dataBindHelper: DataBindHelper
 
     override fun initViews() = with(binding) {
+        initToolBar()
         if (dataListAdapter == null) {
             dataListAdapter = DataListAdapter()
             recyclerView.adapter = dataListAdapter
@@ -43,6 +49,21 @@ class ManageSpaceFragment : BaseStateFragment<ManageSpaceViewModel, FragmentMana
             if (newSpaceName != null) {
                 vm.addItem(newSpaceName)
             }
+        }
+    }
+
+    private fun initToolBar() = with(binding.defaultTopNavigationView) {
+        backButtonImageResId = CR.drawable.ic_back
+        backButtonClickListener = {
+            onBackPressedCallback.handleOnBackPressed()
+        }
+
+        containerColor = CR.color.brown_02
+        titleText = mySpaceTitle
+
+        rightFirstIcon = CR.drawable.ic_reorder
+        rightFirstIconClickListener = {
+            Toast.makeText(requireContext(), "정렬 버튼 클릭", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -71,26 +92,24 @@ class ManageSpaceFragment : BaseStateFragment<ManageSpaceViewModel, FragmentMana
                                 }
                             }
                             is ManageSpaceSideEffect.AddSpaceFailedToast -> {
-                                Toast.makeText(requireContext(), getString(R.string.failedToAddSpace), Toast.LENGTH_SHORT )
+                                Toast.makeText(requireContext(), getString(R.string.failedToAddSpace), Toast.LENGTH_SHORT)
                             }
                             is ManageSpaceSideEffect.DeleteDialog -> {
                                 activity?.let {
                                     val builder = AlertDialog.Builder(
                                         ContextThemeWrapper(
                                             it,
-                                            com.yapp.itemfinder.feature.common.R.style.AlertDialog
+                                            CR.style.AlertDialog
                                         )
                                     )
                                     builder.setMessage("공간 삭제")
-                                        .setPositiveButton("삭제",
-                                            DialogInterface.OnClickListener { dialog, id ->
-                                                Toast.makeText(context, "삭제", Toast.LENGTH_SHORT)
-                                                    .show()
-                                            })
-                                        .setNegativeButton("취소",
-                                            DialogInterface.OnClickListener { dialog, id ->
-                                                // User cancelled the dialog
-                                            })
+                                        .setPositiveButton("삭제") { dialog, id ->
+                                            Toast.makeText(context, "삭제", Toast.LENGTH_SHORT)
+                                                .show()
+                                        }
+                                        .setNegativeButton("취소") { dialog, id ->
+                                            // User cancelled the dialog
+                                        }
                                     val dialog = builder.create()
                                     dialog.show()
                                 }
@@ -119,9 +138,12 @@ class ManageSpaceFragment : BaseStateFragment<ManageSpaceViewModel, FragmentMana
     companion object {
 
         val TAG = ManageSpaceFragment::class.simpleName.toString()
+
         const val NEW_SPACE_NAME_REQUEST_KEY = "new space name"
         const val ADD_SPACE_DIALOG_TAG = "add space dialog"
         const val NAME_KEY = "name"
+        const val MY_SPACE_TITLE_KEY = "MY_SPACE_TITLE_KEY"
+
         fun newInstance() = ManageSpaceFragment()
 
     }

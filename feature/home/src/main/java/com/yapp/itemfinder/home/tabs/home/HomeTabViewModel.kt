@@ -63,7 +63,7 @@ class HomeTabViewModel @Inject constructor(
         postSideEffect(HomeTabSideEffect.MoveSpaceDetail(space))
     }
 
-    fun moveSpaceManagementPage(){
-        postSideEffect(HomeTabSideEffect.MoveSpacesManage)
+    fun moveSpaceManagementPage(mySpaceUpperCellItem: MySpaceUpperCellItem) {
+        postSideEffect(HomeTabSideEffect.MoveSpacesManage(mySpaceUpperCellItem))
     }
 }

@@ -1,7 +1,8 @@
 package com.yapp.itemfinder.home.tabs.home
 
-import android.app.Activity
 import androidx.fragment.app.viewModels
+import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -18,9 +19,11 @@ import com.yapp.itemfinder.feature.common.extension.gone
 import com.yapp.itemfinder.feature.common.extension.visible
 import com.yapp.itemfinder.feature.common.utility.DataWithSpan
 import com.yapp.itemfinder.feature.common.utility.SpaceItemDecoration
+import com.yapp.itemfinder.feature.home.R
 import com.yapp.itemfinder.feature.home.databinding.FragmentHomeTabBinding
 import com.yapp.itemfinder.home.HomeActivity
 import com.yapp.itemfinder.space.LockerListFragment
+import com.yapp.itemfinder.feature.common.R as CR
 import com.yapp.itemfinder.space.managespace.ManageSpaceFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
@@ -34,16 +37,22 @@ class HomeTabFragment : BaseStateFragment<HomeTabViewModel, FragmentHomeTabBindi
 
     override val binding by viewBinding(FragmentHomeTabBinding::inflate)
 
+    override val depth: Depth
+        get() = Depth.FIRST
+
     private var dataListAdapter: DataListAdapter<Data>? = null
 
     lateinit var dataListWithSpan: List<DataWithSpan<Data>>
 
+    override fun onBackPressedAction() {
+        requireActivity().finish()
+    }
+
     @Inject
     lateinit var dataBindHelper: DataBindHelper
 
-    private val activity: Activity by lazy { requireActivity() }
-
     override fun initViews() = with(binding) {
+        initToolBar()
         if (dataListAdapter == null) {
             dataListAdapter = DataListAdapter()
             recyclerView.adapter = dataListAdapter
@@ -54,6 +63,17 @@ class HomeTabFragment : BaseStateFragment<HomeTabViewModel, FragmentHomeTabBindi
                 }
             }
 
+        }
+    }
+
+    private fun initToolBar() = with(binding.searchTopNavigationView) {
+        leftButtonImageResId = CR.drawable.ic_menu
+        searchBarImageResId = CR.drawable.ic_search
+        searchBarBackgroundResId = CR.drawable.bg_button_brown_02_radius_8
+        searchBarText = getString(R.string.home_search_bar_text)
+        searchBarTextColor = CR.color.gray_03
+        leftButtonClickListener = {
+            Toast.makeText(requireContext(), "메뉴버튼 클릭", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -79,7 +99,7 @@ class HomeTabFragment : BaseStateFragment<HomeTabViewModel, FragmentHomeTabBindi
                         is HomeTabSideEffect.ShowToast -> {
                         }
                         is HomeTabSideEffect.MoveSpacesManage -> {
-                            moveSpaceManage()
+                            moveSpaceManage(sideEffect)
                         }
                     }
                 }
@@ -87,17 +107,25 @@ class HomeTabFragment : BaseStateFragment<HomeTabViewModel, FragmentHomeTabBindi
         }
     }
 
-    private fun moveSpaceDetail(space: SpaceItem) {
-        when (activity) {
-            is HomeActivity -> (activity as HomeActivity).addFragmentBackStack(LockerListFragment.TAG)
-        }
+    private fun moveSpaceDetail(spaceItem: SpaceItem) {
+        (requireActivity() as HomeActivity)
+            .addFragmentBackStack(
+                LockerListFragment.TAG,
+                arguments = bundleOf(
+                    LockerListFragment.SPACE_ITEM_KEY to spaceItem
+                )
+            )
     }
 
 
-    private fun moveSpaceManage() {
-        when (activity) {
-            is HomeActivity -> (activity as HomeActivity).addFragmentBackStack(ManageSpaceFragment.TAG)
-        }
+    private fun moveSpaceManage(sideEffect: HomeTabSideEffect.MoveSpacesManage) {
+        (requireActivity() as HomeActivity)
+            .addFragmentBackStack(
+                ManageSpaceFragment.TAG,
+                arguments = bundleOf(
+                    ManageSpaceFragment.MY_SPACE_TITLE_KEY to sideEffect.mySpaceUpperCellItem.title
+                )
+            )
     }
 
     private fun handleLoading() = with(binding) {
@@ -128,7 +156,7 @@ class HomeTabFragment : BaseStateFragment<HomeTabViewModel, FragmentHomeTabBindi
         emptyViewGroup.visible()
         recyclerView.gone()
         emptySpaceAddButton.setOnClickListener {
-            vm.moveSpaceManagementPage()
+            //vm.moveSpaceManagementPage()
         }
     }
 

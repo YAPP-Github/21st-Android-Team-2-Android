@@ -7,4 +7,8 @@
     <dimen name="typography_subhead">16dp</dimen>
     <dimen name="typography_head">18dp</dimen>
     <dimen name="typography_title">20dp</dimen>
+
+    <dimen name="radius_8dp">8dp</dimen>
+    <dimen name="radius_12dp">12dp</dimen>
+    <dimen name="radius_capsule">360dp</dimen>
 </resources>
