@@ -51,5 +51,40 @@
     <style name="AlertDialog" parent="Theme.AppCompat.Dialog.Alert">
 
     </style>
+    <!--    -->
+    <style name="ChipFrameStyle">
+        <item name="android:paddingLeft">8dp</item>
+        <item name="android:paddingRight">8dp</item>
+        <item name="android:paddingTop">4dp</item>
+        <item name="android:paddingBottom">4dp</item>
+
+    </style>
+
+    <style name="ChipFrameStyle.Category">
+        <item name="android:background">@drawable/background_chip_category</item>
+    </style>
+
+    <style name="ChipFrameStyle.Tag">
+        <item name="android:background">@drawable/background_chip_tag</item>
+    </style>
+
+    <style name="ChipFrameStyle.EmptyTag">
+        <item name="android:background">@drawable/background_chip_empty_tag</item>
+    </style>
+
+    <style name="ChipTextViewStyle" parent="ItemFinderTypography.Body4" />
+
+    <style name="ChipTextViewStyle.Category">
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="ChipTextViewStyle.Tag">
+        <item name="android:textColor">@color/gray_05</item>
+    </style>
+
+    <style name="ChipTextViewStyle.Empty">
+        <item name="android:textColor">@color/brown_05</item>
+    </style>
+
 
 </resources>

@@ -1,0 +1,6 @@
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <solid android:color="@color/brown_02" />
+
+    <corners android:radius="@dimen/tag_or_category_radius" />
+</shape>
