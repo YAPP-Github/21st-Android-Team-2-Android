@@ -23,7 +23,7 @@
         android:layout_width="match_parent"
         android:layout_height="240dp"
         android:layout_marginTop="12dp"
-        android:background="@drawable/take_photo_background"
+        android:background="@drawable/bg_take_photo"
         android:gravity="center"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
@@ -33,7 +33,7 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/plus_large_brown" />
+            android:src="@drawable/ic_plus_large_brown" />
 
         <TextView
             style="@style/ItemFinderTypography.Body3"
