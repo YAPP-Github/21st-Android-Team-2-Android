@@ -1,4 +1,4 @@
-package com.yapp.itemfinder.space.addLocker
+package com.yapp.itemfinder.space.addlocker
 
 import android.content.Context
 import android.content.Intent

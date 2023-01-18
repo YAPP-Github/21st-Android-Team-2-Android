@@ -43,7 +43,7 @@ class DataBindHelper @Inject constructor(
                 homeMySpaceUpperCellItemBinder.bindData(data as MySpaceUpperCellItem, viewModel)
             }
             CellType.LOCKER_CELL -> {
-                lockerItemBinder.bindData(data as Locker, viewModel)
+                lockerItemBinder.bindData(data as LockerEntity, viewModel)
             }
             CellType.ADD_LOCKER_CELL -> {
                 addLockerItemBinder.bindData(data as AddLocker, viewModel)

@@ -1,6 +1,8 @@
 package com.yapp.itemfinder.home.tabs.home
 
 import android.app.Activity
+import androidx.core.os.bundleOf
+import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -88,6 +90,10 @@ class HomeTabFragment : BaseStateFragment<HomeTabViewModel, FragmentHomeTabBindi
     }
 
     private fun moveSpaceDetail(space: SpaceItem) {
+        setFragmentResult(
+            LockerListFragment.SPACE_ID_REQUEST_KEY,
+            bundleOf(LockerListFragment.SPACE_ID_KEY to space.id)
+        )
         when (activity) {
             is HomeActivity -> (activity as HomeActivity).addFragmentBackStack(LockerListFragment.TAG)
         }
