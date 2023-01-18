@@ -2,7 +2,6 @@ package com.yapp.itemfinder.space.addLocker
 
 import android.content.Context
 import android.content.Intent
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.yapp.itemfinder.domain.model.Data
@@ -11,6 +10,7 @@ import com.yapp.itemfinder.feature.common.binding.viewBinding
 import com.yapp.itemfinder.feature.common.datalist.adapter.DataListAdapter
 import com.yapp.itemfinder.feature.common.datalist.binder.DataBindHelper
 import com.yapp.itemfinder.space.databinding.ActivityAddLockerBinding
+import com.yapp.itemfinder.space.selectspace.SelectSpaceActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
@@ -50,9 +50,10 @@ class AddLockerActivity : BaseStateActivity<AddLockerViewModel, ActivityAddLocke
             vm.sideEffectFlow.collect { sideEffect ->
                 when (sideEffect) {
                     is AddLockerSideEffect.OpenSelectSpace -> {
-                        // 보관함 위치(selectSpace) 화면으로 이동
-                        val name = "서재"
-                        vm.changeSpace(name)
+                        startActivity(SelectSpaceActivity.newIntent(this@AddLockerActivity))
+                        // 수정된 보관함 위치로 변경
+                        // val name = "서재"
+                        // vm.changeSpace(name)
                     }
                     else -> {}
                 }

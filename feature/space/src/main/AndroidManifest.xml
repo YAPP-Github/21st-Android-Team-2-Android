@@ -6,8 +6,10 @@
         <activity
             android:name=".addLocker.AddLockerActivity"
             android:exported="true"
-            android:theme="@style/ItemFinderTheme">
-        </activity>
+            android:theme="@style/ItemFinderTheme" />
+        <activity
+            android:name=".selectspace.SelectSpaceActivity"
+            android:theme="@style/ItemFinderTheme" />
     </application>
 
 </manifest>
