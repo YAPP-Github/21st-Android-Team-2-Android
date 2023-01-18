@@ -6,7 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.yapp.itemfinder.domain.model.Data
 import com.yapp.itemfinder.domain.model.Locker
 import com.yapp.itemfinder.domain.repository.LockerRepository
-import com.yapp.itemfinder.domain.repository.ThingRepository
+import com.yapp.itemfinder.domain.repository.ItemRepository
 import com.yapp.itemfinder.feature.common.BaseStateViewModel
 import com.yapp.itemfinder.feature.common.extension.runCatchingWithErrorHandler
 import dagger.assisted.Assisted
@@ -18,7 +18,7 @@ import kotlinx.coroutines.launch
 
 class LockerDetailViewModel @AssistedInject constructor(
     @Assisted private val lockerId: Long,
-    private val thingsRepository: ThingRepository,
+    private val itemRepository: ItemRepository,
     private val lockerRepository: LockerRepository,
 
     ) : BaseStateViewModel<LockerDetailState, LockerDetailSideEffect>() {
@@ -34,7 +34,7 @@ class LockerDetailViewModel @AssistedInject constructor(
             setState(LockerDetailState.Loading)
             mutableListOf<Data>().apply {
                 add(lockerRepository.getLocker(lockerId))
-                addAll(thingsRepository.getThingsByLockerId(lockerId))
+                addAll(itemRepository.getItemsByLockerId(lockerId))
             }
         }.onSuccess {
             setState(

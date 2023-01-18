@@ -1,20 +1,20 @@
 package com.yapp.itemfinder.domain.model
 
-data class Thing(
+data class Item(
     override var id: Long,
     var lockerId: Long,
     var name: String,
     var expirationDate: String?,
     var imageUrl: String?,
-    val thingCategory: ThingCategory?,
+    val itemCategory: ItemCategory?,
     var tags: List<Tag>?,
-    override var type:  CellType = CellType.THING_IN_LIST_CELL
+    override var type:  CellType = CellType.ITEM_SIMPLE_CELL
 
 ) : Data() {
 
 }
 
-enum class ThingCategory(val label: String) {
+enum class ItemCategory(val label: String) {
     LIFE("생활"),
     FOOD("식품"),
     FASHION("패션")

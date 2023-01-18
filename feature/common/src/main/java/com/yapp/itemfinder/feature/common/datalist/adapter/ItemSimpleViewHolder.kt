@@ -6,15 +6,15 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.view.ContextThemeWrapper
 import com.bumptech.glide.Glide
-import com.yapp.itemfinder.domain.model.Thing
+import com.yapp.itemfinder.domain.model.Item
 import com.yapp.itemfinder.feature.common.R
-import com.yapp.itemfinder.feature.common.databinding.ThingSimpleItemBinding
+import com.yapp.itemfinder.feature.common.databinding.ItemSimpleItemBinding
 import com.yapp.itemfinder.feature.common.extension.dpToPx
 import com.yapp.itemfinder.feature.common.extension.gone
 
-class ThingSimpleViewHolder(
-    val binding: ThingSimpleItemBinding
-) : DataViewHolder<Thing>(binding) {
+class ItemSimpleViewHolder(
+    val binding: ItemSimpleItemBinding
+) : DataViewHolder<Item>(binding) {
 
     private val context = binding.root.context
 
@@ -22,12 +22,12 @@ class ThingSimpleViewHolder(
         binding.tagsLayout.removeAllViews()
     }
 
-    override fun bindData(data: Thing) {
+    override fun bindData(data: Item) {
         super.bindData(data)
         with(binding) {
             Glide.with(root.context).load(data.imageUrl).into(imageView)
             nameTextView.text = data.name
-            thingNumTextView.text = "3개 (dummy)"
+            itemNumTextView.text = "3개 (dummy)"
 
             data.expirationDate?.let {
                 expireDateTextView.text = it
@@ -36,7 +36,7 @@ class ThingSimpleViewHolder(
             }
 
             var currentSize = 0
-            data.thingCategory?.let {
+            data.itemCategory?.let {
                 thingCategory.text = it.label
                 currentSize += it.label.length
             } ?: kotlin.run {
@@ -82,7 +82,7 @@ class ThingSimpleViewHolder(
         }
     }
 
-    override fun bindViews(data: Thing) {
+    override fun bindViews(data: Item) {
         binding.root.setOnClickListener {
             return@setOnClickListener
         }

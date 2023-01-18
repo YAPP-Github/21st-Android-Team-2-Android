@@ -1,19 +1,19 @@
 package com.yapp.itemfinder.data.repositories
 
 import com.yapp.itemfinder.domain.model.Tag
-import com.yapp.itemfinder.domain.model.Thing
-import com.yapp.itemfinder.domain.model.ThingCategory
-import com.yapp.itemfinder.domain.repository.ThingRepository
+import com.yapp.itemfinder.domain.model.Item
+import com.yapp.itemfinder.domain.model.ItemCategory
+import com.yapp.itemfinder.domain.repository.ItemRepository
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class ThingMockRepositoryImpl @Inject constructor() : ThingRepository {
+class ItemMockRepositoryImpl @Inject constructor() : ItemRepository {
 
-    private val sample = Thing(
+    private val sample = Item(
         id = 1,
         lockerId = 1,
-        thingCategory = ThingCategory.FOOD,
+        itemCategory = ItemCategory.FOOD,
         name = "선크림",
         expirationDate = "2022.12.25까지",
         imageUrl = "http://source.unsplash.com/random/150x150",
@@ -27,15 +27,15 @@ class ThingMockRepositoryImpl @Inject constructor() : ThingRepository {
         }
     )
 
-    override fun getAllThings(): List<Thing> {
-        return mutableListOf<Thing>().apply {
+    override fun getAllItems(): List<Item> {
+        return mutableListOf<Item>().apply {
             add(sampleLongTag)
             for (i in 1..10)
                 add(sample)
         }
     }
 
-    override fun getThingsByLockerId(lockerId: Long): List<Thing> {
+    override fun getItemsByLockerId(lockerId: Long): List<Item> {
         return listOf(
             sampleLongTag,
             sample,

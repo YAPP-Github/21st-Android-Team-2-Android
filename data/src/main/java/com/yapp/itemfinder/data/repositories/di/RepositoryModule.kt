@@ -36,5 +36,5 @@ abstract class RepositoryModule {
 
     @Binds
     @Singleton
-    abstract fun bindThingsRepository(repository: ThingMockRepositoryImpl): ThingRepository
+    abstract fun bindThingsRepository(repository: ItemMockRepositoryImpl): ItemRepository
 }

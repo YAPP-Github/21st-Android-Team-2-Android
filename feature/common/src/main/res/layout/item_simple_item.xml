@@ -22,7 +22,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center"
-            tools:src="@drawable/icon_thing_fashion" />
+            tools:src="@drawable/ic_item_fashion" />
     </androidx.cardview.widget.CardView>
 
     <LinearLayout
@@ -52,7 +52,7 @@
                 tools:text="선크림" />
 
             <TextView
-                android:id="@+id/thingNumTextView"
+                android:id="@+id/itemNumTextView"
                 style="@style/ItemFinderTypography.Body4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -73,7 +73,7 @@
             tools:text="2022.12.25까지" />
 
         <LinearLayout
-            android:id="@+id/categoruAndTagsLayout"
+            android:id="@+id/categoryAndTagsLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="6dp">
