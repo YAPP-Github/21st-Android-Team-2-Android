@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingVertical="12dp">
+    android:paddingTop="12dp"
+    android:paddingBottom="13dp">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/imageCardView"
@@ -108,33 +109,6 @@
 
     </LinearLayout>
 
-
-    <!--    <TextView-->
-    <!--        android:id="@+id/name"-->
-    <!--        android:layout_width="wrap_content"-->
-    <!--        android:layout_height="wrap_content"/>-->
-    <!--    <LinearLayout-->
-    <!--        android:layout_width="wrap_content"-->
-    <!--        android:layout_height="match_parent"-->
-    <!--        android:layout_marginLeft="16dp"-->
-    <!--        android:orientation="vertical"-->
-    <!--        app:layout_constraintStart_toEndOf="@id/itemImageCarView"-->
-    <!--        app:layout_constraintTop_toTopOf="parent">-->
-
-    <!--    <TextView-->
-    <!--        android:id="@+id/itemNameTextView"-->
-    <!--        style="@style/ItemFinderTypography.Subhead"-->
-    <!--        android:layout_width="wrap_content"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:textColor="@color/black"-->
-    <!--        tools:text="화장대" />-->
-
-    <!--    <TextView-->
-    <!--        style="@style/ItemFinderTypography.Body4"-->
-    <!--        android:layout_width="wrap_content"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:layout_marginTop="6dp"-->
-    <!--        tools:text="2022.15.25까지" />-->
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

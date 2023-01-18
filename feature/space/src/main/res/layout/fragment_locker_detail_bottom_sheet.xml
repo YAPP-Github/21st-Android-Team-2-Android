@@ -7,8 +7,8 @@
     android:background="@color/brown_01"
     android:orientation="vertical"
     android:paddingHorizontal="16dp"
-    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
     app:behavior_peekHeight="294dp"
+    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
     tools:behavior_peekHeight="294dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -16,7 +16,7 @@
         android:layout_height="58dp">
 
         <ImageView
-            android:id="@+id/bottomSheetToggleImageView"
+            android:id="@+id/toggleImageView"
             android:layout_width="40dp"
             android:layout_height="10dp"
             android:layout_marginTop="16dp"
@@ -26,10 +26,10 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
+            android:id="@+id/totalItemCount"
             style="@style/ItemFinderTypography.Body4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             tools:text="전체10" />
@@ -38,10 +38,12 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/lockerDetailBottomSheetRecyclerView"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        android:id="@+id/recyclerview"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:paddingBottom="35dp"
+        android:clipToPadding="false"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
 
 </LinearLayout>

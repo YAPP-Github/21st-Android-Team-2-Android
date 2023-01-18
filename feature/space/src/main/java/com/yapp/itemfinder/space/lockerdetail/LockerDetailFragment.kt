@@ -5,8 +5,10 @@ import android.util.Log
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.*
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetBehavior.BottomSheetCallback
+import com.google.android.material.divider.MaterialDividerItemDecoration
 import com.yapp.itemfinder.domain.model.Data
 import com.yapp.itemfinder.domain.model.Locker
 import com.yapp.itemfinder.feature.common.BaseStateFragment
@@ -21,6 +23,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import com.yapp.itemfinder.feature.common.R.string
 
 @AndroidEntryPoint
 class LockerDetailFragment :
@@ -47,11 +50,26 @@ class LockerDetailFragment :
         if (dataListAdapter == null) {
             dataListAdapter = DataListAdapter()
         }
-        bottomSheet.lockerDetailBottomSheetRecyclerView.adapter =dataListAdapter
+
         initBottomSheet()
     }
 
     private fun initBottomSheet() {
+        with(binding.bottomSheet) {
+            recyclerview.adapter = dataListAdapter
+            recyclerview.addItemDecoration(
+                MaterialDividerItemDecoration(
+                    requireContext(),
+                    LinearLayoutManager.VERTICAL
+                ).apply {
+                    isLastItemDecorated = false
+                    dividerColor =
+                        requireContext().getColor(com.yapp.itemfinder.feature.common.R.color.gray_01)
+                }
+            )
+        }
+
+
         setBottomSheetBehavior()
         blockBottomSheetTouchIntercept()
     }
@@ -64,7 +82,7 @@ class LockerDetailFragment :
         val behavior = BottomSheetBehavior.from(binding.bottomSheet.root)
         behavior.addBottomSheetCallback(object : BottomSheetCallback() {
             override fun onStateChanged(bottomSheet: View, newState: Int) {
-                with(binding.bottomSheet.bottomSheetToggleImageView) {
+                with(binding.bottomSheet.toggleImageView) {
                     if (newState == BottomSheetBehavior.STATE_EXPANDED)
                         setImageResource(R.drawable.toggle_down)
                     else if (newState == BottomSheetBehavior.STATE_COLLAPSED)
@@ -86,8 +104,8 @@ class LockerDetailFragment :
     @SuppressLint("ClickableViewAccessibility")
     private fun blockBottomSheetTouchIntercept() {
         with(binding.bottomSheet) {
-            lockerDetailBottomSheetRecyclerView.setOnTouchListener { _, _ ->
-                lockerDetailBottomSheetRecyclerView.parent.requestDisallowInterceptTouchEvent(true)
+            recyclerview.setOnTouchListener { _, _ ->
+                recyclerview.parent.requestDisallowInterceptTouchEvent(true)
                 return@setOnTouchListener false
             }
         }
@@ -121,14 +139,16 @@ class LockerDetailFragment :
         requireActivity().showShortToast(lockerDetailState.lockerId.toString())
     }
 
-//    private fun handleLoading(lockerListState: LockerListState) {
+    //    private fun handleLoading(lockerListState: LockerListState) {
 //
 //    }
 //
     private fun handleSuccess(lockerDetailState: LockerDetailState.Success) {
         dataBindHelper.bindList(lockerDetailState.dataList, vm)
         dataListAdapter?.submitList(lockerDetailState.dataList)
-        requireActivity().showShortToast(lockerDetailState.dataList.toString())
+
+        val itemCount: Int = dataListAdapter?.itemCount ?: 0
+        binding.bottomSheet.totalItemCount.text = getString(string.totalCount, itemCount)
     }
 
 //    private fun handleError(lockerListState: LockerListState.Error) {
