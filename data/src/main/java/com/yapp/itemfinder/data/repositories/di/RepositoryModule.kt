@@ -26,9 +26,15 @@ abstract class RepositoryModule {
     @Singleton
     abstract fun bindMockBannerRepository(repository: BannerMockRepositoryImpl): BannerRepository
 
+    @LockerMockRepositoryQualifiers
     @Binds
     @Singleton
     abstract fun bindMockLockerRepository(repository: LockerMockRepositoryImpl): LockerRepository
+
+    @LockerRepositoryQualifiers
+    @Binds
+    @Singleton
+    abstract fun bindLockerRepository(repository: LockerRepositoryImpl): LockerRepository
 
     @Binds
     @Singleton

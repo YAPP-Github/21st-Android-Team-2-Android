@@ -1,8 +1,8 @@
 package com.yapp.itemfinder.feature.common.datalist.binder
 
-import com.yapp.itemfinder.domain.model.Locker
+import com.yapp.itemfinder.domain.model.LockerEntity
 import com.yapp.itemfinder.feature.common.BaseViewModel
 
 interface LockerItemBinder {
-    fun bindData(data: Locker, viewModel: BaseViewModel)
+    fun bindData(data: LockerEntity, viewModel: BaseViewModel)
 }

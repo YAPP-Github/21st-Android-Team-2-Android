@@ -1,4 +1,4 @@
-package com.yapp.itemfinder.space.addLocker
+package com.yapp.itemfinder.space.addlocker
 
 import com.yapp.itemfinder.domain.model.Data
 import com.yapp.itemfinder.feature.common.State
