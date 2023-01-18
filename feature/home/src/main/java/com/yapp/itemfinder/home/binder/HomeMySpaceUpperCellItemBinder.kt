@@ -16,8 +16,8 @@ class HomeMySpaceUpperCellItemBinder @Inject constructor(): CellItemBinder{
     }
 
     private fun setHomeTabViewModelHandler(item: MySpaceUpperCellItem, viewModel: HomeTabViewModel){
-        item.runSpaceManagementPage = {
-            viewModel.runSpaceManagementPage()
+        item.spaceManagementDetailHandler = {
+            viewModel.moveSpaceManagementPage()
         }
     }
 

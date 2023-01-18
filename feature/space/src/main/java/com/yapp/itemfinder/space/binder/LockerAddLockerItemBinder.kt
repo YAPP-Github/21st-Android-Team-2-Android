@@ -22,7 +22,7 @@ class LockerAddLockerItemBinder @Inject constructor() : AddLockerItemBinder {
         viewModel: com.yapp.itemfinder.space.LockerListViewModel
     ) {
         item.addLockerHandler = { data ->
-            viewModel.toAddLockerActivity()
+            viewModel.moveAddLockerActivity()
         }
     }
 }
