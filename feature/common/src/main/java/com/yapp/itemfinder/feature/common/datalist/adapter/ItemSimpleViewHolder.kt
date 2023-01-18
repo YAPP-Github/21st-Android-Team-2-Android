@@ -27,7 +27,13 @@ class ItemSimpleViewHolder(
         with(binding) {
             Glide.with(root.context).load(data.imageUrl).into(imageView)
             nameTextView.text = data.name
-            itemNumTextView.text = "3개 (dummy)"
+
+            if (data.count in 2 .. 99){
+                itemNumTextView.text = context.getString(R.string.count, data.count)
+            }else{
+                itemNumTextView.gone()
+            }
+
 
             data.expirationDate?.let {
                 expireDateTextView.text = it

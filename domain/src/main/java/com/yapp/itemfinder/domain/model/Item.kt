@@ -8,6 +8,7 @@ data class Item(
     var imageUrl: String?,
     val itemCategory: ItemCategory?,
     var tags: List<Tag>?,
+    val count: Int = 0,
     override var type:  CellType = CellType.ITEM_SIMPLE_CELL
 
 ) : Data() {

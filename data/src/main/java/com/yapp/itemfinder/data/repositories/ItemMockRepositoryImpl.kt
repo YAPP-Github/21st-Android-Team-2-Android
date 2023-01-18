@@ -17,14 +17,16 @@ class ItemMockRepositoryImpl @Inject constructor() : ItemRepository {
         name = "선크림",
         expirationDate = "2022.12.25까지",
         imageUrl = "http://source.unsplash.com/random/150x150",
-        tags = listOf(Tag("생활"), Tag("화장품"))
+        tags = listOf(Tag("생활"), Tag("화장품")),
+        count = 1
     )
     private val sampleLongTag = sample.copy(
         tags = mutableListOf<Tag>().apply {
             for (i in 1..5) {
                 addAll(listOf(Tag("생활"), Tag("화장품")))
             }
-        }
+        },
+        count = 3
     )
 
     override fun getAllItems(): List<Item> {
