@@ -23,7 +23,7 @@ class AddLockerViewModel @Inject constructor(
             AddLockerState.Success(
                 listOf(
                     AddLockerNameInput(),
-                    AddLockerSpace(name = "옷장"),
+                    AddLockerSpace(name = "주방"),
                     LockerIcons(),
                     AddLockerPhoto()
                 )

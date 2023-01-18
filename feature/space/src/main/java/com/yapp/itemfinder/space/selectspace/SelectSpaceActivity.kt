@@ -12,6 +12,7 @@ import com.yapp.itemfinder.feature.common.BaseStateActivity
 import com.yapp.itemfinder.feature.common.binding.viewBinding
 import com.yapp.itemfinder.feature.common.datalist.adapter.DataListAdapter
 import com.yapp.itemfinder.feature.common.datalist.binder.DataBindHelper
+import com.yapp.itemfinder.space.addLocker.AddLockerActivity
 import com.yapp.itemfinder.feature.common.R as CR
 import com.yapp.itemfinder.space.databinding.ActivitySelectSpaceBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -31,11 +32,14 @@ class SelectSpaceActivity : BaseStateActivity<SelectSpaceViewModel, ActivitySele
 
     private var dataListAdapter: DataListAdapter<Data>? = null
 
+    private val spaceId by lazy { intent.getLongExtra(AddLockerActivity.SPACE_ID_KEY, 0) }
+
     override fun initViews() = with(binding) {
         if (dataListAdapter == null) {
             dataListAdapter = DataListAdapter()
             recyclerView.adapter = dataListAdapter
         }
+        vm.setSpaceId(spaceId)
     }
 
     override fun observeData(): Job = lifecycleScope.launch {

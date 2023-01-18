@@ -20,19 +20,19 @@ class SelectSpaceViewModel @Inject constructor(
         MutableStateFlow(SelectSpaceState.Uninitialized)
     override val _sideEffectFlow: MutableSharedFlow<SelectSpaceSideEffect> = MutableSharedFlow()
 
+    var currentSpaceId: Long = 0
     private var checkedIndex = 0
 
     override fun fetchData(): Job = viewModelScope.launch {
         setState(SelectSpaceState.Loading)
         val spaces = selectSpaceMockRepository.getAllSpaces()
+        checkedIndex = spaces.indexOf(spaces.firstOrNull { it.id == currentSpaceId })
+        spaces[checkedIndex].isChecked = true
         setState(
             SelectSpaceState.Success(
                 dataList = spaces
             )
         )
-        withState<SelectSpaceState.Success> { state ->
-            checkedIndex = spaces.indexOf(spaces.firstOrNull { it.isChecked })
-        }
     }
 
     fun changeChecked(selectSpace: SelectSpace) = withState<SelectSpaceState.Success> { state ->
@@ -51,5 +51,9 @@ class SelectSpaceViewModel @Inject constructor(
         setState(
             SelectSpaceState.Success(newDataList)
         )
+    }
+
+    fun setSpaceId(id: Long) {
+        currentSpaceId = id
     }
 }

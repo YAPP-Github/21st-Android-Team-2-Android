@@ -5,6 +5,8 @@ import android.content.Intent
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.yapp.itemfinder.domain.model.Data
+import com.yapp.itemfinder.domain.model.SelectSpace
+import com.yapp.itemfinder.domain.model.SpaceItem
 import com.yapp.itemfinder.feature.common.BaseStateActivity
 import com.yapp.itemfinder.feature.common.binding.viewBinding
 import com.yapp.itemfinder.feature.common.datalist.adapter.DataListAdapter
@@ -50,7 +52,9 @@ class AddLockerActivity : BaseStateActivity<AddLockerViewModel, ActivityAddLocke
             vm.sideEffectFlow.collect { sideEffect ->
                 when (sideEffect) {
                     is AddLockerSideEffect.OpenSelectSpace -> {
-                        startActivity(SelectSpaceActivity.newIntent(this@AddLockerActivity))
+                        val intent = SelectSpaceActivity.newIntent(this@AddLockerActivity)
+                        intent.putExtra(SPACE_ID_KEY, 2L) // 현재 locker의 spacdId로 설정
+                        startActivity(intent)
                         // 수정된 보관함 위치로 변경
                         // val name = "서재"
                         // vm.changeSpace(name)
@@ -75,6 +79,7 @@ class AddLockerActivity : BaseStateActivity<AddLockerViewModel, ActivityAddLocke
     }
 
     companion object {
+        const val SPACE_ID_KEY = "SPACE_ID_KEY"
         fun newIntent(context: Context) = Intent(context, AddLockerActivity::class.java)
     }
 }
