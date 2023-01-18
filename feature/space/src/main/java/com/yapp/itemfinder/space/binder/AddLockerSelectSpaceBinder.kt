@@ -3,7 +3,7 @@ package com.yapp.itemfinder.space.binder
 import com.yapp.itemfinder.domain.model.AddLockerSpace
 import com.yapp.itemfinder.feature.common.BaseViewModel
 import com.yapp.itemfinder.feature.common.datalist.binder.AddLockerSpaceBinder
-import com.yapp.itemfinder.space.addLocker.AddLockerViewModel
+import com.yapp.itemfinder.space.addlocker.AddLockerViewModel
 import javax.inject.Inject
 import javax.inject.Singleton
 
