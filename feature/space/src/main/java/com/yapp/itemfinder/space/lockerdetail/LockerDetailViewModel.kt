@@ -3,8 +3,9 @@ package com.yapp.itemfinder.space.lockerdetail
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import com.yapp.itemfinder.data.repositories.di.LockerRepositoryQualifiers
 import com.yapp.itemfinder.domain.model.Data
-import com.yapp.itemfinder.domain.model.Locker
+import com.yapp.itemfinder.domain.model.LockerEntity
 import com.yapp.itemfinder.domain.repository.LockerRepository
 import com.yapp.itemfinder.domain.repository.ItemRepository
 import com.yapp.itemfinder.feature.common.BaseStateViewModel
@@ -17,13 +18,13 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
 class LockerDetailViewModel @AssistedInject constructor(
-    @Assisted private val lockerId: Long,
+    @Assisted private val locker: LockerEntity,
     private val itemRepository: ItemRepository,
-    private val lockerRepository: LockerRepository,
+    @LockerRepositoryQualifiers private val lockerRepository: LockerRepository,
 
     ) : BaseStateViewModel<LockerDetailState, LockerDetailSideEffect>() {
     override val _stateFlow: MutableStateFlow<LockerDetailState> =
-        MutableStateFlow(LockerDetailState.Uninitialized(lockerId = lockerId))
+        MutableStateFlow(LockerDetailState.Uninitialized(locker = locker))
 
     override val _sideEffectFlow: MutableSharedFlow<LockerDetailSideEffect> = MutableSharedFlow()
 
@@ -33,13 +34,13 @@ class LockerDetailViewModel @AssistedInject constructor(
         runCatchingWithErrorHandler {
             setState(LockerDetailState.Loading)
             mutableListOf<Data>().apply {
-                add(lockerRepository.getLocker(lockerId))
-                addAll(itemRepository.getItemsByLockerId(lockerId))
+                add(locker)
+                addAll(itemRepository.getItemsByLockerId(locker.id))
             }
         }.onSuccess {
             setState(
                 LockerDetailState.Success(
-                    locker = it.first() as Locker,
+                    locker = it.first() as LockerEntity,
                     dataList = it.drop(1)
                 )
             )
@@ -51,17 +52,17 @@ class LockerDetailViewModel @AssistedInject constructor(
 
     @dagger.assisted.AssistedFactory
     interface LockerIdAssistedFactory {
-        fun create(lockerId: Long): LockerDetailViewModel
+        fun create(locker: LockerEntity): LockerDetailViewModel
     }
 
     companion object {
         @Suppress("UNCHECKED_CAST")
         fun provideFactory(
             assistedFactory: LockerIdAssistedFactory,
-            lockerId: Long
+            locker:LockerEntity
         ): ViewModelProvider.Factory = object : ViewModelProvider.Factory {
             override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                return assistedFactory.create(lockerId) as T
+                return assistedFactory.create(locker) as T
             }
         }
     }

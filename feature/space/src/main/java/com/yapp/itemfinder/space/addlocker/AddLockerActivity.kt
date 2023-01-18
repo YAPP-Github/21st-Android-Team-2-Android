@@ -1,8 +1,7 @@
-package com.yapp.itemfinder.space.addLocker
+package com.yapp.itemfinder.space.addlocker
 
 import android.content.Context
 import android.content.Intent
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.yapp.itemfinder.domain.model.Data

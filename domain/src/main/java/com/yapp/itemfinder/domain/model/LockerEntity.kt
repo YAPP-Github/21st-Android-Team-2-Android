@@ -1,6 +1,6 @@
 package com.yapp.itemfinder.domain.model
 
-data class Locker(
+data class LockerEntity(
     override var id: Long,
     val name: String,
     val icon: String,

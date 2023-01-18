@@ -1,6 +1,6 @@
 package com.yapp.itemfinder.data.network.api.home
 
-import com.yapp.itemfinder.domain.model.Locker
+import com.yapp.itemfinder.domain.model.LockerEntity
 
 data class HomeSpaceTopLockerResponse(
     val id: Long,
@@ -10,8 +10,8 @@ data class HomeSpaceTopLockerResponse(
     val description: String?,
     val imageUrl: String?
 ) {
-    fun refineToLocker(): Locker {
-        return Locker(
+    fun refineToLocker(): LockerEntity {
+        return LockerEntity(
             id = id,
             icon = icon,
             name = name,

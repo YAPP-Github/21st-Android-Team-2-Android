@@ -2,23 +2,83 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:theme="@style/ItemFinderHomeTabTheme"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:theme="@style/ItemFinderHomeTabTheme">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:paddingHorizontal="16dp"
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        android:paddingHorizontal="16dp"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         app:spanCount="2"
         tools:itemCount="5"
         tools:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-        tools:spanCount ="2"
-        tools:listitem="@layout/space_item"/>
+        tools:listitem="@layout/space_item"
+        tools:spanCount="2" />
+
+    <TextView
+        style="@style/ItemFinderTypography.Body1"
+        android:id="@+id/emptyTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="157dp"
+        android:text="@string/home_spaces_empty_guide"
+        android:textColor="@color/gray_04"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/emptyImageView"
+        app:layout_constraintVertical_bias="0"
+        app:layout_constraintVertical_chainStyle="packed" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/emptyImageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:src="@drawable/ic_empty_spaces"
+        app:layout_constraintTop_toBottomOf="@id/emptyTextView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        style="@style/ItemFinderTypography.Body1"
+        android:id="@+id/emptySpaceAddButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_button_orange_radius_12"
+        android:foreground="@drawable/ripple_black_radius_12"
+        android:paddingHorizontal="60dp"
+        android:paddingVertical="16dp"
+        android:text="@string/home_spaces_empty_button"
+        android:textColor="@color/white"
+        app:layout_constraintTop_toBottomOf="@id/emptyImageView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/emptyViewGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:constraint_referenced_ids="emptyTextView,emptyImageView,emptySpaceAddButton"
+        tools:visibility="visible" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:visibility="visible" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -5,6 +5,7 @@ import com.yapp.itemfinder.data.network.api.managespace.ManageSpaceApi
 import com.yapp.itemfinder.data.network.api.auth.AuthApi
 import com.yapp.itemfinder.data.network.api.auth.AuthWithoutTokenApi
 import com.yapp.itemfinder.data.network.api.home.HomeSpaceApi
+import com.yapp.itemfinder.data.network.api.lockerlist.LockerListApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -53,6 +54,14 @@ internal class ApiCoroutinesModule {
         apiClient: ApiClient
     ): HomeSpaceApi {
         return apiClient.provideHomeSpaceApi()
+    }
+
+    @Provides
+    @Singleton
+    fun provideLockerListApi(
+        apiClient: ApiClient
+    ): LockerListApi {
+        return apiClient.provideLockerListApi()
     }
 
 }

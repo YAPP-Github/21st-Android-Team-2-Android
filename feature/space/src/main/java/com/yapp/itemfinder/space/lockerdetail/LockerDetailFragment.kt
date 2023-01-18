@@ -10,7 +10,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetBehavior.BottomSheetCallback
 import com.google.android.material.divider.MaterialDividerItemDecoration
 import com.yapp.itemfinder.domain.model.Data
-import com.yapp.itemfinder.domain.model.Locker
+import com.yapp.itemfinder.domain.model.LockerEntity
 import com.yapp.itemfinder.feature.common.BaseStateFragment
 import com.yapp.itemfinder.feature.common.binding.viewBinding
 import com.yapp.itemfinder.feature.common.datalist.adapter.DataListAdapter
@@ -35,7 +35,7 @@ class LockerDetailFragment :
     override val vm by viewModels<LockerDetailViewModel> {
         LockerDetailViewModel.provideFactory(
             lockerDetailViewModelFactory,
-            (requireArguments().get("locker") as Locker).id
+            (requireArguments().get("locker") as LockerEntity)
         )
     }
 
@@ -136,7 +136,7 @@ class LockerDetailFragment :
     }
 
     private fun handleUninitialized(lockerDetailState: LockerDetailState.Uninitialized) {
-        requireActivity().showShortToast(lockerDetailState.lockerId.toString())
+        requireActivity().showShortToast(lockerDetailState.locker.id.toString())
     }
 
     //    private fun handleLoading(lockerListState: LockerListState) {

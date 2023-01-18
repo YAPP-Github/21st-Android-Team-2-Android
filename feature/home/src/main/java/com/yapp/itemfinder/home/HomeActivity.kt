@@ -43,16 +43,16 @@ class HomeActivity : BaseActivity<HomeViewModel, ActivityHomeBinding>(), Fragmen
         binding.bottomNav.setOnItemSelectedListener { item ->
             val navigationId = item.itemId
             when (navigationId) {
-                R.id.menu_reminder -> {
-                    showFragment(ReminderTabFragment.TAG)
+                R.id.menu_tags -> {
+                    showFragment(LikeTabFragment.TAG)
                     true
                 }
                 R.id.menu_home -> {
                     showFragment(HomeTabFragment.TAG)
                     true
                 }
-                R.id.menu_like -> {
-                    showFragment(LikeTabFragment.TAG)
+                R.id.menu_reminder -> {
+                    showFragment(ReminderTabFragment.TAG)
                     true
                 }
                 else -> false
@@ -85,26 +85,24 @@ class HomeActivity : BaseActivity<HomeViewModel, ActivityHomeBinding>(), Fragmen
         }
     }
 
-    override fun addFragmentBackStack(tag: String, bundlePair: Pair<String,Parcelable>?){
+    override fun addFragmentBackStack(tag: String, bundle: Bundle?) {
         binding.root.hideSoftInput()
-        with(supportFragmentManager){
+        with(supportFragmentManager) {
             val foundFragment = findFragmentByTag(tag) ?: getFragmentByTag(tag)
             foundFragment?.let {
                 it.arguments = Bundle().apply {
 
                 }
-                if (bundlePair != null){
-                    it.arguments = Bundle().apply {
-                        putParcelable(bundlePair.first,bundlePair.second)
-                    }
+                if (bundle != null) {
+                    it.arguments = bundle
                 }
                 beginTransaction()
-                .apply {
-                    fragments.forEach { fragment ->
-                        if (fragment.isHidden.not())
-                            hide(fragment)
-                    }
-                }.add(R.id.fragmentContainer, foundFragment)
+                    .apply {
+                        fragments.forEach { fragment ->
+                            if (fragment.isHidden.not())
+                                hide(fragment)
+                        }
+                    }.add(R.id.fragmentContainer, foundFragment)
                     .addToBackStack(null)
                     .commitAllowingStateLoss()
             }
@@ -125,7 +123,5 @@ class HomeActivity : BaseActivity<HomeViewModel, ActivityHomeBinding>(), Fragmen
     companion object {
 
         fun newIntent(context: Context) = Intent(context, HomeActivity::class.java)
-
     }
-
 }

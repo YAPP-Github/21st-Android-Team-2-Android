@@ -1,7 +1,7 @@
 package com.yapp.itemfinder.feature.common.datalist.adapter
 
 import com.bumptech.glide.Glide
-import com.yapp.itemfinder.domain.model.Locker
+import com.yapp.itemfinder.domain.model.LockerEntity
 import com.yapp.itemfinder.domain.model.SpaceItem
 import com.yapp.itemfinder.feature.common.R
 import com.yapp.itemfinder.feature.common.databinding.SpaceItemBinding
@@ -17,8 +17,8 @@ class SpaceViewHolder(
         NORMAL, OVER
     }
 
-    lateinit var spaceName: String
-    lateinit var lockers: List<Locker>
+    private lateinit var spaceName: String
+    private lateinit var lockers: List<LockerEntity>
     private var state: State = State.NORMAL
     private val imageViews = listOf(
         binding.spaceFirstImageView,
@@ -37,9 +37,6 @@ class SpaceViewHolder(
         super.bindData(data)
         spaceName = data.name
         lockers = data.lockerList
-        if (lockers.size > 4)
-            state = State.OVER
-
         with(binding) {
             spaceItemName.text = spaceName
 
@@ -69,13 +66,12 @@ class SpaceViewHolder(
     }
 
     override fun bindViews(data: SpaceItem) {
-
-        binding.root.setOnClickListener { data.goSpaceDetailPage() }
+        binding.root.setOnClickListener { data.moveSpaceDetailPage() }
         lockers.forEachIndexed { idx, locker ->
             when (idx) {
-                0, 1, 2 -> frames[idx].setOnClickListener { data.lockerDetailHandler(locker) }
+                0, 1, 2 -> frames[idx].setOnClickListener { data.moveLockerDetailHandler(locker) }
                 3 -> when (state) {
-                    State.NORMAL -> frames[idx].setOnClickListener { data.lockerDetailHandler(locker) }
+                    State.NORMAL -> frames[idx].setOnClickListener { data.moveLockerDetailHandler(locker) }
                     else -> Unit
 
                 }
