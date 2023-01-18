@@ -2,6 +2,7 @@ package com.yapp.itemfinder.space.selectspace
 
 import androidx.lifecycle.viewModelScope
 import com.yapp.itemfinder.domain.model.SelectSpace
+import com.yapp.itemfinder.domain.repository.SelectSpaceRepository
 import com.yapp.itemfinder.feature.common.BaseStateViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -14,7 +15,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SelectSpaceViewModel @Inject constructor(
-
+    private val selectSpaceMockRepository: SelectSpaceRepository
 ) :
     BaseStateViewModel<SelectSpaceState, SelectSpaceSideEffect>() {
     override val _stateFlow: MutableStateFlow<SelectSpaceState> =
@@ -26,13 +27,7 @@ class SelectSpaceViewModel @Inject constructor(
         // val spaces = withContext(Dispatchers.IO) {  }
         setState(
             SelectSpaceState.Success(
-                dataList = listOf(
-                    SelectSpace(id = 1, name = "서재"),
-                    SelectSpace(id = 2, name = "주방"),
-                    SelectSpace(id = 3, name = "작업실"),
-                    SelectSpace(id = 4, name = "베란다"),
-                    SelectSpace(id = 5, name = "드레스룸")
-                )
+                dataList = selectSpaceMockRepository.getAllSpaces()
             )
         )
     }
