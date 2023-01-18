@@ -94,10 +94,8 @@ class LockerDetailFragment :
                 return
             }
         })
-        // 메시지큐에 넣어서 실행 -> 뷰가 그려진 다음 위치를 알아내고 바텀 시트가 올라올 위치 계산
-        // 이걸 lockerDetailImage.post로 바꿔야하지 않을까?
-        binding.root.post {
-            behavior.peekHeight = binding.root.measuredHeight - 320.dpToPx(requireContext())
+        binding.lockerDetailImageView.post {
+            behavior.peekHeight = binding.root.measuredHeight - binding.lockerDetailImageView.measuredHeight
         }
     }
 
