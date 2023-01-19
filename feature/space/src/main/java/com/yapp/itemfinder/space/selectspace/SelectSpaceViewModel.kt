@@ -41,13 +41,9 @@ class SelectSpaceViewModel @Inject constructor(
             return@withState
         }
         val newDataList = ArrayList(state.dataList)
-        val old = (newDataList[checkedIndex] as SelectSpace).copy(isChecked = false)
-        newDataList.removeAt(checkedIndex)
-        newDataList.add(checkedIndex, old)
+        newDataList[checkedIndex] = (newDataList[checkedIndex] as SelectSpace).copy(isChecked = false)
         checkedIndex = clickedIndex
-        val new = (newDataList[clickedIndex] as SelectSpace).copy(isChecked = true)
-        newDataList.removeAt(clickedIndex)
-        newDataList.add(clickedIndex, new)
+        newDataList[clickedIndex] = (newDataList[clickedIndex] as SelectSpace).copy(isChecked = true)
         setState(
             SelectSpaceState.Success(newDataList)
         )

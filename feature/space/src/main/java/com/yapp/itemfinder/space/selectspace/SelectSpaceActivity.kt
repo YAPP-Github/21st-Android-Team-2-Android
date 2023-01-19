@@ -1,19 +1,15 @@
 package com.yapp.itemfinder.space.selectspace
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
-import android.widget.AdapterView.OnItemClickListener
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.yapp.itemfinder.domain.model.Data
-import com.yapp.itemfinder.domain.model.SelectSpace
 import com.yapp.itemfinder.feature.common.BaseStateActivity
 import com.yapp.itemfinder.feature.common.binding.viewBinding
 import com.yapp.itemfinder.feature.common.datalist.adapter.DataListAdapter
 import com.yapp.itemfinder.feature.common.datalist.binder.DataBindHelper
-import com.yapp.itemfinder.space.addLocker.AddLockerActivity
-import com.yapp.itemfinder.feature.common.R as CR
+import com.yapp.itemfinder.space.addlocker.AddLockerActivity
 import com.yapp.itemfinder.space.databinding.ActivitySelectSpaceBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job

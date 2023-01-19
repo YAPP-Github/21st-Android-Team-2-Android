@@ -5,8 +5,6 @@ import android.content.Intent
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.yapp.itemfinder.domain.model.Data
-import com.yapp.itemfinder.domain.model.SelectSpace
-import com.yapp.itemfinder.domain.model.SpaceItem
 import com.yapp.itemfinder.feature.common.BaseStateActivity
 import com.yapp.itemfinder.feature.common.binding.viewBinding
 import com.yapp.itemfinder.feature.common.datalist.adapter.DataListAdapter
