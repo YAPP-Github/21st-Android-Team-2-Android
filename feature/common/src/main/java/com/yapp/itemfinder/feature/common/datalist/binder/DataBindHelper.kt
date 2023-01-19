@@ -51,7 +51,7 @@ class DataBindHelper @Inject constructor(
                 manageSpaceAddSpaceBinder.bindData(data as AddSpace, viewModel)
             }
             CellType.MANAGE_SPACE_CELL -> {
-                manageSpaceItemBinder.bindData(data as ManageSpaceItem, viewModel)
+                manageSpaceItemBinder.bindData(data as ManageSpaceEntity, viewModel)
             }
             CellType.ADD_LOCKER_SPACE_CELL -> {
                 addLockerSpaceBinder.bindData(data as AddLockerSpace, viewModel)
