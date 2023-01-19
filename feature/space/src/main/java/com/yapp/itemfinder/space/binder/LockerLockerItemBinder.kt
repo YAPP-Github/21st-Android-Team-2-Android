@@ -22,6 +22,9 @@ class LockerLockerItemBinder @Inject constructor(): LockerItemBinder {
         lockerItem.editHandler = { data ->
 
         }
+        lockerItem.moveLockerDetailHandler = { data ->
+            viewModel.moveLockerDetail(data as LockerEntity)
+        }
     }
 
 }
