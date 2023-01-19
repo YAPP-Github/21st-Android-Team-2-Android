@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="orange">#F2742E</color>
+    <color name="orange">#FFF2742E</color>
     <color name="orange_20">#33F2742E</color>
 
-    <color name="gray_06">#323130</color>
-    <color name="gray_05">#494847</color>
-    <color name="gray_04">#767473</color>
-    <color name="gray_03">#A09E9C</color>
-    <color name="gray_02">#DAD7D5</color>
-    <color name="gray_01">#E8E6E5</color>
+    <color name="gray_06">#FF323130</color>
+    <color name="gray_05">#FF494847</color>
+    <color name="gray_04">#FF767473</color>
+    <color name="gray_03">#FFA09E9C</color>
+    <color name="gray_02">#FFDAD7D5</color>
+    <color name="gray_01">#FFE8E6E5</color>
 
-    <color name="brown_07">#413C39</color>
-    <color name="brown_06">#72675F</color>
-    <color name="brown_05">#B0A08F</color>
-    <color name="brown_04">#DECFBE</color>
-    <color name="brown_03">#E0D9D0</color>
-    <color name="brown_02">#F2EFEA</color>
-    <color name="brown_01">#FCFBF9</color>
+    <color name="brown_07">#FF413C39</color>
+    <color name="brown_06">#FF72675F</color>
+    <color name="brown_05">#FFB0A08F</color>
+    <color name="brown_04">#FFDECFBE</color>
+    <color name="brown_03">#FFE0D9D0</color>
+    <color name="brown_02">#FFF2EFEA</color>
+    <color name="brown_01">#FFFCFBF9</color>
 
     <color name="white">#FFFFFFFF</color>
     <color name="black">#FF000000</color>

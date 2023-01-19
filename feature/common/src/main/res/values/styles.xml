@@ -22,10 +22,6 @@
         <item name="background">@color/brown_02</item>
     </style>
 
-    <style name="ItemFinderHomeTabTheme" parent="ItemFinderTheme">
-        <item name="android:background">@color/brown_02</item>
-    </style>
-
     <style name="BottomNavigationViewStyle" parent="Widget.MaterialComponents.BottomNavigationView.Colored">
         <item name="itemTextColor">@color/bottom_nav_item_color</item>
         <item name="itemIconTint">@color/bottom_nav_item_color</item>
@@ -48,10 +44,19 @@
         <item name="android:shadowColor">#FCFBF9</item>
     </style>
 
-    <style name="AlertDialog" parent="Theme.AppCompat.Dialog.Alert">
+    <style name="AlertDialog" parent="Theme.AppCompat.Dialog.Alert"/>
 
+    <style name="DefaultToolbar" parent="Widget.AppCompat.Toolbar">
+        <item name="android:theme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
+        <item name="android:minHeight">?attr/actionBarSize</item>
+        <item name="android:textAppearance">@style/ItemFinderTypography.Head</item>
+        <item name="titleTextAppearance">@style/ItemFinderTypography.Head</item>
+        <item name="popupTheme">@style/ThemeOverlay.AppCompat.Light</item>
+        <item name="contentInsetLeft">0dp</item>
+        <item name="contentInsetStart">0dp</item>
+        <item name="android:paddingLeft">0dp</item>
     </style>
-    <!--    -->
+
     <style name="ChipFrameStyle">
         <item name="android:paddingLeft">8dp</item>
         <item name="android:paddingRight">8dp</item>
@@ -84,7 +89,5 @@
 
     <style name="ChipTextViewStyle.Overflow">
         <item name="android:textColor">@color/brown_05</item>
-    </style>
-
 
 </resources>
