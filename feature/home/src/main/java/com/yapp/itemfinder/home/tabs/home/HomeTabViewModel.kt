@@ -37,19 +37,18 @@ class HomeTabViewModel @Inject constructor(
             homeSpaceRepository.getHomeSpaces()
         }.onSuccess { spaces ->
             setState(
-                HomeTabState.Empty
-//                if (spaces.isEmpty()) {
-//                    HomeTabState.Empty
-//                } else {
-//                    HomeTabState.Success(
-//                        dataListWithSpan = dataWithSpan.apply {
-//                            spaces.forEach {
-//                                add(DataWithSpan(it, 1))
-//                            }
-//                            add(DataWithSpan(EmptyCellItem(heightDp = 32),2))
-//                        }
-//                    )
-//                }
+                if (spaces.isEmpty()) {
+                    HomeTabState.Empty
+                } else {
+                    HomeTabState.Success(
+                        dataListWithSpan = dataWithSpan.apply {
+                            spaces.forEach {
+                                add(DataWithSpan(it, 1))
+                            }
+                            add(DataWithSpan(EmptyCellItem(heightDp = 32),2))
+                        }
+                    )
+                }
             )
         }.onFailure {
             setState(
@@ -83,15 +82,7 @@ class HomeTabViewModel @Inject constructor(
             runCatchingWithErrorHandler {
                 manageSpaceRepository.addNewSpace(name)
             }.onSuccess { space ->
-                setState(
-                    HomeTabState.Success(
-                        listOf(
-                            DataWithSpan(MySpaceUpperCellItem("내 공간"), 2),
-                            DataWithSpan(space, 1),
-                            DataWithSpan(EmptyCellItem(heightDp = 32), 2),
-                        )
-                    )
-                )
+                fetchData()
             }.onFailure {
                 setState(HomeTabState.Error(it))
                 postSideEffect(
