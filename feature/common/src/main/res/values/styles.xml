@@ -89,5 +89,6 @@
 
     <style name="ChipTextViewStyle.Overflow">
         <item name="android:textColor">@color/brown_05</item>
+    </style>
 
 </resources>

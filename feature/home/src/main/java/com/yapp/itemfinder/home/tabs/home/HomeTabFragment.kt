@@ -68,10 +68,6 @@ class HomeTabFragment : BaseStateFragment<HomeTabViewModel, FragmentHomeTabBindi
                         dataListWithSpan[position].span
                 }
             }
-                    override fun getSpanSize(position: Int): Int =
-                        dataListWithSpan[position].span
-                }
-            }
 
         }
     }
@@ -135,10 +131,17 @@ class HomeTabFragment : BaseStateFragment<HomeTabViewModel, FragmentHomeTabBindi
         (requireActivity() as HomeActivity)
             .addFragmentBackStack(
                 ManageSpaceFragment.TAG,
-                arguments = bundleOf(
+                bundle = bundleOf(
                     ManageSpaceFragment.MY_SPACE_TITLE_KEY to sideEffect.mySpaceUpperCellItem.title
                 )
             )
+    }
+
+    private fun moveLockerDetail(locker: LockerEntity) {
+        when (activity) {
+            is HomeActivity -> (activity as HomeActivity).addFragmentBackStack(LockerDetailFragment.TAG
+                , bundle = Bundle().apply { putParcelable("locker", locker) })
+        }
     }
 
     private fun handleLoading() = with(binding) {

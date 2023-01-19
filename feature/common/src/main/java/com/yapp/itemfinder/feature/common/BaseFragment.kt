@@ -9,7 +9,6 @@ import androidx.activity.OnBackPressedCallback
 import androidx.annotation.ColorRes
 import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
-import com.yapp.itemfinder.domain.model.ActionHandler
 import com.yapp.itemfinder.feature.common.extension.setStatusBarColor
 import kotlinx.coroutines.Job
 
