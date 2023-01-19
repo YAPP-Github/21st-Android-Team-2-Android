@@ -135,7 +135,7 @@ class HomeSpaceMockRepositoryImpl @Inject constructor() : HomeSpaceRepository {
                         icon = "box"
                     ),
 
-                )
+                    )
             )
         )
     }

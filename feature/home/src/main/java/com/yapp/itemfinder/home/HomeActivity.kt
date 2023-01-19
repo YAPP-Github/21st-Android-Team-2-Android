@@ -2,10 +2,13 @@ package com.yapp.itemfinder.home
 
 import android.content.Context
 import android.content.Intent
+import android.os.Bundle
+import android.os.Parcelable
 import androidx.activity.viewModels
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.yapp.itemfinder.feature.common.BaseActivity
+import com.yapp.itemfinder.feature.common.FragmentNavigator
 import com.yapp.itemfinder.feature.common.binding.viewBinding
 import com.yapp.itemfinder.feature.common.extension.hideSoftInput
 import com.yapp.itemfinder.feature.home.R
@@ -14,13 +17,14 @@ import com.yapp.itemfinder.home.tabs.home.HomeTabFragment
 import com.yapp.itemfinder.home.tabs.like.LikeTabFragment
 import com.yapp.itemfinder.home.tabs.reminder.ReminderTabFragment
 import com.yapp.itemfinder.space.LockerListFragment
+import com.yapp.itemfinder.space.lockerdetail.LockerDetailFragment
 import com.yapp.itemfinder.space.managespace.ManageSpaceFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class HomeActivity : BaseActivity<HomeViewModel, ActivityHomeBinding>() {
+class HomeActivity : BaseActivity<HomeViewModel, ActivityHomeBinding>(), FragmentNavigator {
 
     override val vm by viewModels<HomeViewModel>()
 
@@ -63,7 +67,7 @@ class HomeActivity : BaseActivity<HomeViewModel, ActivityHomeBinding>() {
         }
     }
 
-    fun showFragment(tag: String) {
+    override fun showFragment(tag: String) {
         binding.root.hideSoftInput()
         val foundFragment = supportFragmentManager.findFragmentByTag(tag)
         supportFragmentManager.fragments.forEach { fm ->
@@ -81,18 +85,24 @@ class HomeActivity : BaseActivity<HomeViewModel, ActivityHomeBinding>() {
         }
     }
 
-    fun addFragmentBackStack(tag: String){
+    override fun addFragmentBackStack(tag: String, bundle: Bundle?) {
         binding.root.hideSoftInput()
-        with(supportFragmentManager){
+        with(supportFragmentManager) {
             val foundFragment = findFragmentByTag(tag) ?: getFragmentByTag(tag)
             foundFragment?.let {
+                it.arguments = Bundle().apply {
+
+                }
+                if (bundle != null) {
+                    it.arguments = bundle
+                }
                 beginTransaction()
-                .apply {
-                    fragments.forEach { fragment ->
-                        if (fragment.isHidden.not())
-                            hide(fragment)
-                    }
-                }.add(R.id.fragmentContainer, foundFragment)
+                    .apply {
+                        fragments.forEach { fragment ->
+                            if (fragment.isHidden.not())
+                                hide(fragment)
+                        }
+                    }.add(R.id.fragmentContainer, foundFragment)
                     .addToBackStack(null)
                     .commitAllowingStateLoss()
             }
@@ -106,13 +116,12 @@ class HomeActivity : BaseActivity<HomeViewModel, ActivityHomeBinding>() {
             LikeTabFragment.TAG -> LikeTabFragment.newInstance()
             LockerListFragment.TAG -> LockerListFragment.newInstance()
             ManageSpaceFragment.TAG -> ManageSpaceFragment.newInstance()
+            LockerDetailFragment.TAG -> LockerDetailFragment.newInstance()
             else -> null
         }
 
     companion object {
 
         fun newIntent(context: Context) = Intent(context, HomeActivity::class.java)
-
     }
-
 }

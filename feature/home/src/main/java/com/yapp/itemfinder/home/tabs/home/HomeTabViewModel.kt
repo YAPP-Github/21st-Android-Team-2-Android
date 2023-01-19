@@ -66,4 +66,8 @@ class HomeTabViewModel @Inject constructor(
     fun moveSpaceManagementPage(){
         postSideEffect(HomeTabSideEffect.MoveSpacesManage)
     }
+
+    fun moveLockerDetailPage(locker: LockerEntity){
+        postSideEffect(HomeTabSideEffect.MoveLockerDetail(locker))
+    }
 }

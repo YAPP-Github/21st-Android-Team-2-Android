@@ -39,4 +39,8 @@ abstract class RepositoryModule {
     @Binds
     @Singleton
     abstract fun bindManageSpaceRepository(repository: ManageSpaceRepositoryImpl): ManageSpaceRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindThingsRepository(repository: ItemMockRepositoryImpl): ItemRepository
 }

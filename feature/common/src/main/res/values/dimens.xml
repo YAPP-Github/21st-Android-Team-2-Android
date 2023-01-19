@@ -7,4 +7,6 @@
     <dimen name="typography_subhead">16dp</dimen>
     <dimen name="typography_head">18dp</dimen>
     <dimen name="typography_title">20dp</dimen>
+    <dimen name="tools_bottom_sheet_height">294dp</dimen>
+    <dimen name="tag_or_category_radius">4dp</dimen>
 </resources>

@@ -1,6 +1,7 @@
 package com.yapp.itemfinder.home.tabs.home
 
 import android.app.Activity
+import android.os.Bundle
 import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
@@ -13,6 +14,7 @@ import com.yapp.itemfinder.domain.model.CellType
 import com.yapp.itemfinder.feature.common.binding.viewBinding
 import com.yapp.itemfinder.feature.common.datalist.adapter.DataListAdapter
 import com.yapp.itemfinder.domain.model.Data
+import com.yapp.itemfinder.domain.model.LockerEntity
 import com.yapp.itemfinder.domain.model.SpaceItem
 import com.yapp.itemfinder.feature.common.BaseStateFragment
 import com.yapp.itemfinder.feature.common.datalist.binder.DataBindHelper
@@ -23,6 +25,7 @@ import com.yapp.itemfinder.feature.common.utility.SpaceItemDecoration
 import com.yapp.itemfinder.feature.home.databinding.FragmentHomeTabBinding
 import com.yapp.itemfinder.home.HomeActivity
 import com.yapp.itemfinder.space.LockerListFragment
+import com.yapp.itemfinder.space.lockerdetail.LockerDetailFragment
 import com.yapp.itemfinder.space.managespace.ManageSpaceFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
@@ -55,7 +58,6 @@ class HomeTabFragment : BaseStateFragment<HomeTabViewModel, FragmentHomeTabBindi
                         dataListWithSpan[position].span
                 }
             }
-
         }
     }
 
@@ -83,6 +85,9 @@ class HomeTabFragment : BaseStateFragment<HomeTabViewModel, FragmentHomeTabBindi
                         is HomeTabSideEffect.MoveSpacesManage -> {
                             moveSpaceManage()
                         }
+                        is HomeTabSideEffect.MoveLockerDetail -> {
+                            moveLockerDetail(sideEffect.locker)
+                        }
                     }
                 }
             }
@@ -103,6 +108,13 @@ class HomeTabFragment : BaseStateFragment<HomeTabViewModel, FragmentHomeTabBindi
     private fun moveSpaceManage() {
         when (activity) {
             is HomeActivity -> (activity as HomeActivity).addFragmentBackStack(ManageSpaceFragment.TAG)
+        }
+    }
+
+    private fun moveLockerDetail(locker: LockerEntity) {
+        when (activity) {
+            is HomeActivity -> (activity as HomeActivity).addFragmentBackStack(LockerDetailFragment.TAG
+            , bundle = Bundle().apply { putParcelable("locker", locker) })
         }
     }
 

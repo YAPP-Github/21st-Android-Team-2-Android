@@ -1,17 +1,21 @@
 package com.yapp.itemfinder.space
 
+import android.os.Bundle
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.yapp.itemfinder.domain.model.Data
+import com.yapp.itemfinder.domain.model.LockerEntity
 import com.yapp.itemfinder.feature.common.BaseStateFragment
+import com.yapp.itemfinder.feature.common.FragmentNavigator
 import com.yapp.itemfinder.feature.common.binding.viewBinding
 import com.yapp.itemfinder.feature.common.datalist.adapter.DataListAdapter
 import com.yapp.itemfinder.feature.common.datalist.binder.DataBindHelper
 import com.yapp.itemfinder.space.addlocker.AddLockerActivity
 import com.yapp.itemfinder.space.databinding.FragmentLockerListBinding
+import com.yapp.itemfinder.space.lockerdetail.LockerDetailFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
@@ -31,12 +35,10 @@ class LockerListFragment : BaseStateFragment<LockerListViewModel, FragmentLocker
 
     override fun initState() {
         super.initState()
-        initViews()
         setFragmentResultListener(SPACE_ID_REQUEST_KEY) { requestKey, bundle ->
             val spaceId = bundle.getLong(SPACE_ID_KEY)
             vm.fetchLockerList(spaceId)
         }
-        observeData()
     }
 
     override fun initViews() = with(binding) {
@@ -64,6 +66,7 @@ class LockerListFragment : BaseStateFragment<LockerListViewModel, FragmentLocker
                         when (sideEffect) {
                             is LockerListSideEffect.MoveToLockerDetail -> {
                                 // 이동
+                                moveLockerDetail(sideEffect.locker)
                             }
                             is LockerListSideEffect.MoveToAddLocker -> {
                                 startActivity(AddLockerActivity.newIntent(requireActivity()))
@@ -77,8 +80,18 @@ class LockerListFragment : BaseStateFragment<LockerListViewModel, FragmentLocker
         return job
     }
 
-    private fun handleLoading(lockerListState: LockerListState) {
+    private fun moveLockerDetail(locker: LockerEntity) {
+        val activity = requireActivity()
+        when (activity) {
+            is FragmentNavigator -> {
+                activity.addFragmentBackStack(
+                    LockerDetailFragment.TAG,
+                    bundle = Bundle().apply { putParcelable("locker", locker) })
+            }
+        }
+    }
 
+    private fun handleLoading(lockerListState: LockerListState) {
     }
 
     private fun handleSuccess(lockerListState: LockerListState.Success) {
@@ -87,7 +100,6 @@ class LockerListFragment : BaseStateFragment<LockerListViewModel, FragmentLocker
     }
 
     private fun handleError(lockerListState: LockerListState.Error) {
-
     }
 
     companion object {
@@ -97,6 +109,5 @@ class LockerListFragment : BaseStateFragment<LockerListViewModel, FragmentLocker
         const val SPACE_ID_KEY = "spaceId"
 
         fun newInstance() = LockerListFragment()
-
     }
 }

@@ -19,7 +19,7 @@ object DataViewHolderMapper {
             CellType.CATEGORY_CELL -> CategoryViewHolder(ViewholderStorageBinding.inflate(inflater,parent,false))
             CellType.LIKE_CELL -> LikeViewHolder(LikeItemBinding.inflate(inflater, parent, false))
             CellType.SPACE_CELL -> SpaceViewHolder(SpaceItemBinding.inflate(inflater,parent,false))
-            CellType.LOCKER_CELL -> LockerViewHolder(LockerItemBinding.inflate(inflater, parent, false))
+            CellType.LOCKER_CELL -> LockerViewHolder(LockerListItemBinding.inflate(inflater, parent, false))
             CellType.ADD_LOCKER_CELL -> AddLockerViewHolder(AddLockerBinding.inflate(inflater, parent, false))
             CellType.HOMETAB_MYSPACE_UPPER_CELL -> HomeTabMySpaceUpperCellViewHolder(HometabMyspaceUpperCellItemBinding.inflate(inflater, parent, false))
             CellType.ADD_SPACE_CELL -> AddSpaceViewHolder(AddSpaceBinding.inflate(inflater, parent, false))
@@ -29,6 +29,7 @@ object DataViewHolderMapper {
             CellType.ADD_LOCKER_SPACE_CELL -> AddLockerSpaceViewHolder(AddLockerSpaceBinding.inflate(inflater, parent, false))
             CellType.LOCKER_ICONS_CELL -> LockerIconsViewHolder(LockerIconsBinding.inflate(inflater, parent, false))
             CellType.ADD_LOCKER_IMAGE_CELL -> AddLockerPhotoViewHolder(AddLockerPhotoBinding.inflate(inflater, parent, false))
+            CellType.ITEM_SIMPLE_CELL ->  ItemSimpleViewHolder(ItemSimpleItemBinding.inflate(inflater,parent,false))
         }
 
         return viewHolder as DataViewHolder<D>
