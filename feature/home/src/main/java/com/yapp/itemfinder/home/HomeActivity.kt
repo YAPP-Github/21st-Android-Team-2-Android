@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Parcelable
 import androidx.activity.viewModels
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.yapp.itemfinder.feature.common.BaseActivity
@@ -41,8 +42,7 @@ class HomeActivity : BaseActivity<HomeViewModel, ActivityHomeBinding>(), Fragmen
 
     private fun initNavigationBar() {
         binding.bottomNav.setOnItemSelectedListener { item ->
-            val navigationId = item.itemId
-            when (navigationId) {
+            when (item.itemId) {
                 R.id.menu_tags -> {
                     showFragment(LikeTabFragment.TAG)
                     true
@@ -123,5 +123,7 @@ class HomeActivity : BaseActivity<HomeViewModel, ActivityHomeBinding>(), Fragmen
     companion object {
 
         fun newIntent(context: Context) = Intent(context, HomeActivity::class.java)
+
     }
+
 }

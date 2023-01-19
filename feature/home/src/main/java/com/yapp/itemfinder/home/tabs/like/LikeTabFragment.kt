@@ -25,6 +25,9 @@ class LikeTabFragment : BaseStateFragment<LikeTabViewModel, FragmentLikeTabBindi
 
     private var dataListAdapter: DataListAdapter<Data>? = null
 
+    override val depth: Depth
+        get() = Depth.FIRST
+
     @Inject
     lateinit var dataBindHelper: DataBindHelper
 

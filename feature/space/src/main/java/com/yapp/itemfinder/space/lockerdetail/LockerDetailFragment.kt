@@ -25,8 +25,7 @@ import javax.inject.Inject
 import com.yapp.itemfinder.feature.common.R.string
 
 @AndroidEntryPoint
-class LockerDetailFragment :
-    BaseStateFragment<LockerDetailViewModel, FragmentLockerDetailBinding>() {
+class LockerDetailFragment : BaseStateFragment<LockerDetailViewModel, FragmentLockerDetailBinding>() {
 
     @Inject
     lateinit var lockerDetailViewModelFactory: LockerDetailViewModel.LockerIdAssistedFactory
@@ -37,6 +36,9 @@ class LockerDetailFragment :
             (requireArguments().get("locker") as LockerEntity)
         )
     }
+
+    override val depth: Depth
+        get() = Depth.SECOND
 
     override val binding by viewBinding(FragmentLockerDetailBinding::inflate)
 
