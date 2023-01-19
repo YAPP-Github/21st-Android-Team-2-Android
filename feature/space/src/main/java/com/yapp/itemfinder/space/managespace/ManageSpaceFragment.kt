@@ -14,6 +14,7 @@ import com.yapp.itemfinder.feature.common.BaseStateFragment
 import com.yapp.itemfinder.feature.common.binding.viewBinding
 import com.yapp.itemfinder.feature.common.datalist.adapter.DataListAdapter
 import com.yapp.itemfinder.feature.common.datalist.binder.DataBindHelper
+import com.yapp.itemfinder.feature.common.extension.showShortToast
 import com.yapp.itemfinder.space.R
 import com.yapp.itemfinder.space.databinding.FragmentManageSpaceBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -63,15 +64,13 @@ class ManageSpaceFragment : BaseStateFragment<ManageSpaceViewModel, FragmentMana
                     vm.sideEffectFlow.collect { sideEffect ->
                         when (sideEffect) {
                             is ManageSpaceSideEffect.OpenAddSpaceDialog -> {
-                                val dialog: AddSpaceDialog = AddSpaceDialog().getInstance()
+                                val dialog: AddSpaceDialog = AddSpaceDialog.newInstance()
                                 activity?.supportFragmentManager?.let { fragmentManager ->
-                                    dialog.show(
-                                        fragmentManager, ADD_SPACE_DIALOG_TAG
-                                    )
+                                    dialog.show(fragmentManager, ADD_SPACE_DIALOG_TAG)
                                 }
                             }
                             is ManageSpaceSideEffect.AddSpaceFailedToast -> {
-                                Toast.makeText(requireContext(), getString(R.string.failedToAddSpace), Toast.LENGTH_SHORT )
+                                requireContext().showShortToast(getString(R.string.failedToAddSpace))
                             }
                             is ManageSpaceSideEffect.DeleteDialog -> {
                                 activity?.let {
@@ -82,15 +81,13 @@ class ManageSpaceFragment : BaseStateFragment<ManageSpaceViewModel, FragmentMana
                                         )
                                     )
                                     builder.setMessage("공간 삭제")
-                                        .setPositiveButton("삭제",
-                                            DialogInterface.OnClickListener { dialog, id ->
-                                                Toast.makeText(context, "삭제", Toast.LENGTH_SHORT)
-                                                    .show()
-                                            })
-                                        .setNegativeButton("취소",
-                                            DialogInterface.OnClickListener { dialog, id ->
-                                                // User cancelled the dialog
-                                            })
+                                        .setPositiveButton("삭제") { dialog, id ->
+                                            Toast.makeText(context, "삭제", Toast.LENGTH_SHORT)
+                                                .show()
+                                        }
+                                        .setNegativeButton("취소") { dialog, id ->
+                                            // User cancelled the dialog
+                                        }
                                     val dialog = builder.create()
                                     dialog.show()
                                 }

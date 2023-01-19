@@ -5,9 +5,11 @@ import com.yapp.itemfinder.data.repositories.di.HomeSpaceRepositoryQualifier
 import com.yapp.itemfinder.domain.model.*
 import com.yapp.itemfinder.domain.repository.BannerRepository
 import com.yapp.itemfinder.domain.repository.HomeSpaceRepository
+import com.yapp.itemfinder.domain.repository.ManageSpaceRepository
 import com.yapp.itemfinder.feature.common.BaseStateViewModel
 import com.yapp.itemfinder.feature.common.extension.runCatchingWithErrorHandler
 import com.yapp.itemfinder.feature.common.utility.DataWithSpan
+import com.yapp.itemfinder.space.R
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -19,17 +21,17 @@ import javax.inject.Inject
 class HomeTabViewModel @Inject constructor(
     private val bannerMockRepository: BannerRepository,
     @HomeSpaceRepositoryQualifier
-    private val homeSpaceRepository: HomeSpaceRepository
+    private val homeSpaceRepository: HomeSpaceRepository,
+    private val manageSpaceRepository: ManageSpaceRepository,
 ) : BaseStateViewModel<HomeTabState, HomeTabSideEffect>() {
 
-    override val _stateFlow: MutableStateFlow<HomeTabState> =
-        MutableStateFlow(HomeTabState.Uninitialized)
+    override val _stateFlow: MutableStateFlow<HomeTabState> = MutableStateFlow(HomeTabState.Uninitialized)
     override val _sideEffectFlow: MutableSharedFlow<HomeTabSideEffect> = MutableSharedFlow()
 
     override fun fetchData(): Job = viewModelScope.launch {
         setState(HomeTabState.Loading)
         val dataWithSpan = mutableListOf<DataWithSpan<Data>>().apply {
-            add(DataWithSpan(MySpaceUpperCellItem("내 공간"),2))
+            add(DataWithSpan(MySpaceUpperCellItem("내 공간"), 2))
         }
         runCatchingWithErrorHandler {
             homeSpaceRepository.getHomeSpaces()
@@ -63,11 +65,39 @@ class HomeTabViewModel @Inject constructor(
         postSideEffect(HomeTabSideEffect.MoveSpaceDetail(space))
     }
 
-    fun moveSpaceManagementPage(){
+    fun moveSpaceManagementPage() {
         postSideEffect(HomeTabSideEffect.MoveSpacesManage)
     }
 
-    fun moveLockerDetailPage(locker: LockerEntity){
+    fun showCreateNewSpacePopup() {
+        postSideEffect(HomeTabSideEffect.ShowCreateNewSpacePopup)
+    }
+
+    fun moveLockerDetailPage(locker: LockerEntity) {
         postSideEffect(HomeTabSideEffect.MoveLockerDetail(locker))
     }
+
+    fun createSpaceItem(name: String): Job = viewModelScope.launch {
+        withState<HomeTabState.Empty> {
+            runCatchingWithErrorHandler {
+                manageSpaceRepository.addNewSpace(name)
+            }.onSuccess { space ->
+                setState(
+                    HomeTabState.Success(
+                        listOf(
+                            DataWithSpan(MySpaceUpperCellItem("내 공간"), 2),
+                            DataWithSpan(space, 1),
+                            DataWithSpan(EmptyCellItem(heightDp = 32), 2),
+                        )
+                    )
+                )
+            }.onFailure {
+                setState(HomeTabState.Error(it))
+                postSideEffect(
+                    HomeTabSideEffect.ShowToast(msgResId = R.string.failedToAddSpace)
+                )
+            }
+        }
+    }
+
 }

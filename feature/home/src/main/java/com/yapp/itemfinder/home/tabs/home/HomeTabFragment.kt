@@ -4,6 +4,7 @@ import android.app.Activity
 import android.os.Bundle
 import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
+import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -19,6 +20,7 @@ import com.yapp.itemfinder.domain.model.SpaceItem
 import com.yapp.itemfinder.feature.common.BaseStateFragment
 import com.yapp.itemfinder.feature.common.datalist.binder.DataBindHelper
 import com.yapp.itemfinder.feature.common.extension.gone
+import com.yapp.itemfinder.feature.common.extension.showShortToast
 import com.yapp.itemfinder.feature.common.extension.visible
 import com.yapp.itemfinder.feature.common.utility.DataWithSpan
 import com.yapp.itemfinder.feature.common.utility.SpaceItemDecoration
@@ -26,6 +28,7 @@ import com.yapp.itemfinder.feature.home.databinding.FragmentHomeTabBinding
 import com.yapp.itemfinder.home.HomeActivity
 import com.yapp.itemfinder.space.LockerListFragment
 import com.yapp.itemfinder.space.lockerdetail.LockerDetailFragment
+import com.yapp.itemfinder.space.managespace.AddSpaceDialog
 import com.yapp.itemfinder.space.managespace.ManageSpaceFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
@@ -47,6 +50,19 @@ class HomeTabFragment : BaseStateFragment<HomeTabViewModel, FragmentHomeTabBindi
     lateinit var dataBindHelper: DataBindHelper
 
     private val activity: Activity by lazy { requireActivity() }
+
+    private var addSpaceDialog: AddSpaceDialog? = null
+
+    override fun initState() {
+        super.initState()
+
+        setFragmentResultListener(ManageSpaceFragment.NEW_SPACE_NAME_REQUEST_KEY) { _, bundle ->
+            val newSpaceName = bundle.getString(ManageSpaceFragment.NAME_KEY)
+            if (newSpaceName != null) {
+                vm.createSpaceItem(newSpaceName)
+            }
+        }
+    }
 
     override fun initViews() = with(binding) {
         if (dataListAdapter == null) {
@@ -81,12 +97,21 @@ class HomeTabFragment : BaseStateFragment<HomeTabViewModel, FragmentHomeTabBindi
                             moveSpaceDetail(sideEffect.space)
                         }
                         is HomeTabSideEffect.ShowToast -> {
+                            if (sideEffect.message != null || sideEffect.msgResId != null) {
+                                requireContext().showShortToast(sideEffect.message ?: getString(sideEffect.msgResId!!))
+                            }
                         }
                         is HomeTabSideEffect.MoveSpacesManage -> {
                             moveSpaceManage()
                         }
                         is HomeTabSideEffect.MoveLockerDetail -> {
                             moveLockerDetail(sideEffect.locker)
+                        }
+                        is HomeTabSideEffect.ShowCreateNewSpacePopup -> {
+                            if (addSpaceDialog == null) {
+                                addSpaceDialog = AddSpaceDialog.newInstance()
+                            }
+                            addSpaceDialog?.show(parentFragmentManager, ManageSpaceFragment.ADD_SPACE_DIALOG_TAG)
                         }
                     }
                 }
@@ -146,7 +171,7 @@ class HomeTabFragment : BaseStateFragment<HomeTabViewModel, FragmentHomeTabBindi
         emptyViewGroup.visible()
         recyclerView.gone()
         emptySpaceAddButton.setOnClickListener {
-            vm.moveSpaceManagementPage()
+            vm.showCreateNewSpacePopup()
         }
     }
 

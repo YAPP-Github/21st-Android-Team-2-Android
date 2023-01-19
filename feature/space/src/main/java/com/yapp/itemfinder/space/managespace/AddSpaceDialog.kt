@@ -21,7 +21,7 @@ class AddSpaceDialog : DialogFragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = AddSpaceDialogBinding.inflate(inflater, container, false)
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         // dialog?.window?.requestFeature(Window.FEATURE_NO_TITLE)
@@ -47,7 +47,9 @@ class AddSpaceDialog : DialogFragment() {
         dismiss()
     }
 
-    fun getInstance(): AddSpaceDialog {
-        return AddSpaceDialog()
+    companion object {
+
+        fun newInstance(): AddSpaceDialog = AddSpaceDialog()
     }
+
 }

@@ -15,7 +15,6 @@ import com.yapp.itemfinder.feature.common.BaseStateFragment
 import com.yapp.itemfinder.feature.common.binding.viewBinding
 import com.yapp.itemfinder.feature.common.datalist.adapter.DataListAdapter
 import com.yapp.itemfinder.feature.common.datalist.binder.DataBindHelper
-import com.yapp.itemfinder.feature.common.extension.dpToPx
 import com.yapp.itemfinder.feature.common.extension.showShortToast
 import com.yapp.itemfinder.space.R
 import com.yapp.itemfinder.space.databinding.FragmentLockerDetailBinding
