@@ -3,18 +3,18 @@ package com.yapp.itemfinder.feature.common.datalist.adapter
 import android.os.Build
 import android.view.Gravity
 import android.widget.PopupMenu
-import com.yapp.itemfinder.domain.model.ManageSpaceItem
+import com.yapp.itemfinder.domain.model.ManageSpaceEntity
 import com.yapp.itemfinder.feature.common.R
 import com.yapp.itemfinder.feature.common.databinding.ManageSpaceItemBinding
 
 class ManageSpaceViewHolder(
     val binding: ManageSpaceItemBinding
-) : DataViewHolder<ManageSpaceItem>(binding){
+) : DataViewHolder<ManageSpaceEntity>(binding){
     override fun reset() {
         return
     }
 
-    override fun bindViews(data: ManageSpaceItem) {
+    override fun bindViews(data: ManageSpaceEntity) {
         binding.spaceName.text = data.name
         binding.spinnerImageButton.setOnClickListener {
             val popupMenu = PopupMenu(itemView.context, binding.spinnerImageButton, Gravity.END, 0, R.style.PopupMenu)

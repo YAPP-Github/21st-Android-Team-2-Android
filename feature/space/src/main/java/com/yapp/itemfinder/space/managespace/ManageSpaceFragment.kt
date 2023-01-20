@@ -13,6 +13,7 @@ import com.yapp.itemfinder.feature.common.BaseStateFragment
 import com.yapp.itemfinder.feature.common.binding.viewBinding
 import com.yapp.itemfinder.feature.common.datalist.adapter.DataListAdapter
 import com.yapp.itemfinder.feature.common.datalist.binder.DataBindHelper
+import com.yapp.itemfinder.feature.common.extension.showShortToast
 import com.yapp.itemfinder.space.R
 import com.yapp.itemfinder.feature.common.R as CR
 import com.yapp.itemfinder.space.databinding.FragmentManageSpaceBinding
@@ -84,15 +85,13 @@ class ManageSpaceFragment : BaseStateFragment<ManageSpaceViewModel, FragmentMana
                     vm.sideEffectFlow.collect { sideEffect ->
                         when (sideEffect) {
                             is ManageSpaceSideEffect.OpenAddSpaceDialog -> {
-                                val dialog: AddSpaceDialog = AddSpaceDialog().getInstance()
+                                val dialog: AddSpaceDialog = AddSpaceDialog.newInstance()
                                 activity?.supportFragmentManager?.let { fragmentManager ->
-                                    dialog.show(
-                                        fragmentManager, ADD_SPACE_DIALOG_TAG
-                                    )
+                                    dialog.show(fragmentManager, ADD_SPACE_DIALOG_TAG)
                                 }
                             }
                             is ManageSpaceSideEffect.AddSpaceFailedToast -> {
-                                Toast.makeText(requireContext(), getString(R.string.failedToAddSpace), Toast.LENGTH_SHORT)
+                                requireContext().showShortToast(getString(R.string.failedToAddSpace))
                             }
                             is ManageSpaceSideEffect.DeleteDialog -> {
                                 activity?.let {
