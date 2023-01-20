@@ -12,8 +12,14 @@ import com.yapp.itemfinder.feature.common.extension.visible
 class SpaceViewHolder(
     val binding: SpaceItemBinding
 ) : DataViewHolder<SpaceItem>(binding) {
-    lateinit var spaceName: String
-    lateinit var lockersInSpace: List<LockerEntity>
+
+    private enum class State {
+        NORMAL, OVER
+    }
+
+    private lateinit var spaceName: String
+    private lateinit var lockers: List<LockerEntity>
+    private var state: State = State.NORMAL
     private val imageViews = listOf(
         binding.spaceFirstImageView,
         binding.spaceSecondImageView,
@@ -30,27 +36,27 @@ class SpaceViewHolder(
     override fun bindData(data: SpaceItem) {
         super.bindData(data)
         spaceName = data.name
-        lockersInSpace = data.lockerList
+        lockers = data.lockerList
         with(binding) {
             spaceItemName.text = spaceName
 
-            lockersInSpace.indices.forEach { idx ->
+            lockers.indices.forEach { idx ->
                 val frame = frames[idx]
                 val imageView = imageViews[idx]
                 frame.visible()
                 when (idx) {
                     0, 1, 2 -> {
                         val context = binding.root.context
-                        Glide.with(itemView).load(lockersInSpace[idx].icon.toDrawable(context)).into(imageView)
+                        Glide.with(itemView).load(lockers[idx].icon.toDrawable(context)).into(imageView)
 
                     }
                     3 -> {
-                        if (lockersInSpace.size > 4) {
-                            spaceFourthTextView.text = "+${lockersInSpace.size - 3}"
+                        if (lockers.size > 4) {
+                            spaceFourthTextView.text = "+${lockers.size - 3}"
                             frame.setCardBackgroundColor(frame.context.getColor(R.color.brown_03))
                         } else {
                             val context = binding.root.context
-                            Glide.with(itemView).load(lockersInSpace[idx].icon.toDrawable(context)).into(imageView)
+                            Glide.with(itemView).load(lockers[idx].icon.toDrawable(context)).into(imageView)
                         }
                         return
                     }
@@ -61,6 +67,17 @@ class SpaceViewHolder(
 
     override fun bindViews(data: SpaceItem) {
         binding.root.setOnClickListener { data.moveSpaceDetailPage() }
+        lockers.forEachIndexed { idx, locker ->
+            when (idx) {
+                0, 1, 2 -> frames[idx].setOnClickListener { data.moveLockerDetailHandler(locker) }
+                3 -> when (state) {
+                    State.NORMAL -> frames[idx].setOnClickListener { data.moveLockerDetailHandler(locker) }
+                    else -> Unit
+
+                }
+                4 -> return
+            }
+        }
     }
 
     override fun reset() {
