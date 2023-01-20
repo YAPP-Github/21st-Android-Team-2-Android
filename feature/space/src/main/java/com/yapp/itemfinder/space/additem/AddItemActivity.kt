@@ -1,4 +1,3 @@
-
 package com.yapp.itemfinder.space.additem
 
 import android.content.Context
@@ -48,7 +47,15 @@ class AddItemActivity : BaseStateActivity<AddItemViewModel, ActivityAddItemBindi
         }
         launch {
             vm.sideEffectFlow.collect { sideEffect ->
+                when (sideEffect) {
+                    is AddItemSideEffect.OpenSelectCategoryDialog -> {
+                        val dialog = SelectCategoryDialog().getInstance()
+                        this@AddItemActivity.supportFragmentManager?.let { fragmentManager ->
+                            dialog.show(fragmentManager, SELECT_CATEGORY_DIALOG)
+                        }
 
+                    }
+                }
             }
         }
     }
@@ -67,6 +74,7 @@ class AddItemActivity : BaseStateActivity<AddItemViewModel, ActivityAddItemBindi
     }
 
     companion object {
+        const val SELECT_CATEGORY_DIALOG = "SELECT_CATEGORY_DIALOG"
         fun newIntent(context: Context) = Intent(context, AddItemActivity::class.java)
     }
 }

@@ -6,8 +6,9 @@ data class AddItemInfoRequired(
     val location: String,
     val count: Int = 1,
     override var type: CellType = CellType.ADD_ITEM_INFO_REQUIRED_CELL
-) : Data(){
-
+) : Data() {
+    var selectCategoryHandler: ActionHandler = {}
+    fun selectCategory() = selectCategoryHandler.invoke()
 }
 
 enum class ItemCategorySelection(val label: String) {

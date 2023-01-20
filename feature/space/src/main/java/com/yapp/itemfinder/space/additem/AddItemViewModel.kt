@@ -22,8 +22,12 @@ class AddItemViewModel @Inject constructor(
         setState(AddItemState.Loading)
         setState(
             AddItemState.Success(
-                dataList = listOf(AddItemInfoRequired(name = "", location =  ""))
+                dataList = listOf(AddItemInfoRequired(name = "", location = ""))
             )
         )
+    }
+
+    fun openSelectCategoryDialog() {
+        postSideEffect(AddItemSideEffect.OpenSelectCategoryDialog)
     }
 }

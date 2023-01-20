@@ -14,6 +14,7 @@ class AddItemInfoRequiredViewHolder(
 
     override fun bindViews(data: AddItemInfoRequired) {
         binding.itemCategoryButton.text = data.category
+        binding.itemCategoryButton.setOnClickListener { data.selectCategory() }
         when (data.category) {
             ItemCategorySelection.DEFAULT.label -> {
                 binding.itemCategoryButton.apply {
