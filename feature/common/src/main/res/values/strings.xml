@@ -9,4 +9,8 @@
     <string name="icon">아이콘</string>
     <string name="photo">사진</string>
     <string name="takePhotoPrompt">보관함 사진을 등록하고 핀을 찍어 \n물건의 위치를 쉽게 파악할 수 있어요!</string>
+    <string name="itemName">물건 이름</string>
+    <string name="location">위치</string>
+    <string name="selectItemLocation">보관할 위치를 선택해주세요</string>
+    <string name="count">개수</string>
 </resources>

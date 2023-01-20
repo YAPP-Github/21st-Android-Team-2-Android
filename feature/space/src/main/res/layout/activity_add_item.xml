@@ -4,7 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".additem.AddItemActivity">
+    tools:context=".additem.AddItemActivity"
+    android:paddingHorizontal="16dp"
+    android:paddingTop="16dp"
+    android:paddingBottom="88dp">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
