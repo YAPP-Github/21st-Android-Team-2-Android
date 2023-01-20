@@ -6,4 +6,5 @@ import com.yapp.itemfinder.feature.common.SideEffect
 sealed class LockerListSideEffect : SideEffect {
     data class MoveToLockerDetail(val locker: LockerEntity) : LockerListSideEffect()
     object MoveToAddLocker : LockerListSideEffect()
+    object MoveToAddItem : LockerListSideEffect()
 }
