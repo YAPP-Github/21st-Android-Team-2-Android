@@ -1,18 +1,18 @@
 package com.yapp.itemfinder.feature.common.datalist.adapter
 
-import com.yapp.itemfinder.domain.model.AddItemInfoRequired
+import com.yapp.itemfinder.domain.model.AddItemCategory
 import com.yapp.itemfinder.domain.model.ItemCategorySelection
 import com.yapp.itemfinder.feature.common.R
-import com.yapp.itemfinder.feature.common.databinding.AddItemInfoRequiredBinding
+import com.yapp.itemfinder.feature.common.databinding.AddItemCategoryBinding
 
-class AddItemInfoRequiredViewHolder(
-    val binding: AddItemInfoRequiredBinding
-) : DataViewHolder<AddItemInfoRequired>(binding) {
+class AddItemCategoryViewHolder(
+    val binding: AddItemCategoryBinding
+) : DataViewHolder<AddItemCategory>(binding) {
     override fun reset() {
         return
     }
 
-    override fun bindViews(data: AddItemInfoRequired) {
+    override fun bindViews(data: AddItemCategory) {
         binding.itemCategoryButton.text = data.category
         binding.itemCategoryButton.setOnClickListener { data.selectCategory() }
         when (data.category) {
@@ -30,7 +30,6 @@ class AddItemInfoRequiredViewHolder(
                 }
             }
         }
-        binding.countTextView.text = data.count.toString()
     }
 
 }

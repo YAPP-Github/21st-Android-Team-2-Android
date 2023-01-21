@@ -1,7 +1,7 @@
 package com.yapp.itemfinder.space.binder.di
 
 import com.yapp.itemfinder.feature.common.datalist.binder.AddItemBinder
-import com.yapp.itemfinder.space.binder.AddItemRequiredBinder
+import com.yapp.itemfinder.space.binder.AddItemCategoryBinder
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -13,7 +13,7 @@ import javax.inject.Singleton
 abstract class ItemDataBinderModule {
     @Binds
     @Singleton
-    abstract fun bindAddItemRequiredBinder(
-        addItemRequiredBinder: AddItemRequiredBinder
+    abstract fun bindAddItemCategoryBinder(
+        addItemCategoryBinder: AddItemCategoryBinder
     ): AddItemBinder
 }

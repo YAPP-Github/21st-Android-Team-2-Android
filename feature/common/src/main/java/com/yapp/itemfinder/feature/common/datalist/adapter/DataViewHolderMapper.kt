@@ -29,8 +29,8 @@ object DataViewHolderMapper {
             CellType.ADD_LOCKER_SPACE_CELL -> AddLockerSpaceViewHolder(AddLockerSpaceBinding.inflate(inflater, parent, false))
             CellType.LOCKER_ICONS_CELL -> LockerIconsViewHolder(LockerIconsBinding.inflate(inflater, parent, false))
             CellType.ADD_LOCKER_IMAGE_CELL -> AddLockerPhotoViewHolder(AddLockerPhotoBinding.inflate(inflater, parent, false))
-            CellType.ADD_ITEM_INFO_REQUIRED_CELL -> AddItemInfoRequiredViewHolder(
-                AddItemInfoRequiredBinding.inflate(inflater, parent, false))
+            CellType.ADD_ITEM_NAME_CELL -> AddItemNameViewHolder(AddItemNameBinding.inflate(inflater, parent, false))
+            CellType.ADD_ITEM_CATEGORY_CELL -> AddItemCategoryViewHolder(AddItemCategoryBinding.inflate(inflater, parent, false))
         }
 
         return viewHolder as DataViewHolder<D>

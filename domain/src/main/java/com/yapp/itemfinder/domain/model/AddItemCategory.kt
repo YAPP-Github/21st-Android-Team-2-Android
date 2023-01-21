@@ -1,11 +1,10 @@
 package com.yapp.itemfinder.domain.model
 
-data class AddItemInfoRequired(
-    var name: String,
+data class AddItemCategory(
     var category: String = ItemCategorySelection.DEFAULT.label,
     var location: String,
     var count: Int = 1,
-    override var type: CellType = CellType.ADD_ITEM_INFO_REQUIRED_CELL
+    override var type: CellType = CellType.ADD_ITEM_CATEGORY_CELL
 ) : Data() {
     var selectCategoryHandler: ActionHandler = {}
     fun selectCategory() = selectCategoryHandler.invoke()

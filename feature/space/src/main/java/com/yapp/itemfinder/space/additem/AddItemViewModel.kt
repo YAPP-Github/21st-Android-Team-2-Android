@@ -1,7 +1,8 @@
 package com.yapp.itemfinder.space.additem
 
 import androidx.lifecycle.viewModelScope
-import com.yapp.itemfinder.domain.model.AddItemInfoRequired
+import com.yapp.itemfinder.domain.model.AddItemCategory
+import com.yapp.itemfinder.domain.model.AddItemName
 import com.yapp.itemfinder.domain.model.Data
 import com.yapp.itemfinder.feature.common.BaseStateViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -23,7 +24,10 @@ class AddItemViewModel @Inject constructor(
         setState(AddItemState.Loading)
         setState(
             AddItemState.Success(
-                dataList = listOf(AddItemInfoRequired(name = "", location = ""))
+                dataList = listOf(
+                    AddItemName(),
+                    AddItemCategory(location = "")
+                )
             )
         )
     }
@@ -32,7 +36,8 @@ class AddItemViewModel @Inject constructor(
         var newDataList: List<Data> = listOf()
         withState<AddItemState.Success> { state ->
             newDataList = ArrayList(state.dataList)
-            (newDataList as ArrayList<Data>)[0] = (newDataList[0] as AddItemInfoRequired).copy(category = newCategory)
+            val categoryIndex = newDataList.indexOf(newDataList.find { it is AddItemCategory })
+            (newDataList as ArrayList<Data>)[categoryIndex] = (newDataList[categoryIndex] as AddItemCategory).copy(category = newCategory)
         }
         setState(
             AddItemState.Success(
