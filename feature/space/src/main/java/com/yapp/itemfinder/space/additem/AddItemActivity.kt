@@ -32,6 +32,15 @@ class AddItemActivity : BaseStateActivity<AddItemViewModel, ActivityAddItemBindi
             dataListAdapter = DataListAdapter()
             recyclerView.adapter = dataListAdapter
         }
+        supportFragmentManager.setFragmentResultListener(
+            CHECKED_CATEGORY_REQUEST_KEY,
+            this@AddItemActivity
+        ) { requestKey, bundle ->
+            val newCategoryName = bundle.getString(CHECKED_CATEGORY_KEY)
+            if (newCategoryName != null) {
+                vm.setCategory(newCategoryName)
+            }
+        }
     }
 
     override fun observeData(): Job = lifecycleScope.launch {
@@ -75,6 +84,9 @@ class AddItemActivity : BaseStateActivity<AddItemViewModel, ActivityAddItemBindi
 
     companion object {
         const val SELECT_CATEGORY_DIALOG = "SELECT_CATEGORY_DIALOG"
+        const val CHECKED_CATEGORY_REQUEST_KEY = "CHECKED_CATEGORY_REQUEST_KEY"
+        const val CHECKED_CATEGORY_KEY = "CHECKED_CATEGORY_KEY"
         fun newIntent(context: Context) = Intent(context, AddItemActivity::class.java)
     }
+
 }

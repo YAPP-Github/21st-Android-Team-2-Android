@@ -2,6 +2,7 @@ package com.yapp.itemfinder.space.additem
 
 import androidx.lifecycle.viewModelScope
 import com.yapp.itemfinder.domain.model.AddItemInfoRequired
+import com.yapp.itemfinder.domain.model.Data
 import com.yapp.itemfinder.feature.common.BaseStateViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
@@ -25,6 +26,28 @@ class AddItemViewModel @Inject constructor(
                 dataList = listOf(AddItemInfoRequired(name = "", location = ""))
             )
         )
+    }
+
+    fun setCategory(newCategory: String) {
+        var newDataList: List<Data> = listOf()
+        withState<AddItemState.Success> { state ->
+            newDataList = ArrayList(state.dataList)
+            (newDataList as ArrayList<Data>)[0] = (newDataList[0] as AddItemInfoRequired).copy(category = newCategory)
+        }
+        setState(
+            AddItemState.Success(
+                newDataList
+            )
+        )
+//        withState<AddItemState.Success> { state ->
+//            val addItemInfoRequired = state.dataList[0] as AddItemInfoRequired
+//            addItemInfoRequired.category = newCategory
+//            val newDataList = ArrayList(state.dataList)
+//            newDataList[0] = (newDataList[0] as AddItemInfoRequired).copy(category = newCategory)
+//            state.copy(
+//                dataList = newDataList
+//            )
+//        }
     }
 
     fun openSelectCategoryDialog() {

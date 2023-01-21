@@ -9,7 +9,7 @@ class AddItemInfoRequiredViewHolder(
     val binding: AddItemInfoRequiredBinding
 ) : DataViewHolder<AddItemInfoRequired>(binding) {
     override fun reset() {
-
+        return
     }
 
     override fun bindViews(data: AddItemInfoRequired) {

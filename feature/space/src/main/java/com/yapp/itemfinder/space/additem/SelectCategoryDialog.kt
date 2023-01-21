@@ -7,7 +7,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.setFragmentResult
+import com.yapp.itemfinder.domain.model.ItemCategorySelection
+import com.yapp.itemfinder.space.R
 import com.yapp.itemfinder.space.databinding.SelectCategoryDialogBinding
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -26,13 +30,24 @@ class SelectCategoryDialog : DialogFragment() {
         return binding.root
     }
 
-    override fun onDismiss(dialog: DialogInterface) {
-        super.onDismiss(dialog)
-        passSelectedCategory()
+    override fun onCancel(dialog: DialogInterface) {
+        super.onCancel(dialog)
+        val categoryLabel = when (binding.categoryRadioGroup.checkedRadioButtonId) {
+            R.id.lifeRadioButton -> ItemCategorySelection.LIFE.label
+            R.id.foodRadioButton -> ItemCategorySelection.FOOD.label
+            R.id.fashionRadioButton -> ItemCategorySelection.FASHION.label
+            else -> {
+                ItemCategorySelection.DEFAULT.label
+            }
+        }
+        setCheckedCategory(categoryLabel)
     }
 
-    private fun passSelectedCategory() {
-
+    private fun setCheckedCategory(categoryName: String) {
+        setFragmentResult(
+            AddItemActivity.CHECKED_CATEGORY_REQUEST_KEY,
+            bundleOf(AddItemActivity.CHECKED_CATEGORY_KEY to categoryName)
+        )
     }
 
     companion object {

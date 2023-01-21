@@ -27,6 +27,7 @@
             android:textColor="@color/gray_04" />
 
         <RadioGroup
+            android:id="@+id/categoryRadioGroup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 

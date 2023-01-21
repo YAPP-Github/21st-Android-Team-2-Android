@@ -1,10 +1,10 @@
 package com.yapp.itemfinder.domain.model
 
 data class AddItemInfoRequired(
-    val name: String,
-    val category: String = ItemCategorySelection.DEFAULT.label,
-    val location: String,
-    val count: Int = 1,
+    var name: String,
+    var category: String = ItemCategorySelection.DEFAULT.label,
+    var location: String,
+    var count: Int = 1,
     override var type: CellType = CellType.ADD_ITEM_INFO_REQUIRED_CELL
 ) : Data() {
     var selectCategoryHandler: ActionHandler = {}
