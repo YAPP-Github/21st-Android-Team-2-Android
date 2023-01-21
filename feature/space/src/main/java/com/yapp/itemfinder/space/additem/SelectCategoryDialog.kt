@@ -1,5 +1,6 @@
 package com.yapp.itemfinder.space.additem
 
+import android.content.DialogInterface
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -25,13 +26,16 @@ class SelectCategoryDialog : DialogFragment() {
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onDismiss(dialog: DialogInterface) {
+        super.onDismiss(dialog)
+        passSelectedCategory()
     }
 
     private fun passSelectedCategory() {
 
     }
 
-    fun getInstance() = SelectCategoryDialog()
+    companion object {
+        fun getInstance() = SelectCategoryDialog()
+    }
 }

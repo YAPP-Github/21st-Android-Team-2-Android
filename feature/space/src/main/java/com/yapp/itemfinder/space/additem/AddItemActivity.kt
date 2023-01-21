@@ -49,7 +49,7 @@ class AddItemActivity : BaseStateActivity<AddItemViewModel, ActivityAddItemBindi
             vm.sideEffectFlow.collect { sideEffect ->
                 when (sideEffect) {
                     is AddItemSideEffect.OpenSelectCategoryDialog -> {
-                        val dialog = SelectCategoryDialog().getInstance()
+                        val dialog = SelectCategoryDialog.getInstance()
                         this@AddItemActivity.supportFragmentManager?.let { fragmentManager ->
                             dialog.show(fragmentManager, SELECT_CATEGORY_DIALOG)
                         }
