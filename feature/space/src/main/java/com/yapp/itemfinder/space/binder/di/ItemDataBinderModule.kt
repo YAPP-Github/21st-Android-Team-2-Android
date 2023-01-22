@@ -1,7 +1,9 @@
 package com.yapp.itemfinder.space.binder.di
 
+import com.yapp.itemfinder.feature.common.datalist.binder.AddItemAdditionalBinder
 import com.yapp.itemfinder.feature.common.datalist.binder.AddItemCategoryBinder
 import com.yapp.itemfinder.feature.common.datalist.binder.AddItemCountBinder
+import com.yapp.itemfinder.space.binder.AddItemScreenAdditionalBinder
 import com.yapp.itemfinder.space.binder.AddItemScreenCategoryBinder
 import com.yapp.itemfinder.space.binder.AddItemScreenCountBinder
 import dagger.Binds
@@ -24,4 +26,10 @@ abstract class ItemDataBinderModule {
     abstract fun bindAddItemCountBinder(
         addItemCountBinder: AddItemScreenCountBinder
     ): AddItemCountBinder
+
+    @Binds
+    @Singleton
+    abstract fun bindAddItemAdditionalBinder(
+        addItemAdditionalBinder: AddItemScreenAdditionalBinder
+    ): AddItemAdditionalBinder
 }

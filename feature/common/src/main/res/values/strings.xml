@@ -15,4 +15,7 @@
     <string name="count">개수</string>
     <string name="add">추가</string>
     <string name="tag">태그</string>
+    <string name="memo">메모</string>
+    <string name="expirationDate">소비기한</string>
+    <string name="purchaseDate">구매일</string>
 </resources>

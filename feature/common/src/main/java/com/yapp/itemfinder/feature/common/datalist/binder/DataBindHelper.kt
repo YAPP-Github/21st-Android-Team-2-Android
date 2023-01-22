@@ -21,7 +21,8 @@ class DataBindHelper @Inject constructor(
     var manageSpaceAddSpaceBinder: AddSpaceBinder,
     var addLockerSpaceBinder: AddLockerSpaceBinder,
     var addItemCategoryBinder: AddItemCategoryBinder,
-    var addItemCountBinder: AddItemCountBinder
+    var addItemCountBinder: AddItemCountBinder,
+    var addItemAdditionalBinder: AddItemAdditionalBinder
 ) {
 
 
@@ -63,6 +64,9 @@ class DataBindHelper @Inject constructor(
             }
             CellType.ADD_ITEM_COUNT_CELL -> {
                 addItemCountBinder.bindData(data as AddItemCount, viewModel)
+            }
+            CellType.ADD_ITEM_ADDITIONAL_CELL -> {
+                addItemAdditionalBinder.bindData(data as AddItemAdditional, viewModel)
             }
             else -> {}
         }

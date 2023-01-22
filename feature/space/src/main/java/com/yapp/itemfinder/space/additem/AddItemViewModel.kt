@@ -27,7 +27,8 @@ class AddItemViewModel @Inject constructor(
                     AddItemCategory(location = ""),
                     AddItemLocation(),
                     AddItemCount(),
-                    AddItemTags(listOf())
+                    AddItemTags(listOf()),
+                    AddItemAdditional()
                 )
             )
         )
@@ -77,6 +78,18 @@ class AddItemViewModel @Inject constructor(
                 )
             )
         }
+    }
+
+    fun addMemoCell() {
+
+    }
+
+    fun addExpirationDateCell() {
+
+    }
+
+    fun addPurchaseDateCell() {
+
     }
 
     fun openSelectCategoryDialog() {
