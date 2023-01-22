@@ -1,10 +1,7 @@
 package com.yapp.itemfinder.space.additem
 
 import androidx.lifecycle.viewModelScope
-import com.yapp.itemfinder.domain.model.AddItemCategory
-import com.yapp.itemfinder.domain.model.AddItemLocation
-import com.yapp.itemfinder.domain.model.AddItemName
-import com.yapp.itemfinder.domain.model.Data
+import com.yapp.itemfinder.domain.model.*
 import com.yapp.itemfinder.feature.common.BaseStateViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
@@ -28,33 +25,57 @@ class AddItemViewModel @Inject constructor(
                 dataList = listOf(
                     AddItemName(),
                     AddItemCategory(location = ""),
-                    AddItemLocation()
+                    AddItemLocation(),
+                    AddItemCount()
                 )
             )
         )
     }
 
     fun setCategory(newCategory: String) {
-        var newDataList: List<Data> = listOf()
         withState<AddItemState.Success> { state ->
-            newDataList = ArrayList(state.dataList)
+            val newDataList = ArrayList(state.dataList)
             val categoryIndex = newDataList.indexOf(newDataList.find { it is AddItemCategory })
-            (newDataList as ArrayList<Data>)[categoryIndex] = (newDataList[categoryIndex] as AddItemCategory).copy(category = newCategory)
-        }
-        setState(
-            AddItemState.Success(
-                newDataList
+            newDataList[categoryIndex] =
+                (newDataList[categoryIndex] as AddItemCategory).copy(category = newCategory)
+            setState(
+                AddItemState.Success(
+                    newDataList
+                )
             )
-        )
-//        withState<AddItemState.Success> { state ->
-//            val addItemInfoRequired = state.dataList[0] as AddItemInfoRequired
-//            addItemInfoRequired.category = newCategory
-//            val newDataList = ArrayList(state.dataList)
-//            newDataList[0] = (newDataList[0] as AddItemInfoRequired).copy(category = newCategory)
-//            state.copy(
-//                dataList = newDataList
-//            )
-//        }
+        }
+    }
+
+    fun countPlusOne() {
+        withState<AddItemState.Success> { state ->
+            val newDataList = ArrayList(state.dataList)
+            val addItemCountItem = newDataList.find { it is AddItemCount } as AddItemCount
+            val countIndex = newDataList.indexOf(addItemCountItem)
+            newDataList[countIndex] = addItemCountItem.copy(
+                count = addItemCountItem.count.plus(1)
+            )
+            setState(
+                AddItemState.Success(
+                    newDataList
+                )
+            )
+        }
+    }
+
+    fun countMinusOne() {
+        withState<AddItemState.Success> { state ->
+            val newDataList = ArrayList(state.dataList)
+            val addItemCountItem = newDataList.find { it is AddItemCount } as AddItemCount
+            val countIndex = newDataList.indexOf(addItemCountItem)
+            newDataList[countIndex] = addItemCountItem.copy(
+                count = addItemCountItem.count.minus(1)
+            )
+            setState(
+                AddItemState.Success(
+                    newDataList
+                )
+            )
+        }
     }
 
     fun openSelectCategoryDialog() {
