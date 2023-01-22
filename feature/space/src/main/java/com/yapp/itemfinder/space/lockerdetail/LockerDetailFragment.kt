@@ -1,6 +1,5 @@
 package com.yapp.itemfinder.space.lockerdetail
 
-import android.annotation.SuppressLint
 import android.util.Log
 import android.view.View
 import android.widget.Toast
@@ -79,17 +78,16 @@ class LockerDetailFragment : BaseStateFragment<LockerDetailViewModel, FragmentLo
             )
         }
 
-
         setBottomSheetBehavior()
-        blockBottomSheetTouchIntercept()
     }
 
-    /**
-     * 리사이클러뷰 부모가 터치이벤트를 인터셉트하는 것을 방지합니다. 리사이클러뷰 스크롤을 해야 하는데,
-     */
-
-    @SuppressLint("ClickableViewAccessibility")
     private fun setBottomSheetBehavior() {
+        fun setFilterActive(isActive: Boolean) = with(binding) {
+            orderButton.isClickable = isActive
+            conditionButton.isClickable = isActive
+            tagButton.isClickable = isActive
+        }
+
         val behavior = BottomSheetBehavior.from(binding.bottomSheet.root) as CustomDraggableBottomSheetBehaviour
         behavior.addBottomSheetCallback(object : BottomSheetCallback() {
             override fun onStateChanged(bottomSheet: View, newState: Int) {
@@ -97,11 +95,21 @@ class LockerDetailFragment : BaseStateFragment<LockerDetailViewModel, FragmentLo
                     when (newState) {
                         BottomSheetBehavior.STATE_EXPANDED -> {
                             setImageResource(R.drawable.toggle_down)
-                            binding.appBar.setExpanded(true, false)
+                            setFilterActive(false)
+                        }
+                        BottomSheetBehavior.STATE_SETTLING,
+                        BottomSheetBehavior.STATE_DRAGGING -> {
+                            setFilterActive(false)
                         }
                         BottomSheetBehavior.STATE_COLLAPSED -> {
                             setImageResource(R.drawable.toggle_up)
-                            binding.appBar.setExpanded(false, false)
+                            setFilterActive(true)
+                        }
+                        BottomSheetBehavior.STATE_HALF_EXPANDED -> {
+                            TODO()
+                        }
+                        BottomSheetBehavior.STATE_HIDDEN -> {
+                            TODO()
                         }
                     }
                 }
@@ -128,29 +136,6 @@ class LockerDetailFragment : BaseStateFragment<LockerDetailViewModel, FragmentLo
         }
 
         behavior.draggableView = binding.bottomSheet.itemsDraggableContainer
-
-
-        /*binding.bottomSheet.recyclerview.setOnTouchListener { _, e ->
-            when(e.action) {
-                MotionEvent.ACTION_DOWN -> {
-                    behavior.isDraggable = false
-                    return@setOnTouchListener false
-                }
-                MotionEvent.ACTION_MOVE -> {
-                    behavior.isDraggable = false
-                    return@setOnTouchListener false
-                }
-                MotionEvent.ACTION_UP -> {
-                    behavior.isDraggable = true
-                    return@setOnTouchListener false
-                }
-                else -> false
-            }
-            return@setOnTouchListener true
-        }*/
-    }
-
-    private fun blockBottomSheetTouchIntercept() {
 
     }
 
@@ -191,10 +176,6 @@ class LockerDetailFragment : BaseStateFragment<LockerDetailViewModel, FragmentLo
         val itemCount: Int = dataListAdapter?.itemCount ?: 0
         binding.bottomSheet.totalItemCount.text = getString(string.totalCount, itemCount)
     }
-
-//    private fun handleError(lockerListState: LockerListState.Error) {
-//
-//    }
 
     companion object {
 

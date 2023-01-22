@@ -10,58 +10,76 @@
         android:layout_height="match_parent"
         android:fitsSystemWindows="true">
 
-        <com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/appBar"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/filterContainer"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/collapsing_toolbar_container_height"
+            android:background="@color/white">
+
+            <View
+                android:id="@+id/filterBackground"
+                android:layout_width="wrap_content"
+                android:layout_height="?android:attr/actionBarSize"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent" />
+
+            <ImageView
+                android:id="@+id/filterImageView"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginStart="16dp"
+                android:src="@drawable/ic_filter"
+                app:layout_constraintTop_toTopOf="@id/filterBackground"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                style="@style/ChipButton.Order"
+                android:id="@+id/orderButton"
+                android:drawableEnd="@drawable/ic_down"
+                android:layout_marginStart="16dp"
+                android:text="최근등록순"
+                app:layout_constraintTop_toTopOf="@id/filterBackground"
+                app:layout_constraintStart_toEndOf="@id/filterImageView"
+                app:layout_constraintBottom_toBottomOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                style="@style/ChipButton.Condition"
+                android:id="@+id/conditionButton"
+                android:drawableEnd="@drawable/ic_down"
+                android:layout_marginStart="8dp"
+                android:text="카테고리2"
+                app:layout_constraintTop_toTopOf="@id/filterBackground"
+                app:layout_constraintStart_toEndOf="@id/orderButton"
+                app:layout_constraintBottom_toBottomOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                style="@style/ChipButton.Condition"
+                android:id="@+id/tagButton"
+                android:drawableEnd="@drawable/ic_down"
+                android:layout_marginStart="8dp"
+                android:text="태그2"
+                app:layout_constraintTop_toTopOf="@id/filterBackground"
+                app:layout_constraintStart_toEndOf="@id/conditionButton"
+                app:layout_constraintBottom_toBottomOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.appcompat.widget.Toolbar
+            style="@style/DefaultToolbar"
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed">
+            android:layout_gravity="top"
+            app:layout_collapseMode="pin">
 
-            <com.google.android.material.appbar.CollapsingToolbarLayout
+            <com.yapp.itemfinder.feature.common.views.DefaultTopNavigationView
+                android:id="@+id/defaultTopNavigationView"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_scrollFlags="exitUntilCollapsed|scroll">
+                android:layout_height="wrap_content" />
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/collapsing_toolbar_container_height"
-                    android:background="@color/white">
-
-                    <View
-                        android:id="@+id/filterBackground"
-                        android:layout_width="wrap_content"
-                        android:layout_height="?android:attr/actionBarSize"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent"/>
-
-                    <ImageView
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:src="@drawable/ic_filter"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="@id/filterBackground"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        android:layout_marginStart="16dp"/>
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <androidx.appcompat.widget.Toolbar
-                    style="@style/DefaultToolbar"
-                    android:id="@+id/toolbar"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:layout_collapseMode="pin"
-                    android:layout_gravity="top">
-
-                    <com.yapp.itemfinder.feature.common.views.DefaultTopNavigationView
-                        android:id="@+id/defaultTopNavigationView"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
-
-                </androidx.appcompat.widget.Toolbar>
-
-            </com.google.android.material.appbar.CollapsingToolbarLayout>
-        </com.google.android.material.appbar.AppBarLayout>
+        </androidx.appcompat.widget.Toolbar>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
