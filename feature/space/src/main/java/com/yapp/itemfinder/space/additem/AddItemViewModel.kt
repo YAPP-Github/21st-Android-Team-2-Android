@@ -26,7 +26,8 @@ class AddItemViewModel @Inject constructor(
                     AddItemName(),
                     AddItemCategory(location = ""),
                     AddItemLocation(),
-                    AddItemCount()
+                    AddItemCount(),
+                    AddItemTags(listOf())
                 )
             )
         )

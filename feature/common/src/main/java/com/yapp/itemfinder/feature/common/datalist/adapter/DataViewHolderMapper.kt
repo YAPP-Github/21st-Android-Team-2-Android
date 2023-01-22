@@ -33,6 +33,7 @@ object DataViewHolderMapper {
             CellType.ADD_ITEM_CATEGORY_CELL -> AddItemCategoryViewHolder(AddItemCategoryBinding.inflate(inflater, parent, false))
             CellType.ADD_ITEM_LOCATION_CELL -> AddItemLocationViewHolder(AddItemLocationBinding.inflate(inflater, parent, false))
             CellType.ADD_ITEM_COUNT_CELL -> AddItemCountViewHolder(AddItemCountBinding.inflate(inflater, parent, false))
+            CellType.ADD_ITEM_TAGS_CELL -> AddItemTagsViewHolder(AddItemTagsBinding.inflate(inflater, parent, false))
         }
 
         return viewHolder as DataViewHolder<D>
