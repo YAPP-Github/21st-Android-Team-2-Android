@@ -2,6 +2,7 @@ package com.yapp.itemfinder.space.additem
 
 import androidx.lifecycle.viewModelScope
 import com.yapp.itemfinder.domain.model.AddItemCategory
+import com.yapp.itemfinder.domain.model.AddItemLocation
 import com.yapp.itemfinder.domain.model.AddItemName
 import com.yapp.itemfinder.domain.model.Data
 import com.yapp.itemfinder.feature.common.BaseStateViewModel
@@ -26,7 +27,8 @@ class AddItemViewModel @Inject constructor(
             AddItemState.Success(
                 dataList = listOf(
                     AddItemName(),
-                    AddItemCategory(location = "")
+                    AddItemCategory(location = ""),
+                    AddItemLocation()
                 )
             )
         )
