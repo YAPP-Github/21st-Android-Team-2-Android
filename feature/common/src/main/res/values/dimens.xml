@@ -14,4 +14,6 @@
 
     <dimen name="tools_bottom_sheet_height">294dp</dimen>
     <dimen name="tag_or_category_radius">4dp</dimen>
+
+    <dimen name="collapsing_toolbar_container_height">112dp</dimen>
 </resources>

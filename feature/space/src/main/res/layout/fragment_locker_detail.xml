@@ -1,29 +1,93 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-
-    <ImageView
-        android:id="@+id/lockerDetailImageView"
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="320dp"
-        android:background="@color/gray_01"
-        android:gravity="center"
-        android:textAlignment="center"
-        android:src="@drawable/ic_locker_icon_checked"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true">
 
-    <include
-        android:id="@+id/bottomSheet"
-        layout="@layout/fragment_locker_detail_bottom_sheet"
-        tools:layout_gravity="bottom"
-        tools:layout_height="@dimen/tools_bottom_sheet_height"
-        tools:layout_width="match_parent" />
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
+            <com.google.android.material.appbar.CollapsingToolbarLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_scrollFlags="exitUntilCollapsed|scroll">
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/collapsing_toolbar_container_height"
+                    android:background="@color/white">
+
+                    <View
+                        android:id="@+id/filterBackground"
+                        android:layout_width="wrap_content"
+                        android:layout_height="?android:attr/actionBarSize"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"/>
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/ic_filter"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/filterBackground"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        android:layout_marginStart="16dp"/>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.appcompat.widget.Toolbar
+                    style="@style/DefaultToolbar"
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_collapseMode="pin"
+                    android:layout_gravity="top">
+
+                    <com.yapp.itemfinder.feature.common.views.DefaultTopNavigationView
+                        android:id="@+id/defaultTopNavigationView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                </androidx.appcompat.widget.Toolbar>
+
+            </com.google.android.material.appbar.CollapsingToolbarLayout>
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/collapsing_toolbar_container_height">
+
+            <ImageView
+                android:id="@+id/lockerDetailImageView"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:background="@color/gray_01"
+                android:gravity="center"
+                android:src="@drawable/ic_locker_icon_checked"
+                android:textAlignment="center"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintDimensionRatio="4:3" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <include
+            layout="@layout/fragment_locker_detail_bottom_sheet"
+            android:id="@+id/bottomSheet"
+            android:layout_gravity="bottom"
+            tools:layout_height="wrap_content"
+            tools:layout_width="match_parent" />
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
