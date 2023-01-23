@@ -24,7 +24,7 @@ class AddItemViewModel @Inject constructor(
             AddItemState.Success(
                 dataList = listOf(
                     AddItemName(),
-                    AddItemCategory(location = ""),
+                    AddItemCategory(category = ItemCategorySelection.DEFAULT.label),
                     AddItemLocation(),
                     AddItemCount(),
                     AddItemTags(listOf()),
