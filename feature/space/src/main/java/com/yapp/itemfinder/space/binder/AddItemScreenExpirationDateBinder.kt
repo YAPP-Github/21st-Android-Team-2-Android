@@ -13,7 +13,7 @@ class AddItemScreenExpirationDateBinder @Inject constructor() : AddItemExpiratio
         when (viewModel) {
             is AddItemViewModel -> {
                 data.openDatePickerHandler = {
-                    viewModel.openDatePicker()
+                    viewModel.openExpirationDatePicker()
                 }
             }
         }

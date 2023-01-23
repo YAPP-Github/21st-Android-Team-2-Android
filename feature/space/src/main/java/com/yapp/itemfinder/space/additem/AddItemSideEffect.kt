@@ -4,5 +4,6 @@ import com.yapp.itemfinder.feature.common.SideEffect
 
 sealed class AddItemSideEffect : SideEffect {
     object OpenSelectCategoryDialog : AddItemSideEffect()
-    object OpenDatePicker: AddItemSideEffect()
+    object OpenExpirationDatePicker : AddItemSideEffect()
+    object OpenPurchaseDatePicker : AddItemSideEffect()
 }

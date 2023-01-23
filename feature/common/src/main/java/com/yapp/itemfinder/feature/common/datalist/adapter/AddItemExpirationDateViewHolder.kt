@@ -12,5 +12,6 @@ class AddItemExpirationDateViewHolder(
 
     override fun bindViews(data: AddItemExpirationDate) {
         binding.expirationDateTextView.setOnClickListener { data.openDatePicker() }
+        binding.expirationDateTextView.text = data.expirationDate
     }
 }

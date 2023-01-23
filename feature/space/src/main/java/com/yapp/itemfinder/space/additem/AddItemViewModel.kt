@@ -128,8 +128,38 @@ class AddItemViewModel @Inject constructor(
         }
     }
 
-    fun openDatePicker() {
-        postSideEffect(AddItemSideEffect.OpenDatePicker)
+    fun openExpirationDatePicker() {
+        postSideEffect(AddItemSideEffect.OpenExpirationDatePicker)
+    }
+
+    fun setExpirationDate(year: Int, month: Int, dayOfMonth: Int) {
+        withState<AddItemState.Success> { state ->
+            val newDataList = ArrayList(state.dataList)
+            val idx = newDataList.indexOf(newDataList.find { it is AddItemExpirationDate })
+            newDataList[idx] = AddItemExpirationDate(expirationDate = "${year}.${month}.${dayOfMonth}.")
+            setState(
+                AddItemState.Success(
+                    newDataList
+                )
+            )
+        }
+    }
+
+    fun setPurchaseDate(year: Int, month: Int, dayOfMonth: Int) {
+        withState<AddItemState.Success> { state ->
+            val newDataList = ArrayList(state.dataList)
+            val idx = newDataList.indexOf(newDataList.find { it is AddItemPurchaseDate })
+            newDataList[idx] = AddItemPurchaseDate(purchaseDate = "${year}.${month}.${dayOfMonth}.")
+            setState(
+                AddItemState.Success(
+                    newDataList
+                )
+            )
+        }
+    }
+
+    fun openPurchaseDatePicker() {
+        postSideEffect(AddItemSideEffect.OpenPurchaseDatePicker)
     }
 
     fun openSelectCategoryDialog() {

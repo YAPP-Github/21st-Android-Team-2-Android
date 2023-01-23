@@ -13,7 +13,7 @@ class AddItemScreenPurchaseDateBinder @Inject constructor(): AddItemPurchaseDate
         when (viewModel) {
             is AddItemViewModel -> {
                 data.openDatePickerHandler = {
-                    viewModel.openDatePicker()
+                    viewModel.openPurchaseDatePicker()
                 }
             }
         }

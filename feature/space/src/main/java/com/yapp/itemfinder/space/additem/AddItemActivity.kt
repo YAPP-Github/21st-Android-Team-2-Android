@@ -67,15 +67,26 @@ class AddItemActivity : BaseStateActivity<AddItemViewModel, ActivityAddItemBindi
                             dialog.show(fragmentManager, SELECT_CATEGORY_DIALOG)
                         }
                     }
-                    is AddItemSideEffect.OpenDatePicker -> {
+                    is AddItemSideEffect.OpenExpirationDatePicker -> {
                         val cal = Calendar.getInstance()
                         val dateListener =
                             DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
-                                Toast.makeText(
-                                    this@AddItemActivity,
-                                    "${year}.${month+1}.${dayOfMonth}.",
-                                    Toast.LENGTH_SHORT
-                                ).show()
+                                vm.setExpirationDate(year, month + 1, dayOfMonth)
+                            }
+                        val dialog = DatePickerDialog(
+                            this@AddItemActivity,
+                            dateListener,
+                            cal.get(Calendar.YEAR),
+                            cal.get(Calendar.MONTH),
+                            cal.get(Calendar.DAY_OF_MONTH)
+                        )
+                        dialog.show()
+                    }
+                    is AddItemSideEffect.OpenPurchaseDatePicker -> {
+                        val cal = Calendar.getInstance()
+                        val dateListener =
+                            DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
+                                vm.setPurchaseDate(year, month + 1, dayOfMonth)
                             }
                         val dialog = DatePickerDialog(
                             this@AddItemActivity,
