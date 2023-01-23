@@ -87,7 +87,7 @@ class AddItemViewModel @Inject constructor(
                 newDataList.find { it is AddItemAdditional } as AddItemAdditional
             val idx = newDataList.indexOf(addItemAdditional)
             newDataList.add(idx, AddItemMemo())
-            newDataList[idx+1] = addItemAdditional.copy(hasMemo = true)
+            newDataList[idx + 1] = addItemAdditional.copy(hasMemo = true)
             setState(
                 AddItemState.Success(
                     newDataList
@@ -103,7 +103,7 @@ class AddItemViewModel @Inject constructor(
                 newDataList.find { it is AddItemAdditional } as AddItemAdditional
             val idx = newDataList.indexOf(addItemAdditional)
             newDataList.add(idx, AddItemExpirationDate())
-            newDataList[idx+1] = addItemAdditional.copy(hasExpirationDate = true)
+            newDataList[idx + 1] = addItemAdditional.copy(hasExpirationDate = true)
             setState(
                 AddItemState.Success(
                     newDataList
@@ -119,13 +119,17 @@ class AddItemViewModel @Inject constructor(
                 newDataList.find { it is AddItemAdditional } as AddItemAdditional
             val idx = newDataList.indexOf(addItemAdditional)
             newDataList.add(idx, AddItemPurchaseDate())
-            newDataList[idx+1] = addItemAdditional.copy(hasPurchaseDate = true)
+            newDataList[idx + 1] = addItemAdditional.copy(hasPurchaseDate = true)
             setState(
                 AddItemState.Success(
                     newDataList
                 )
             )
         }
+    }
+
+    fun openDatePicker() {
+        postSideEffect(AddItemSideEffect.OpenDatePicker)
     }
 
     fun openSelectCategoryDialog() {

@@ -22,7 +22,9 @@ class DataBindHelper @Inject constructor(
     var addLockerSpaceBinder: AddLockerSpaceBinder,
     var addItemCategoryBinder: AddItemCategoryBinder,
     var addItemCountBinder: AddItemCountBinder,
-    var addItemAdditionalBinder: AddItemAdditionalBinder
+    var addItemAdditionalBinder: AddItemAdditionalBinder,
+    var addItemExpirationDateBinder: AddItemExpirationDateBinder,
+    var addItemPurchaseDateBinder: AddItemPurchaseDateBinder
 ) {
 
 
@@ -67,6 +69,12 @@ class DataBindHelper @Inject constructor(
             }
             CellType.ADD_ITEM_ADDITIONAL_CELL -> {
                 addItemAdditionalBinder.bindData(data as AddItemAdditional, viewModel)
+            }
+            CellType.ADD_ITEM_EXPIRATION_DATE_CELL -> {
+                addItemExpirationDateBinder.bindData(data as AddItemExpirationDate, viewModel)
+            }
+            CellType.ADD_ITEM_PURCHASE_DATE_CELL -> {
+                addItemPurchaseDateBinder.bindData(data as AddItemPurchaseDate, viewModel)
             }
             else -> {}
         }

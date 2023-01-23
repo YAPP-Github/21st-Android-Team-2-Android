@@ -1,11 +1,7 @@
 package com.yapp.itemfinder.space.binder.di
 
-import com.yapp.itemfinder.feature.common.datalist.binder.AddItemAdditionalBinder
-import com.yapp.itemfinder.feature.common.datalist.binder.AddItemCategoryBinder
-import com.yapp.itemfinder.feature.common.datalist.binder.AddItemCountBinder
-import com.yapp.itemfinder.space.binder.AddItemScreenAdditionalBinder
-import com.yapp.itemfinder.space.binder.AddItemScreenCategoryBinder
-import com.yapp.itemfinder.space.binder.AddItemScreenCountBinder
+import com.yapp.itemfinder.feature.common.datalist.binder.*
+import com.yapp.itemfinder.space.binder.*
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -32,4 +28,16 @@ abstract class ItemDataBinderModule {
     abstract fun bindAddItemAdditionalBinder(
         addItemAdditionalBinder: AddItemScreenAdditionalBinder
     ): AddItemAdditionalBinder
+
+    @Binds
+    @Singleton
+    abstract fun bindAddItemPurchaseDateBinder(
+        addItemPurchaseDateBinder: AddItemScreenPurchaseDateBinder
+    ): AddItemPurchaseDateBinder
+
+    @Binds
+    @Singleton
+    abstract fun bindAddItemExpirationDateBinder(
+        addItemExpirationDateBinder: AddItemScreenExpirationDateBinder
+    ): AddItemExpirationDateBinder
 }

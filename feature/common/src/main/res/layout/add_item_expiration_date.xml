@@ -14,10 +14,11 @@
         android:text="@string/expirationDate" />
 
     <TextView
-        android:id="@+id/expirationDateText"
+        android:id="@+id/expirationDateTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginVertical="8dp" />
+        android:layout_marginVertical="8dp"
+        android:hint="@string/date_hint"/>
 
     <com.google.android.material.divider.MaterialDivider
         android:layout_width="match_parent"

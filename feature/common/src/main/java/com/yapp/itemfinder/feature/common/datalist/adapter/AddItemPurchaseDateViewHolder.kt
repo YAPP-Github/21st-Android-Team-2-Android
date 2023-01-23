@@ -5,12 +5,12 @@ import com.yapp.itemfinder.feature.common.databinding.AddItemPurchaseDateBinding
 
 class AddItemPurchaseDateViewHolder(
     val binding: AddItemPurchaseDateBinding
-) : DataViewHolder<AddItemPurchaseDate>(binding){
+) : DataViewHolder<AddItemPurchaseDate>(binding) {
     override fun reset() {
         return
     }
 
     override fun bindViews(data: AddItemPurchaseDate) {
-
+        binding.purchaseDateTextView.setOnClickListener { data.openDatePicker() }
     }
 }

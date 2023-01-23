@@ -19,4 +19,5 @@
     <string name="expirationDate">소비기한</string>
     <string name="purchaseDate">구매일</string>
     <string name="enterMemo">메모를 입력해주세요</string>
+    <string name="date_hint">YYYY.MM.DD.</string>
 </resources>
