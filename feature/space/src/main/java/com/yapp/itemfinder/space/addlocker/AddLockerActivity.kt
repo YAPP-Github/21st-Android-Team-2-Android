@@ -1,11 +1,15 @@
 package com.yapp.itemfinder.space.addlocker
 
+import android.Manifest
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.view.ContextThemeWrapper
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import com.yapp.itemfinder.domain.model.Data
 import com.yapp.itemfinder.feature.common.BaseStateActivity
@@ -60,7 +64,7 @@ class AddLockerActivity : BaseStateActivity<AddLockerViewModel, ActivityAddLocke
                         vm.changeSpace(name)
                     }
                     is AddLockerSideEffect.UploadImage -> {
-                        showAddPhotoDialog()
+                        handleUploadImage()
                     }
                     is AddLockerSideEffect.ShowToast -> {
                         showShortToast(sideEffect.message)
@@ -70,7 +74,34 @@ class AddLockerActivity : BaseStateActivity<AddLockerViewModel, ActivityAddLocke
         }
     }
 
-    private fun showAddPhotoDialog() {
+    /***
+     * 외부저장소 읽기 권한을 확인하고, 허가된 경우 경우 다이얼로그를 보여줍니다.
+     * 아닌 권한을 요청합니다.
+     */
+
+    private fun handleUploadImage() {
+
+        when {
+            ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.READ_EXTERNAL_STORAGE
+            ) == PackageManager.PERMISSION_GRANTED -> {
+                showGetPhotoDialog()
+            }
+            shouldShowRequestPermissionRationale(Manifest.permission.READ_EXTERNAL_STORAGE) -> {
+                showPermissionContextPopup()
+            }
+            else -> {
+                requestPermissions(
+                    arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE),
+                    PERMISSION_READ_EXTERNAL_STORAGE_CODE
+                )
+            }
+        }
+    }
+
+    private fun showGetPhotoDialog() {
+
         AlertDialog.Builder(
             ContextThemeWrapper(
                 this@AddLockerActivity,
@@ -98,7 +129,7 @@ class AddLockerActivity : BaseStateActivity<AddLockerViewModel, ActivityAddLocke
     private fun uploadByGallery() {
         val intent = Intent(Intent.ACTION_GET_CONTENT)
         intent.type = "image/*"
-        startActivityForResult(intent, GALLERY_REQUEST_CODE)
+        startActivityForResult(intent, GALLERY_INTENT_REQUEST_CODE)
     }
 
     private fun handleLoading(addLockerState: AddLockerState) {
@@ -119,7 +150,7 @@ class AddLockerActivity : BaseStateActivity<AddLockerViewModel, ActivityAddLocke
             return
         }
         when (requestCode) {
-            GALLERY_REQUEST_CODE -> {
+            GALLERY_INTENT_REQUEST_CODE -> {
                 val uri = data?.data
                 if (uri != null) {
                     vm.uploadImage(uri)
@@ -130,8 +161,42 @@ class AddLockerActivity : BaseStateActivity<AddLockerViewModel, ActivityAddLocke
         }
     }
 
+    private fun showPermissionContextPopup() {
+        AlertDialog.Builder(
+            ContextThemeWrapper(
+                this@AddLockerActivity,
+                CR.style.AlertDialog
+            )
+        )
+            .setTitle("권한이 필요합니다.")
+            .setMessage("사진을 가져오기 위해 필요합니다.")
+            .setPositiveButton("동의") { _, _ ->
+                requestPermissions(arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), 1010)
+            }
+            .create()
+            .show()
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
+        when (requestCode) {
+            1010 ->
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    showGetPhotoDialog()
+                } else {
+                    Toast.makeText(this, "권한을 거부하셨습니다.", Toast.LENGTH_SHORT).show()
+                }
+        }
+    }
+
     companion object {
         fun newIntent(context: Context) = Intent(context, AddLockerActivity::class.java)
-        const val GALLERY_REQUEST_CODE = 2020
+        const val GALLERY_INTENT_REQUEST_CODE = 2020
+        const val PERMISSION_READ_EXTERNAL_STORAGE_CODE = 1010
     }
 }
