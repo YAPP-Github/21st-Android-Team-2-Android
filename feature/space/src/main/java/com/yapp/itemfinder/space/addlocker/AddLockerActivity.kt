@@ -5,6 +5,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.os.Build
 import android.view.ContextThemeWrapper
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -92,10 +93,7 @@ class AddLockerActivity : BaseStateActivity<AddLockerViewModel, ActivityAddLocke
                 showPermissionContextPopup()
             }
             else -> {
-                requestPermissions(
-                    arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE),
-                    PERMISSION_READ_EXTERNAL_STORAGE_CODE
-                )
+                doRequestPermissions()
             }
         }
     }
@@ -171,10 +169,25 @@ class AddLockerActivity : BaseStateActivity<AddLockerViewModel, ActivityAddLocke
             .setTitle("권한이 필요합니다.")
             .setMessage("사진을 가져오기 위해 필요합니다.")
             .setPositiveButton("동의") { _, _ ->
-                requestPermissions(arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), 1010)
+                doRequestPermissions()
+
             }
             .create()
             .show()
+    }
+
+    private fun doRequestPermissions() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            requestPermissions(
+                arrayOf(Manifest.permission.READ_MEDIA_IMAGES),
+                PERMISSION_READ_IMAGE_CODE
+            )
+        } else {
+            requestPermissions(
+                arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
+                PERMISSION_READ_IMAGE_CODE
+            )
+        }
     }
 
     override fun onRequestPermissionsResult(
@@ -185,7 +198,7 @@ class AddLockerActivity : BaseStateActivity<AddLockerViewModel, ActivityAddLocke
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
         when (requestCode) {
-            1010 ->
+            PERMISSION_READ_IMAGE_CODE ->
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     showGetPhotoDialog()
                 } else {
@@ -197,6 +210,6 @@ class AddLockerActivity : BaseStateActivity<AddLockerViewModel, ActivityAddLocke
     companion object {
         fun newIntent(context: Context) = Intent(context, AddLockerActivity::class.java)
         const val GALLERY_INTENT_REQUEST_CODE = 2020
-        const val PERMISSION_READ_EXTERNAL_STORAGE_CODE = 1010
+        const val PERMISSION_READ_IMAGE_CODE = 1010
     }
 }
