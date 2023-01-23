@@ -18,7 +18,7 @@ class LockerAddLockerPhotoItemBinder @Inject constructor() : AddLockerPhotoItemB
         viewModel: AddLockerViewModel
     ) {
         item.uploadImageHandler = {
-            viewModel.uploadImage()
+            viewModel.addImage()
         }
     }
 }
