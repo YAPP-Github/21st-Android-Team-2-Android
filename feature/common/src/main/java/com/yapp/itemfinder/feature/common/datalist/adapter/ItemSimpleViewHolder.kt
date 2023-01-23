@@ -43,8 +43,9 @@ class ItemSimpleViewHolder(
 
             var currentSize = 0
             data.itemCategory?.let {
-                thingCategory.text = it.label
-                currentSize += it.label.length
+                val labelText = root.context.getString(it.labelResId)
+                thingCategory.text = labelText
+                currentSize += labelText.length
             } ?: kotlin.run {
                 thingCategory.gone()
             }
@@ -67,10 +68,9 @@ class ItemSimpleViewHolder(
                             if (isOverflow) R.style.ChipTextViewStyle_Overflow else R.style.ChipTextViewStyle_Tag
                         )
                     ).apply {
-                        if (isOverflow)
-                            text = "···"
-                        else
-                            text = tag.name
+                        text =
+                            if (isOverflow) "···"
+                            else tag.name
 
                     }
                     frameLayOut.addView(textView)

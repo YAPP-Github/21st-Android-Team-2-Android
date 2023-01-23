@@ -1,6 +1,5 @@
 package com.yapp.itemfinder.space.lockerdetail
 
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.core.view.ViewCompat
@@ -12,6 +11,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetBehavior.BottomSheetCallback
 import com.google.android.material.divider.MaterialDividerItemDecoration
 import com.yapp.itemfinder.domain.model.Data
+import com.yapp.itemfinder.domain.model.Item
 import com.yapp.itemfinder.feature.common.BaseStateFragment
 import com.yapp.itemfinder.feature.common.binding.viewBinding
 import com.yapp.itemfinder.feature.common.datalist.adapter.DataListAdapter
@@ -123,11 +123,11 @@ class LockerDetailFragment : BaseStateFragment<LockerDetailViewModel, FragmentLo
         ViewCompat.setOnApplyWindowInsetsListener(requireView()) { v, insets ->
             val inset = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             // View 계층에 반영될 Inset들을 반환한다.
-            binding.lockerDetailImageView.post {
+            binding.itemsMarkerMapView.post {
                 behavior.maxHeight = binding.root.measuredHeight - binding.toolbar.measuredHeight - inset.top
                 behavior.peekHeight =
                     (binding.root.measuredHeight
-                        - binding.lockerDetailImageView.measuredHeight
+                        - binding.itemsMarkerMapView.measuredHeight
                         - resources.getDimension(CR.dimen.collapsing_toolbar_container_height)
                         - inset.top
                         ).toInt()
@@ -140,7 +140,6 @@ class LockerDetailFragment : BaseStateFragment<LockerDetailViewModel, FragmentLo
     }
 
     override fun observeData(): Job {
-        Log.i("LockerDetailFragment", "observeData: ")
         val job = viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
@@ -168,6 +167,8 @@ class LockerDetailFragment : BaseStateFragment<LockerDetailViewModel, FragmentLo
     }
 
     private fun handleSuccess(lockerDetailState: LockerDetailState.Success) {
+        handleItemMarkers(lockerDetailState.dataList.filterIsInstance<Item>())
+
         binding.defaultTopNavigationView.titleText = lockerDetailState.locker.name
 
         dataBindHelper.bindList(lockerDetailState.dataList, vm)
@@ -175,6 +176,10 @@ class LockerDetailFragment : BaseStateFragment<LockerDetailViewModel, FragmentLo
 
         val itemCount: Int = dataListAdapter?.itemCount ?: 0
         binding.bottomSheet.totalItemCount.text = getString(string.totalCount, itemCount)
+    }
+
+    private fun handleItemMarkers(items: List<Item>) = with(binding) {
+        itemsMarkerMapView.fetchItems(items, items.first())
     }
 
     companion object {

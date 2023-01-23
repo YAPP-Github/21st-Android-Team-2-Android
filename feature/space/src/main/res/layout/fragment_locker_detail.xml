@@ -81,24 +81,14 @@
 
         </androidx.appcompat.widget.Toolbar>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <com.yapp.itemfinder.feature.common.views.item.ItemsMarkerMapView
+            android:layout_marginTop="@dimen/collapsing_toolbar_container_height"
+            android:id="@+id/itemsMarkerMapView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="@dimen/collapsing_toolbar_container_height">
-
-            <ImageView
-                android:id="@+id/lockerDetailImageView"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:background="@color/gray_01"
-                android:gravity="center"
-                android:src="@drawable/ic_locker_icon_checked"
-                android:textAlignment="center"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintDimensionRatio="4:3" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
 
         <include
             layout="@layout/fragment_locker_detail_bottom_sheet"
