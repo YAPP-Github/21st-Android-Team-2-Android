@@ -2,6 +2,7 @@ package com.yapp.itemfinder.space
 
 import android.widget.Toast
 import android.os.Bundle
+import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -116,7 +117,8 @@ class LockerListFragment : BaseStateFragment<LockerListViewModel, FragmentLocker
             is FragmentNavigator -> {
                 activity.addFragmentBackStack(
                     LockerDetailFragment.TAG,
-                    bundle = Bundle().apply { putParcelable("locker", locker) })
+                    bundle = bundleOf(LockerDetailFragment.LOCKER_ENTITY_KEY to locker)
+                )
             }
         }
     }

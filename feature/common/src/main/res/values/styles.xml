@@ -44,7 +44,7 @@
         <item name="android:shadowColor">#FCFBF9</item>
     </style>
 
-    <style name="AlertDialog" parent="Theme.AppCompat.Dialog.Alert"/>
+    <style name="AlertDialog" parent="Theme.AppCompat.Dialog.Alert" />
 
     <style name="DefaultToolbar" parent="Widget.AppCompat.Toolbar">
         <item name="android:theme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
@@ -57,6 +57,34 @@
         <item name="android:paddingLeft">0dp</item>
     </style>
 
+    <style name="ChipButton" parent="@style/Widget.AppCompat.Button.Borderless">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:drawablePadding">4dp</item>
+        <item name="android:minHeight">0dp</item>
+        <item name="android:minWidth">0dp</item>
+        <item name="android:paddingTop">6dp</item>
+        <item name="android:paddingBottom">6dp</item>
+        <item name="android:paddingStart">12dp</item>
+        <item name="android:paddingEnd">12dp</item>
+        <item name="android:fontFamily">@font/pretendard_semibold</item>
+        <item name="android:textSize">@dimen/typography_body2</item>
+        <item name="android:lineSpacingMultiplier">1.4</item>
+        <item name="android:foreground">@drawable/ripple_black_radius_8</item>
+    </style>
+
+    <style name="ChipButton.Order" parent="ChipButton">
+        <item name="android:background">@drawable/bg_chip_filter_order</item>
+        <item name="android:textColor">@color/gray_04</item>
+        <item name="android:drawableTint">@color/gray_04</item>
+    </style>
+
+    <style name="ChipButton.Condition" parent="ChipButton">
+        <item name="android:background">@drawable/bg_chip_filter_condition</item>
+        <item name="android:textColor">@color/gray_05</item>
+        <item name="android:drawableTint">@color/gray_05</item>
+    </style>
+
     <style name="ChipFrameStyle">
         <item name="android:paddingLeft">8dp</item>
         <item name="android:paddingRight">8dp</item>
@@ -66,15 +94,15 @@
     </style>
 
     <style name="ChipFrameStyle.Category">
-        <item name="android:background">@drawable/background_chip_category</item>
+        <item name="android:background">@drawable/bg_chip_category</item>
     </style>
 
     <style name="ChipFrameStyle.Tag">
-        <item name="android:background">@drawable/background_chip_tag</item>
+        <item name="android:background">@drawable/bg_chip_tag</item>
     </style>
 
     <style name="ChipFrameStyle.Overflow">
-        <item name="android:background">@drawable/background_chip_empty_tag</item>
+        <item name="android:background">@drawable/bg_chip_empty_tag</item>
     </style>
 
     <style name="ChipTextViewStyle" parent="ItemFinderTypography.Body4" />
