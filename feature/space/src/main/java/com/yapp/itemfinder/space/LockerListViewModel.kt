@@ -21,6 +21,7 @@ class LockerListViewModel @Inject constructor(
         MutableStateFlow(LockerListState.Uninitialized)
     override val _sideEffectFlow: MutableSharedFlow<LockerListSideEffect> = MutableSharedFlow()
 
+    // fetchData를 이용해서 읽어오는 작업으로 변갱해주세요!
     override fun fetchData(): Job = viewModelScope.launch {
 
     }
@@ -64,5 +65,9 @@ class LockerListViewModel @Inject constructor(
                 )
             )
         }
+    }
+
+    fun moveLockerDetail(locker: LockerEntity) {
+        postSideEffect(LockerListSideEffect.MoveToLockerDetail(locker))
     }
 }

@@ -20,4 +20,6 @@
     <string name="purchaseDate">구매일</string>
     <string name="enterMemo">메모를 입력해주세요</string>
     <string name="date_hint">YYYY.MM.DD.</string>
+    <string name="count">%d개</string>
+    <string name="totalCount">전체 %d개</string>
 </resources>

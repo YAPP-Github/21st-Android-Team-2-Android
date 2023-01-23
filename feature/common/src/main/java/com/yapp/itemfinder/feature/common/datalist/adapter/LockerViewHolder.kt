@@ -5,11 +5,11 @@ import android.view.Gravity
 import android.widget.PopupMenu
 import com.yapp.itemfinder.domain.model.LockerEntity
 import com.yapp.itemfinder.feature.common.R
-import com.yapp.itemfinder.feature.common.databinding.LockerItemBinding
+import com.yapp.itemfinder.feature.common.databinding.LockerListItemBinding
 import com.yapp.itemfinder.feature.common.extension.toDrawable
 
 class LockerViewHolder(
-    val binding: LockerItemBinding
+    val binding: LockerListItemBinding
 ) : DataViewHolder<LockerEntity>(binding) {
     override fun reset() {
     }
@@ -41,6 +41,9 @@ class LockerViewHolder(
                 }
             }
             popupMenu.show()
+        }
+        binding.root.setOnClickListener {
+            data.moveLockerDetail()
         }
     }
 }

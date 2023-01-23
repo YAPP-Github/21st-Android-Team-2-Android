@@ -1,6 +1,6 @@
 package com.yapp.itemfinder.domain.model
 
-data class ManageSpaceItem(
+data class ManageSpaceEntity(
     val name: String,
     override var id: Long = 0,
     override var type: CellType = CellType.MANAGE_SPACE_CELL
@@ -11,4 +11,7 @@ data class ManageSpaceItem(
 
     var deleteSpaceDialogHandler: DataHandler = {}
     fun deleteSpaceDialog() = deleteSpaceDialogHandler.invoke(this)
+
+
+
 }

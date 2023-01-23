@@ -1,11 +1,11 @@
 package com.yapp.itemfinder.feature.common.extension
 
-import android.app.Activity
+import android.content.Context
 import android.widget.Toast
 
-fun Activity.showLongToast(msg: String){
+fun Context.showLongToast(msg: String){
     Toast.makeText(this, msg, Toast.LENGTH_LONG).show()
 }
-fun Activity.showShortToast(msg: String){
+fun Context.showShortToast(msg: String){
     Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
 }
