@@ -9,9 +9,11 @@ import androidx.core.graphics.Insets
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updateLayoutParams
+import androidx.core.view.updatePadding
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.*
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetBehavior.BottomSheetCallback
 import com.google.android.material.divider.MaterialDividerItemDecoration
@@ -23,7 +25,8 @@ import com.yapp.itemfinder.feature.common.binding.viewBinding
 import com.yapp.itemfinder.feature.common.datalist.adapter.DataListAdapter
 import com.yapp.itemfinder.feature.common.datalist.binder.DataBindHelper
 import com.yapp.itemfinder.feature.common.extension.dimen
-import com.yapp.itemfinder.feature.common.extension.dpToPx
+import com.yapp.itemfinder.feature.common.extension.screenHeight
+import com.yapp.itemfinder.feature.common.extension.screenWidth
 import com.yapp.itemfinder.feature.common.views.behavior.CustomDraggableBottomSheetBehaviour
 import com.yapp.itemfinder.space.R
 import com.yapp.itemfinder.space.databinding.FragmentLockerDetailBinding
@@ -89,7 +92,16 @@ class LockerDetailFragment : BaseStateFragment<LockerDetailViewModel, FragmentLo
                 ).apply {
                     isLastItemDecorated = false
                     dividerColor =
-                        requireContext().getColor(com.yapp.itemfinder.feature.common.R.color.gray_01)
+                        requireContext().getColor(CR.color.gray_01)
+                }
+            )
+
+            val screenRatio = requireContext().screenHeight() / requireContext().screenWidth().toFloat()
+            recyclerview.updatePadding(
+                bottom = if (screenRatio > 2) {
+                    requireContext().dimen(CR.dimen.bottom_sheet_bottom_padding_large).toInt()
+                } else {
+                    requireContext().dimen(CR.dimen.bottom_sheet_bottom_padding_default).toInt()
                 }
             )
         }
@@ -145,13 +157,14 @@ class LockerDetailFragment : BaseStateFragment<LockerDetailViewModel, FragmentLo
     private fun setBottomSheetPeekHeight(isExpand: Boolean, isAnimate: Boolean = false) {
         val behavior = BottomSheetBehavior.from(binding.bottomSheet.root) as CustomDraggableBottomSheetBehaviour
         binding.itemsMarkerMapView.post {
+            val toolBarInset = inset?.top ?: 0
             val toolbarContainerHeight = requireContext().dimen(CR.dimen.collapsing_toolbar_container_height).toInt()
             val toolbarHeight = binding.toolbar.measuredHeight
-            behavior.maxHeight = binding.root.measuredHeight - binding.toolbar.measuredHeight - requireNotNull(inset).top
+            behavior.maxHeight = binding.root.measuredHeight - binding.toolbar.measuredHeight - toolBarInset
             val peekHeight = (binding.root.measuredHeight
                 - binding.itemsMarkerMapView.measuredHeight
                 - (if (isExpand) toolbarContainerHeight else toolbarHeight)
-                + 20.dpToPx(requireContext()))
+                - toolBarInset)
             behavior.setPeekHeight(peekHeight, isAnimate)
         }
     }
@@ -215,19 +228,21 @@ class LockerDetailFragment : BaseStateFragment<LockerDetailViewModel, FragmentLo
         fun focusCurrentVisibleItem() {
             val firstVisibleItemPosition =
                 (layoutManager as LinearLayoutManager).findFirstCompletelyVisibleItemPosition()
-            vm.applyFocusFirstItem(
-                if (!canScrollVertically(1)) {
-                    requireNotNull(adapter).itemCount - 1
-                } else {
-                    firstVisibleItemPosition
-                }
-            )
+            if (firstVisibleItemPosition != RecyclerView.NO_POSITION) {
+                vm.applyFocusFirstItem(
+                    if (!canScrollVertically(1)) {
+                        requireNotNull(adapter).itemCount - 1
+                    } else {
+                        firstVisibleItemPosition
+                    }
+                )
+            }
         }
 
         setOnScrollChangeListener { _: View?, scrollX: Int, scrollY: Int, oldScrollX: Int, oldScrollY: Int ->
             if (isInitialized.not()) {
                 handleExpandFilter(true)
-            } else {
+            } else if (scrollState == RecyclerView.SCROLL_STATE_SETTLING) {
                 handleExpandFilter(scrollY < oldScrollY)
             }
             focusCurrentVisibleItem()

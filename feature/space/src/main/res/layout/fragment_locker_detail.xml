@@ -13,13 +13,13 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/filterContainer"
             android:layout_width="match_parent"
-            android:layout_height="56dp"
+            android:layout_height="@dimen/collapsing_toolbar_container_height"
             android:background="@color/white">
 
             <View
                 android:id="@+id/filterBackground"
                 android:layout_width="wrap_content"
-                android:layout_height="?android:attr/actionBarSize"
+                android:layout_height="@dimen/toolbar_container_height"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -87,10 +87,7 @@
             android:layout_marginTop="@dimen/collapsing_toolbar_container_height"
             android:id="@+id/itemsMarkerMapView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            android:layout_height="wrap_content" />
 
         <include
             layout="@layout/fragment_locker_detail_bottom_sheet"

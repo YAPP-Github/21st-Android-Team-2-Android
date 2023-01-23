@@ -11,3 +11,6 @@ fun Context.showShortToast(msg: String){
     Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
 }
 fun Context.dimen(@DimenRes dimenResId: Int) = resources.getDimension(dimenResId)
+
+fun Context.screenWidth(): Int = resources.displayMetrics.widthPixels
+fun Context.screenHeight(): Int = resources.displayMetrics.heightPixels

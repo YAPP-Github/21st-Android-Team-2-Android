@@ -8,6 +8,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.updateLayoutParams
 import com.yapp.itemfinder.domain.model.Item
+import com.yapp.itemfinder.feature.common.R
 import com.yapp.itemfinder.feature.common.databinding.LayoutItemMarkerBinding
 import com.yapp.itemfinder.feature.common.extension.*
 
@@ -69,19 +70,46 @@ class ItemMarkerView
             doOnGlobalLayout {
                 if (isDrawn) return@doOnGlobalLayout
                 val parentView = (parent as ConstraintLayout)
-                val xMargin = parentView.measuredWidth * if (xPercentage > 0.95) 0.95f else xPercentage
-                val yMargin = parentView.measuredHeight * if (yPercentage > 0.95) 0.95f else yPercentage
+                val xMargin = parentView.measuredWidth * xPercentage
+                val yMargin = parentView.measuredHeight * yPercentage
 
-                binding.selectedMarkerBackgroundView.updateTargetViewMargin(xMargin.toInt(), yMargin.toInt(), isSelectedView = true)
-                binding.markerIconImageView.updateTargetViewMargin(xMargin.toInt(), yMargin.toInt(), isSelectedView = false)
+                val maxWidth = context.dimen(R.dimen.marker_map_view_max_width).toInt()
+                val adjustedRatio = maxWidth / parentView.measuredWidth.toFloat()
+                val additionalWidthMargin = (parentView.measuredWidth - maxWidth) / 2
+                val adjustedXMargin = if (parentView.measuredWidth > maxWidth) xMargin * adjustedRatio + additionalWidthMargin else xMargin
+
+                val selectedMarkerXMargin = adjustedXMargin.toInt() - binding.selectedMarkerBackgroundView.measuredWidth / 2
+                val markerXMargin = adjustedXMargin.toInt() - binding.markerIconImageView.measuredWidth / 2
+
+
+                binding.selectedMarkerBackgroundView.updateTargetViewMargin(
+                    parentView,
+                    if (additionalWidthMargin > selectedMarkerXMargin) additionalWidthMargin
+                    else selectedMarkerXMargin,
+                    yMargin.toInt(),
+                    isSelectedView = true
+                )
+                binding.markerIconImageView.updateTargetViewMargin(
+                    parentView,
+                    if (additionalWidthMargin > selectedMarkerXMargin) additionalWidthMargin
+                    else selectedMarkerXMargin,
+                    yMargin.toInt(),
+                    isSelectedView = false
+                )
                 isDrawn = true
             }
         }
 
-    private fun View.updateTargetViewMargin(xMargin: Int, yMargin: Int, isSelectedView: Boolean = true) {
+    private fun View.updateTargetViewMargin(parentView: View, xMargin: Int, yMargin: Int, isSelectedView: Boolean = true) {
         updateLayoutParams<LayoutParams> {
             marginStart = xMargin - (measuredWidth / if (isSelectedView) 3 else 1)
-            topMargin = yMargin - (measuredHeight / if (isSelectedView) 3 else 1)
+            topMargin = yMargin - if (isSelectedView) -(measuredHeight / 3) else measuredHeight
+            if (marginStart + measuredWidth > parentView.measuredWidth) {
+                marginStart = parentView.measuredWidth - measuredWidth
+            }
+            if (topMargin + measuredHeight > parentView.measuredHeight) {
+                topMargin = parentView.measuredHeight - measuredHeight
+            }
         }
     }
 
