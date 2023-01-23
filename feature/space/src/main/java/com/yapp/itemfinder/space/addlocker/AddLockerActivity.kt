@@ -5,7 +5,9 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
 import android.os.Build
+import android.provider.MediaStore
 import android.view.ContextThemeWrapper
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -40,6 +42,9 @@ class AddLockerActivity : BaseStateActivity<AddLockerViewModel, ActivityAddLocke
             Manifest.permission.READ_MEDIA_IMAGES
         else
             Manifest.permission.READ_EXTERNAL_STORAGE
+    }
+    private val cameraPermission: String by lazy {
+        Manifest.permission.CAMERA
     }
 
     @Inject
@@ -82,32 +87,24 @@ class AddLockerActivity : BaseStateActivity<AddLockerViewModel, ActivityAddLocke
         }
     }
 
+    private fun handleLoading(addLockerState: AddLockerState) {
+    }
+
+    private fun handleSuccess(addLockerState: AddLockerState.Success) {
+        dataBindHelper.bindList(addLockerState.dataList, vm)
+        dataListAdapter?.submitList(addLockerState.dataList)
+    }
+
+    private fun handleError(addLockerState: AddLockerState.Error) {
+    }
+
     /***
      * 외부저장소 읽기 권한을 확인하고, 허가된 경우 경우 다이얼로그를 보여줍니다.
      * 아닌 권한을 요청합니다.
      */
 
     private fun handleUploadImage() {
-        checkExternalStorageOrMediaImages {
-            showGetPhotoDialog()
-        }
-    }
-
-    private fun checkExternalStorageOrMediaImages(uploadAction: () -> Unit) {
-        when {
-            ContextCompat.checkSelfPermission(
-                this,
-                imagePermission
-            ) == PackageManager.PERMISSION_GRANTED -> {
-                uploadAction()
-            }
-            shouldShowRequestPermissionRationale(Manifest.permission.READ_EXTERNAL_STORAGE) -> {
-                showPermissionContextPopup()
-            }
-            else -> {
-                doRequestPermissions()
-            }
-        }
+        showGetPhotoDialog()
     }
 
     private fun showGetPhotoDialog() {
@@ -121,19 +118,34 @@ class AddLockerActivity : BaseStateActivity<AddLockerViewModel, ActivityAddLocke
             .setTitle(getString(R.string.attach_photo))
             .setMessage(getString(R.string.choose_how_to_attach_photo))
             .setPositiveButton(getString(R.string.camera)) { _, _ ->
-                uploadByCamera()
+                checkPermission(permission = cameraPermission) {
+                    uploadByCamera()
+                }
             }
             .setNegativeButton(getString(R.string.gallery)) { _, _ ->
-                uploadByGallery()
+                checkPermission(permission = imagePermission) {
+                    uploadByGallery()
+                }
             }
             .create()
             .show()
     }
 
-    private fun uploadByCamera() {
-        // 사진 가져오기
-        // 크로핑
-        // 이미지뷰에 저장
+    private fun checkPermission(permission: String, uploadAction: () -> Unit) {
+        when {
+            ContextCompat.checkSelfPermission(
+                this,
+                permission
+            ) == PackageManager.PERMISSION_GRANTED -> {
+                uploadAction()
+            }
+            shouldShowRequestPermissionRationale(permission) -> {
+                showPermissionContextPopup(permission)
+            }
+            else -> {
+                requestPermission(permission)
+            }
+        }
     }
 
     private fun uploadByGallery() {
@@ -142,15 +154,35 @@ class AddLockerActivity : BaseStateActivity<AddLockerViewModel, ActivityAddLocke
         startActivityForResult(intent, GALLERY_INTENT_REQUEST_CODE)
     }
 
-    private fun handleLoading(addLockerState: AddLockerState) {
+    private fun uploadByCamera() {
+
     }
 
-    private fun handleSuccess(addLockerState: AddLockerState.Success) {
-        dataBindHelper.bindList(addLockerState.dataList, vm)
-        dataListAdapter?.submitList(addLockerState.dataList)
+    private fun showPermissionContextPopup(permission: String) {
+        AlertDialog.Builder(
+            ContextThemeWrapper(
+                this@AddLockerActivity,
+                CR.style.AlertDialog
+            )
+        )
+            .setTitle("권한이 필요합니다.")
+            .setMessage("사진을 가져오기 위해 필요합니다.")
+            .setPositiveButton("동의") { _, _ ->
+                requestPermission(permission)
+
+            }
+            .create()
+            .show()
     }
 
-    private fun handleError(addLockerState: AddLockerState.Error) {
+    private fun requestPermission(permission: String) {
+        requestPermissions(
+            arrayOf(permission),
+            if (permission == imagePermission)
+                PERMISSION_READ_IMAGE_CODE
+            else
+                PERMISSION_CAMERA_CODE
+        )
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -168,31 +200,12 @@ class AddLockerActivity : BaseStateActivity<AddLockerViewModel, ActivityAddLocke
                     showShortToast(getString(R.string.failed_get_photo))
                 }
             }
-        }
-    }
-
-    private fun showPermissionContextPopup() {
-        AlertDialog.Builder(
-            ContextThemeWrapper(
-                this@AddLockerActivity,
-                CR.style.AlertDialog
-            )
-        )
-            .setTitle("권한이 필요합니다.")
-            .setMessage("사진을 가져오기 위해 필요합니다.")
-            .setPositiveButton("동의") { _, _ ->
-                doRequestPermissions()
-
+            IMAGE_CAPTURE_REQUEST_CODE -> {
+                val uri = data?.extras?.get("data") as Bitmap
+//                vm.uploadImage()
+//                imageView.setImageBitmap(imageBitmap)
             }
-            .create()
-            .show()
-    }
-
-    private fun doRequestPermissions() {
-        requestPermissions(
-            arrayOf(imagePermission),
-            PERMISSION_READ_IMAGE_CODE
-        )
+        }
     }
 
     override fun onRequestPermissionsResult(
@@ -207,7 +220,8 @@ class AddLockerActivity : BaseStateActivity<AddLockerViewModel, ActivityAddLocke
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     showGetPhotoDialog()
                 } else {
-                    Toast.makeText(this, getString(CR.string.request_denied), Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, getString(CR.string.request_denied), Toast.LENGTH_SHORT)
+                        .show()
                 }
         }
     }
@@ -215,6 +229,8 @@ class AddLockerActivity : BaseStateActivity<AddLockerViewModel, ActivityAddLocke
     companion object {
         fun newIntent(context: Context) = Intent(context, AddLockerActivity::class.java)
         const val GALLERY_INTENT_REQUEST_CODE = 2020
+        const val IMAGE_CAPTURE_REQUEST_CODE = 3030
         const val PERMISSION_READ_IMAGE_CODE = 1010
+        const val PERMISSION_CAMERA_CODE = 1011
     }
 }
