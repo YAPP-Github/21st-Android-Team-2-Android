@@ -132,11 +132,11 @@ class AddItemViewModel @Inject constructor(
         postSideEffect(AddItemSideEffect.OpenExpirationDatePicker)
     }
 
-    fun setExpirationDate(year: Int, month: Int, dayOfMonth: Int) {
+    fun setExpirationDate(date: String) {
         withState<AddItemState.Success> { state ->
             val newDataList = ArrayList(state.dataList)
             val idx = newDataList.indexOf(newDataList.find { it is AddItemExpirationDate })
-            newDataList[idx] = AddItemExpirationDate(expirationDate = "${year}.${month}.${dayOfMonth}.")
+            newDataList[idx] = AddItemExpirationDate(expirationDate = date)
             setState(
                 AddItemState.Success(
                     newDataList
@@ -145,11 +145,11 @@ class AddItemViewModel @Inject constructor(
         }
     }
 
-    fun setPurchaseDate(year: Int, month: Int, dayOfMonth: Int) {
+    fun setPurchaseDate(date: String) {
         withState<AddItemState.Success> { state ->
             val newDataList = ArrayList(state.dataList)
             val idx = newDataList.indexOf(newDataList.find { it is AddItemPurchaseDate })
-            newDataList[idx] = AddItemPurchaseDate(purchaseDate = "${year}.${month}.${dayOfMonth}.")
+            newDataList[idx] = AddItemPurchaseDate(purchaseDate = date)
             setState(
                 AddItemState.Success(
                     newDataList

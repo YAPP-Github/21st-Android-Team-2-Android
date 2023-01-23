@@ -71,7 +71,8 @@ class AddItemActivity : BaseStateActivity<AddItemViewModel, ActivityAddItemBindi
                         val cal = Calendar.getInstance()
                         val dateListener =
                             DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
-                                vm.setExpirationDate(year, month + 1, dayOfMonth)
+                                val date = String.format("%d.%02d.%02d.", year, month+1, dayOfMonth)
+                                vm.setExpirationDate(date)
                             }
                         val dialog = DatePickerDialog(
                             this@AddItemActivity,
@@ -86,7 +87,8 @@ class AddItemActivity : BaseStateActivity<AddItemViewModel, ActivityAddItemBindi
                         val cal = Calendar.getInstance()
                         val dateListener =
                             DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
-                                vm.setPurchaseDate(year, month + 1, dayOfMonth)
+                                val date = String.format("%d.%02d.%02d.", year, month+1, dayOfMonth)
+                                vm.setPurchaseDate(date)
                             }
                         val dialog = DatePickerDialog(
                             this@AddItemActivity,
