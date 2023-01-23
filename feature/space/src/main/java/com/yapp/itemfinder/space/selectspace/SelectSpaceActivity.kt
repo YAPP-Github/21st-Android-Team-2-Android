@@ -28,14 +28,11 @@ class SelectSpaceActivity : BaseStateActivity<SelectSpaceViewModel, ActivitySele
 
     private var dataListAdapter: DataListAdapter<Data>? = null
 
-    private val spaceId by lazy { intent.getLongExtra(AddLockerActivity.SPACE_ID_KEY, 0) }
-
     override fun initViews() = with(binding) {
         if (dataListAdapter == null) {
             dataListAdapter = DataListAdapter()
             recyclerView.adapter = dataListAdapter
         }
-        vm.setSpaceId(spaceId)
     }
 
     override fun observeData(): Job = lifecycleScope.launch {

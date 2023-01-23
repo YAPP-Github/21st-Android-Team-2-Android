@@ -1,5 +1,6 @@
 package com.yapp.itemfinder.space.selectspace
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.yapp.itemfinder.domain.model.SelectSpace
 import com.yapp.itemfinder.domain.repository.SelectSpaceRepository
@@ -14,7 +15,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SelectSpaceViewModel @Inject constructor(
-    private val selectSpaceMockRepository: SelectSpaceRepository
+    private val selectSpaceMockRepository: SelectSpaceRepository,
+    private val savedStateHandle: SavedStateHandle
 ) :
     BaseStateViewModel<SelectSpaceState, SelectSpaceSideEffect>() {
     override val _stateFlow: MutableStateFlow<SelectSpaceState> =
@@ -23,11 +25,11 @@ class SelectSpaceViewModel @Inject constructor(
 
     private var checkedIndex = 0
 
+    private val spaceId by lazy { savedStateHandle.get<Long>(AddLockerActivity.SPACE_ID_KEY) }
+
     override fun fetchData(): Job = viewModelScope.launch {
         val spaces = selectSpaceMockRepository.getAllSpaces()
-        withState<SelectSpaceState.Loading> { state ->
-            checkedIndex = spaces.indexOf(spaces.firstOrNull { it.id == state.currentSpaceId })
-        }
+        checkedIndex = spaces.indexOf(spaces.firstOrNull { it.id == spaceId })
         spaces[checkedIndex].isChecked = true
         setState(
             SelectSpaceState.Success(
@@ -50,7 +52,4 @@ class SelectSpaceViewModel @Inject constructor(
         )
     }
 
-    fun setSpaceId(id: Long) {
-        setState(SelectSpaceState.Loading(id))
-    }
 }
