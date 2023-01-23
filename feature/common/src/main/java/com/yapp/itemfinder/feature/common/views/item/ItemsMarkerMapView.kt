@@ -44,6 +44,9 @@ class ItemsMarkerMapView
     fun applyFocusMarker(item: Item) {
         itemMarkerViews.forEach {
             it.isFocused = it.id == item.id.toInt()
+            if (it.isFocused == true) {
+                it.bringToFront()
+            }
         }
     }
 

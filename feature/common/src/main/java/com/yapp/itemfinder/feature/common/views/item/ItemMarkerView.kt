@@ -52,14 +52,10 @@ class ItemMarkerView
     private fun showSelectedMarker(isShow: Boolean) {
         if (isShow) {
             binding.markerIconImageView.invisible()
-            binding.selectedMarkerImageView.visible()
-            binding.selectedMarkerIconImageView.visible()
-            binding.selectedMarkerBackgroundView.visible()
+            binding.selectedItemGroup.visible()
         } else {
             binding.markerIconImageView.visible()
-            binding.selectedMarkerImageView.invisible()
-            binding.selectedMarkerIconImageView.invisible()
-            binding.selectedMarkerBackgroundView.invisible()
+            binding.selectedItemGroup.invisible()
         }
     }
 
