@@ -184,20 +184,26 @@ class LockerDetailFragment : BaseStateFragment<LockerDetailViewModel, FragmentLo
     }
 
     private fun handleSuccess(lockerDetailState: LockerDetailState.Success) {
-        if (lockerDetailState.needToFetch.not()) return
-        handleItemMarkers(lockerDetailState.dataList.filterIsInstance<Item>())
+        if (lockerDetailState.needToFetch.not()) {
+            lockerDetailState.lastFocusedItem?.let {
+                binding.itemsMarkerMapView.applyFocusMarker(it)
+            }
+            return
+        }
+
+        val dataList = lockerDetailState.dataList
+        handleItemMarkers(dataList.map { it as Item })
 
         binding.defaultTopNavigationView.titleText = lockerDetailState.locker.name
 
-        dataBindHelper.bindList(lockerDetailState.dataList, vm)
-        dataListAdapter?.submitList(lockerDetailState.dataList)
+        dataBindHelper.bindList(dataList, vm)
+        dataListAdapter?.submitList(dataList)
 
-        val itemCount: Int = dataListAdapter?.itemCount ?: 0
-        binding.bottomSheet.totalItemCount.text = getString(string.totalCount, itemCount)
+        binding.bottomSheet.totalItemCount.text = getString(string.totalCount, dataList.size)
     }
 
     private fun handleItemMarkers(items: List<Item>) = with(binding) {
-        itemsMarkerMapView.fetchItems(items, items.first())
+        itemsMarkerMapView.fetchItems(items)
     }
 
     companion object {

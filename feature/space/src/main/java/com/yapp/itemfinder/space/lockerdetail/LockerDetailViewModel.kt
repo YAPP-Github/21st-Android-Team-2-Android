@@ -50,17 +50,19 @@ class LockerDetailViewModel @Inject constructor(
         }
     }
 
-    fun applyFocusFirstItem(firstVisibleItemPosition: Int) {
+    fun applyFocusFirstItem(position: Int) {
         withState<LockerDetailState.Success> { state ->
             state.lastFocusedItem?.applyItemFocus(false)
-            val focusItem = state.dataList[firstVisibleItemPosition] as Item
-            focusItem.applyItemFocus(true)
-            setState(
-                state.copy(
-                    needToFetch = false,
-                    lastFocusedItem = focusItem
+            if (state.dataList.isNotEmpty()) {
+                val focusItem = state.dataList[position] as Item
+                focusItem.applyItemFocus(true)
+                setState(
+                    state.copy(
+                        needToFetch = false,
+                        lastFocusedItem = focusItem
+                    )
                 )
-            )
+            }
         }
     }
 

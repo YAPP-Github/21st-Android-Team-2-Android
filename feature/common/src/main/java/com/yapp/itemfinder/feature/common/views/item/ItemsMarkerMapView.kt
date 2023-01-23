@@ -25,26 +25,25 @@ class ItemsMarkerMapView
     private val binding: LayoutItemsMarkerMapBinding =
         LayoutItemsMarkerMapBinding.inflate(LayoutInflater.from(context), this, true)
 
-    fun fetchItems(items: List<Item>, targetItem: Item?) = with(binding) {
-        allViews.forEach {
-            if (it is AppCompatImageView && it.id != R.id.markerBackgroundImageView) {
-                removeView(it)
-            }
+    private val itemMarkerViews = mutableListOf<ItemMarkerView>()
+    fun fetchItems(items: List<Item>) = with(binding) {
+        allViews.filterIsInstance<ItemMarkerView>().forEach {
+            removeView(it)
         }
-        val deselectedItems = items.filter { it.id != targetItem?.id }
-        deselectedItems.forEach {
+
+        items.forEach { item ->
             val itemMarkerView = ItemMarkerView(context)
             addView(itemMarkerView)
-            itemMarkerView.item = it
-            itemMarkerView.selected = false
-            itemMarkerView.position = it.position
+            itemMarkerView.id = item.id.toInt()
+            itemMarkerView.item = item
+            itemMarkerView.position = item.position
+            itemMarkerViews.add(itemMarkerView)
         }
-        targetItem?.let {
-            val itemMarkerView = ItemMarkerView(context)
-            addView(itemMarkerView)
-            itemMarkerView.item = it
-            itemMarkerView.selected = true
-            itemMarkerView.position = it.position
+    }
+
+    fun applyFocusMarker(item: Item) {
+        itemMarkerViews.forEach {
+            it.isFocused = it.id == item.id.toInt()
         }
     }
 
