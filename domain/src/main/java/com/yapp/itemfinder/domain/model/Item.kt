@@ -1,5 +1,9 @@
 package com.yapp.itemfinder.domain.model
 
+import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
+import com.yapp.itemfinder.domain.R
+
 data class Item(
     override var id: Long,
     var lockerId: Long,
@@ -9,14 +13,21 @@ data class Item(
     val itemCategory: ItemCategory?,
     var tags: List<Tag>?,
     val count: Int = 0,
-    override var type:  CellType = CellType.ITEM_SIMPLE_CELL
+    val position: Position? = null,
+) : Data(type = CellType.ITEM_SIMPLE_CELL) {
 
-) : Data() {
+    data class Position(
+        @androidx.annotation.FloatRange(from = 0.0, to = 100.0) val x: Float,
+        @androidx.annotation.FloatRange(from = 0.0, to = 100.0) val y: Float
+    )
 
 }
 
-enum class ItemCategory(val label: String) {
-    LIFE("생활"),
-    FOOD("식품"),
-    FASHION("패션")
+enum class ItemCategory(
+    @StringRes val labelResId: Int,
+    @DrawableRes val iconResId: Int
+) {
+    LIVING(R.string.item_category_living, R.drawable.ic_marker_living),
+    FOOD(R.string.item_category_food, R.drawable.ic_marker_food),
+    FASHION(R.string.item_category_fashion, R.drawable.ic_marker_fashion);
 }
