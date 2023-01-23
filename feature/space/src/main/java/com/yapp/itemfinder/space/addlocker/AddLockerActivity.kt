@@ -2,14 +2,17 @@ package com.yapp.itemfinder.space.addlocker
 
 import android.content.Context
 import android.content.Intent
+import android.view.ContextThemeWrapper
 import androidx.activity.viewModels
+import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.lifecycleScope
 import com.yapp.itemfinder.domain.model.Data
 import com.yapp.itemfinder.feature.common.BaseStateActivity
 import com.yapp.itemfinder.feature.common.binding.viewBinding
 import com.yapp.itemfinder.feature.common.datalist.adapter.DataListAdapter
 import com.yapp.itemfinder.feature.common.datalist.binder.DataBindHelper
-import com.yapp.itemfinder.feature.common.extension.showLongToast
+import com.yapp.itemfinder.space.R
+import com.yapp.itemfinder.feature.common.R as CR
 import com.yapp.itemfinder.space.databinding.ActivityAddLockerBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
@@ -55,12 +58,42 @@ class AddLockerActivity : BaseStateActivity<AddLockerViewModel, ActivityAddLocke
                         vm.changeSpace(name)
                     }
                     is AddLockerSideEffect.UploadImage -> {
-                        this@AddLockerActivity.showLongToast("업로드 이미지!~")
+                        showAddPhotoDialog()
                     }
-                    else -> {}
                 }
             }
         }
+    }
+
+    private fun showAddPhotoDialog() {
+        AlertDialog.Builder(
+            ContextThemeWrapper(
+                this@AddLockerActivity,
+                CR.style.AlertDialog
+            )
+        )
+            .setTitle(getString(R.string.attach_photo))
+            .setMessage(getString(R.string.choose_how_to_attach_photo))
+            .setPositiveButton(getString(R.string.camera)) { _, _ ->
+                uploadByCamera()
+            }
+            .setNegativeButton(getString(R.string.gallery)) { _, _ ->
+                uploadByGallery()
+            }
+            .create()
+            .show()
+    }
+
+    private fun uploadByCamera() {
+        // 사진 가져오기
+        // 크로핑
+        // 이미지뷰에 저장
+    }
+
+    private fun uploadByGallery() {
+        // 사진 가져오기
+        // 크로핑
+        // 이미지뷰에 저장
     }
 
     private fun handleLoading(addLockerState: AddLockerState) {
