@@ -48,6 +48,7 @@ class LockerDetailFragment : BaseStateFragment<LockerDetailViewModel, FragmentLo
         }
 
         initBottomSheet()
+        handleRecyclerViewListener()
     }
 
     private fun initToolBar() = with(binding.defaultTopNavigationView) {
@@ -139,6 +140,22 @@ class LockerDetailFragment : BaseStateFragment<LockerDetailViewModel, FragmentLo
 
     }
 
+    private fun handleRecyclerViewListener() = with(binding.bottomSheet.recyclerview) {
+        fun focusCurrentVisibleItem() {
+            val firstVisibleItemPosition =
+                (layoutManager as LinearLayoutManager).findFirstCompletelyVisibleItemPosition()
+            vm.applyFocusFirstItem(
+                if (!canScrollVertically(1)) {
+                    requireNotNull(adapter).itemCount - 1
+                } else {
+                    firstVisibleItemPosition
+                }
+            )
+        }
+
+        setOnScrollChangeListener { _: View?, _: Int, _: Int, _: Int, _: Int -> focusCurrentVisibleItem() }
+    }
+
     override fun observeData(): Job {
         val job = viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -167,6 +184,7 @@ class LockerDetailFragment : BaseStateFragment<LockerDetailViewModel, FragmentLo
     }
 
     private fun handleSuccess(lockerDetailState: LockerDetailState.Success) {
+        if (lockerDetailState.needToFetch.not()) return
         handleItemMarkers(lockerDetailState.dataList.filterIsInstance<Item>())
 
         binding.defaultTopNavigationView.titleText = lockerDetailState.locker.name

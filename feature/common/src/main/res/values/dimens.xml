@@ -8,6 +8,15 @@
     <dimen name="typography_head">18dp</dimen>
     <dimen name="typography_title">20dp</dimen>
 
+    <dimen name="stroke_1dp">1dp</dimen>
+    <dimen name="stroke_2dp">2dp</dimen>
+    <dimen name="stroke_3dp">3dp</dimen>
+    <dimen name="stroke_4dp">4dp</dimen>
+    <dimen name="stroke_5dp">5dp</dimen>
+    <dimen name="stroke_6dp">6dp</dimen>
+    <dimen name="stroke_7dp">7dp</dimen>
+    <dimen name="stroke_8dp">8dp</dimen>
+
     <dimen name="radius_8dp">8dp</dimen>
     <dimen name="radius_12dp">12dp</dimen>
     <dimen name="radius_capsule">360dp</dimen>

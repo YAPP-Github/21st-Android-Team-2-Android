@@ -4,6 +4,8 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import com.yapp.itemfinder.domain.R
 
+typealias ItemFocusHandler = (Boolean) -> Unit
+
 data class Item(
     override var id: Long,
     var lockerId: Long,
@@ -20,6 +22,10 @@ data class Item(
         @androidx.annotation.FloatRange(from = 0.0, to = 100.0) val x: Float,
         @androidx.annotation.FloatRange(from = 0.0, to = 100.0) val y: Float
     )
+
+    var itemFocusHandler: ItemFocusHandler = { }
+
+    fun applyItemFocus(isFocused: Boolean) = itemFocusHandler(isFocused)
 
 }
 

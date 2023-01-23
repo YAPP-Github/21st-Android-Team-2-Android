@@ -5,6 +5,7 @@ import android.widget.FrameLayout.LayoutParams
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.view.ContextThemeWrapper
+import androidx.core.view.isVisible
 import com.bumptech.glide.Glide
 import com.yapp.itemfinder.domain.model.Item
 import com.yapp.itemfinder.feature.common.R
@@ -83,6 +84,10 @@ class ItemSimpleViewHolder(
                     if (isOverflow) break
                 }
 
+            }
+
+            data.itemFocusHandler = { isFocused ->
+                binding.itemFocusView.isVisible = isFocused
             }
 
         }
