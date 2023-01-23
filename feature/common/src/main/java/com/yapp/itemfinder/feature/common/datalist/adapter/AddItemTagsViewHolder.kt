@@ -10,8 +10,15 @@ class AddItemTagsViewHolder(
         return
     }
 
+    override fun bindData(data: AddItemTags) {
+        super.bindData(data)
+        data.tagList.forEach {
+            // bind tag
+        }
+    }
+
     override fun bindViews(data: AddItemTags) {
-        data.tagList.forEach {  }
+        return
     }
 
 }

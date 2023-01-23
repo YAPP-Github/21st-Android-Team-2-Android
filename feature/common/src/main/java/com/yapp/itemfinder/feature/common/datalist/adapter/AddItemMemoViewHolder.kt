@@ -10,7 +10,12 @@ class AddItemMemoViewHolder(
         return
     }
 
-    override fun bindViews(data: AddItemMemo) {
+    override fun bindData(data: AddItemMemo) {
+        super.bindData(data)
         binding.memoEditText.setText(data.memo)
+    }
+
+    override fun bindViews(data: AddItemMemo) {
+        return
     }
 }

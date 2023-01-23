@@ -10,8 +10,12 @@ class AddItemCountViewHolder(
         return
     }
 
-    override fun bindViews(data: AddItemCount) {
+    override fun bindData(data: AddItemCount) {
+        super.bindData(data)
         binding.countTextView.text = data.count.toString()
+    }
+
+    override fun bindViews(data: AddItemCount) {
         binding.countPlusButton.setOnClickListener { data.plusCount() }
         binding.countMinusButton.setOnClickListener { data.minusCount() }
     }

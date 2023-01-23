@@ -10,8 +10,12 @@ class AddItemPurchaseDateViewHolder(
         return
     }
 
+    override fun bindData(data: AddItemPurchaseDate) {
+        super.bindData(data)
+        binding.purchaseDateTextView.text = data.purchaseDate
+    }
+
     override fun bindViews(data: AddItemPurchaseDate) {
         binding.purchaseDateTextView.setOnClickListener { data.openDatePicker() }
-        binding.purchaseDateTextView.text = data.purchaseDate
     }
 }

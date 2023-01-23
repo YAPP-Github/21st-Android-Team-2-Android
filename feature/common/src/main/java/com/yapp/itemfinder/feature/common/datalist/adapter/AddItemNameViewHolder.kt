@@ -10,8 +10,13 @@ class AddItemNameViewHolder(
         return
     }
 
-    override fun bindViews(data: AddItemName) {
+    override fun bindData(data: AddItemName) {
+        super.bindData(data)
         if (data.name != "") binding.itemNameEditText.setText(data.name)
+    }
+
+    override fun bindViews(data: AddItemName) {
+        return
     }
 
 }

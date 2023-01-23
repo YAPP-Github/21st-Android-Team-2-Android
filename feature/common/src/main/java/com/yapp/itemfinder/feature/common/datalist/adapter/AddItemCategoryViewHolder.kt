@@ -12,8 +12,12 @@ class AddItemCategoryViewHolder(
         return
     }
 
-    override fun bindViews(data: AddItemCategory) {
+    override fun bindData(data: AddItemCategory) {
+        super.bindData(data)
         binding.itemCategoryButton.text = data.category
+    }
+
+    override fun bindViews(data: AddItemCategory) {
         binding.itemCategoryButton.setOnClickListener { data.selectCategory() }
         when (data.category) {
             ItemCategorySelection.DEFAULT.label -> {
