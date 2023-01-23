@@ -26,10 +26,12 @@
             android:layout_height="wrap_content"
             android:background="@drawable/bg_add_tag_button"
             android:drawableStart="@drawable/ic_plus_10"
-            android:paddingHorizontal="8dp"
             android:drawablePadding="4dp"
+            android:minHeight="0dp"
+            android:paddingHorizontal="8dp"
+            android:paddingVertical="4dp"
             android:text="@string/add"
-            android:textColor="@color/white"/>
+            android:textColor="@color/white" />
 
     </LinearLayout>
 

@@ -14,6 +14,9 @@
         android:drawableStart="@drawable/ic_plus_10"
         android:drawablePadding="6dp"
         android:drawableTint="@color/gray_04"
+        android:minHeight="0dp"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="8dp"
         android:text="@string/memo"
         android:textColor="@color/gray_05" />
 
@@ -27,6 +30,9 @@
         android:drawableStart="@drawable/ic_plus_10"
         android:drawablePadding="6dp"
         android:drawableTint="@color/gray_04"
+        android:minHeight="0dp"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="8dp"
         android:text="@string/expirationDate"
         android:textColor="@color/gray_05" />
 
@@ -39,6 +45,9 @@
         android:drawableStart="@drawable/ic_plus_10"
         android:drawablePadding="6dp"
         android:drawableTint="@color/gray_04"
+        android:minHeight="0dp"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="8dp"
         android:text="@string/purchaseDate"
         android:textColor="@color/gray_05" />
 
