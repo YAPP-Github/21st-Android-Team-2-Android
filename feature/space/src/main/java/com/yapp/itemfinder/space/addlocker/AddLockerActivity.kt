@@ -2,14 +2,14 @@ package com.yapp.itemfinder.space.addlocker
 
 import android.Manifest
 import android.app.Activity
+import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
+import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
 import android.view.ContextThemeWrapper
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
@@ -46,6 +46,8 @@ class AddLockerActivity : BaseStateActivity<AddLockerViewModel, ActivityAddLocke
     private val cameraPermission: String by lazy {
         Manifest.permission.CAMERA
     }
+
+    var imageUri: Uri? = null
 
     @Inject
     lateinit var dataBindHelper: DataBindHelper
@@ -155,7 +157,11 @@ class AddLockerActivity : BaseStateActivity<AddLockerViewModel, ActivityAddLocke
     }
 
     private fun uploadByCamera() {
-
+        val values = ContentValues()
+        imageUri = contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
+        val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri)
+        startActivityForResult(cameraIntent, IMAGE_CAPTURE_REQUEST_CODE)
     }
 
     private fun showPermissionContextPopup(permission: String) {
@@ -201,9 +207,7 @@ class AddLockerActivity : BaseStateActivity<AddLockerViewModel, ActivityAddLocke
                 }
             }
             IMAGE_CAPTURE_REQUEST_CODE -> {
-                val uri = data?.extras?.get("data") as Bitmap
-//                vm.uploadImage()
-//                imageView.setImageBitmap(imageBitmap)
+                imageUri?.let { vm.uploadImage(it) }
             }
         }
     }
@@ -218,10 +222,15 @@ class AddLockerActivity : BaseStateActivity<AddLockerViewModel, ActivityAddLocke
         when (requestCode) {
             PERMISSION_READ_IMAGE_CODE ->
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    showGetPhotoDialog()
+                    uploadByGallery()
                 } else {
-                    Toast.makeText(this, getString(CR.string.request_denied), Toast.LENGTH_SHORT)
-                        .show()
+                    showShortToast(getString(CR.string.request_denied))
+                }
+            PERMISSION_CAMERA_CODE ->
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    uploadByCamera()
+                } else {
+                    showShortToast(getString(CR.string.request_denied))
                 }
         }
     }

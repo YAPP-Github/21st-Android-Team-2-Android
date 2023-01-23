@@ -22,7 +22,6 @@ class AddLockerPhotoViewHolder(
                 addPhotoDescriptionTextView.gone()
                 photoImageView.visible()
                 Glide.with(photoImageView).load(Uri.parse(it))
-                    .override(photoImageView.height, photoImageView.width)
                     .centerCrop()
                     .into(photoImageView)
             }
