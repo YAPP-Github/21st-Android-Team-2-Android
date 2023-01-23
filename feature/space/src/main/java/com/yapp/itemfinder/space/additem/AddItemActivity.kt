@@ -11,7 +11,7 @@ import com.yapp.itemfinder.feature.common.BaseStateActivity
 import com.yapp.itemfinder.feature.common.binding.viewBinding
 import com.yapp.itemfinder.feature.common.datalist.adapter.DataListAdapter
 import com.yapp.itemfinder.feature.common.datalist.binder.DataBindHelper
-import com.yapp.itemfinder.space.R
+import com.yapp.itemfinder.feature.common.R as CR
 import com.yapp.itemfinder.space.databinding.ActivityAddItemBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
@@ -32,6 +32,7 @@ class AddItemActivity : BaseStateActivity<AddItemViewModel, ActivityAddItemBindi
     lateinit var dataBindHelper: DataBindHelper
 
     override fun initViews() = with(binding) {
+        initToolBar()
         if (dataListAdapter == null) {
             dataListAdapter = DataListAdapter()
             recyclerView.adapter = dataListAdapter
@@ -44,6 +45,20 @@ class AddItemActivity : BaseStateActivity<AddItemViewModel, ActivityAddItemBindi
             if (newCategoryName != null) {
                 vm.setCategory(newCategoryName)
             }
+        }
+    }
+
+    private fun initToolBar() = with(binding.defaultNavigationView) {
+        backButtonImageResId = CR.drawable.ic_close_round
+        containerColor = CR.color.brown_03
+        backButtonClickListener = {
+            // 잠시만요! 팝업
+            finish()
+        }
+        titleText = "물건 추가"
+        rightFirstIcon = CR.drawable.ic_done
+        rightFirstIconClickListener = {
+            Toast.makeText(this@AddItemActivity, "save click", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -71,7 +86,8 @@ class AddItemActivity : BaseStateActivity<AddItemViewModel, ActivityAddItemBindi
                         val cal = Calendar.getInstance()
                         val dateListener =
                             DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
-                                val date = String.format("%d.%02d.%02d.", year, month+1, dayOfMonth)
+                                val date =
+                                    String.format("%d.%02d.%02d.", year, month + 1, dayOfMonth)
                                 vm.setExpirationDate(date)
                             }
                         val dialog = DatePickerDialog(
@@ -87,7 +103,8 @@ class AddItemActivity : BaseStateActivity<AddItemViewModel, ActivityAddItemBindi
                         val cal = Calendar.getInstance()
                         val dateListener =
                             DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
-                                val date = String.format("%d.%02d.%02d.", year, month+1, dayOfMonth)
+                                val date =
+                                    String.format("%d.%02d.%02d.", year, month + 1, dayOfMonth)
                                 vm.setPurchaseDate(date)
                             }
                         val dialog = DatePickerDialog(
