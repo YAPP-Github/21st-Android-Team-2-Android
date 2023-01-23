@@ -81,15 +81,51 @@ class AddItemViewModel @Inject constructor(
     }
 
     fun addMemoCell() {
-
+        withState<AddItemState.Success> { state ->
+            val newDataList = ArrayList(state.dataList)
+            val addItemAdditional =
+                newDataList.find { it is AddItemAdditional } as AddItemAdditional
+            val idx = newDataList.indexOf(addItemAdditional)
+            newDataList.add(idx, AddItemMemo())
+            newDataList[idx+1] = addItemAdditional.copy(hasMemo = true)
+            setState(
+                AddItemState.Success(
+                    newDataList
+                )
+            )
+        }
     }
 
     fun addExpirationDateCell() {
-
+        withState<AddItemState.Success> { state ->
+            val newDataList = ArrayList(state.dataList)
+            val addItemAdditional =
+                newDataList.find { it is AddItemAdditional } as AddItemAdditional
+            val idx = newDataList.indexOf(addItemAdditional)
+            newDataList.add(idx, AddItemExpirationDate())
+            newDataList[idx+1] = addItemAdditional.copy(hasExpirationDate = true)
+            setState(
+                AddItemState.Success(
+                    newDataList
+                )
+            )
+        }
     }
 
     fun addPurchaseDateCell() {
-
+        withState<AddItemState.Success> { state ->
+            val newDataList = ArrayList(state.dataList)
+            val addItemAdditional =
+                newDataList.find { it is AddItemAdditional } as AddItemAdditional
+            val idx = newDataList.indexOf(addItemAdditional)
+            newDataList.add(idx, AddItemPurchaseDate())
+            newDataList[idx+1] = addItemAdditional.copy(hasPurchaseDate = true)
+            setState(
+                AddItemState.Success(
+                    newDataList
+                )
+            )
+        }
     }
 
     fun openSelectCategoryDialog() {

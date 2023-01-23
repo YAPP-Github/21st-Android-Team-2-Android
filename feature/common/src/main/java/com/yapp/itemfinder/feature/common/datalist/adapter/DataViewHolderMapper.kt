@@ -2,6 +2,8 @@ package com.yapp.itemfinder.feature.common.datalist.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import com.yapp.itemfinder.domain.model.AddItemExpirationDate
+import com.yapp.itemfinder.domain.model.AddItemMemo
 import com.yapp.itemfinder.domain.model.CellType
 import com.yapp.itemfinder.domain.model.Data
 import com.yapp.itemfinder.feature.common.databinding.*
@@ -36,6 +38,11 @@ object DataViewHolderMapper {
             CellType.ADD_ITEM_TAGS_CELL -> AddItemTagsViewHolder(AddItemTagsBinding.inflate(inflater, parent, false))
             CellType.ADD_ITEM_ADDITIONAL_CELL -> AddItemAdditionalViewHolder(
                 AddItemAdditionalBinding.inflate(inflater, parent, false))
+            CellType.ADD_ITEM_MEMO_CELL -> AddItemMemoViewHolder(AddItemMemoBinding.inflate(inflater, parent, false))
+            CellType.ADD_ITEM_EXPIRATION_DATE_CELL -> AddItemExpirationDateViewHolder(
+                AddItemExpirationDateBinding.inflate(inflater, parent, false))
+            CellType.ADD_ITEM_PURCHASE_DATE_CELL -> AddItemPurchaseDateViewHolder(
+                AddItemPurchaseDateBinding.inflate(inflater, parent, false))
         }
 
         return viewHolder as DataViewHolder<D>

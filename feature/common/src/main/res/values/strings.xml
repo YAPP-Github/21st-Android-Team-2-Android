@@ -18,4 +18,5 @@
     <string name="memo">메모</string>
     <string name="expirationDate">소비기한</string>
     <string name="purchaseDate">구매일</string>
+    <string name="enterMemo">메모를 입력해주세요</string>
 </resources>
