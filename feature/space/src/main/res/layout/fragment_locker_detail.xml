@@ -13,7 +13,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/filterContainer"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/collapsing_toolbar_container_height"
+            android:layout_height="56dp"
             android:background="@color/white">
 
             <View
@@ -22,7 +22,9 @@
                 android:layout_height="?android:attr/actionBarSize"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent" />
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="1"/>
 
             <ImageView
                 android:id="@+id/filterImageView"
@@ -94,7 +96,7 @@
             layout="@layout/fragment_locker_detail_bottom_sheet"
             android:id="@+id/bottomSheet"
             android:layout_gravity="bottom"
-            tools:layout_height="wrap_content"
+            tools:layout_height="320dp"
             tools:layout_width="match_parent" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

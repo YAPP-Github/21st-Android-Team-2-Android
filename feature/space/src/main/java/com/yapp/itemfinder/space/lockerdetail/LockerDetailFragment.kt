@@ -1,9 +1,14 @@
 package com.yapp.itemfinder.space.lockerdetail
 
+import android.animation.Animator
+import android.animation.ValueAnimator
 import android.view.View
 import android.widget.Toast
+import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.core.graphics.Insets
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updateLayoutParams
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.*
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -13,9 +18,13 @@ import com.google.android.material.divider.MaterialDividerItemDecoration
 import com.yapp.itemfinder.domain.model.Data
 import com.yapp.itemfinder.domain.model.Item
 import com.yapp.itemfinder.feature.common.BaseStateFragment
+import com.yapp.itemfinder.feature.common.R.string
 import com.yapp.itemfinder.feature.common.binding.viewBinding
 import com.yapp.itemfinder.feature.common.datalist.adapter.DataListAdapter
 import com.yapp.itemfinder.feature.common.datalist.binder.DataBindHelper
+import com.yapp.itemfinder.feature.common.extension.dimen
+import com.yapp.itemfinder.feature.common.extension.dpToPx
+import com.yapp.itemfinder.feature.common.views.behavior.CustomDraggableBottomSheetBehaviour
 import com.yapp.itemfinder.space.R
 import com.yapp.itemfinder.space.databinding.FragmentLockerDetailBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -23,8 +32,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import com.yapp.itemfinder.feature.common.R as CR
-import com.yapp.itemfinder.feature.common.R.string
-import com.yapp.itemfinder.feature.common.views.behavior.CustomDraggableBottomSheetBehaviour
+
 
 @AndroidEntryPoint
 class LockerDetailFragment : BaseStateFragment<LockerDetailViewModel, FragmentLockerDetailBinding>() {
@@ -41,7 +49,14 @@ class LockerDetailFragment : BaseStateFragment<LockerDetailViewModel, FragmentLo
     @Inject
     lateinit var dataBindHelper: DataBindHelper
 
+    private var inset: Insets? = null
     override fun initViews() = with(binding) {
+        ViewCompat.setOnApplyWindowInsetsListener(requireView()) { v, insets ->
+            inset = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            // View 계층에 반영될 Inset들을 반환한다.
+            insets
+        }
+
         initToolBar()
         if (dataListAdapter == null) {
             dataListAdapter = DataListAdapter()
@@ -121,26 +136,82 @@ class LockerDetailFragment : BaseStateFragment<LockerDetailViewModel, FragmentLo
             }
         })
 
-        ViewCompat.setOnApplyWindowInsetsListener(requireView()) { v, insets ->
-            val inset = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            // View 계층에 반영될 Inset들을 반환한다.
-            binding.itemsMarkerMapView.post {
-                behavior.maxHeight = binding.root.measuredHeight - binding.toolbar.measuredHeight - inset.top
-                behavior.peekHeight =
-                    (binding.root.measuredHeight
-                        - binding.itemsMarkerMapView.measuredHeight
-                        - resources.getDimension(CR.dimen.collapsing_toolbar_container_height)
-                        - inset.top
-                        ).toInt()
-            }
-            insets
-        }
+        setBottomSheetPeekHeight(isExpand = true)
 
         behavior.draggableView = binding.bottomSheet.itemsDraggableContainer
 
     }
 
+    private fun setBottomSheetPeekHeight(isExpand: Boolean, isAnimate: Boolean = false) {
+        val behavior = BottomSheetBehavior.from(binding.bottomSheet.root) as CustomDraggableBottomSheetBehaviour
+        binding.itemsMarkerMapView.post {
+            val toolbarContainerHeight = requireContext().dimen(CR.dimen.collapsing_toolbar_container_height).toInt()
+            val toolbarHeight = binding.toolbar.measuredHeight
+            behavior.maxHeight = binding.root.measuredHeight - binding.toolbar.measuredHeight - requireNotNull(inset).top
+            val peekHeight = (binding.root.measuredHeight
+                - binding.itemsMarkerMapView.measuredHeight
+                - (if (isExpand) toolbarContainerHeight else toolbarHeight)
+                + 20.dpToPx(requireContext()))
+            behavior.setPeekHeight(peekHeight, isAnimate)
+        }
+    }
+
     private fun handleRecyclerViewListener() = with(binding.bottomSheet.recyclerview) {
+        var filterCollapseAnimator: Animator? = null
+        var filterExpandAnimator: Animator? = null
+        var isFilterCollapsed = false
+        var isFilterExpanded = false
+        var isInitialized = false
+
+        fun isAnimateRunning() =
+            filterExpandAnimator?.isRunning == true
+                || filterCollapseAnimator?.isRunning == true
+
+        fun handleExpandFilter(isExpand: Boolean) {
+            post {
+                val toolbarContainerHeight = requireContext().dimen(CR.dimen.collapsing_toolbar_container_height).toInt()
+                val toolbarHeight = binding.toolbar.measuredHeight
+
+                if (isExpand) {
+                    if (isAnimateRunning() || isFilterExpanded) return@post
+                    filterExpandAnimator = ValueAnimator.ofInt(toolbarHeight, toolbarContainerHeight)
+                        .setDuration(100).apply {
+                            addUpdateListener { animation ->
+                                val value = animation.animatedValue as Int
+                                binding.filterContainer.updateLayoutParams<CoordinatorLayout.LayoutParams> {
+                                    height = value
+                                }
+                                binding.itemsMarkerMapView.updateLayoutParams<CoordinatorLayout.LayoutParams> {
+                                    topMargin = value
+                                }
+                            }
+                            start()
+                            isFilterExpanded = true
+                            isFilterCollapsed = false
+                        }
+                    setBottomSheetPeekHeight(isExpand = true, isAnimate = true)
+                } else {
+                    if (isAnimateRunning() || isFilterCollapsed) return@post
+                    filterCollapseAnimator = ValueAnimator.ofInt(toolbarContainerHeight, toolbarHeight)
+                        .setDuration(100).apply {
+                            addUpdateListener { animation ->
+                                val value = animation.animatedValue as Int
+                                binding.filterContainer.updateLayoutParams<CoordinatorLayout.LayoutParams> {
+                                    height = value
+                                }
+                                binding.itemsMarkerMapView.updateLayoutParams<CoordinatorLayout.LayoutParams> {
+                                    topMargin = value
+                                }
+                            }
+                            start()
+                            isFilterCollapsed = true
+                            isFilterExpanded = false
+                        }
+                    setBottomSheetPeekHeight(isExpand = false, isAnimate = true)
+                }
+            }
+        }
+
         fun focusCurrentVisibleItem() {
             val firstVisibleItemPosition =
                 (layoutManager as LinearLayoutManager).findFirstCompletelyVisibleItemPosition()
@@ -153,7 +224,15 @@ class LockerDetailFragment : BaseStateFragment<LockerDetailViewModel, FragmentLo
             )
         }
 
-        setOnScrollChangeListener { _: View?, _: Int, _: Int, _: Int, _: Int -> focusCurrentVisibleItem() }
+        setOnScrollChangeListener { _: View?, scrollX: Int, scrollY: Int, oldScrollX: Int, oldScrollY: Int ->
+            if (isInitialized.not()) {
+                handleExpandFilter(true)
+            } else {
+                handleExpandFilter(scrollY < oldScrollY)
+            }
+            focusCurrentVisibleItem()
+            isInitialized = true
+        }
     }
 
     override fun observeData(): Job {
