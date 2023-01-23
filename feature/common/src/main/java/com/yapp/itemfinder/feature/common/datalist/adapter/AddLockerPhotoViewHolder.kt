@@ -11,7 +11,8 @@ class AddLockerPhotoViewHolder(
     }
 
     override fun bindViews(data: AddLockerPhoto) {
-
+        binding.root.setOnClickListener {
+            data.uploadImage()
+        }
     }
-
 }

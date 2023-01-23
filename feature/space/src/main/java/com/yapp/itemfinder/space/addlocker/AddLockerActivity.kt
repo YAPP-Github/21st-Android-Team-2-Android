@@ -9,6 +9,7 @@ import com.yapp.itemfinder.feature.common.BaseStateActivity
 import com.yapp.itemfinder.feature.common.binding.viewBinding
 import com.yapp.itemfinder.feature.common.datalist.adapter.DataListAdapter
 import com.yapp.itemfinder.feature.common.datalist.binder.DataBindHelper
+import com.yapp.itemfinder.feature.common.extension.showLongToast
 import com.yapp.itemfinder.space.databinding.ActivityAddLockerBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
@@ -52,6 +53,9 @@ class AddLockerActivity : BaseStateActivity<AddLockerViewModel, ActivityAddLocke
                         // 보관함 위치(selectSpace) 화면으로 이동
                         val name = "서재"
                         vm.changeSpace(name)
+                    }
+                    is AddLockerSideEffect.UploadImage -> {
+                        this@AddLockerActivity.showLongToast("업로드 이미지!~")
                     }
                     else -> {}
                 }

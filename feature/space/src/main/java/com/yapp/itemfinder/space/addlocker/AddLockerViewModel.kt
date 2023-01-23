@@ -1,9 +1,6 @@
 package com.yapp.itemfinder.space.addlocker
 
-import com.yapp.itemfinder.domain.model.AddLockerNameInput
-import com.yapp.itemfinder.domain.model.AddLockerPhoto
-import com.yapp.itemfinder.domain.model.AddLockerSpace
-import com.yapp.itemfinder.domain.model.LockerIcons
+import com.yapp.itemfinder.domain.model.*
 import com.yapp.itemfinder.feature.common.BaseStateViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -47,6 +44,12 @@ class AddLockerViewModel @Inject constructor(
                     }
                 )
             )
+        }
+    }
+
+    fun uploadImage() {
+        withState<AddLockerState.Success> {
+            postSideEffect(AddLockerSideEffect.UploadImage)
         }
     }
 }
