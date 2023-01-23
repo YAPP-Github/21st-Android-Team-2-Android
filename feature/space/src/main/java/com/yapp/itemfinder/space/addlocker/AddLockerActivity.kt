@@ -35,6 +35,13 @@ class AddLockerActivity : BaseStateActivity<AddLockerViewModel, ActivityAddLocke
 
     private var dataListAdapter: DataListAdapter<Data>? = null
 
+    private val imagePermission: String by lazy {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
+            Manifest.permission.READ_MEDIA_IMAGES
+        else
+            Manifest.permission.READ_EXTERNAL_STORAGE
+    }
+
     @Inject
     lateinit var dataBindHelper: DataBindHelper
 
@@ -81,13 +88,18 @@ class AddLockerActivity : BaseStateActivity<AddLockerViewModel, ActivityAddLocke
      */
 
     private fun handleUploadImage() {
+        checkExternalStorageOrMediaImages {
+            showGetPhotoDialog()
+        }
+    }
 
+    private fun checkExternalStorageOrMediaImages(uploadAction: () -> Unit) {
         when {
             ContextCompat.checkSelfPermission(
                 this,
-                Manifest.permission.READ_EXTERNAL_STORAGE
+                imagePermission
             ) == PackageManager.PERMISSION_GRANTED -> {
-                showGetPhotoDialog()
+                uploadAction()
             }
             shouldShowRequestPermissionRationale(Manifest.permission.READ_EXTERNAL_STORAGE) -> {
                 showPermissionContextPopup()
@@ -177,17 +189,10 @@ class AddLockerActivity : BaseStateActivity<AddLockerViewModel, ActivityAddLocke
     }
 
     private fun doRequestPermissions() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            requestPermissions(
-                arrayOf(Manifest.permission.READ_MEDIA_IMAGES),
-                PERMISSION_READ_IMAGE_CODE
-            )
-        } else {
-            requestPermissions(
-                arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
-                PERMISSION_READ_IMAGE_CODE
-            )
-        }
+        requestPermissions(
+            arrayOf(imagePermission),
+            PERMISSION_READ_IMAGE_CODE
+        )
     }
 
     override fun onRequestPermissionsResult(
@@ -202,7 +207,7 @@ class AddLockerActivity : BaseStateActivity<AddLockerViewModel, ActivityAddLocke
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     showGetPhotoDialog()
                 } else {
-                    Toast.makeText(this, "권한을 거부하셨습니다.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, getString(CR.string.request_denied), Toast.LENGTH_SHORT).show()
                 }
         }
     }
