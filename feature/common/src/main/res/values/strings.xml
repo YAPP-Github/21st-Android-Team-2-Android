@@ -12,7 +12,7 @@
     <string name="itemName">물건 이름</string>
     <string name="location">위치</string>
     <string name="selectItemLocation">보관할 위치를 선택해주세요</string>
-    <string name="count">개수</string>
+    <string name="countTitle">개수</string>
     <string name="add">추가</string>
     <string name="tag">태그</string>
     <string name="memo">메모</string>
