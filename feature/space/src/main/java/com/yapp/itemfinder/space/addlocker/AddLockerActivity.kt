@@ -1,7 +1,6 @@
 package com.yapp.itemfinder.space.addlocker
 
 import android.Manifest
-import android.app.Activity
 import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
@@ -22,6 +21,7 @@ import com.yapp.itemfinder.feature.common.binding.viewBinding
 import com.yapp.itemfinder.feature.common.datalist.adapter.DataListAdapter
 import com.yapp.itemfinder.feature.common.datalist.binder.DataBindHelper
 import com.yapp.itemfinder.feature.common.extension.showShortToast
+import com.yapp.itemfinder.feature.common.utility.TakePictureWithUriReturnContract
 import com.yapp.itemfinder.space.R
 import com.yapp.itemfinder.feature.common.R as CR
 import com.yapp.itemfinder.space.databinding.ActivityAddLockerBinding
@@ -49,12 +49,9 @@ class AddLockerActivity : BaseStateActivity<AddLockerViewModel, ActivityAddLocke
         Manifest.permission.CAMERA
     }
 
-    private lateinit var galleryLauncher: ActivityResultLauncher<Intent>
+    private lateinit var galleryLauncher: ActivityResultLauncher<String>
     private lateinit var cameraLauncher: ActivityResultLauncher<Uri>
 
-    private val imageUri by lazy {
-        contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, ContentValues())
-    }
 
     @Inject
     lateinit var dataBindHelper: DataBindHelper
@@ -64,22 +61,20 @@ class AddLockerActivity : BaseStateActivity<AddLockerViewModel, ActivityAddLocke
             dataListAdapter = DataListAdapter()
             recyclerView.adapter = dataListAdapter
         }
-        galleryLauncher =
-            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-                if (result.resultCode == RESULT_OK) {
-                    val uri = result.data?.data
-                    if (uri != null) {
-                        vm.uploadImage(uri)
-                    } else {
-                        showShortToast(getString(R.string.failed_get_photo))
-                    }
+        galleryLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+            uri?.let {
+                vm.uploadImage(it)
+            } ?: kotlin.run {
+                showShortToast(getString(R.string.failed_get_photo))
+            }
+        }
+
+        cameraLauncher =
+            registerForActivityResult(TakePictureWithUriReturnContract()) { (isSuccess, imageUrl) ->
+                if (isSuccess) {
+                    vm.uploadImage(imageUrl)
                 }
             }
-
-        cameraLauncher = registerForActivityResult(ActivityResultContracts.TakePicture()) {
-            if (it)
-                vm.uploadImage(imageUri!!)
-        }
     }
 
     override fun observeData(): Job = lifecycleScope.launch {
@@ -174,13 +169,11 @@ class AddLockerActivity : BaseStateActivity<AddLockerViewModel, ActivityAddLocke
     }
 
     private fun uploadByGallery() {
-        val intent = Intent(Intent.ACTION_GET_CONTENT)
-        intent.type = "image/*"
-        galleryLauncher.launch(intent)
+        galleryLauncher.launch("image/*")
     }
 
     private fun uploadByCamera() {
-        cameraLauncher.launch(imageUri)
+        cameraLauncher.launch(contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, ContentValues()))
     }
 
     private fun showPermissionContextPopup(permission: String) {
@@ -208,27 +201,6 @@ class AddLockerActivity : BaseStateActivity<AddLockerViewModel, ActivityAddLocke
             else
                 PERMISSION_CAMERA_CODE
         )
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        if (resultCode != Activity.RESULT_OK) {
-            return
-        }
-        when (requestCode) {
-            GALLERY_INTENT_REQUEST_CODE -> {
-                val uri = data?.data
-                if (uri != null) {
-                    vm.uploadImage(uri)
-                } else {
-                    showShortToast(getString(R.string.failed_get_photo))
-                }
-            }
-            IMAGE_CAPTURE_REQUEST_CODE -> {
-                imageUri?.let { vm.uploadImage(it) }
-            }
-        }
     }
 
     override fun onRequestPermissionsResult(
