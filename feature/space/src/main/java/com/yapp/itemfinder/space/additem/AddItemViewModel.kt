@@ -34,6 +34,20 @@ class AddItemViewModel @Inject constructor(
         )
     }
 
+    fun setName(newName: String) {
+        withState<AddItemState.Success> { state ->
+            val newDataList = ArrayList(state.dataList)
+            val nameIndex = newDataList.indexOf(newDataList.find { it is AddItemName })
+            newDataList[nameIndex] =
+                (newDataList[nameIndex] as AddItemName).copy(name = newName)
+            setState(
+                AddItemState.Success(
+                    newDataList
+                )
+            )
+        }
+    }
+
     fun setCategory(newCategory: String) {
         withState<AddItemState.Success> { state ->
             val newDataList = ArrayList(state.dataList)
@@ -128,8 +142,8 @@ class AddItemViewModel @Inject constructor(
         }
     }
 
-    fun openExpirationDatePicker() {
-        postSideEffect(AddItemSideEffect.OpenExpirationDatePicker)
+    fun setMemo(newMemo: String) {
+
     }
 
     fun setExpirationDate(date: String) {
@@ -156,6 +170,44 @@ class AddItemViewModel @Inject constructor(
                 )
             )
         }
+    }
+
+    fun saveItem() {
+        withState<AddItemState.Success> { state ->
+            val dataList = state.dataList
+            var itemName = ""
+            var itemCategory = ""
+            var itemSpace = ""
+            var itemLocker = ""
+            dataList.forEach {
+                if (it is AddItemName) itemName = it.name
+                if (it is AddItemCategory) itemCategory = it.category
+                if (it is AddItemLocation) {
+                    itemSpace = it.spaceName
+                    itemLocker = it.lockerName
+                }
+            }
+            if (itemName == null && itemCategory == null && itemSpace == null && itemLocker == null) {
+                postSideEffect(AddItemSideEffect.FillOutRequiredToast)
+                return
+            }
+            if (itemName == null) {
+                postSideEffect(AddItemSideEffect.FillOutNameToast)
+                return
+            }
+            if (itemCategory == null) {
+                postSideEffect(AddItemSideEffect.FillOutCategoryToast)
+                return
+            }
+            if (itemSpace == null) {
+                postSideEffect(AddItemSideEffect.FillOutLocationToast)
+                return
+            }
+        }
+    }
+
+    fun openExpirationDatePicker() {
+        postSideEffect(AddItemSideEffect.OpenExpirationDatePicker)
     }
 
     fun openPurchaseDatePicker() {

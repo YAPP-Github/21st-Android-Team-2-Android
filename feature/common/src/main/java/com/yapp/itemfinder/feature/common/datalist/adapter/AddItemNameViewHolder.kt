@@ -1,5 +1,8 @@
 package com.yapp.itemfinder.feature.common.datalist.adapter
 
+import android.view.KeyEvent
+import android.view.KeyEvent.KEYCODE_ENTER
+import android.view.inputmethod.EditorInfo
 import com.yapp.itemfinder.domain.model.AddItemName
 import com.yapp.itemfinder.feature.common.databinding.AddItemNameBinding
 
@@ -16,6 +19,12 @@ class AddItemNameViewHolder(
     }
 
     override fun bindViews(data: AddItemName) {
+        binding.itemNameEditText.setOnKeyListener { view, keyCode, keyEvent ->
+            if (keyEvent.action == KeyEvent.ACTION_DOWN || keyCode == KEYCODE_ENTER) {
+                data.setItemName(binding.itemNameEditText.text.toString())
+            }
+            true
+        }
         return
     }
 

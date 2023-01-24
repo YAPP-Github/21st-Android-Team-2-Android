@@ -6,4 +6,8 @@ sealed class AddItemSideEffect : SideEffect {
     object OpenSelectCategoryDialog : AddItemSideEffect()
     object OpenExpirationDatePicker : AddItemSideEffect()
     object OpenPurchaseDatePicker : AddItemSideEffect()
+    object FillOutRequiredToast : AddItemSideEffect()
+    object FillOutNameToast : AddItemSideEffect()
+    object FillOutCategoryToast : AddItemSideEffect()
+    object FillOutLocationToast : AddItemSideEffect()
 }

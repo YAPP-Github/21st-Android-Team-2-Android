@@ -61,7 +61,7 @@ class AddItemActivity : BaseStateActivity<AddItemViewModel, ActivityAddItemBindi
         titleText = "물건 추가"
         rightFirstIcon = CR.drawable.ic_done
         rightFirstIconClickListener = {
-            Toast.makeText(this@AddItemActivity, "save click", Toast.LENGTH_SHORT).show()
+            vm.saveItem()
         }
     }
 
@@ -119,6 +119,34 @@ class AddItemActivity : BaseStateActivity<AddItemViewModel, ActivityAddItemBindi
                                 cal.get(Calendar.DAY_OF_MONTH)
                             )
                             dialog.show()
+                        }
+                        is AddItemSideEffect.FillOutRequiredToast -> {
+                            Toast.makeText(
+                                this@AddItemActivity,
+                                "물건 이름, 카테고리, 위치는 필수 항목이에요.",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                        is AddItemSideEffect.FillOutNameToast -> {
+                            Toast.makeText(
+                                this@AddItemActivity,
+                                "물건의 이름을 입력해주세요.",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                        is AddItemSideEffect.FillOutCategoryToast -> {
+                            Toast.makeText(
+                                this@AddItemActivity,
+                                "물건의 카테고리를 선택해주세요.",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                        is AddItemSideEffect.FillOutLocationToast -> {
+                            Toast.makeText(
+                                this@AddItemActivity,
+                                "물건을 보관할 위치를 선택해주세요.",
+                                Toast.LENGTH_SHORT
+                            ).show()
                         }
                     }
                 }

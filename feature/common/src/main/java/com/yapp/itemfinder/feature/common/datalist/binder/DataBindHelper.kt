@@ -20,6 +20,7 @@ class DataBindHelper @Inject constructor(
     var manageSpaceItemBinder: ManageSpaceItemBinder,
     var manageSpaceAddSpaceBinder: AddSpaceBinder,
     var addLockerSpaceBinder: AddLockerSpaceBinder,
+    var addItemNameBinder: AddItemNameBinder,
     var addItemCategoryBinder: AddItemCategoryBinder,
     var addItemCountBinder: AddItemCountBinder,
     var addItemAdditionalBinder: AddItemAdditionalBinder,
@@ -76,6 +77,10 @@ class DataBindHelper @Inject constructor(
             CellType.ADD_ITEM_PURCHASE_DATE_CELL -> {
                 addItemPurchaseDateBinder.bindData(data as AddItemPurchaseDate, viewModel)
             }
+            CellType.ADD_ITEM_NAME_CELL -> addItemNameBinder.bindData(
+                data as AddItemName,
+                viewModel
+            )
             else -> {}
         }
     }

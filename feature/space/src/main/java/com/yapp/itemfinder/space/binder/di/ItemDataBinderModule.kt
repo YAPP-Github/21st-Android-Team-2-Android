@@ -40,4 +40,10 @@ abstract class ItemDataBinderModule {
     abstract fun bindAddItemExpirationDateBinder(
         addItemExpirationDateBinder: AddItemScreenExpirationDateBinder
     ): AddItemExpirationDateBinder
+
+    @Binds
+    @Singleton
+    abstract fun bindAddItemNameBinder(
+        addItemNameBinder: AddItemScreenNameBinder
+    ): AddItemNameBinder
 }
