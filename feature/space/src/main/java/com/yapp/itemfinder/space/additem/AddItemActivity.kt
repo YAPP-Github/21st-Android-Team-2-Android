@@ -1,5 +1,6 @@
 package com.yapp.itemfinder.space.additem
 
+import android.app.ActionBar.LayoutParams
 import android.app.DatePickerDialog
 import android.content.Context
 import android.content.Intent
@@ -90,38 +91,22 @@ class AddItemActivity : BaseStateActivity<AddItemViewModel, ActivityAddItemBindi
                             }
                         }
                         is AddItemSideEffect.OpenExpirationDatePicker -> {
-                            val cal = Calendar.getInstance()
                             val dateListener =
                                 DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
                                     val date =
                                         String.format("%d.%02d.%02d.", year, month + 1, dayOfMonth)
                                     vm.setExpirationDate(date)
                                 }
-                            val dialog = DatePickerDialog(
-                                this@AddItemActivity,
-                                dateListener,
-                                cal.get(Calendar.YEAR),
-                                cal.get(Calendar.MONTH),
-                                cal.get(Calendar.DAY_OF_MONTH)
-                            )
-                            dialog.show()
+                            openDatePickerDialog(dateListener, "소비기한")
                         }
                         is AddItemSideEffect.OpenPurchaseDatePicker -> {
-                            val cal = Calendar.getInstance()
                             val dateListener =
                                 DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
                                     val date =
                                         String.format("%d.%02d.%02d.", year, month + 1, dayOfMonth)
                                     vm.setPurchaseDate(date)
                                 }
-                            val dialog = DatePickerDialog(
-                                this@AddItemActivity,
-                                dateListener,
-                                cal.get(Calendar.YEAR),
-                                cal.get(Calendar.MONTH),
-                                cal.get(Calendar.DAY_OF_MONTH)
-                            )
-                            dialog.show()
+                            openDatePickerDialog(dateListener, "구매일")
                         }
                         is AddItemSideEffect.FillOutRequiredSnackBar -> {
                             SnackBarView.make(binding.root, "물건 이름, 카테고리, 위치는 필수 항목이에요.").show()
@@ -139,6 +124,32 @@ class AddItemActivity : BaseStateActivity<AddItemViewModel, ActivityAddItemBindi
                 }
             }
         }
+    }
+
+    private fun openDatePickerDialog(
+        dateListener: DatePickerDialog.OnDateSetListener,
+        title: String
+    ) {
+        val cal = Calendar.getInstance()
+        val dialog = DatePickerDialog(
+            this@AddItemActivity,
+            dateListener,
+            cal.get(Calendar.YEAR),
+            cal.get(Calendar.MONTH),
+            cal.get(Calendar.DAY_OF_MONTH)
+        )
+        dialog.setTitle(title)
+        dialog.show()
+        val positiveButton = dialog.getButton(DatePickerDialog.BUTTON_POSITIVE)
+        positiveButton.setTextColor(getColor(CR.color.orange))
+        positiveButton.text = "적용"
+        val negativeButton = dialog.getButton(DatePickerDialog.BUTTON_NEGATIVE)
+        negativeButton.setTextColor(getColor(CR.color.orange))
+        negativeButton.text = "취소"
+        dialog.window?.setLayout(
+            LayoutParams.MATCH_PARENT,
+            LayoutParams.WRAP_CONTENT
+        )
     }
 
     private fun handleLoading(addLockerState: AddItemState) {
