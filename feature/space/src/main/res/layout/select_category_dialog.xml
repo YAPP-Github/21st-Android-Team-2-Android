@@ -23,7 +23,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="20dp"
-            android:text="카테고리"
+            android:text="@string/category"
             android:textColor="@color/gray_04" />
 
         <RadioGroup
@@ -41,7 +41,7 @@
                 android:drawableEnd="@drawable/selector_category_check"
                 android:drawablePadding="16dp"
                 android:paddingVertical="8dp"
-                android:text="생활"
+                android:text="@string/life"
                 android:stateListAnimator="@null"
                 android:textColor="@drawable/selector_text_color" />
 
@@ -55,7 +55,7 @@
                 android:drawableEnd="@drawable/selector_category_check"
                 android:drawablePadding="16dp"
                 android:paddingVertical="8dp"
-                android:text="식품"
+                android:text="@string/food"
                 android:stateListAnimator="@null"
                 android:textColor="@drawable/selector_text_color"/>
 
@@ -69,7 +69,7 @@
                 android:drawableEnd="@drawable/selector_category_check"
                 android:drawablePadding="16dp"
                 android:paddingVertical="8dp"
-                android:text="패션"
+                android:text="@string/fashion"
                 android:stateListAnimator="@null"
                 android:textColor="@drawable/selector_text_color"/>
         </RadioGroup>
