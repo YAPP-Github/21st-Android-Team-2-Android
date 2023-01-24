@@ -42,7 +42,8 @@ class AddItemViewModel @Inject constructor(
                 (newDataList[nameIndex] as AddItemName).copy(name = newName)
             setState(
                 AddItemState.Success(
-                    newDataList
+                    newDataList,
+                    isRefreshNeed = false
                 )
             )
         }

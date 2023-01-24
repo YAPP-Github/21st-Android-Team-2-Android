@@ -43,6 +43,7 @@ class AddItemActivity : BaseStateActivity<AddItemViewModel, ActivityAddItemBindi
         if (dataListAdapter == null) {
             dataListAdapter = DataListAdapter()
             recyclerView.adapter = dataListAdapter
+            recyclerView.itemAnimator = null
         }
         supportFragmentManager.setFragmentResultListener(
             CHECKED_CATEGORY_REQUEST_KEY,
@@ -157,6 +158,7 @@ class AddItemActivity : BaseStateActivity<AddItemViewModel, ActivityAddItemBindi
     }
 
     private fun handleSuccess(addLockerState: AddItemState.Success) {
+        if (addLockerState.isRefreshNeed.not()) return
         dataBindHelper.bindList(addLockerState.dataList, vm)
         dataListAdapter?.submitList(addLockerState.dataList)
     }
