@@ -4,11 +4,9 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.appcompat.widget.AppCompatImageView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.allViews
 import com.yapp.itemfinder.domain.model.Item
-import com.yapp.itemfinder.feature.common.R
 import com.yapp.itemfinder.feature.common.databinding.LayoutItemsMarkerMapBinding
 
 class ItemsMarkerMapView
@@ -49,5 +47,7 @@ class ItemsMarkerMapView
             }
         }
     }
+
+    fun getImageHeight() = binding.markerBackgroundImageView.measuredHeight
 
 }

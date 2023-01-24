@@ -70,47 +70,47 @@ class ItemMarkerView
             doOnGlobalLayout {
                 if (isDrawn) return@doOnGlobalLayout
                 val parentView = (parent as ConstraintLayout)
-                val xMargin = parentView.measuredWidth * xPercentage
-                val yMargin = parentView.measuredHeight * yPercentage
+
+                val adjustedXPercentage =
+                    xPercentage * (parentView.measuredWidth - (binding.markerBackgroundView.measuredWidth / 2)) / parentView.measuredWidth.toFloat()
+                val adjustedYPercentage =
+                    yPercentage * (parentView.measuredHeight - (binding.markerBackgroundView.measuredHeight / 2)) / parentView.measuredHeight.toFloat()
+
+
+                val yMargin = parentView.measuredHeight * adjustedYPercentage
 
                 val maxWidth = context.dimen(R.dimen.marker_map_view_max_width).toInt()
-                val adjustedRatio = maxWidth / parentView.measuredWidth.toFloat()
-                val additionalWidthMargin = (parentView.measuredWidth - maxWidth) / 2
-                val adjustedXMargin = if (parentView.measuredWidth > maxWidth) xMargin * adjustedRatio + additionalWidthMargin else xMargin
 
-                val selectedMarkerXMargin = adjustedXMargin.toInt() - binding.selectedMarkerBackgroundView.measuredWidth / 2
+                if (parentView.measuredWidth > maxWidth) {
+                    val xMargin = parentView.measuredWidth * xPercentage
+                    val additionalWidthMargin = (parentView.measuredWidth - maxWidth) / 2
 
-                binding.selectedMarkerBackgroundView.updateTargetViewMargin(
-                    parentView,
-                    if (additionalWidthMargin > selectedMarkerXMargin) additionalWidthMargin
-                    else selectedMarkerXMargin,
-                    yMargin.toInt(),
-                    isSelectedView = true
-                )
-                binding.markerIconImageView.updateTargetViewMargin(
-                    parentView,
-                    if (additionalWidthMargin > selectedMarkerXMargin) additionalWidthMargin
-                    else selectedMarkerXMargin,
-                    yMargin.toInt(),
-                    isSelectedView = false
-                )
+                    val adjustedRatio = (maxWidth - binding.markerBackgroundView.measuredWidth) / parentView.measuredWidth.toFloat()
+
+                    val adjustedXMargin = xMargin * adjustedRatio + additionalWidthMargin + binding.markerBackgroundView.measuredWidth / 2
+
+                    binding.markerBackgroundView.updateTargetViewMargin(
+                        adjustedXMargin.toInt(),
+                        yMargin.toInt(),
+                    )
+                } else {
+                    val xMargin = parentView.measuredWidth * adjustedXPercentage
+                    binding.markerBackgroundView.updateTargetViewMargin(
+                        xMargin.toInt(),
+                        yMargin.toInt(),
+                    )
+                }
                 isDrawn = true
             }
         }
 
-    private fun View.updateTargetViewMargin(parentView: View, xMargin: Int, yMargin: Int, isSelectedView: Boolean = true) {
+    private fun View.updateTargetViewMargin(xMargin: Int, yMargin: Int) {
         updateLayoutParams<LayoutParams> {
-            val markerWidthRatio = binding.selectedMarkerBackgroundView.measuredWidth / binding.markerIconImageView.measuredWidth.toFloat()
-            val markerHeightRatio = binding.selectedMarkerBackgroundView.measuredHeight / binding.markerIconImageView.measuredHeight.toFloat()
+            val markerWidthRatio = binding.markerBackgroundView.measuredWidth / binding.markerIconImageView.measuredWidth.toFloat()
+            val markerHeightRatio = binding.markerBackgroundView.measuredHeight / binding.markerIconImageView.measuredHeight.toFloat()
 
-            marginStart = xMargin - (measuredWidth / if (isSelectedView) markerWidthRatio else 1f).toInt()
-            topMargin = yMargin - (measuredWidth / if (isSelectedView) markerHeightRatio else 1f).toInt()
-            if (marginStart + measuredWidth > parentView.measuredWidth) {
-                marginStart = parentView.measuredWidth - measuredWidth
-            }
-            if (topMargin + measuredHeight > parentView.measuredHeight) {
-                topMargin = parentView.measuredHeight - measuredHeight
-            }
+            marginStart = xMargin - (measuredWidth / markerWidthRatio).toInt()
+            topMargin = yMargin - (measuredHeight / markerHeightRatio).toInt()
         }
     }
 

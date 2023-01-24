@@ -162,7 +162,7 @@ class LockerDetailFragment : BaseStateFragment<LockerDetailViewModel, FragmentLo
             val toolbarHeight = binding.toolbar.measuredHeight
             behavior.maxHeight = binding.root.measuredHeight - binding.toolbar.measuredHeight - toolBarInset
             val peekHeight = (binding.root.measuredHeight
-                - binding.itemsMarkerMapView.measuredHeight
+                - binding.itemsMarkerMapView.getImageHeight()
                 - (if (isExpand) toolbarContainerHeight else toolbarHeight)
                 - toolBarInset)
             behavior.setPeekHeight(peekHeight, isAnimate)

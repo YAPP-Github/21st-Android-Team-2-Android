@@ -67,7 +67,7 @@ class ItemMockRepositoryImpl @Inject constructor() : ItemRepository {
             for (i in 1..10)
                 add(
                     sample.copy(
-                        id = (0..100).random().toLong(),
+                        id = i.toLong(),
                         position = Item.Position(
                             (0..100).random().toFloat(),
                             (0..100).random().toFloat(),
