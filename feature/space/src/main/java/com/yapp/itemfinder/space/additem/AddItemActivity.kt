@@ -5,12 +5,15 @@ import android.content.Context
 import android.content.Intent
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.yapp.itemfinder.domain.model.Data
 import com.yapp.itemfinder.feature.common.BaseStateActivity
 import com.yapp.itemfinder.feature.common.binding.viewBinding
 import com.yapp.itemfinder.feature.common.datalist.adapter.DataListAdapter
 import com.yapp.itemfinder.feature.common.datalist.binder.DataBindHelper
+import com.yapp.itemfinder.space.R
 import com.yapp.itemfinder.feature.common.R as CR
 import com.yapp.itemfinder.space.databinding.ActivityAddItemBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -63,58 +66,60 @@ class AddItemActivity : BaseStateActivity<AddItemViewModel, ActivityAddItemBindi
     }
 
     override fun observeData(): Job = lifecycleScope.launch {
-        launch {
-            vm.stateFlow.collect { state ->
-                when (state) {
-                    is AddItemState.Uninitialized -> Unit
-                    is AddItemState.Loading -> handleLoading(state)
-                    is AddItemState.Success -> handleSuccess(state)
-                    is AddItemState.Error -> handleError(state)
+        repeatOnLifecycle(Lifecycle.State.STARTED) {
+            launch {
+                vm.stateFlow.collect { state ->
+                    when (state) {
+                        is AddItemState.Uninitialized -> Unit
+                        is AddItemState.Loading -> handleLoading(state)
+                        is AddItemState.Success -> handleSuccess(state)
+                        is AddItemState.Error -> handleError(state)
+                    }
                 }
             }
-        }
-        launch {
-            vm.sideEffectFlow.collect { sideEffect ->
-                when (sideEffect) {
-                    is AddItemSideEffect.OpenSelectCategoryDialog -> {
-                        val dialog = SelectCategoryDialog.getInstance()
-                        this@AddItemActivity.supportFragmentManager?.let { fragmentManager ->
-                            dialog.show(fragmentManager, SELECT_CATEGORY_DIALOG)
+            launch {
+                vm.sideEffectFlow.collect { sideEffect ->
+                    when (sideEffect) {
+                        is AddItemSideEffect.OpenSelectCategoryDialog -> {
+                            val dialog = SelectCategoryDialog.getInstance()
+                            this@AddItemActivity.supportFragmentManager?.let { fragmentManager ->
+                                dialog.show(fragmentManager, SELECT_CATEGORY_DIALOG)
+                            }
                         }
-                    }
-                    is AddItemSideEffect.OpenExpirationDatePicker -> {
-                        val cal = Calendar.getInstance()
-                        val dateListener =
-                            DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
-                                val date =
-                                    String.format("%d.%02d.%02d.", year, month + 1, dayOfMonth)
-                                vm.setExpirationDate(date)
-                            }
-                        val dialog = DatePickerDialog(
-                            this@AddItemActivity,
-                            dateListener,
-                            cal.get(Calendar.YEAR),
-                            cal.get(Calendar.MONTH),
-                            cal.get(Calendar.DAY_OF_MONTH)
-                        )
-                        dialog.show()
-                    }
-                    is AddItemSideEffect.OpenPurchaseDatePicker -> {
-                        val cal = Calendar.getInstance()
-                        val dateListener =
-                            DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
-                                val date =
-                                    String.format("%d.%02d.%02d.", year, month + 1, dayOfMonth)
-                                vm.setPurchaseDate(date)
-                            }
-                        val dialog = DatePickerDialog(
-                            this@AddItemActivity,
-                            dateListener,
-                            cal.get(Calendar.YEAR),
-                            cal.get(Calendar.MONTH),
-                            cal.get(Calendar.DAY_OF_MONTH)
-                        )
-                        dialog.show()
+                        is AddItemSideEffect.OpenExpirationDatePicker -> {
+                            val cal = Calendar.getInstance()
+                            val dateListener =
+                                DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
+                                    val date =
+                                        String.format("%d.%02d.%02d.", year, month + 1, dayOfMonth)
+                                    vm.setExpirationDate(date)
+                                }
+                            val dialog = DatePickerDialog(
+                                this@AddItemActivity,
+                                dateListener,
+                                cal.get(Calendar.YEAR),
+                                cal.get(Calendar.MONTH),
+                                cal.get(Calendar.DAY_OF_MONTH)
+                            )
+                            dialog.show()
+                        }
+                        is AddItemSideEffect.OpenPurchaseDatePicker -> {
+                            val cal = Calendar.getInstance()
+                            val dateListener =
+                                DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
+                                    val date =
+                                        String.format("%d.%02d.%02d.", year, month + 1, dayOfMonth)
+                                    vm.setPurchaseDate(date)
+                                }
+                            val dialog = DatePickerDialog(
+                                this@AddItemActivity,
+                                dateListener,
+                                cal.get(Calendar.YEAR),
+                                cal.get(Calendar.MONTH),
+                                cal.get(Calendar.DAY_OF_MONTH)
+                            )
+                            dialog.show()
+                        }
                     }
                 }
             }
