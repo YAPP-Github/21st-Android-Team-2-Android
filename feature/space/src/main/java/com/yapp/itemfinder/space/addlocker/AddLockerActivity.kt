@@ -10,6 +10,8 @@ import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
 import android.view.ContextThemeWrapper
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
@@ -47,7 +49,12 @@ class AddLockerActivity : BaseStateActivity<AddLockerViewModel, ActivityAddLocke
         Manifest.permission.CAMERA
     }
 
-    var imageUri: Uri? = null
+    private lateinit var galleryLauncher: ActivityResultLauncher<Intent>
+    private lateinit var cameraLauncher: ActivityResultLauncher<Uri>
+
+    private val imageUri by lazy {
+        contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, ContentValues())
+    }
 
     @Inject
     lateinit var dataBindHelper: DataBindHelper
@@ -56,6 +63,22 @@ class AddLockerActivity : BaseStateActivity<AddLockerViewModel, ActivityAddLocke
         if (dataListAdapter == null) {
             dataListAdapter = DataListAdapter()
             recyclerView.adapter = dataListAdapter
+        }
+        galleryLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+                if (result.resultCode == RESULT_OK) {
+                    val uri = result.data?.data
+                    if (uri != null) {
+                        vm.uploadImage(uri)
+                    } else {
+                        showShortToast(getString(R.string.failed_get_photo))
+                    }
+                }
+            }
+
+        cameraLauncher = registerForActivityResult(ActivityResultContracts.TakePicture()) {
+            if (it)
+                vm.uploadImage(imageUri!!)
         }
     }
 
@@ -153,15 +176,11 @@ class AddLockerActivity : BaseStateActivity<AddLockerViewModel, ActivityAddLocke
     private fun uploadByGallery() {
         val intent = Intent(Intent.ACTION_GET_CONTENT)
         intent.type = "image/*"
-        startActivityForResult(intent, GALLERY_INTENT_REQUEST_CODE)
+        galleryLauncher.launch(intent)
     }
 
     private fun uploadByCamera() {
-        val values = ContentValues()
-        imageUri = contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
-        val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri)
-        startActivityForResult(cameraIntent, IMAGE_CAPTURE_REQUEST_CODE)
+        cameraLauncher.launch(imageUri)
     }
 
     private fun showPermissionContextPopup(permission: String) {
