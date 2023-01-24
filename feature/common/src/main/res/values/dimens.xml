@@ -14,4 +14,5 @@
 
     <dimen name="tools_bottom_sheet_height">294dp</dimen>
     <dimen name="tag_or_category_radius">4dp</dimen>
+    <dimen name="add_locker_image_radius">12dp</dimen>
 </resources>

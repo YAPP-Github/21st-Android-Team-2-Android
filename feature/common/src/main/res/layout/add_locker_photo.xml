@@ -19,7 +19,21 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <ImageView
+        android:id="@+id/photoIconImageView"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:src="@drawable/ic_camera_photo"
+        android:visibility="gone"
+        android:elevation="1dp"
+        app:layout_constraintBottom_toBottomOf="@id/imageLayout"
+        app:layout_constraintLeft_toLeftOf="@id/imageLayout"
+        app:layout_constraintRight_toRightOf="@id/imageLayout"
+        app:layout_constraintTop_toTopOf="@id/imageLayout"
+        tools:visibility="visible" />
+
     <LinearLayout
+        android:id="@+id/imageLayout"
         android:layout_width="match_parent"
         android:layout_height="240dp"
         android:layout_marginTop="12dp"
@@ -35,8 +49,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:visibility="gone"
-            tools:visibility="gone"
-            />
+            tools:visibility="gone" />
 
         <ImageView
             android:id="@+id/addPhotoButton"
@@ -56,5 +69,6 @@
             android:textSize="14sp" />
 
     </LinearLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
