@@ -64,8 +64,6 @@ class AddLockerActivity : BaseStateActivity<AddLockerViewModel, ActivityAddLocke
         galleryLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
             uri?.let {
                 vm.uploadImage(it)
-            } ?: kotlin.run {
-                showShortToast(getString(R.string.failed_get_photo))
             }
         }
 
@@ -73,8 +71,6 @@ class AddLockerActivity : BaseStateActivity<AddLockerViewModel, ActivityAddLocke
             registerForActivityResult(TakePictureWithUriReturnContract()) { (isSuccess, imageUrl) ->
                 if (isSuccess) {
                     vm.uploadImage(imageUrl)
-                }else{
-                    showShortToast(getString(R.string.failed_get_photo))
                 }
             }
     }
