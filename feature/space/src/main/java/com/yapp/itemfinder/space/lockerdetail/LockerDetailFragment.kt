@@ -180,6 +180,29 @@ class LockerDetailFragment : BaseStateFragment<LockerDetailViewModel, FragmentLo
             filterExpandAnimator?.isRunning == true
                 || filterCollapseAnimator?.isRunning == true
 
+        fun startChangeFilterShape(startHeight: Int, endHeight: Int, isExpand: Boolean) {
+            val animator = ValueAnimator.ofInt(startHeight, endHeight)
+                .setDuration(BOTTOM_SHEET_TRANSITION_DURATION).apply {
+                    addUpdateListener { animation ->
+                        val value = animation.animatedValue as Int
+                        binding.filterContainer.updateLayoutParams<CoordinatorLayout.LayoutParams> {
+                            height = value
+                        }
+                        binding.itemsMarkerMapView.updateLayoutParams<CoordinatorLayout.LayoutParams> {
+                            topMargin = value
+                        }
+                    }
+                    start()
+                    isFilterExpanded = isExpand
+                    isFilterCollapsed = isExpand.not()
+                }
+            if (isExpand) {
+                filterExpandAnimator = animator
+            } else {
+                filterCollapseAnimator = animator
+            }
+        }
+
         fun handleExpandFilter(isExpand: Boolean) {
             post {
                 val toolbarContainerHeight = requireContext().dimen(CR.dimen.collapsing_toolbar_container_height).toInt()
@@ -187,39 +210,11 @@ class LockerDetailFragment : BaseStateFragment<LockerDetailViewModel, FragmentLo
 
                 if (isExpand) {
                     if (isAnimateRunning() || isFilterExpanded) return@post
-                    filterExpandAnimator = ValueAnimator.ofInt(toolbarHeight, toolbarContainerHeight)
-                        .setDuration(100).apply {
-                            addUpdateListener { animation ->
-                                val value = animation.animatedValue as Int
-                                binding.filterContainer.updateLayoutParams<CoordinatorLayout.LayoutParams> {
-                                    height = value
-                                }
-                                binding.itemsMarkerMapView.updateLayoutParams<CoordinatorLayout.LayoutParams> {
-                                    topMargin = value
-                                }
-                            }
-                            start()
-                            isFilterExpanded = true
-                            isFilterCollapsed = false
-                        }
+                    startChangeFilterShape(toolbarHeight, toolbarContainerHeight, isExpand = true)
                     setBottomSheetPeekHeight(isExpand = true, isAnimate = true)
                 } else {
                     if (isAnimateRunning() || isFilterCollapsed) return@post
-                    filterCollapseAnimator = ValueAnimator.ofInt(toolbarContainerHeight, toolbarHeight)
-                        .setDuration(100).apply {
-                            addUpdateListener { animation ->
-                                val value = animation.animatedValue as Int
-                                binding.filterContainer.updateLayoutParams<CoordinatorLayout.LayoutParams> {
-                                    height = value
-                                }
-                                binding.itemsMarkerMapView.updateLayoutParams<CoordinatorLayout.LayoutParams> {
-                                    topMargin = value
-                                }
-                            }
-                            start()
-                            isFilterCollapsed = true
-                            isFilterExpanded = false
-                        }
+                    startChangeFilterShape(toolbarContainerHeight, toolbarHeight, isExpand = false)
                     setBottomSheetPeekHeight(isExpand = false, isAnimate = true)
                 }
             }
@@ -240,10 +235,16 @@ class LockerDetailFragment : BaseStateFragment<LockerDetailViewModel, FragmentLo
         }
 
         setOnScrollChangeListener { _: View?, scrollX: Int, scrollY: Int, oldScrollX: Int, oldScrollY: Int ->
-            if (isInitialized.not()) {
-                handleExpandFilter(true)
-            } else if (scrollState == RecyclerView.SCROLL_STATE_SETTLING) {
-                handleExpandFilter(scrollY < oldScrollY)
+            when {
+                isInitialized.not() -> handleExpandFilter(true)
+                scrollState == RecyclerView.SCROLL_STATE_SETTLING -> {
+                    if (oldScrollY in 0..10) {
+                        handleExpandFilter(true)
+                    } else {
+                        handleExpandFilter(scrollY < oldScrollY)
+                    }
+                }
+
             }
             focusCurrentVisibleItem()
             isInitialized = true
@@ -305,6 +306,8 @@ class LockerDetailFragment : BaseStateFragment<LockerDetailViewModel, FragmentLo
         val TAG = LockerDetailFragment::class.simpleName.toString()
 
         const val LOCKER_ENTITY_KEY = "LOCKER_ENTITY_KEY"
+
+        const val BOTTOM_SHEET_TRANSITION_DURATION = 150L
 
         fun newInstance() = LockerDetailFragment()
     }
