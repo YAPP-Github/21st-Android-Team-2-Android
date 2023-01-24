@@ -79,8 +79,6 @@ class ItemMarkerView
                 val adjustedXMargin = if (parentView.measuredWidth > maxWidth) xMargin * adjustedRatio + additionalWidthMargin else xMargin
 
                 val selectedMarkerXMargin = adjustedXMargin.toInt() - binding.selectedMarkerBackgroundView.measuredWidth / 2
-                val markerXMargin = adjustedXMargin.toInt() - binding.markerIconImageView.measuredWidth / 2
-
 
                 binding.selectedMarkerBackgroundView.updateTargetViewMargin(
                     parentView,
@@ -102,8 +100,11 @@ class ItemMarkerView
 
     private fun View.updateTargetViewMargin(parentView: View, xMargin: Int, yMargin: Int, isSelectedView: Boolean = true) {
         updateLayoutParams<LayoutParams> {
-            marginStart = xMargin - (measuredWidth / if (isSelectedView) 3 else 1)
-            topMargin = yMargin - if (isSelectedView) -(measuredHeight / 3) else measuredHeight
+            val markerWidthRatio = binding.selectedMarkerBackgroundView.measuredWidth / binding.markerIconImageView.measuredWidth.toFloat()
+            val markerHeightRatio = binding.selectedMarkerBackgroundView.measuredHeight / binding.markerIconImageView.measuredHeight.toFloat()
+
+            marginStart = xMargin - (measuredWidth / if (isSelectedView) markerWidthRatio else 1f).toInt()
+            topMargin = yMargin - (measuredWidth / if (isSelectedView) markerHeightRatio else 1f).toInt()
             if (marginStart + measuredWidth > parentView.measuredWidth) {
                 marginStart = parentView.measuredWidth - measuredWidth
             }

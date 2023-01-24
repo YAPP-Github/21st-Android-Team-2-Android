@@ -180,9 +180,9 @@ class LockerDetailFragment : BaseStateFragment<LockerDetailViewModel, FragmentLo
             filterExpandAnimator?.isRunning == true
                 || filterCollapseAnimator?.isRunning == true
 
-        fun startChangeFilterShape(startHeight: Int, endHeight: Int, isExpand: Boolean) {
+        fun startChangeFilterShape(startHeight: Int, endHeight: Int, isExpand: Boolean, isAnimate: Boolean = true) {
             val animator = ValueAnimator.ofInt(startHeight, endHeight)
-                .setDuration(BOTTOM_SHEET_TRANSITION_DURATION).apply {
+                .setDuration(if (isAnimate) BOTTOM_SHEET_TRANSITION_DURATION else 0).apply {
                     addUpdateListener { animation ->
                         val value = animation.animatedValue as Int
                         binding.filterContainer.updateLayoutParams<CoordinatorLayout.LayoutParams> {
@@ -203,19 +203,19 @@ class LockerDetailFragment : BaseStateFragment<LockerDetailViewModel, FragmentLo
             }
         }
 
-        fun handleExpandFilter(isExpand: Boolean) {
+        fun handleExpandFilter(isExpand: Boolean, isAnimate: Boolean = true) {
             post {
                 val toolbarContainerHeight = requireContext().dimen(CR.dimen.collapsing_toolbar_container_height).toInt()
                 val toolbarHeight = binding.toolbar.measuredHeight
 
                 if (isExpand) {
                     if (isAnimateRunning() || isFilterExpanded) return@post
-                    startChangeFilterShape(toolbarHeight, toolbarContainerHeight, isExpand = true)
-                    setBottomSheetPeekHeight(isExpand = true, isAnimate = true)
+                    startChangeFilterShape(toolbarHeight, toolbarContainerHeight, isExpand = true, isAnimate = isAnimate)
+                    setBottomSheetPeekHeight(isExpand = true, isAnimate = isAnimate)
                 } else {
                     if (isAnimateRunning() || isFilterCollapsed) return@post
-                    startChangeFilterShape(toolbarContainerHeight, toolbarHeight, isExpand = false)
-                    setBottomSheetPeekHeight(isExpand = false, isAnimate = true)
+                    startChangeFilterShape(toolbarContainerHeight, toolbarHeight, isExpand = false, isAnimate = isAnimate)
+                    setBottomSheetPeekHeight(isExpand = false, isAnimate = isAnimate)
                 }
             }
         }
@@ -236,7 +236,7 @@ class LockerDetailFragment : BaseStateFragment<LockerDetailViewModel, FragmentLo
 
         setOnScrollChangeListener { _: View?, scrollX: Int, scrollY: Int, oldScrollX: Int, oldScrollY: Int ->
             when {
-                isInitialized.not() -> handleExpandFilter(true)
+                isInitialized.not() -> handleExpandFilter(true, isAnimate = false)
                 scrollState == RecyclerView.SCROLL_STATE_SETTLING -> {
                     if (oldScrollY in 0..10) {
                         handleExpandFilter(true)

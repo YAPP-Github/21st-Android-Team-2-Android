@@ -2,19 +2,21 @@
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout"
-    tools:background="@color/black">
+    tools:background="@color/black"
+    tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout">
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/markerIconImageView"
         android:layout_width="24dp"
         android:layout_height="24dp"
-        tools:src="@drawable/ic_marker_fashion"
         android:textAlignment="center"
+        android:visibility="gone"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:src="@drawable/ic_marker_fashion"
+        tools:visibility="visible" />
 
     <View
         android:id="@+id/selectedMarkerBackgroundView"
@@ -41,20 +43,22 @@
         android:id="@+id/selectedMarkerIconImageView"
         android:layout_width="28dp"
         android:layout_height="28dp"
-        tools:src="@drawable/ic_marker_fashion"
+        android:layout_marginTop="8.5dp"
         android:textAlignment="center"
         app:layout_constraintTop_toTopOf="@id/selectedMarkerImageView"
         app:layout_constraintStart_toStartOf="@id/selectedMarkerImageView"
         app:layout_constraintEnd_toEndOf="@id/selectedMarkerImageView"
         app:layout_constraintBottom_toBottomOf="@id/selectedMarkerImageView"
-        android:layout_marginTop="8.5dp"
-        app:layout_constraintVertical_bias="0"/>
+        app:layout_constraintVertical_bias="0"
+        tools:src="@drawable/ic_marker_fashion" />
 
     <androidx.constraintlayout.widget.Group
         android:id="@+id/selectedItemGroup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:constraint_referenced_ids="selectedMarkerBackgroundView,selectedMarkerImageView,selectedMarkerIconImageView" />
+        android:visibility="gone"
+        app:constraint_referenced_ids="selectedMarkerBackgroundView,selectedMarkerImageView,selectedMarkerIconImageView"
+        tools:visibility="visible" />
 
 </merge>
 
