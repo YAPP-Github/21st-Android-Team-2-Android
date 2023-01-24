@@ -73,6 +73,8 @@ class AddLockerActivity : BaseStateActivity<AddLockerViewModel, ActivityAddLocke
             registerForActivityResult(TakePictureWithUriReturnContract()) { (isSuccess, imageUrl) ->
                 if (isSuccess) {
                     vm.uploadImage(imageUrl)
+                }else{
+                    showShortToast(getString(R.string.failed_get_photo))
                 }
             }
     }
@@ -163,7 +165,7 @@ class AddLockerActivity : BaseStateActivity<AddLockerViewModel, ActivityAddLocke
                 showPermissionContextPopup(permission)
             }
             else -> {
-                requestPermission(permission)
+                doRequestPermission(permission)
             }
         }
     }
@@ -186,14 +188,14 @@ class AddLockerActivity : BaseStateActivity<AddLockerViewModel, ActivityAddLocke
             .setTitle("권한이 필요합니다.")
             .setMessage("사진을 가져오기 위해 필요합니다.")
             .setPositiveButton("동의") { _, _ ->
-                requestPermission(permission)
+                doRequestPermission(permission)
 
             }
             .create()
             .show()
     }
 
-    private fun requestPermission(permission: String) {
+    private fun doRequestPermission(permission: String) {
         requestPermissions(
             arrayOf(permission),
             if (permission == imagePermission)
