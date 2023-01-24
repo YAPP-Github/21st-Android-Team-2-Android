@@ -228,8 +228,6 @@ class AddLockerActivity : BaseStateActivity<AddLockerViewModel, ActivityAddLocke
 
     companion object {
         fun newIntent(context: Context) = Intent(context, AddLockerActivity::class.java)
-        const val GALLERY_INTENT_REQUEST_CODE = 2020
-        const val IMAGE_CAPTURE_REQUEST_CODE = 3030
         const val PERMISSION_READ_IMAGE_CODE = 1010
         const val PERMISSION_CAMERA_CODE = 1011
     }
