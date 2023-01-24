@@ -1,69 +1,51 @@
 package com.yapp.itemfinder.space.lockerdetail
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.yapp.itemfinder.data.repositories.di.LockerRepositoryQualifiers
-import com.yapp.itemfinder.domain.model.Data
 import com.yapp.itemfinder.domain.model.LockerEntity
 import com.yapp.itemfinder.domain.repository.LockerRepository
 import com.yapp.itemfinder.domain.repository.ItemRepository
 import com.yapp.itemfinder.feature.common.BaseStateViewModel
 import com.yapp.itemfinder.feature.common.extension.runCatchingWithErrorHandler
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedInject
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class LockerDetailViewModel @AssistedInject constructor(
-    @Assisted private val locker: LockerEntity,
+@HiltViewModel
+class LockerDetailViewModel @Inject constructor(
     private val itemRepository: ItemRepository,
     @LockerRepositoryQualifiers private val lockerRepository: LockerRepository,
+    private val savedStateHandle: SavedStateHandle
+) : BaseStateViewModel<LockerDetailState, LockerDetailSideEffect>() {
 
-    ) : BaseStateViewModel<LockerDetailState, LockerDetailSideEffect>() {
     override val _stateFlow: MutableStateFlow<LockerDetailState> =
-        MutableStateFlow(LockerDetailState.Uninitialized(locker = locker))
+        MutableStateFlow(LockerDetailState.Uninitialized)
 
     override val _sideEffectFlow: MutableSharedFlow<LockerDetailSideEffect> = MutableSharedFlow()
 
-    override fun fetchData(): Job = viewModelScope.launch {
+    private val locker by lazy { savedStateHandle.get<LockerEntity>(LockerDetailFragment.LOCKER_ENTITY_KEY) }
 
+    override fun fetchData(): Job = viewModelScope.launch {
         // api를 붙일 경우, args의 id를 활용하세요
         runCatchingWithErrorHandler {
             setState(LockerDetailState.Loading)
-            mutableListOf<Data>().apply {
-                add(locker)
-                addAll(itemRepository.getItemsByLockerId(locker.id))
-            }
-        }.onSuccess {
+            locker?.let {
+                it to itemRepository.getItemsByLockerId(it.id)
+            } ?: throw IllegalArgumentException("보관함 정보를 불러올 수 없습니다.")
+        }.onSuccess { (locker, items) ->
             setState(
                 LockerDetailState.Success(
-                    locker = it.first() as LockerEntity,
-                    dataList = it.drop(1)
+                    locker = locker,
+                    dataList = items
                 )
             )
 
         }.onFailure {
             setState(LockerDetailState.Error(it))
-        }
-    }
-
-    @dagger.assisted.AssistedFactory
-    interface LockerIdAssistedFactory {
-        fun create(locker: LockerEntity): LockerDetailViewModel
-    }
-
-    companion object {
-        @Suppress("UNCHECKED_CAST")
-        fun provideFactory(
-            assistedFactory: LockerIdAssistedFactory,
-            locker:LockerEntity
-        ): ViewModelProvider.Factory = object : ViewModelProvider.Factory {
-            override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                return assistedFactory.create(locker) as T
-            }
         }
     }
 }

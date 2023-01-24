@@ -162,8 +162,10 @@ class HomeTabFragment : BaseStateFragment<HomeTabViewModel, FragmentHomeTabBindi
 
     private fun moveLockerDetail(locker: LockerEntity) {
         when (activity) {
-            is HomeActivity -> (activity as HomeActivity).addFragmentBackStack(LockerDetailFragment.TAG
-                , bundle = Bundle().apply { putParcelable("locker", locker) })
+            is HomeActivity -> (activity as HomeActivity).addFragmentBackStack(
+                LockerDetailFragment.TAG,
+                bundle = bundleOf(LockerDetailFragment.LOCKER_ENTITY_KEY to locker)
+            )
         }
     }
 
