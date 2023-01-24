@@ -5,14 +5,17 @@ import android.content.Context
 import android.content.Intent
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import com.google.android.material.snackbar.Snackbar
 import com.yapp.itemfinder.domain.model.Data
 import com.yapp.itemfinder.feature.common.BaseStateActivity
 import com.yapp.itemfinder.feature.common.binding.viewBinding
 import com.yapp.itemfinder.feature.common.datalist.adapter.DataListAdapter
 import com.yapp.itemfinder.feature.common.datalist.binder.DataBindHelper
+import com.yapp.itemfinder.feature.common.views.SnackBarView
 import com.yapp.itemfinder.space.R
 import com.yapp.itemfinder.feature.common.R as CR
 import com.yapp.itemfinder.space.databinding.ActivityAddItemBinding
@@ -120,33 +123,17 @@ class AddItemActivity : BaseStateActivity<AddItemViewModel, ActivityAddItemBindi
                             )
                             dialog.show()
                         }
-                        is AddItemSideEffect.FillOutRequiredToast -> {
-                            Toast.makeText(
-                                this@AddItemActivity,
-                                "물건 이름, 카테고리, 위치는 필수 항목이에요.",
-                                Toast.LENGTH_SHORT
-                            ).show()
+                        is AddItemSideEffect.FillOutRequiredSnackBar -> {
+                            SnackBarView.make(binding.root, "물건 이름, 카테고리, 위치는 필수 항목이에요.").show()
                         }
-                        is AddItemSideEffect.FillOutNameToast -> {
-                            Toast.makeText(
-                                this@AddItemActivity,
-                                "물건의 이름을 입력해주세요.",
-                                Toast.LENGTH_SHORT
-                            ).show()
+                        is AddItemSideEffect.FillOutNameSnackBar -> {
+                            SnackBarView.make(binding.root, "물건의 이름을 입력해주세요.").show()
                         }
-                        is AddItemSideEffect.FillOutCategoryToast -> {
-                            Toast.makeText(
-                                this@AddItemActivity,
-                                "물건의 카테고리를 선택해주세요.",
-                                Toast.LENGTH_SHORT
-                            ).show()
+                        is AddItemSideEffect.FillOutCategorySnackBar -> {
+                            SnackBarView.make(binding.root, "물건의 카테고리를 선택해주세요.").show()
                         }
-                        is AddItemSideEffect.FillOutLocationToast -> {
-                            Toast.makeText(
-                                this@AddItemActivity,
-                                "물건을 보관할 위치를 선택해주세요.",
-                                Toast.LENGTH_SHORT
-                            ).show()
+                        is AddItemSideEffect.FillOutLocationSnackBar -> {
+                            SnackBarView.make(binding.root, "물건을 보관할 위치를 선택해주세요.").show()
                         }
                     }
                 }

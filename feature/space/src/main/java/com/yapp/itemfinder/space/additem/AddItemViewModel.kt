@@ -187,20 +187,20 @@ class AddItemViewModel @Inject constructor(
                     itemLocker = it.lockerName
                 }
             }
-            if (itemName == null && itemCategory == null && itemSpace == null && itemLocker == null) {
-                postSideEffect(AddItemSideEffect.FillOutRequiredToast)
+            if (itemName == "" && itemCategory == ItemCategorySelection.DEFAULT.label && itemSpace == "" && itemLocker == "") {
+                postSideEffect(AddItemSideEffect.FillOutRequiredSnackBar)
                 return
             }
-            if (itemName == null) {
-                postSideEffect(AddItemSideEffect.FillOutNameToast)
+            if (itemName == "") {
+                postSideEffect(AddItemSideEffect.FillOutNameSnackBar)
                 return
             }
-            if (itemCategory == null) {
-                postSideEffect(AddItemSideEffect.FillOutCategoryToast)
+            if (itemCategory == "") {
+                postSideEffect(AddItemSideEffect.FillOutCategorySnackBar)
                 return
             }
-            if (itemSpace == null) {
-                postSideEffect(AddItemSideEffect.FillOutLocationToast)
+            if (itemSpace == "") {
+                postSideEffect(AddItemSideEffect.FillOutLocationSnackBar)
                 return
             }
         }
