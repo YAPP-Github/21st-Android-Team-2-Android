@@ -222,6 +222,14 @@ class AddItemViewModel @Inject constructor(
                 postSideEffect(AddItemSideEffect.FillOutLocationSnackBar)
                 return
             }
+            if (itemName.length > 30){
+                postSideEffect(AddItemSideEffect.NameLengthLimitSnackBar)
+                return
+            }
+            if (itemCategory.length > 200){
+                postSideEffect(AddItemSideEffect.MemoLengthLimitSnackBar)
+                return
+            }
             // save
         }
     }

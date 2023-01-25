@@ -10,4 +10,6 @@ sealed class AddItemSideEffect : SideEffect {
     object FillOutNameSnackBar : AddItemSideEffect()
     object FillOutCategorySnackBar : AddItemSideEffect()
     object FillOutLocationSnackBar : AddItemSideEffect()
+    object NameLengthLimitSnackBar : AddItemSideEffect()
+    object MemoLengthLimitSnackBar : AddItemSideEffect()
 }

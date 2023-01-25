@@ -121,6 +121,12 @@ class AddItemActivity : BaseStateActivity<AddItemViewModel, ActivityAddItemBindi
                         is AddItemSideEffect.FillOutLocationSnackBar -> {
                             SnackBarView.make(binding.root, "물건을 보관할 위치를 선택해주세요.").show()
                         }
+                        is AddItemSideEffect.NameLengthLimitSnackBar -> {
+                            SnackBarView.make(binding.root, "물건 이름은 한글 기준 최대 30자까지 작성 가능해요.").show()
+                        }
+                        is AddItemSideEffect.MemoLengthLimitSnackBar -> {
+                            SnackBarView.make(binding.root, "메모는 한글 기준 최대 200자까지 작성 가능해요").show()
+                        }
                     }
                 }
             }
