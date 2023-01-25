@@ -32,21 +32,21 @@ class SelectCategoryDialog : DialogFragment() {
 
     override fun onCancel(dialog: DialogInterface) {
         super.onCancel(dialog)
-        val categoryLabel = when (binding.categoryRadioGroup.checkedRadioButtonId) {
-            R.id.lifeRadioButton -> ItemCategorySelection.LIFE.label
-            R.id.foodRadioButton -> ItemCategorySelection.FOOD.label
-            R.id.fashionRadioButton -> ItemCategorySelection.FASHION.label
+        val category = when (binding.categoryRadioGroup.checkedRadioButtonId) {
+            R.id.lifeRadioButton -> ItemCategorySelection.LIFE
+            R.id.foodRadioButton -> ItemCategorySelection.FOOD
+            R.id.fashionRadioButton -> ItemCategorySelection.FASHION
             else -> {
-                ItemCategorySelection.DEFAULT.label
+                ItemCategorySelection.DEFAULT
             }
         }
-        setCheckedCategory(categoryLabel)
+        setCheckedCategory(category)
     }
 
-    private fun setCheckedCategory(categoryName: String) {
+    private fun setCheckedCategory(category: ItemCategorySelection) {
         setFragmentResult(
             AddItemActivity.CHECKED_CATEGORY_REQUEST_KEY,
-            bundleOf(AddItemActivity.CHECKED_CATEGORY_KEY to categoryName)
+            bundleOf(AddItemActivity.CHECKED_CATEGORY_KEY to category.label)
         )
     }
 

@@ -14,13 +14,13 @@ class AddItemCategoryViewHolder(
 
     override fun bindData(data: AddItemCategory) {
         super.bindData(data)
-        binding.itemCategoryButton.text = data.category
+        binding.itemCategoryButton.text = data.category.label
     }
 
     override fun bindViews(data: AddItemCategory) {
         binding.itemCategoryButton.setOnClickListener { data.selectCategory() }
         when (data.category) {
-            ItemCategorySelection.DEFAULT.label -> {
+            ItemCategorySelection.DEFAULT -> {
                 binding.itemCategoryButton.apply {
                     background = itemView.context.getDrawable(R.drawable.bg_category_default_button)
                     setTextColor(itemView.context.getColor(R.color.gray_03))

@@ -12,6 +12,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.google.android.material.snackbar.Snackbar
 import com.yapp.itemfinder.domain.model.Data
+import com.yapp.itemfinder.domain.model.ItemCategorySelection
 import com.yapp.itemfinder.feature.common.BaseStateActivity
 import com.yapp.itemfinder.feature.common.binding.viewBinding
 import com.yapp.itemfinder.feature.common.datalist.adapter.DataListAdapter
@@ -51,7 +52,12 @@ class AddItemActivity : BaseStateActivity<AddItemViewModel, ActivityAddItemBindi
         ) { requestKey, bundle ->
             val newCategoryName = bundle.getString(CHECKED_CATEGORY_KEY)
             if (newCategoryName != null) {
-                vm.setCategory(newCategoryName)
+                when (newCategoryName) {
+                    ItemCategorySelection.LIFE.label -> vm.setCategory(ItemCategorySelection.LIFE)
+                    ItemCategorySelection.FOOD.label -> vm.setCategory(ItemCategorySelection.FOOD)
+                    ItemCategorySelection.FASHION.label -> vm.setCategory(ItemCategorySelection.FASHION)
+                    else -> vm.setCategory(ItemCategorySelection.DEFAULT)
+                }
             }
         }
     }

@@ -24,7 +24,7 @@ class AddItemViewModel @Inject constructor(
             AddItemState.Success(
                 dataList = listOf(
                     AddItemName(mode = ScreenMode.ADD_MODE),
-                    AddItemCategory(category = ItemCategorySelection.DEFAULT.label),
+                    AddItemCategory(category = ItemCategorySelection.DEFAULT),
                     AddItemLocation(),
                     AddItemCount(),
                     AddItemTags(listOf()),
@@ -49,7 +49,7 @@ class AddItemViewModel @Inject constructor(
         }
     }
 
-    fun setCategory(newCategory: String) {
+    fun setCategory(newCategory: ItemCategorySelection) {
         withState<AddItemState.Success> { state ->
             val newDataList = ArrayList(state.dataList)
             val categoryIndex = newDataList.indexOf(newDataList.find { it is AddItemCategory })
@@ -196,7 +196,7 @@ class AddItemViewModel @Inject constructor(
             var itemPurchase = ""
             dataList.forEach {
                 if (it is AddItemName) itemName = it.name
-                if (it is AddItemCategory) itemCategory = it.category
+                if (it is AddItemCategory) itemCategory = it.category.label
                 if (it is AddItemLocation) {
                     itemSpace = it.spaceName
                     itemLocker = it.lockerName
@@ -222,11 +222,11 @@ class AddItemViewModel @Inject constructor(
                 postSideEffect(AddItemSideEffect.FillOutLocationSnackBar)
                 return
             }
-            if (itemName.length > 30){
+            if (itemName.length > 30) {
                 postSideEffect(AddItemSideEffect.NameLengthLimitSnackBar)
                 return
             }
-            if (itemCategory.length > 200){
+            if (itemCategory.length > 200) {
                 postSideEffect(AddItemSideEffect.MemoLengthLimitSnackBar)
                 return
             }

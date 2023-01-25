@@ -1,7 +1,7 @@
 package com.yapp.itemfinder.domain.model
 
 data class AddItemCategory(
-    var category: String = ItemCategorySelection.DEFAULT.label,
+    var category: ItemCategorySelection = ItemCategorySelection.DEFAULT,
     override var type: CellType = CellType.ADD_ITEM_CATEGORY_CELL
 ) : Data() {
     var selectCategoryHandler: ActionHandler = {}
