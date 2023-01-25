@@ -20,7 +20,8 @@
         android:layout_height="wrap_content"
         android:layout_marginVertical="8dp"
         android:hint="@string/date_hint"
-        android:textColor="@color/gray_06" />
+        android:textColor="@color/gray_06"
+        android:textColorHint="@color/gray_03"/>
 
     <com.google.android.material.divider.MaterialDivider
         android:layout_width="match_parent"
