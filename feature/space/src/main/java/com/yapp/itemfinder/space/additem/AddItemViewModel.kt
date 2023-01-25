@@ -23,7 +23,7 @@ class AddItemViewModel @Inject constructor(
         setState(
             AddItemState.Success(
                 dataList = listOf(
-                    AddItemName(),
+                    AddItemName(mode = ScreenMode.ADD_MODE),
                     AddItemCategory(category = ItemCategorySelection.DEFAULT.label),
                     AddItemLocation(),
                     AddItemCount(),
@@ -101,7 +101,7 @@ class AddItemViewModel @Inject constructor(
             val addItemAdditional =
                 newDataList.find { it is AddItemAdditional } as AddItemAdditional
             val idx = newDataList.indexOf(addItemAdditional)
-            newDataList.add(idx, AddItemMemo())
+            newDataList.add(idx, AddItemMemo(mode = ScreenMode.ADD_MODE))
             newDataList[idx + 1] = addItemAdditional.copy(hasMemo = true)
             setState(
                 AddItemState.Success(
@@ -144,7 +144,17 @@ class AddItemViewModel @Inject constructor(
     }
 
     fun setMemo(newMemo: String) {
-
+        withState<AddItemState.Success> { state ->
+            val newDataList = ArrayList(state.dataList)
+            val memoIndex = newDataList.indexOf(newDataList.find { it is AddItemMemo })
+            newDataList[memoIndex] =
+                (newDataList[memoIndex] as AddItemMemo).copy(memo = newMemo)
+            setState(
+                AddItemState.Success(
+                    newDataList
+                )
+            )
+        }
     }
 
     fun setExpirationDate(date: String) {
@@ -180,6 +190,10 @@ class AddItemViewModel @Inject constructor(
             var itemCategory = ""
             var itemSpace = ""
             var itemLocker = ""
+            var itemCount = 1
+            var itemMemo = ""
+            var itemExpiration = ""
+            var itemPurchase = ""
             dataList.forEach {
                 if (it is AddItemName) itemName = it.name
                 if (it is AddItemCategory) itemCategory = it.category
@@ -187,6 +201,10 @@ class AddItemViewModel @Inject constructor(
                     itemSpace = it.spaceName
                     itemLocker = it.lockerName
                 }
+                if (it is AddItemCount) itemCount = it.count
+                if (it is AddItemMemo) itemMemo = it.memo
+                if (it is AddItemExpirationDate) itemExpiration = it.expirationDate
+                if (it is AddItemPurchaseDate) itemPurchase = it.purchaseDate
             }
             if (itemName == "" && itemCategory == ItemCategorySelection.DEFAULT.label && itemSpace == "" && itemLocker == "") {
                 postSideEffect(AddItemSideEffect.FillOutRequiredSnackBar)
@@ -204,6 +222,7 @@ class AddItemViewModel @Inject constructor(
                 postSideEffect(AddItemSideEffect.FillOutLocationSnackBar)
                 return
             }
+            // save
         }
     }
 

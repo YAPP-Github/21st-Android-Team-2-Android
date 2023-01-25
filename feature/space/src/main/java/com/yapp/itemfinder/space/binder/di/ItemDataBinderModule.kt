@@ -46,4 +46,10 @@ abstract class ItemDataBinderModule {
     abstract fun bindAddItemNameBinder(
         addItemNameBinder: AddItemScreenNameBinder
     ): AddItemNameBinder
+
+    @Binds
+    @Singleton
+    abstract fun bindAddItemMemoBinder(
+        addItemMemoBinder: AddItemScreenMemoBinder
+    ): AddItemMemoBinder
 }

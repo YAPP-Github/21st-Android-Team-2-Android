@@ -25,7 +25,8 @@ class DataBindHelper @Inject constructor(
     var addItemCountBinder: AddItemCountBinder,
     var addItemAdditionalBinder: AddItemAdditionalBinder,
     var addItemExpirationDateBinder: AddItemExpirationDateBinder,
-    var addItemPurchaseDateBinder: AddItemPurchaseDateBinder
+    var addItemPurchaseDateBinder: AddItemPurchaseDateBinder,
+    var addItemMemoBinder: AddItemMemoBinder
 ) {
 
 
@@ -80,6 +81,9 @@ class DataBindHelper @Inject constructor(
             CellType.ADD_ITEM_NAME_CELL -> addItemNameBinder.bindData(
                 data as AddItemName,
                 viewModel
+            )
+            CellType.ADD_ITEM_MEMO_CELL -> addItemMemoBinder.bindDate(
+                data as AddItemMemo, viewModel
             )
             else -> {}
         }
