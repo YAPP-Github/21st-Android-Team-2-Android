@@ -18,6 +18,7 @@ import com.yapp.itemfinder.home.tabs.home.HomeTabFragment
 import com.yapp.itemfinder.home.tabs.like.LikeTabFragment
 import com.yapp.itemfinder.home.tabs.reminder.ReminderTabFragment
 import com.yapp.itemfinder.space.LockerListFragment
+import com.yapp.itemfinder.space.itemdetail.ItemDetailFragment
 import com.yapp.itemfinder.space.lockerdetail.LockerDetailFragment
 import com.yapp.itemfinder.space.managespace.ManageSpaceFragment
 import dagger.hilt.android.AndroidEntryPoint
@@ -117,6 +118,7 @@ class HomeActivity : BaseActivity<HomeViewModel, ActivityHomeBinding>(), Fragmen
             LockerListFragment.TAG -> LockerListFragment.newInstance()
             ManageSpaceFragment.TAG -> ManageSpaceFragment.newInstance()
             LockerDetailFragment.TAG -> LockerDetailFragment.newInstance()
+            ItemDetailFragment.TAG -> ItemDetailFragment.newInstance()
             else -> null
         }
 

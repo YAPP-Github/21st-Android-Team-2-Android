@@ -3,6 +3,7 @@ package com.yapp.itemfinder.space.lockerdetail
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.viewModels
@@ -13,6 +14,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior.BottomSheetCa
 import com.google.android.material.divider.MaterialDividerItemDecoration
 import com.yapp.itemfinder.domain.model.Data
 import com.yapp.itemfinder.feature.common.BaseStateFragment
+import com.yapp.itemfinder.feature.common.FragmentNavigator
 import com.yapp.itemfinder.feature.common.binding.viewBinding
 import com.yapp.itemfinder.feature.common.datalist.adapter.DataListAdapter
 import com.yapp.itemfinder.feature.common.datalist.binder.DataBindHelper
@@ -25,9 +27,11 @@ import javax.inject.Inject
 import com.yapp.itemfinder.feature.common.R as CR
 import com.yapp.itemfinder.feature.common.R.string
 import com.yapp.itemfinder.feature.common.views.behavior.CustomDraggableBottomSheetBehaviour
+import com.yapp.itemfinder.space.itemdetail.ItemDetailFragment
 
 @AndroidEntryPoint
-class LockerDetailFragment : BaseStateFragment<LockerDetailViewModel, FragmentLockerDetailBinding>() {
+class LockerDetailFragment :
+    BaseStateFragment<LockerDetailViewModel, FragmentLockerDetailBinding>() {
 
     override val vm by viewModels<LockerDetailViewModel>()
 
@@ -88,7 +92,8 @@ class LockerDetailFragment : BaseStateFragment<LockerDetailViewModel, FragmentLo
             tagButton.isClickable = isActive
         }
 
-        val behavior = BottomSheetBehavior.from(binding.bottomSheet.root) as CustomDraggableBottomSheetBehaviour
+        val behavior =
+            BottomSheetBehavior.from(binding.bottomSheet.root) as CustomDraggableBottomSheetBehaviour
         behavior.addBottomSheetCallback(object : BottomSheetCallback() {
             override fun onStateChanged(bottomSheet: View, newState: Int) {
                 with(binding.bottomSheet.toggleImageView) {
@@ -124,13 +129,14 @@ class LockerDetailFragment : BaseStateFragment<LockerDetailViewModel, FragmentLo
             val inset = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             // View 계층에 반영될 Inset들을 반환한다.
             binding.lockerDetailImageView.post {
-                behavior.maxHeight = binding.root.measuredHeight - binding.toolbar.measuredHeight - inset.top
+                behavior.maxHeight =
+                    binding.root.measuredHeight - binding.toolbar.measuredHeight - inset.top
                 behavior.peekHeight =
                     (binding.root.measuredHeight
-                        - binding.lockerDetailImageView.measuredHeight
-                        - resources.getDimension(CR.dimen.collapsing_toolbar_container_height)
-                        - inset.top
-                        ).toInt()
+                            - binding.lockerDetailImageView.measuredHeight
+                            - resources.getDimension(CR.dimen.collapsing_toolbar_container_height)
+                            - inset.top
+                            ).toInt()
             }
             insets
         }
@@ -155,12 +161,27 @@ class LockerDetailFragment : BaseStateFragment<LockerDetailViewModel, FragmentLo
                 }
                 launch {
                     vm.sideEffectFlow.collect { sideEffect ->
-//
+                        when (sideEffect) {
+                            is LockerDetailSideEffect.MoveItemDetail -> {
+                                moveItemDetail(itemId = sideEffect.itemId)
+                            }
+                        }
                     }
                 }
             }
         }
         return job
+    }
+
+    private fun moveItemDetail(itemId: Long) {
+        when (val activity = requireActivity()) {
+            is FragmentNavigator -> {
+                activity.addFragmentBackStack(
+                    ItemDetailFragment.TAG,
+                    bundle = bundleOf(ItemDetailFragment.ITEM_ID_KEY to itemId)
+                )
+            }
+        }
     }
 
     private fun handleLoading() {
@@ -175,6 +196,7 @@ class LockerDetailFragment : BaseStateFragment<LockerDetailViewModel, FragmentLo
 
         val itemCount: Int = dataListAdapter?.itemCount ?: 0
         binding.bottomSheet.totalItemCount.text = getString(string.totalCount, itemCount)
+        binding.floatingActionButton.setOnClickListener { vm.moveItemDetail(1L) } // 각 물건별로 동작하도록 Item, ItemSimpleViewHolder 쪽에 핸들러 설정이 필요합니다.
     }
 
     companion object {

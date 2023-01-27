@@ -48,4 +48,8 @@ class LockerDetailViewModel @Inject constructor(
             setState(LockerDetailState.Error(it))
         }
     }
+
+    fun moveItemDetail(itemId: Long) {
+        postSideEffect(LockerDetailSideEffect.MoveItemDetail(itemId))
+    }
 }
