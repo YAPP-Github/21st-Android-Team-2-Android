@@ -35,6 +35,11 @@ class AddItemViewModel @Inject constructor(
         )
     }
 
+    fun loadPhotos(){
+        postSideEffect(AddItemSideEffect.OpenPhotoPicker)
+
+    }
+
     fun setName(newName: String) {
         withState<AddItemState.Success> { state ->
             val newDataList = ArrayList(state.dataList)

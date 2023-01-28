@@ -52,4 +52,10 @@ abstract class ItemDataBinderModule {
     abstract fun bindAddItemMemoBinder(
         addItemMemoBinder: AddItemScreenMemoBinder
     ): AddItemMemoBinder
+
+    @Binds
+    @Singleton
+    abstract fun bindAddIteImagesBinder(
+        addItemMemoBinder: AddItemScreenImagesBinder
+    ): AddItemImagesBinder
 }
