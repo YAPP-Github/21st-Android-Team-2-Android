@@ -6,6 +6,7 @@ import android.widget.Toast
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.*
+import com.bumptech.glide.Glide
 import com.yapp.itemfinder.feature.common.BaseStateFragment
 import com.yapp.itemfinder.feature.common.binding.viewBinding
 import com.yapp.itemfinder.feature.common.extension.visible
@@ -40,6 +41,11 @@ class ItemDetailFragment : BaseStateFragment<ItemDetailViewModel, FragmentItemDe
         rightFirstIconClickListener = {
             Toast.makeText(requireContext(), "삭제 버튼 클릭", Toast.LENGTH_SHORT).show()
         }
+        rightSecondIcon = CR.drawable.ic_edit
+        rightSecondIconClickListener = {
+            Toast.makeText(requireContext(), "수정 버튼 클릭", Toast.LENGTH_SHORT).show()
+        }
+        containerColor = CR.color.transparent
     }
 
 
@@ -72,6 +78,9 @@ class ItemDetailFragment : BaseStateFragment<ItemDetailViewModel, FragmentItemDe
 
     private fun handleSuccess(lockerDetailState: ItemDetailState.Success) = with(binding) {
         val item = lockerDetailState.item
+        if (item.imageUrl != null) {
+            Glide.with(requireContext()).load(item.imageUrl).into(itemMainImage)
+        }
         itemName.text = item.name
         itemCategory.text = item.itemCategory?.label
         itemSpace.text = "주방"
