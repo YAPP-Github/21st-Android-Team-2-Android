@@ -84,4 +84,7 @@ ext {
 
     /* Kakako */
     kakaoUserVersion = '2.12.0'
+
+    /*Ted ImagePicer */
+    tedImagePickerVersion = '1.4.2'
 }

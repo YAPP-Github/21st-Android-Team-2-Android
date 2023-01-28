@@ -22,6 +22,7 @@ import com.yapp.itemfinder.space.R
 import com.yapp.itemfinder.feature.common.R as CR
 import com.yapp.itemfinder.space.databinding.ActivityAddItemBinding
 import dagger.hilt.android.AndroidEntryPoint
+import gun0912.tedimagepicker.builder.TedImagePicker
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import java.util.*
@@ -134,6 +135,10 @@ class AddItemActivity : BaseStateActivity<AddItemViewModel, ActivityAddItemBindi
                             SnackBarView.make(binding.root, "메모는 한글 기준 최대 200자까지 작성 가능해요").show()
                         }
                         is AddItemSideEffect.OpenPhotoPicker -> {
+                                TedImagePicker.with(this@AddItemActivity)
+                                    .startMultiImage { uris ->  }
+
+
 //                            SnackBarView.make(binding.root, message = "이미지 업로드 기능 ~").show()
                         }
                     }
