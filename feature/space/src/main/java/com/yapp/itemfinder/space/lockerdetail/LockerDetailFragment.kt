@@ -1,9 +1,9 @@
 package com.yapp.itemfinder.space.lockerdetail
 
+import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
-import androidx.core.os.bundleOf
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.viewModels
@@ -176,13 +176,13 @@ class LockerDetailFragment :
     private fun moveItemDetail(itemId: Long) {
         when (val activity = requireActivity()) {
             is FragmentNavigator -> {
-//                val bundles = bundleOf()
-//                bundles.putBundle(ItemDetailFragment.SPACE_NAME_KEY, bundleOf(ItemDetailFragment.SPACE_NAME_KEY to "주방"))
-//                bundles.putBundle(ItemDetailFragment.LOCKER_NAME_KEY, bundleOf(ItemDetailFragment.LOCKER_NAME_KEY to "냉장고"))
-//                bundles.putBundle(ItemDetailFragment.ITEM_ID_KEY, bundleOf(ItemDetailFragment.ITEM_ID_KEY to itemId))
+                val bundle = Bundle()
+                bundle.putString(ItemDetailFragment.SPACE_NAME_KEY, "주방")
+                bundle.putString(ItemDetailFragment.LOCKER_NAME_KEY, "냉장고")
+                bundle.putLong(ItemDetailFragment.ITEM_ID_KEY, itemId)
                 activity.addFragmentBackStack(
                     ItemDetailFragment.TAG,
-                    bundle = bundleOf(ItemDetailFragment.ITEM_ID_KEY to itemId)
+                    bundle = bundle
                 )
             }
         }

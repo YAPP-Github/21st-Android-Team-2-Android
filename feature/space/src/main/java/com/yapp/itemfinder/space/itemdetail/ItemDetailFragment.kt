@@ -10,6 +10,7 @@ import com.bumptech.glide.Glide
 import com.yapp.itemfinder.feature.common.BaseStateFragment
 import com.yapp.itemfinder.feature.common.binding.viewBinding
 import com.yapp.itemfinder.feature.common.extension.visible
+import com.yapp.itemfinder.space.R
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
@@ -31,17 +32,17 @@ class ItemDetailFragment : BaseStateFragment<ItemDetailViewModel, FragmentItemDe
     }
 
     private fun initToolBar() = with(binding.defaultTopNavigationView) {
-        backButtonImageResId = CR.drawable.ic_back
+        backButtonImageResId = CR.drawable.ic_back_white
         backButtonClickListener = {
             onBackPressedCallback.handleOnBackPressed()
         }
         containerColor = depth.colorId
 
-        rightFirstIcon = CR.drawable.ic_delete
+        rightFirstIcon = CR.drawable.ic_delete_white
         rightFirstIconClickListener = {
             Toast.makeText(requireContext(), "삭제 버튼 클릭", Toast.LENGTH_SHORT).show()
         }
-        rightSecondIcon = CR.drawable.ic_edit
+        rightSecondIcon = CR.drawable.ic_edit_white
         rightSecondIconClickListener = {
             Toast.makeText(requireContext(), "수정 버튼 클릭", Toast.LENGTH_SHORT).show()
         }
@@ -83,14 +84,13 @@ class ItemDetailFragment : BaseStateFragment<ItemDetailViewModel, FragmentItemDe
         }
         itemName.text = item.name
         itemCategory.text = item.itemCategory?.label
-        itemSpace.text = "주방"
-        itemLocker.text = "냉장고"
-        itemCount.text = "${item.count}개"
-        if (item.tags?.isEmpty() == false) {
+        itemSpace.text = arguments?.getString(SPACE_NAME_KEY)
+        itemLocker.text = arguments?.getString(LOCKER_NAME_KEY)
+        itemCount.text = getString(R.string.countText, item.count)
+        item.tags?.let {
             itemTagsLayout.visible()
             itemTagTitle.visible()
-            item.tags!!.forEach {
-                // 커스텀뷰로
+            it.forEach {
                 val tv = TextView(context)
                 val params = LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.WRAP_CONTENT,
@@ -101,9 +101,7 @@ class ItemDetailFragment : BaseStateFragment<ItemDetailViewModel, FragmentItemDe
                     text = it.name
                     setTextColor(
                         ResourcesCompat.getColor(
-                            requireActivity().resources,
-                            CR.color.gray_05,
-                            null
+                            requireActivity().resources, CR.color.gray_05, null
                         )
                     )
                     background = ResourcesCompat.getDrawable(
@@ -117,20 +115,21 @@ class ItemDetailFragment : BaseStateFragment<ItemDetailViewModel, FragmentItemDe
                 itemTagsLayout.addView(tv)
             }
         }
-        if (item.memo != null) {
+
+        item.memo?.let {
             itemMemo.visible()
             itemMemoTitle.visible()
-            itemMemo.text = item.memo
+            itemMemo.text = it
         }
-        if (item.expirationDate != null) {
+        item.expirationDate?.let {
             itemExpirationDateTitle.visible()
             itemExpirationDate.visible()
-            itemExpirationDate.text = item.expirationDate
+            itemExpirationDate.text = it
         }
-        if (item.purchaseDate != null) {
+        item.purchaseDate?.let {
             itemPurchaseDate.visible()
             itemPurchaseDateTitle.visible()
-            itemPurchaseDate.text = item.purchaseDate
+            itemPurchaseDate.text = it
         }
     }
 

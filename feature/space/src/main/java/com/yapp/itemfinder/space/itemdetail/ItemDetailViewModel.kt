@@ -23,13 +23,14 @@ class ItemDetailViewModel @Inject constructor(
 
     override val _sideEffectFlow: MutableSharedFlow<ItemDetailSideEffect> = MutableSharedFlow()
 
-    private val itemId by lazy { savedStateHandle.get<Long>(ItemDetailFragment.ITEM_ID_KEY) }
+    private val itemId by lazy {
+        savedStateHandle.get<Long>(ItemDetailFragment.ITEM_ID_KEY) ?: 0L
+    }
 
     override fun fetchData(): Job = viewModelScope.launch {
         runCatchingWithErrorHandler {
             setState(ItemDetailState.Loading)
-            val item = itemId?.let { itemRepository.getItemById(it) }
-                ?: throw IllegalArgumentException("물건 정보를 불러올 수 없습니다.")
+            val item = itemId.let { itemRepository.getItemById(itemId) }
             item
         }.onSuccess { item ->
             setState(

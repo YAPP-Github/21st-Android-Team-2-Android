@@ -10,4 +10,5 @@
     <string name="memo">메모</string>
     <string name="purchaseDate">구매일</string>
     <string name="expirationDate">소비기한</string>
+    <string name="countText">%d개</string>
 </resources>
