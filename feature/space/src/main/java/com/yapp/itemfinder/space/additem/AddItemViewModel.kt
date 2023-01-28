@@ -23,6 +23,7 @@ class AddItemViewModel @Inject constructor(
         setState(
             AddItemState.Success(
                 dataList = listOf(
+                    AddItemImages(listOf()),
                     AddItemName(mode = ScreenMode.ADD_MODE),
                     AddItemCategory(category = ItemCategorySelection.DEFAULT),
                     AddItemLocation(),
