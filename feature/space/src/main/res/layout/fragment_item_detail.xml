@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        style="@style/DefaultToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.yapp.itemfinder.feature.common.views.DefaultTopNavigationView
+            android:id="@+id/defaultTopNavigationView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </androidx.appcompat.widget.Toolbar>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingHorizontal="16dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/itemMainImage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <LinearLayout
+                android:id="@+id/itemImagesLayout"
+                android:layout_width="match_parent"
+                android:layout_height="72dp"
+                android:orientation="horizontal" />
+
+            <TextView
+                android:id="@+id/itemName"
+                style="@style/ItemFinderTypography.Title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:textColor="@color/brown_06"
+                tools:text="선크림" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/itemCategory"
+                style="@style/ItemFinderTypography.Subhead"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/bg_category_selected_button"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="8dp"
+                android:textColor="@color/gray_05"
+                tools:text="생활" />
+
+            <TextView
+                android:id="@+id/itemLocationTitle"
+                style="@style/ItemFinderTypography.Body1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="24dp"
+                android:text="@string/location"
+                android:textColor="@color/gray_05" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="8dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/itemSpace"
+                    style="@style/ItemFinderTypography.Subhead"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/gray_06"
+                    tools:text="주방" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="8dp"
+                    android:src="@drawable/ic_arrow_forward_8" />
+
+                <TextView
+                    android:id="@+id/itemLocker"
+                    style="@style/ItemFinderTypography.Subhead"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/gray_06"
+                    tools:text="냉장고" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/itemCountTitle"
+                style="@style/ItemFinderTypography.Body1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="24dp"
+                android:text="@string/count"
+                android:textColor="@color/gray_05" />
+
+            <TextView
+                android:id="@+id/itemCount"
+                style="@style/ItemFinderTypography.Subhead"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="8dp"
+                android:textColor="@color/gray_06"
+                tools:text="1개" />
+
+            <TextView
+                android:id="@+id/itemTagTitle"
+                style="@style/ItemFinderTypography.Body1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="24dp"
+                android:text="@string/tag"
+                android:textColor="@color/gray_05"
+                android:visibility="gone" />
+
+            <LinearLayout
+                android:id="@+id/itemTagsLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="4dp"
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/itemMemoTitle"
+                style="@style/ItemFinderTypography.Body1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="24dp"
+                android:text="@string/memo"
+                android:textColor="@color/gray_05"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/itemMemo"
+                style="@style/ItemFinderTypography.Subhead"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="4dp"
+                android:layout_marginTop="8dp"
+                android:lineHeight="24dp"
+                android:textColor="@color/gray_06"
+                android:visibility="gone"
+                tools:text="마켓컬리에서 5600원에 구매. 샌드위치랑 먹어야겠다. 냉장보관. 칼로리가 낮아 다이어트용으로 적합할듯." />
+
+            <TextView
+                android:id="@+id/itemExpirationDateTitle"
+                style="@style/ItemFinderTypography.Body1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="24dp"
+                android:text="소비기한"
+                android:textColor="@color/gray_05"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/itemExpirationDate"
+                style="@style/ItemFinderTypography.Subhead"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="4dp"
+                android:layout_marginTop="8dp"
+                android:textColor="@color/gray_06"
+                android:visibility="gone"
+                tools:text="2023.03.09." />
+
+            <TextView
+                android:id="@+id/itemPurchaseDateTitle"
+                style="@style/ItemFinderTypography.Body1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="24dp"
+                android:text="구매일"
+                android:textColor="@color/gray_05"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/itemPurchaseDate"
+                style="@style/ItemFinderTypography.Subhead"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="4dp"
+                android:layout_marginTop="8dp"
+                android:textColor="@color/gray_06"
+                android:visibility="gone"
+                tools:text="2023.01.09." />
+
+            <ImageView
+                android:id="@+id/lockerImageView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone" />
+        </LinearLayout>
+
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

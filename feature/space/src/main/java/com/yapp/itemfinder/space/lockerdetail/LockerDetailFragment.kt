@@ -176,6 +176,10 @@ class LockerDetailFragment :
     private fun moveItemDetail(itemId: Long) {
         when (val activity = requireActivity()) {
             is FragmentNavigator -> {
+//                val bundles = bundleOf()
+//                bundles.putBundle(ItemDetailFragment.SPACE_NAME_KEY, bundleOf(ItemDetailFragment.SPACE_NAME_KEY to "주방"))
+//                bundles.putBundle(ItemDetailFragment.LOCKER_NAME_KEY, bundleOf(ItemDetailFragment.LOCKER_NAME_KEY to "냉장고"))
+//                bundles.putBundle(ItemDetailFragment.ITEM_ID_KEY, bundleOf(ItemDetailFragment.ITEM_ID_KEY to itemId))
                 activity.addFragmentBackStack(
                     ItemDetailFragment.TAG,
                     bundle = bundleOf(ItemDetailFragment.ITEM_ID_KEY to itemId)

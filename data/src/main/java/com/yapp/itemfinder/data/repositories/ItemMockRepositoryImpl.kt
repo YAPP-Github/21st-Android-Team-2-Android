@@ -15,7 +15,9 @@ class ItemMockRepositoryImpl @Inject constructor() : ItemRepository {
         lockerId = 1,
         itemCategory = ItemCategory.FOOD,
         name = "선크림",
-        expirationDate = "2022.12.25까지",
+        expirationDate = "2022.12.25.",
+        purchaseDate = null,
+        memo = null,
         imageUrl = "http://source.unsplash.com/random/150x150",
         tags = listOf(Tag("생활"), Tag("화장품")),
         count = 1
@@ -52,5 +54,9 @@ class ItemMockRepositoryImpl @Inject constructor() : ItemRepository {
             sample,
             sample
         )
+    }
+
+    override fun getItemById(itemId: Long): Item {
+        return sample
     }
 }
