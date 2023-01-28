@@ -16,6 +16,8 @@
         <!-- font -->
         <item name="android:textViewStyle">@style/PretendardTextViewStyle</item>
         <item name="android:buttonStyle">@style/PretendardButtonStyle</item>
+
+        <item name="android:datePickerStyle">@style/SpinnerDatePicker</item>
     </style>
 
     <style name="ItemFinderSplashTheme" parent="ItemFinderTheme">
@@ -45,6 +47,12 @@
     </style>
 
     <style name="AlertDialog" parent="Theme.AppCompat.Dialog.Alert" />
+
+    <style name="SpinnerDatePicker">
+        <item name="windowNoTitle">false</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:datePickerMode">spinner</item>
+    </style>
 
     <style name="DefaultToolbar" parent="Widget.AppCompat.Toolbar">
         <item name="android:theme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>

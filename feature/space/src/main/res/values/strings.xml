@@ -4,4 +4,8 @@
     <string name="create">추가</string>
     <string name="cancel">취소</string>
     <string name="failedToAddSpace">공간 추가 실패</string>
+    <string name="category">카테고리</string>
+    <string name="life">생활</string>
+    <string name="food">식품</string>
+    <string name="fashion">패션</string>
 </resources>

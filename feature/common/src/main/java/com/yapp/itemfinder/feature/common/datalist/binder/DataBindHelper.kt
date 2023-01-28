@@ -19,7 +19,14 @@ class DataBindHelper @Inject constructor(
     var addLockerItemBinder: AddLockerItemBinder,
     var manageSpaceItemBinder: ManageSpaceItemBinder,
     var manageSpaceAddSpaceBinder: AddSpaceBinder,
-    var addLockerSpaceBinder: AddLockerSpaceBinder
+    var addLockerSpaceBinder: AddLockerSpaceBinder,
+    var addItemNameBinder: AddItemNameBinder,
+    var addItemCategoryBinder: AddItemCategoryBinder,
+    var addItemCountBinder: AddItemCountBinder,
+    var addItemAdditionalBinder: AddItemAdditionalBinder,
+    var addItemExpirationDateBinder: AddItemExpirationDateBinder,
+    var addItemPurchaseDateBinder: AddItemPurchaseDateBinder,
+    var addItemMemoBinder: AddItemMemoBinder
 ) {
 
 
@@ -56,6 +63,28 @@ class DataBindHelper @Inject constructor(
             CellType.ADD_LOCKER_SPACE_CELL -> {
                 addLockerSpaceBinder.bindData(data as AddLockerSpace, viewModel)
             }
+            CellType.ADD_ITEM_CATEGORY_CELL -> {
+                addItemCategoryBinder.bindData(data as AddItemCategory, viewModel)
+            }
+            CellType.ADD_ITEM_COUNT_CELL -> {
+                addItemCountBinder.bindData(data as AddItemCount, viewModel)
+            }
+            CellType.ADD_ITEM_ADDITIONAL_CELL -> {
+                addItemAdditionalBinder.bindData(data as AddItemAdditional, viewModel)
+            }
+            CellType.ADD_ITEM_EXPIRATION_DATE_CELL -> {
+                addItemExpirationDateBinder.bindData(data as AddItemExpirationDate, viewModel)
+            }
+            CellType.ADD_ITEM_PURCHASE_DATE_CELL -> {
+                addItemPurchaseDateBinder.bindData(data as AddItemPurchaseDate, viewModel)
+            }
+            CellType.ADD_ITEM_NAME_CELL -> addItemNameBinder.bindData(
+                data as AddItemName,
+                viewModel
+            )
+            CellType.ADD_ITEM_MEMO_CELL -> addItemMemoBinder.bindDate(
+                data as AddItemMemo, viewModel
+            )
             else -> {}
         }
     }

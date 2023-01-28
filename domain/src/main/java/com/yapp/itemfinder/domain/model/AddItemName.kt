@@ -1,0 +1,15 @@
+package com.yapp.itemfinder.domain.model
+
+data class AddItemName(
+    val name: String = "",
+    override var type: CellType = CellType.ADD_ITEM_NAME_CELL,
+    var mode: ScreenMode
+) : Data() {
+    var enterHandler: EnterStringHandler = {}
+    fun setItemName(newName: String) = enterHandler.invoke(newName)
+}
+
+enum class ScreenMode{
+    EDIT_MODE,
+    ADD_MODE
+}
