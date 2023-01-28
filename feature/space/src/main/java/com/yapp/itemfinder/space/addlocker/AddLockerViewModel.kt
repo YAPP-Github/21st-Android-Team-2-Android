@@ -65,14 +65,13 @@ class AddLockerViewModel @Inject constructor(
         withState<AddLockerState.Success> {
             runCatchingWithErrorHandler {
                 setState(AddLockerState.Loading)
-                async {
-                    listOf(
-                        AddLockerNameInput(),
-                        AddLockerSpace(name = "옷장"),
-                        LockerIcons(),
-                        AddLockerPhoto(uriString = uri.toString())
-                    )
-                }.await()
+
+                val idx = it.dataList.indexOfFirst { data -> data is AddLockerPhoto }
+                val newDataList = it.dataList.toMutableList().apply {
+                    this[idx] = AddLockerPhoto(uriString = uri.toString())
+                }
+
+                newDataList
             }.onSuccess {
                 setState(AddLockerState.Success(it))
             }.onErrorWithResult {
