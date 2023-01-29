@@ -10,6 +10,8 @@
         </activity>
         <activity android:name=".additem.AddItemActivity"
             android:theme="@style/ItemFinderTheme"/>
+        <activity android:name=".edititem.EditItemActivity"
+            android:theme="@style/ItemFinderTheme"/>
     </application>
 
 </manifest>

@@ -3,8 +3,7 @@ package com.yapp.itemfinder.feature.common.datalist.binder
 import android.annotation.SuppressLint
 import com.yapp.itemfinder.domain.model.*
 import com.yapp.itemfinder.feature.common.BaseViewModel
-import com.yapp.itemfinder.feature.common.datalist.binder.di.HomeLikeItemQualifier
-import com.yapp.itemfinder.feature.common.datalist.binder.di.HomeMySpaceUpperCellItemQualifier
+import com.yapp.itemfinder.feature.common.datalist.binder.di.*
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -20,13 +19,34 @@ class DataBindHelper @Inject constructor(
     var manageSpaceItemBinder: ManageSpaceItemBinder,
     var manageSpaceAddSpaceBinder: AddSpaceBinder,
     var addLockerSpaceBinder: AddLockerSpaceBinder,
+    @AddItemNameQualifier
     var addItemNameBinder: AddItemNameBinder,
+    @EditItemNameQualifier
+    var editItemNameBinder: AddItemNameBinder,
+    @AddItemCategoryQualifier
     var addItemCategoryBinder: AddItemCategoryBinder,
+    @EditItemCategoryQualifier
+    var editItemCategoryBinder: AddItemCategoryBinder,
+    @AddItemCountQualifier
     var addItemCountBinder: AddItemCountBinder,
+    @EditItemCountQualifier
+    var editItemCountBinder: AddItemCountBinder,
+    @AddItemAdditionalQualifier
     var addItemAdditionalBinder: AddItemAdditionalBinder,
+    @EditItemAdditionalQualifier
+    var editItemAdditionalBinder: AddItemAdditionalBinder,
+    @AddItemExpirationDateQualifier
     var addItemExpirationDateBinder: AddItemExpirationDateBinder,
+    @EditItemExpirationDateQualifier
+    var editItemExpirationDateBinder: AddItemExpirationDateBinder,
+    @AddItemPurchaseDateQualifier
     var addItemPurchaseDateBinder: AddItemPurchaseDateBinder,
-    var addItemMemoBinder: AddItemMemoBinder
+    @EditItemPurchaseDateQualifier
+    var editItemPurchaseDateBinder: AddItemPurchaseDateBinder,
+    @AddItemMemoQualifier
+    var addItemMemoBinder: AddItemMemoBinder,
+    @EditItemMemoQualifier
+    var editItemMemoBinder: AddItemMemoBinder
 ) {
 
 
@@ -65,26 +85,32 @@ class DataBindHelper @Inject constructor(
             }
             CellType.ADD_ITEM_CATEGORY_CELL -> {
                 addItemCategoryBinder.bindData(data as AddItemCategory, viewModel)
+                editItemCategoryBinder.bindData(data as AddItemCategory, viewModel)
             }
             CellType.ADD_ITEM_COUNT_CELL -> {
                 addItemCountBinder.bindData(data as AddItemCount, viewModel)
+                editItemCountBinder.bindData(data as AddItemCount, viewModel)
             }
             CellType.ADD_ITEM_ADDITIONAL_CELL -> {
                 addItemAdditionalBinder.bindData(data as AddItemAdditional, viewModel)
+                editItemAdditionalBinder.bindData(data as AddItemAdditional, viewModel)
             }
             CellType.ADD_ITEM_EXPIRATION_DATE_CELL -> {
                 addItemExpirationDateBinder.bindData(data as AddItemExpirationDate, viewModel)
+                editItemExpirationDateBinder.bindData(data as AddItemExpirationDate, viewModel)
             }
             CellType.ADD_ITEM_PURCHASE_DATE_CELL -> {
                 addItemPurchaseDateBinder.bindData(data as AddItemPurchaseDate, viewModel)
+                editItemPurchaseDateBinder.bindData(data as AddItemPurchaseDate, viewModel)
             }
-            CellType.ADD_ITEM_NAME_CELL -> addItemNameBinder.bindData(
-                data as AddItemName,
-                viewModel
-            )
-            CellType.ADD_ITEM_MEMO_CELL -> addItemMemoBinder.bindDate(
-                data as AddItemMemo, viewModel
-            )
+            CellType.ADD_ITEM_NAME_CELL -> {
+                addItemNameBinder.bindData(data as AddItemName, viewModel)
+                editItemNameBinder.bindData(data as AddItemName, viewModel)
+            }
+            CellType.ADD_ITEM_MEMO_CELL -> {
+                addItemMemoBinder.bindDate(data as AddItemMemo, viewModel)
+                editItemMemoBinder.bindDate(data as AddItemMemo, viewModel)
+            }
             else -> {}
         }
     }
