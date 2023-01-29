@@ -250,7 +250,7 @@ class EditItemViewModel @Inject constructor(
                 postSideEffect(EditItemSideEffect.FillOutNameSnackBar)
                 return
             }
-            if (itemCategory == "") {
+            if (itemCategory == ItemCategorySelection.DEFAULT.label) {
                 postSideEffect(EditItemSideEffect.FillOutCategorySnackBar)
                 return
             }
