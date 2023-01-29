@@ -20,4 +20,5 @@
     <dimen name="collapsing_toolbar_container_height">112dp</dimen>
 
     <dimen name="add_images_recyclerview_margin">16dp</dimen>
+    <dimen name="add_images_background_radius">4dp</dimen>
 </resources>

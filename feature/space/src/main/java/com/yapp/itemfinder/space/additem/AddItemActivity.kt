@@ -4,13 +4,10 @@ import android.app.ActionBar.LayoutParams
 import android.app.DatePickerDialog
 import android.content.Context
 import android.content.Intent
-import android.widget.Toast
 import androidx.activity.viewModels
-import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import com.google.android.material.snackbar.Snackbar
 import com.yapp.itemfinder.domain.model.Data
 import com.yapp.itemfinder.domain.model.ItemCategorySelection
 import com.yapp.itemfinder.feature.common.BaseStateActivity
@@ -18,7 +15,6 @@ import com.yapp.itemfinder.feature.common.binding.viewBinding
 import com.yapp.itemfinder.feature.common.datalist.adapter.DataListAdapter
 import com.yapp.itemfinder.feature.common.datalist.binder.DataBindHelper
 import com.yapp.itemfinder.feature.common.views.SnackBarView
-import com.yapp.itemfinder.space.R
 import com.yapp.itemfinder.feature.common.R as CR
 import com.yapp.itemfinder.space.databinding.ActivityAddItemBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -136,10 +132,10 @@ class AddItemActivity : BaseStateActivity<AddItemViewModel, ActivityAddItemBindi
                         }
                         is AddItemSideEffect.OpenPhotoPicker -> {
                                 TedImagePicker.with(this@AddItemActivity)
-                                    .startMultiImage { uris ->  }
+                                    .startMultiImage { uris ->
+                                        vm.doneChooseImages(uris)
+                                    }
 
-
-//                            SnackBarView.make(binding.root, message = "이미지 업로드 기능 ~").show()
                         }
                     }
                 }

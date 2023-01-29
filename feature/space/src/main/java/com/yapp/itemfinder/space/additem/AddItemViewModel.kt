@@ -1,5 +1,6 @@
 package com.yapp.itemfinder.space.additem
 
+import android.net.Uri
 import androidx.lifecycle.viewModelScope
 import com.yapp.itemfinder.domain.model.*
 import com.yapp.itemfinder.feature.common.BaseStateViewModel
@@ -35,8 +36,23 @@ class AddItemViewModel @Inject constructor(
         )
     }
 
-    fun loadPhotos(){
+    fun startChooseImages(){
         postSideEffect(AddItemSideEffect.OpenPhotoPicker)
+    }
+
+    fun doneChooseImages(uris: List<Uri>){
+        withState<AddItemState.Success> { state ->
+            val newDataList = state.dataList.toMutableList()
+            val imageIndex = newDataList.indexOfFirst { data -> data is AddItemImages }
+            newDataList[imageIndex] = (state.dataList[imageIndex] as AddItemImages).copy(
+                uriStringList = uris.map { it.toString() }
+            )
+            setState(
+                AddItemState.Success(
+                    newDataList
+                )
+            )
+        }
 
     }
 

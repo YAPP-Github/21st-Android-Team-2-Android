@@ -10,6 +10,8 @@ class AddItemImagesViewHolder(
     val binding: AddItemImagesBinding
 ) : DataViewHolder<AddItemImages>(binding) {
     lateinit var mAdapter: AddItemImagesInnerAdapter
+
+    private var isInnerRcvInitiated = false
     private val context = binding.root.context
     private val addImagesDecoration by lazy {
         AddImagesItemDecoration(context.resources.getDimension(R.dimen.add_images_recyclerview_margin).toInt())
@@ -22,30 +24,33 @@ class AddItemImagesViewHolder(
     override fun bindData(data: AddItemImages) {
         super.bindData(data)
 
-        binding.innerRecyclerView.apply {
-            if (adapter == null) {
+        if (isInnerRcvInitiated.not()){
+            isInnerRcvInitiated = true
+            with(binding.innerRecyclerView){
                 mAdapter = AddItemImagesInnerAdapter { data.addCameraAction() }
                 adapter = mAdapter
+                addItemDecoration(addImagesDecoration)
             }
         }
         mAdapter.submitList(
-            listOf(
-                "1",
-                "2",
-                "3",
-                "4",
-                "5",
-                "6",
-                "123",
-                "12324",
-                "13213",
-                "122324",
-                "131232143213"
-            )
+            listOf(" ") + data.uriStringList
+//            listOf(
+//                "1",
+//                "2",
+//                "3",
+//                "4",
+//                "5",
+//                "6",
+//                "123",
+//                "12324",
+//                "13213",
+//                "122324",
+//                "131232143213"
+//            )
         )
     }
 
     override fun bindViews(data: AddItemImages) {
-        binding.innerRecyclerView.addItemDecoration(addImagesDecoration)
+
     }
 }
