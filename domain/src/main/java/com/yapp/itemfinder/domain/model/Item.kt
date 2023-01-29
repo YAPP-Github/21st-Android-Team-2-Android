@@ -5,11 +5,13 @@ data class Item(
     var lockerId: Long,
     var name: String,
     var expirationDate: String?,
+    var purchaseDate: String?,
+    var memo: String?,
     var imageUrl: String?,
     val itemCategory: ItemCategory?,
     var tags: List<Tag>?,
     val count: Int = 0,
-    override var type:  CellType = CellType.ITEM_SIMPLE_CELL
+    override var type: CellType = CellType.ITEM_SIMPLE_CELL
 
 ) : Data() {
 

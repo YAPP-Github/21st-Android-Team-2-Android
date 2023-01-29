@@ -21,16 +21,51 @@ class EditItemViewModel @Inject constructor(
     override fun fetchData(): Job = viewModelScope.launch {
         setState(EditItemState.Loading)
         // api call or 이전 페이지에서 전달
+        val sampleItem = Item(
+            id = 1,
+            lockerId = 1,
+            itemCategory = ItemCategory.FOOD,
+            name = "선크림",
+            expirationDate = "2022.12.25.",
+            purchaseDate = null,
+            memo = null,
+            imageUrl = "http://source.unsplash.com/random/150x150",
+            tags = listOf(Tag("생활"), Tag("화장품")),
+            count = 1
+        )
+        val dataList = mutableListOf<Data>(
+            AddItemName(name = sampleItem.name, mode = ScreenMode.EDIT_MODE),
+            AddItemCategory(category = ItemCategorySelection.FOOD),
+            AddItemLocation(
+                spaceName = "주방",
+                spaceId = 111,
+                lockerName = "냉장고",
+                lockerId = 222
+            ),
+            AddItemCount(count = sampleItem.count)
+        ).apply {
+            sampleItem.tags?.let { add(AddItemTags(it)) }
+            sampleItem.memo?.let {
+                add(
+                    AddItemMemo(
+                        memo = sampleItem.memo!!,
+                        mode = ScreenMode.EDIT_MODE
+                    )
+                )
+            }
+            sampleItem.expirationDate?.let { add(AddItemExpirationDate(it)) }
+            sampleItem.purchaseDate?.let { add(AddItemPurchaseDate(it)) }
+            add(
+                AddItemAdditional(
+                    hasMemo = (sampleItem.memo != null),
+                    hasExpirationDate = sampleItem.expirationDate != null,
+                    hasPurchaseDate = sampleItem.purchaseDate != null
+                )
+            )
+        }
         setState(
             EditItemState.Success(
-                dataList = listOf(
-                    AddItemName(name = "샐러드", mode = ScreenMode.EDIT_MODE),
-                    AddItemCategory(category = ItemCategorySelection.FOOD),
-                    AddItemLocation(spaceName = "주방", spaceId = 111, lockerName = "냉장고", lockerId = 222),
-                    AddItemCount(count = 3),
-                    AddItemTags(listOf(Tag("다이어트"))),
-                    AddItemAdditional()
-                )
+                dataList = dataList
             )
         )
     }

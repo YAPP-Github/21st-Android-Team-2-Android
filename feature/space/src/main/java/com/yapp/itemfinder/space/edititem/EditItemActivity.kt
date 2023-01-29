@@ -66,7 +66,7 @@ class EditItemActivity : BaseStateActivity<EditItemViewModel, ActivityAddItemBin
             // 잠시만요! 팝업
             finish()
         }
-        titleText = "물건 추가"
+        titleText = "물건 수정"
         rightFirstIcon = CR.drawable.ic_done
         rightFirstIconClickListener = {
             vm.saveItem()
