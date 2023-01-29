@@ -20,7 +20,7 @@ import com.yapp.itemfinder.feature.common.R
 import com.yapp.itemfinder.feature.common.databinding.AddItemImagesInnerCameraViewholderItemBinding
 import com.yapp.itemfinder.feature.common.databinding.AddItemImagesInnerImageViewholderItemBinding
 
-class AddItemImagesInnerAdapter(val onCameraClicked: () -> Unit) :
+class AddItemImagesInnerAdapter(val onCameraClicked: () -> Unit, val onCancelClicked: (Int) -> Unit) :
     ListAdapter<AddItemImagesInnerData, AddItemImagesInnerViewHolders>(
         object : DiffUtil.ItemCallback<AddItemImagesInnerData>() {
             override fun areItemsTheSame(
@@ -75,7 +75,16 @@ class AddItemImagesInnerAdapter(val onCameraClicked: () -> Unit) :
                 holder.bind(getItem(position) as AddItemImagesInnerData.AddItemImagesInnerCameraData)
             }
             is AddItemImagesInnerViewHolders.AddItemImagesInnerImageViewHolder -> {
-                holder.bind(getItem(position) as AddItemImagesInnerData.AddItemImagesInnerImageData)
+                val item = getItem(position) as AddItemImagesInnerData.AddItemImagesInnerImageData
+                holder.bind(item) {
+
+                    onCancelClicked(holder.adapterPosition)
+
+//                    val newList = currentList.toMutableList().apply {
+//                        removeAt(holder.adapterPosition)
+//                    }
+//                    submitList(newList)
+                }
             }
         }
     }
@@ -98,7 +107,7 @@ sealed class AddItemImagesInnerViewHolders(binding: ViewBinding) :
     ) : AddItemImagesInnerViewHolders(binding) {
         private val context = binding.root.context
 
-        fun bind(data: AddItemImagesInnerData.AddItemImagesInnerImageData) {
+        fun bind(data: AddItemImagesInnerData.AddItemImagesInnerImageData, removeHandler: () -> Unit) {
             Glide.with(binding.imageView)
                 .load(Uri.parse(data.uriString))
                 .transform(
@@ -108,7 +117,12 @@ sealed class AddItemImagesInnerViewHolders(binding: ViewBinding) :
                     )
                 )
                 .into(binding.imageView)
+
+            binding.cancelImageView.setOnClickListener {
+                removeHandler()
+            }
         }
+
     }
 
     class AddItemImageInnerCameraViewHolder(

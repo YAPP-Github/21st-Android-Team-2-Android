@@ -24,7 +24,7 @@ class AddItemViewModel @Inject constructor(
         setState(
             AddItemState.Success(
                 dataList = listOf(
-                    AddItemImages(listOf()),
+                    AddItemImages(mutableListOf()),
                     AddItemName(mode = ScreenMode.ADD_MODE),
                     AddItemCategory(category = ItemCategorySelection.DEFAULT),
                     AddItemLocation(),
@@ -43,6 +43,20 @@ class AddItemViewModel @Inject constructor(
         }
 
     }
+    // 이미지 피커에서 이미지를 선택한 다음, 하나의 이미지의 삭제 버튼을 눌렀을 경우 호출합니다.
+    fun cancelImageUpload(uriStringList: List<String>){
+        withState<AddItemState.Success> { state ->
+            val newDataList = state.dataList.toMutableList()
+            val imageIndex = newDataList.indexOfFirst { data -> data is AddItemImages }
+            newDataList[imageIndex] = (state.dataList[imageIndex] as AddItemImages).copy(
+                uriStringList = uriStringList
+            )
+            setState(AddItemState.Success(newDataList))
+
+        }
+
+    }
+
 
     fun doneChooseImages(uris: List<Uri>){
         withState<AddItemState.Success> { state ->

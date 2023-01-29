@@ -12,10 +12,15 @@ class AddItemImagesViewHolder(
 ) : DataViewHolder<AddItemImages>(binding) {
     lateinit var mAdapter: AddItemImagesInnerAdapter
 
-    private var isInnerRcvInitiated = false
+
+    private var prevData: AddItemImages? = null
+    private var dataChanged = false
     private val context = binding.root.context
     private val addImagesDecoration by lazy {
         AddImagesItemDecoration(context.resources.getDimension(R.dimen.add_images_recyclerview_margin).toInt())
+    }
+    init {
+        binding.innerRecyclerView.addItemDecoration(addImagesDecoration)
     }
 
     override fun reset() {
@@ -25,20 +30,36 @@ class AddItemImagesViewHolder(
     override fun bindData(data: AddItemImages) {
         super.bindData(data)
 
-        if (isInnerRcvInitiated.not()){
-            isInnerRcvInitiated = true
-            with(binding.innerRecyclerView){
-                mAdapter = AddItemImagesInnerAdapter { data.addCameraAction() }
-                adapter = mAdapter
-                addItemDecoration(addImagesDecoration)
-            }
-        }
         val cameraData = AddItemImagesInnerData.AddItemImagesInnerCameraData(
             currentCount = data.uriStringList.size,
             maxCount =  data.maxCount
         )
         val dataList = listOf(cameraData) + data.uriStringList.map {
             AddItemImagesInnerData.AddItemImagesInnerImageData(it)
+        }
+        if (prevData == null){
+            prevData = data
+            dataChanged = true
+        }
+        else if (prevData != data){
+            dataChanged = true
+            prevData = data
+        }
+
+        // 어댑터가 매번 생성되지 않도록 변경합니다. AddItemImage가 변경된 경우 새로 생성합니다.
+        if (dataChanged){
+            dataChanged = false
+
+            with(binding.innerRecyclerView){
+                mAdapter = AddItemImagesInnerAdapter(
+                    onCameraClicked = data.addCameraActionHandler,
+                    onCancelClicked = { position ->
+                        val  newUriStringList = data.uriStringList.toMutableList().apply { removeAt(position-1) }
+                        data.cancelImageUploadHandler(newUriStringList)
+                    }
+                )
+                adapter = mAdapter
+            }
         }
         mAdapter.submitList(dataList)
     }

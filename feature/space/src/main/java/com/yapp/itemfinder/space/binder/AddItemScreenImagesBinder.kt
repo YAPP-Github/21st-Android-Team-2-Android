@@ -15,6 +15,11 @@ class AddItemScreenImagesBinder @Inject constructor() : AddItemImagesBinder {
                 data.addCameraActionHandler = {
                     viewModel.startChooseImages()
                 }
+                data.cancelImageUploadHandler = { urlList ->
+                    viewModel.cancelImageUpload(
+                        urlList
+                    )
+                }
             }
         }
     }
