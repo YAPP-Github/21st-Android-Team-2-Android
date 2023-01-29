@@ -28,7 +28,7 @@ class EditItemViewModel @Inject constructor(
                     AddItemCategory(category = ItemCategorySelection.FOOD),
                     AddItemLocation(spaceName = "주방", spaceId = 111, lockerName = "냉장고", lockerId = 222),
                     AddItemCount(count = 3),
-                    AddItemTags(listOf("다이어트")),
+                    AddItemTags(listOf(Tag("다이어트"))),
                     AddItemAdditional()
                 )
             )
