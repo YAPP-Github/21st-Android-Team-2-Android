@@ -37,7 +37,11 @@ class AddItemViewModel @Inject constructor(
     }
 
     fun startChooseImages(){
-        postSideEffect(AddItemSideEffect.OpenPhotoPicker)
+        withState<AddItemState.Success> { state ->
+            val idx = state.dataList.indexOfFirst { data -> data is AddItemImages }
+            postSideEffect(AddItemSideEffect.OpenPhotoPicker(state.dataList[idx] as AddItemImages))
+        }
+
     }
 
     fun doneChooseImages(uris: List<Uri>){

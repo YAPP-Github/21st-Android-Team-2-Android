@@ -3,6 +3,7 @@ package com.yapp.itemfinder.feature.common.datalist.adapter
 import com.yapp.itemfinder.domain.model.AddItemImages
 import com.yapp.itemfinder.feature.common.R
 import com.yapp.itemfinder.feature.common.adaper.AddItemImagesInnerAdapter
+import com.yapp.itemfinder.feature.common.adaper.AddItemImagesInnerData
 import com.yapp.itemfinder.feature.common.databinding.AddItemImagesBinding
 import com.yapp.itemfinder.feature.common.utility.AddImagesItemDecoration
 
@@ -32,22 +33,14 @@ class AddItemImagesViewHolder(
                 addItemDecoration(addImagesDecoration)
             }
         }
-        mAdapter.submitList(
-            listOf(" ") + data.uriStringList
-//            listOf(
-//                "1",
-//                "2",
-//                "3",
-//                "4",
-//                "5",
-//                "6",
-//                "123",
-//                "12324",
-//                "13213",
-//                "122324",
-//                "131232143213"
-//            )
+        val cameraData = AddItemImagesInnerData.AddItemImagesInnerCameraData(
+            currentCount = data.uriStringList.size,
+            maxCount =  data.maxCount
         )
+        val dataList = listOf(cameraData) + data.uriStringList.map {
+            AddItemImagesInnerData.AddItemImagesInnerImageData(it)
+        }
+        mAdapter.submitList(dataList)
     }
 
     override fun bindViews(data: AddItemImages) {

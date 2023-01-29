@@ -131,11 +131,14 @@ class AddItemActivity : BaseStateActivity<AddItemViewModel, ActivityAddItemBindi
                             SnackBarView.make(binding.root, "메모는 한글 기준 최대 200자까지 작성 가능해요").show()
                         }
                         is AddItemSideEffect.OpenPhotoPicker -> {
-                                TedImagePicker.with(this@AddItemActivity)
-                                    .startMultiImage { uris ->
-                                        vm.doneChooseImages(uris)
-                                    }
-
+                            TedImagePicker.with(this@AddItemActivity)
+                                .max(
+                                    sideEffect.addItemImages.maxCount
+                                    , "${sideEffect.addItemImages.maxCount}개초과!"
+                                )
+                                .startMultiImage { uris ->
+                                    vm.doneChooseImages(uris)
+                                }
                         }
                     }
                 }
@@ -170,7 +173,6 @@ class AddItemActivity : BaseStateActivity<AddItemViewModel, ActivityAddItemBindi
     }
 
     private fun handleLoading(addLockerState: AddItemState) {
-
     }
 
     private fun handleSuccess(addLockerState: AddItemState.Success) {
@@ -180,7 +182,6 @@ class AddItemActivity : BaseStateActivity<AddItemViewModel, ActivityAddItemBindi
     }
 
     private fun handleError(addLockerState: AddItemState.Error) {
-
     }
 
     companion object {
@@ -189,5 +190,4 @@ class AddItemActivity : BaseStateActivity<AddItemViewModel, ActivityAddItemBindi
         const val CHECKED_CATEGORY_KEY = "CHECKED_CATEGORY_KEY"
         fun newIntent(context: Context) = Intent(context, AddItemActivity::class.java)
     }
-
 }

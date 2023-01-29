@@ -1,6 +1,10 @@
 package com.yapp.itemfinder.feature.common.adaper
 
+import android.graphics.Color
 import android.net.Uri
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.style.ForegroundColorSpan
 import android.view.LayoutInflater
 import android.view.RoundedCorner
 import android.view.ViewGroup
@@ -17,13 +21,26 @@ import com.yapp.itemfinder.feature.common.databinding.AddItemImagesInnerCameraVi
 import com.yapp.itemfinder.feature.common.databinding.AddItemImagesInnerImageViewholderItemBinding
 
 class AddItemImagesInnerAdapter(val onCameraClicked: () -> Unit) :
-    ListAdapter<String, AddItemImagesInnerViewHolders>(
-        object : DiffUtil.ItemCallback<String>() {
-            override fun areItemsTheSame(oldItem: String, newItem: String): Boolean =
+    ListAdapter<AddItemImagesInnerData, AddItemImagesInnerViewHolders>(
+        object : DiffUtil.ItemCallback<AddItemImagesInnerData>() {
+            override fun areItemsTheSame(
+                oldItem: AddItemImagesInnerData,
+                newItem: AddItemImagesInnerData
+            ): Boolean =
                 oldItem == newItem
 
-            override fun areContentsTheSame(oldItem: String, newItem: String): Boolean =
-                oldItem == newItem
+            override fun areContentsTheSame(
+                oldItem: AddItemImagesInnerData,
+                newItem: AddItemImagesInnerData
+            ): Boolean {
+                if (oldItem is AddItemImagesInnerData.AddItemImagesInnerImageData
+                    && newItem is AddItemImagesInnerData.AddItemImagesInnerImageData
+                ) {
+                    return oldItem.uriString == newItem.uriString
+                }
+
+                return oldItem == newItem
+            }
         }
     ) {
 
@@ -55,9 +72,10 @@ class AddItemImagesInnerAdapter(val onCameraClicked: () -> Unit) :
                 holder.itemView.setOnClickListener {
                     onCameraClicked()
                 }
+                holder.bind(getItem(position) as AddItemImagesInnerData.AddItemImagesInnerCameraData)
             }
             is AddItemImagesInnerViewHolders.AddItemImagesInnerImageViewHolder -> {
-                holder.bind(getItem(position))
+                holder.bind(getItem(position) as AddItemImagesInnerData.AddItemImagesInnerImageData)
             }
         }
     }
@@ -68,6 +86,11 @@ class AddItemImagesInnerAdapter(val onCameraClicked: () -> Unit) :
     }
 }
 
+sealed class AddItemImagesInnerData {
+    data class AddItemImagesInnerCameraData(val currentCount: Int, val maxCount: Int) : AddItemImagesInnerData()
+    data class AddItemImagesInnerImageData(val uriString: String) : AddItemImagesInnerData()
+}
+
 sealed class AddItemImagesInnerViewHolders(binding: ViewBinding) :
     RecyclerView.ViewHolder(binding.root) {
     class AddItemImagesInnerImageViewHolder(
@@ -75,15 +98,33 @@ sealed class AddItemImagesInnerViewHolders(binding: ViewBinding) :
     ) : AddItemImagesInnerViewHolders(binding) {
         private val context = binding.root.context
 
-        fun bind(data: String) {
+        fun bind(data: AddItemImagesInnerData.AddItemImagesInnerImageData) {
             Glide.with(binding.imageView)
-                .load(Uri.parse(data))
-                .transform(CenterCrop(),RoundedCorners(context.resources.getDimension(R.dimen.add_images_background_radius).toInt()))
+                .load(Uri.parse(data.uriString))
+                .transform(
+                    CenterCrop(),
+                    RoundedCorners(
+                        context.resources.getDimension(R.dimen.add_images_background_radius).toInt()
+                    )
+                )
                 .into(binding.imageView)
         }
     }
 
     class AddItemImageInnerCameraViewHolder(
         val binding: AddItemImagesInnerCameraViewholderItemBinding
-    ) : AddItemImagesInnerViewHolders(binding)
+    ) : AddItemImagesInnerViewHolders(binding) {
+        val context = binding.root.context
+        fun bind(data: AddItemImagesInnerData.AddItemImagesInnerCameraData){
+            val text = "${data.currentCount} / ${data.maxCount}"
+            val spannableString = SpannableString(text)
+            spannableString.setSpan(
+                ForegroundColorSpan(context.resources.getColor(R.color.orange))
+                , 0
+                , text.indexOfFirst { it == '/' }
+                , Spannable.SPAN_INCLUSIVE_INCLUSIVE
+            )
+            binding.imageCount.text =spannableString
+        }
+    }
 }
