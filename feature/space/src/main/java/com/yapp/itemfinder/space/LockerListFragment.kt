@@ -18,6 +18,7 @@ import com.yapp.itemfinder.feature.common.binding.viewBinding
 import com.yapp.itemfinder.feature.common.datalist.adapter.DataListAdapter
 import com.yapp.itemfinder.feature.common.datalist.binder.DataBindHelper
 import com.yapp.itemfinder.feature.common.extension.parcelable
+import com.yapp.itemfinder.space.additem.AddItemActivity
 import com.yapp.itemfinder.space.addlocker.AddLockerActivity
 import com.yapp.itemfinder.space.databinding.FragmentLockerListBinding
 import com.yapp.itemfinder.space.lockerdetail.LockerDetailFragment
@@ -57,6 +58,7 @@ class LockerListFragment : BaseStateFragment<LockerListViewModel, FragmentLocker
             dataListAdapter = DataListAdapter()
             recyclerView.adapter = dataListAdapter
         }
+        addItemFAB.setOnClickListener { vm.moveAddItemActivity() }
     }
 
     private fun initToolBar() = with(binding.defaultTopNavigationView) {
@@ -101,6 +103,9 @@ class LockerListFragment : BaseStateFragment<LockerListViewModel, FragmentLocker
                             }
                             is LockerListSideEffect.MoveToAddLocker -> {
                                 startActivity(AddLockerActivity.newIntent(requireActivity()))
+                            }
+                            is LockerListSideEffect.MoveToAddItem -> {
+                                startActivity(AddItemActivity.newIntent(requireContext()))
                             }
                             else -> {}
                         }
