@@ -5,7 +5,6 @@
     android:layout_height="72dp"
     android:layout_marginVertical="24dp"
     android:background="@drawable/bg_gray_02_radius_4"
-    android:layout_marginRight="8dp"
     >
 
     <ImageView
