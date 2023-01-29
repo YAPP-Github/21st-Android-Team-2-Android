@@ -4,6 +4,7 @@ import android.app.ActionBar.LayoutParams
 import android.app.DatePickerDialog
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import androidx.activity.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -131,11 +132,12 @@ class AddItemActivity : BaseStateActivity<AddItemViewModel, ActivityAddItemBindi
                             SnackBarView.make(binding.root, "메모는 한글 기준 최대 200자까지 작성 가능해요").show()
                         }
                         is AddItemSideEffect.OpenPhotoPicker -> {
+                            val addItemImages = sideEffect.addItemImages
                             TedImagePicker.with(this@AddItemActivity)
                                 .max(
-                                    sideEffect.addItemImages.maxCount
-                                    , "${sideEffect.addItemImages.maxCount}개초과!"
-                                )
+                                    addItemImages.maxCount
+                                    , "${addItemImages.maxCount}개초과!"
+                                ).selectedUri(addItemImages.uriStringList.map { Uri.parse(it) })
                                 .startMultiImage { uris ->
                                     vm.doneChooseImages(uris)
                                 }
