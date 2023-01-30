@@ -11,4 +11,8 @@
     <string name="purchaseDate">구매일</string>
     <string name="expirationDate">소비기한</string>
     <string name="countText">%d개</string>
+    <string name="category">카테고리</string>
+    <string name="life">생활</string>
+    <string name="food">식품</string>
+    <string name="fashion">패션</string>
 </resources>

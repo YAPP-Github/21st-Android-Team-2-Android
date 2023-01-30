@@ -8,6 +8,8 @@
             android:exported="true"
             android:theme="@style/ItemFinderTheme">
         </activity>
+        <activity android:name=".additem.AddItemActivity"
+            android:theme="@style/ItemFinderTheme"/>
     </application>
 
 </manifest>
