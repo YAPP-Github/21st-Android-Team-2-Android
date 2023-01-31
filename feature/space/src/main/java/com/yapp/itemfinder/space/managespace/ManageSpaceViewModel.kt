@@ -2,7 +2,7 @@ package com.yapp.itemfinder.space.managespace
 
 import androidx.lifecycle.viewModelScope
 import com.yapp.itemfinder.domain.model.AddSpace
-import com.yapp.itemfinder.domain.model.ManageSpaceItem
+import com.yapp.itemfinder.domain.model.ManageSpaceEntity
 import com.yapp.itemfinder.domain.repository.ManageSpaceRepository
 import com.yapp.itemfinder.feature.common.BaseStateViewModel
 import com.yapp.itemfinder.feature.common.extension.runCatchingWithErrorHandler
@@ -23,7 +23,7 @@ class ManageSpaceViewModel @Inject constructor(
 
     override fun fetchData(): Job = viewModelScope.launch {
         setState(ManageSpaceState.Loading)
-        var spaces = listOf<ManageSpaceItem>()
+        var spaces = listOf<ManageSpaceEntity>()
         runCatchingWithErrorHandler {
             spaces = manageSpaceRepository.getAllManageSpaceItems()
         }.onSuccess {
@@ -68,11 +68,11 @@ class ManageSpaceViewModel @Inject constructor(
         }
     }
 
-    fun editItem(space: ManageSpaceItem): Job = viewModelScope.launch {
+    fun editItem(space: ManageSpaceEntity): Job = viewModelScope.launch {
 
     }
 
-    fun deleteItem(space: ManageSpaceItem): Job = viewModelScope.launch {
+    fun deleteItem(space: ManageSpaceEntity): Job = viewModelScope.launch {
         withState<ManageSpaceState.Success> { state ->
             postSideEffect(
                 ManageSpaceSideEffect.DeleteDialog

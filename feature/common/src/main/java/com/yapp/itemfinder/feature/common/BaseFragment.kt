@@ -36,13 +36,13 @@ abstract class BaseFragment<VM : BaseViewModel, VB : ViewBinding> : Fragment() {
     }
 
     open fun initState() {
-        setStatusBarColor(depth.statusBarColorId)
+        setStatusBarColor(depth.colorId)
         initViews()
         fetchJob = vm.fetchData()
         observeData()
     }
 
-    enum class Depth(@ColorRes val statusBarColorId: Int) {
+    enum class Depth(@ColorRes val colorId: Int) {
         FIRST(R.color.white), SECOND(R.color.brown_02), THIRD(R.color.brown_03);
     }
 
@@ -51,7 +51,7 @@ abstract class BaseFragment<VM : BaseViewModel, VB : ViewBinding> : Fragment() {
         /**
          * Apply Status bar color when pop backstack
          */
-        if (hidden.not()) setStatusBarColor(depth.statusBarColorId)
+        if (hidden.not()) setStatusBarColor(depth.colorId)
     }
 
     override fun onAttach(context: Context) {
