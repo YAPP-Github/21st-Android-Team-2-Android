@@ -49,17 +49,17 @@ class AddLockerActivity : BaseStateActivity<AddLockerViewModel, ActivityAddLocke
                     }
                 }
             }
-        }
-        launch {
-            vm.sideEffectFlow.collect { sideEffect ->
-                when (sideEffect) {
-                    is AddLockerSideEffect.OpenSelectSpace -> {
-                        val intent = SelectSpaceActivity.newIntent(this@AddLockerActivity)
-                        intent.putExtra(SPACE_ID_KEY, 2L) // 현재 locker의 spacdId로 설정
-                        startActivity(intent)
-                        // 수정된 보관함 위치로 변경
-                        // val name = "서재"
-                        // vm.changeSpace(name)
+            launch {
+                vm.sideEffectFlow.collect { sideEffect ->
+                    when (sideEffect) {
+                        is AddLockerSideEffect.OpenSelectSpace -> {
+                            val intent = SelectSpaceActivity.newIntent(this@AddLockerActivity)
+                            intent.putExtra(SPACE_ID_KEY, 2L) // 현재 locker의 spacdId로 설정
+                            startActivity(intent)
+                            // 수정된 보관함 위치로 변경
+                            // val name = "서재"
+                            // vm.changeSpace(name)
+                        }
                     }
                 }
             }

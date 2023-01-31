@@ -9,9 +9,7 @@ import com.yapp.itemfinder.feature.common.extension.visible
 class SelectSpaceViewHolder(
     val binding: SelectSpaceBinding
 ) : DataViewHolder<SelectSpace>(binding) {
-    override fun reset() {
-        return
-    }
+    override fun reset() = Unit
 
     override fun bindViews(data: SelectSpace) {
         binding.spaceName.text = data.name

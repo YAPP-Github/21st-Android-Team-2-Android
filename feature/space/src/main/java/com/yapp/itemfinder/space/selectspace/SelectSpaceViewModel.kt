@@ -23,34 +23,33 @@ class SelectSpaceViewModel @Inject constructor(
         MutableStateFlow(SelectSpaceState.Uninitialized)
     override val _sideEffectFlow: MutableSharedFlow<SelectSpaceSideEffect> = MutableSharedFlow()
 
-    private var checkedIndex = 0
-
     override fun fetchData(): Job = viewModelScope.launch {
         val spaces = selectSpaceMockRepository.getAllSpaces()
         val spaceId = savedStateHandle.get<Long>(AddLockerActivity.SPACE_ID_KEY) ?: 0
-        checkedIndex = spaces.indexOf(spaces.firstOrNull { it.id == spaceId })
+        val checkedIndex = spaces.indexOf(spaces.firstOrNull { it.id == spaceId })
         spaces[checkedIndex].isChecked = true
         setState(
             SelectSpaceState.Success(
                 dataList = spaces,
-                spaceId = spaceId
+                spaceId = spaceId,
+                checkedIndex = checkedIndex
             )
         )
     }
 
     fun changeChecked(selectSpace: SelectSpace) = withState<SelectSpaceState.Success> { state ->
         val clickedIndex = state.dataList.indexOf(selectSpace)
-        if (clickedIndex == checkedIndex) {
+        val currentIndex = state.checkedIndex
+        if (clickedIndex == currentIndex) {
             return@withState
         }
         val newDataList = ArrayList(state.dataList)
-        newDataList[checkedIndex] =
-            (newDataList[checkedIndex] as SelectSpace).copy(isChecked = false)
-        checkedIndex = clickedIndex
+        newDataList[currentIndex] =
+            (newDataList[currentIndex] as SelectSpace).copy(isChecked = false)
         newDataList[clickedIndex] =
             (newDataList[clickedIndex] as SelectSpace).copy(isChecked = true)
         setState(
-            SelectSpaceState.Success(newDataList, newDataList[clickedIndex].id)
+            SelectSpaceState.Success(newDataList, newDataList[clickedIndex].id, clickedIndex)
         )
     }
 

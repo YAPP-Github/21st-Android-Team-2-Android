@@ -8,7 +8,8 @@ sealed class SelectSpaceState : State {
     object Loading : SelectSpaceState()
     data class Success(
         val dataList: List<Data>,
-        var spaceId: Long
+        var spaceId: Long,
+        var checkedIndex: Int
     ) : SelectSpaceState()
 
     data class Error(

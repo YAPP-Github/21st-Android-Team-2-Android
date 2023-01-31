@@ -10,8 +10,6 @@
         <activity
             android:name=".selectspace.SelectSpaceActivity"
             android:theme="@style/ItemFinderTheme" />
-            android:theme="@style/ItemFinderTheme">
-        </activity>
         <activity android:name=".additem.AddItemActivity"
             android:theme="@style/ItemFinderTheme"/>
     </application>

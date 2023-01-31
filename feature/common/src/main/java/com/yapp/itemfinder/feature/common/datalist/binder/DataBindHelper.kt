@@ -20,7 +20,7 @@ class DataBindHelper @Inject constructor(
     var manageSpaceItemBinder: ManageSpaceItemBinder,
     var manageSpaceAddSpaceBinder: AddSpaceBinder,
     var addLockerSpaceBinder: AddLockerSpaceBinder,
-    var selectSpaceBinder: SelectSpaceBinder
+    var selectSpaceBinder: SelectSpaceBinder,
     var addItemNameBinder: AddItemNameBinder,
     var addItemCategoryBinder: AddItemCategoryBinder,
     var addItemCountBinder: AddItemCountBinder,
