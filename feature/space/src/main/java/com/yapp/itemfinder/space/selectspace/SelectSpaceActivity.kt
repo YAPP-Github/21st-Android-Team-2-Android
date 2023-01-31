@@ -6,6 +6,7 @@ import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.yapp.itemfinder.domain.model.Data
 import com.yapp.itemfinder.feature.common.BaseStateActivity
+import com.yapp.itemfinder.feature.common.R as CR
 import com.yapp.itemfinder.feature.common.binding.viewBinding
 import com.yapp.itemfinder.feature.common.datalist.adapter.DataListAdapter
 import com.yapp.itemfinder.feature.common.datalist.binder.DataBindHelper
@@ -29,10 +30,21 @@ class SelectSpaceActivity : BaseStateActivity<SelectSpaceViewModel, ActivitySele
     private var dataListAdapter: DataListAdapter<Data>? = null
 
     override fun initViews() = with(binding) {
+        initToolbar()
         if (dataListAdapter == null) {
             dataListAdapter = DataListAdapter()
             recyclerView.adapter = dataListAdapter
         }
+    }
+
+    private fun initToolbar() = with(binding.defaultNavigationView){
+        backButtonImageResId = CR.drawable.ic_back
+        containerColor = CR.color.brown_02
+        backButtonClickListener = {
+            //
+            finish()
+        }
+        titleText = "보관함 위치"
     }
 
     override fun observeData(): Job = lifecycleScope.launch {

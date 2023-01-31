@@ -8,6 +8,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.yapp.itemfinder.domain.model.Data
 import com.yapp.itemfinder.feature.common.BaseStateActivity
+import com.yapp.itemfinder.feature.common.R
 import com.yapp.itemfinder.feature.common.binding.viewBinding
 import com.yapp.itemfinder.feature.common.datalist.adapter.DataListAdapter
 import com.yapp.itemfinder.feature.common.datalist.binder.DataBindHelper
@@ -31,10 +32,21 @@ class AddLockerActivity : BaseStateActivity<AddLockerViewModel, ActivityAddLocke
     lateinit var dataBindHelper: DataBindHelper
 
     override fun initViews() = with(binding) {
+        initToolbar()
         if (dataListAdapter == null) {
             dataListAdapter = DataListAdapter()
             recyclerView.adapter = dataListAdapter
         }
+    }
+
+    private fun initToolbar() = with(binding.defaultNavigationView){
+        backButtonImageResId = R.drawable.ic_close_round
+        containerColor = R.color.brown_03
+        backButtonClickListener = {
+            finish()
+        }
+        titleText = "보관함 추가"
+        rightFirstIcon = R.drawable.ic_done
     }
 
     override fun observeData(): Job = lifecycleScope.launch {
