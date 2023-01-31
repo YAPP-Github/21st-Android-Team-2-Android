@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="20dp"
+    android:minWidth="320dp"
+    app:cardCornerRadius="12dp"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:minWidth="320dp"
+        android:orientation="vertical"
+        android:padding="24dp">
+
+        <TextView
+            style="@style/ItemFinderTypography.Subhead"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:text="@string/category"
+            android:textColor="@color/gray_04" />
+
+        <RadioGroup
+            android:id="@+id/categoryRadioGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RadioButton
+                android:id="@+id/lifeRadioButton"
+                style="@style/ItemFinderTypography.Body1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:button="@null"
+                android:drawableStart="@drawable/selector_ic_life"
+                android:drawableEnd="@drawable/selector_category_check"
+                android:drawablePadding="16dp"
+                android:paddingVertical="8dp"
+                android:text="@string/life"
+                android:stateListAnimator="@null"
+                android:textColor="@drawable/selector_text_color" />
+
+            <RadioButton
+                android:id="@+id/foodRadioButton"
+                style="@style/ItemFinderTypography.Body1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:button="@null"
+                android:drawableStart="@drawable/selector_ic_food"
+                android:drawableEnd="@drawable/selector_category_check"
+                android:drawablePadding="16dp"
+                android:paddingVertical="8dp"
+                android:text="@string/food"
+                android:stateListAnimator="@null"
+                android:textColor="@drawable/selector_text_color"/>
+
+            <RadioButton
+                android:id="@+id/fashionRadioButton"
+                style="@style/ItemFinderTypography.Body1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:button="@null"
+                android:drawableStart="@drawable/selector_ic_fashion"
+                android:drawableEnd="@drawable/selector_category_check"
+                android:drawablePadding="16dp"
+                android:paddingVertical="8dp"
+                android:text="@string/fashion"
+                android:stateListAnimator="@null"
+                android:textColor="@drawable/selector_text_color"/>
+        </RadioGroup>
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

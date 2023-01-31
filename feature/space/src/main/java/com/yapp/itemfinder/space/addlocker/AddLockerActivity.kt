@@ -3,7 +3,9 @@ package com.yapp.itemfinder.space.addlocker
 import android.content.Context
 import android.content.Intent
 import androidx.activity.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.yapp.itemfinder.domain.model.Data
 import com.yapp.itemfinder.feature.common.BaseStateActivity
 import com.yapp.itemfinder.feature.common.binding.viewBinding
@@ -38,23 +40,26 @@ class AddLockerActivity : BaseStateActivity<AddLockerViewModel, ActivityAddLocke
     }
 
     override fun observeData(): Job = lifecycleScope.launch {
-        launch {
-            vm.stateFlow.collect { state ->
-                when (state) {
-                    is AddLockerState.Uninitialized -> Unit
-                    is AddLockerState.Loading -> handleLoading(state)
-                    is AddLockerState.Success -> handleSuccess(state)
-                    is AddLockerState.Error -> handleError(state)
+        repeatOnLifecycle(Lifecycle.State.STARTED){
+            launch {
+                vm.stateFlow.collect { state ->
+                    when (state) {
+                        is AddLockerState.Uninitialized -> Unit
+                        is AddLockerState.Loading -> handleLoading(state)
+                        is AddLockerState.Success -> handleSuccess(state)
+                        is AddLockerState.Error -> handleError(state)
+                    }
                 }
             }
-        }
-        launch {
-            vm.sideEffectFlow.collect { sideEffect ->
-                when (sideEffect) {
-                    is AddLockerSideEffect.OpenSelectSpace -> {
-                        // 보관함 위치(selectSpace) 화면으로 이동
-                        val name = "서재"
-                        vm.changeSpace(name)
+            launch {
+                vm.sideEffectFlow.collect { sideEffect ->
+                    when (sideEffect) {
+                        is AddLockerSideEffect.OpenSelectSpace -> {
+                            // 보관함 위치(selectSpace) 화면으로 이동
+                            val name = "서재"
+                            vm.changeSpace(name)
+                        }
+                        else -> {}
                     }
                     is AddLockerSideEffect.UploadImage -> {
                         handleUploadImage()
