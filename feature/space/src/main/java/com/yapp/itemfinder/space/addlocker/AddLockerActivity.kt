@@ -11,8 +11,10 @@ import com.yapp.itemfinder.feature.common.BaseStateActivity
 import com.yapp.itemfinder.feature.common.binding.viewBinding
 import com.yapp.itemfinder.feature.common.datalist.adapter.DataListAdapter
 import com.yapp.itemfinder.feature.common.datalist.binder.DataBindHelper
+import com.yapp.itemfinder.feature.common.extension.showShortToast
 import com.yapp.itemfinder.space.databinding.ActivityAddLockerBinding
 import dagger.hilt.android.AndroidEntryPoint
+import gun0912.tedimagepicker.builder.TedImagePicker
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -25,6 +27,7 @@ class AddLockerActivity : BaseStateActivity<AddLockerViewModel, ActivityAddLocke
     override val binding by viewBinding(ActivityAddLockerBinding::inflate)
 
     private var dataListAdapter: DataListAdapter<Data>? = null
+
 
     @Inject
     lateinit var dataBindHelper: DataBindHelper
@@ -56,15 +59,20 @@ class AddLockerActivity : BaseStateActivity<AddLockerViewModel, ActivityAddLocke
                             val name = "서재"
                             vm.changeSpace(name)
                         }
-                        else -> {}
+                        is AddLockerSideEffect.UploadImage -> {
+                            handleUploadImage()
+                        }
+                        is AddLockerSideEffect.ShowToast -> {
+                            showShortToast(sideEffect.message)
+                        }
                     }
+
                 }
             }
         }
     }
 
     private fun handleLoading(addLockerState: AddLockerState) {
-
     }
 
     private fun handleSuccess(addLockerState: AddLockerState.Success) {
@@ -73,10 +81,14 @@ class AddLockerActivity : BaseStateActivity<AddLockerViewModel, ActivityAddLocke
     }
 
     private fun handleError(addLockerState: AddLockerState.Error) {
-
     }
 
-    companion object {
+    private fun handleUploadImage() {
+        TedImagePicker.with(this)
+            .start { vm.uploadImage(it)  }
+    }
+
+    companion object{
         fun newIntent(context: Context) = Intent(context, AddLockerActivity::class.java)
     }
 }
