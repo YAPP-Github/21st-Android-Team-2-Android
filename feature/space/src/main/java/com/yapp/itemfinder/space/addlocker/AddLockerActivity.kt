@@ -59,14 +59,14 @@ class AddLockerActivity : BaseStateActivity<AddLockerViewModel, ActivityAddLocke
                             val name = "서재"
                             vm.changeSpace(name)
                         }
-                        else -> {}
+                        is AddLockerSideEffect.UploadImage -> {
+                            handleUploadImage()
+                        }
+                        is AddLockerSideEffect.ShowToast -> {
+                            showShortToast(sideEffect.message)
+                        }
                     }
-                    is AddLockerSideEffect.UploadImage -> {
-                        handleUploadImage()
-                    }
-                    is AddLockerSideEffect.ShowToast -> {
-                        showShortToast(sideEffect.message)
-                    }
+
                 }
             }
         }
