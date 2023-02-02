@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:background="@color/black"
+    tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout">
+
+    <View
+        android:id="@+id/markerBackgroundView"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/selectedMarkerImageView"
+        android:layout_width="35dp"
+        android:layout_height="48dp"
+        android:scaleType="center"
+        android:src="@drawable/ic_marker_background"
+        android:textAlignment="center"
+        app:layout_constraintTop_toTopOf="@id/markerBackgroundView"
+        app:layout_constraintStart_toStartOf="@id/markerBackgroundView"
+        app:layout_constraintEnd_toEndOf="@id/markerBackgroundView"
+        app:layout_constraintBottom_toBottomOf="@id/markerBackgroundView"
+        android:paddingTop="12dp"
+        android:elevation="10dp" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/selectedMarkerIconImageView"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:layout_marginTop="8dp"
+        android:textAlignment="center"
+        app:layout_constraintTop_toTopOf="@id/selectedMarkerImageView"
+        app:layout_constraintStart_toStartOf="@id/selectedMarkerImageView"
+        app:layout_constraintEnd_toEndOf="@id/selectedMarkerImageView"
+        app:layout_constraintBottom_toBottomOf="@id/selectedMarkerImageView"
+        app:layout_constraintVertical_bias="0"
+        tools:src="@drawable/ic_marker_fashion"
+        android:elevation="10dp" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/selectedItemGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        app:constraint_referenced_ids="selectedMarkerImageView,selectedMarkerIconImageView"
+        tools:visibility="visible" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/markerIconImageView"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:textAlignment="center"
+        android:visibility="invisible"
+        app:layout_constraintTop_toTopOf="@id/selectedMarkerImageView"
+        app:layout_constraintStart_toStartOf="@id/selectedMarkerImageView"
+        app:layout_constraintEnd_toEndOf="@id/selectedMarkerImageView"
+        app:layout_constraintBottom_toBottomOf="@id/selectedMarkerImageView"
+        tools:src="@drawable/ic_marker_fashion"
+        android:elevation="10dp"
+        tools:visibility="visible" />
+
+</merge>
+

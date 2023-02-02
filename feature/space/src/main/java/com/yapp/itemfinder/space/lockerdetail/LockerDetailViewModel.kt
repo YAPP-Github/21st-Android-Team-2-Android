@@ -3,6 +3,7 @@ package com.yapp.itemfinder.space.lockerdetail
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.yapp.itemfinder.data.repositories.di.LockerRepositoryQualifiers
+import com.yapp.itemfinder.domain.model.Item
 import com.yapp.itemfinder.domain.model.LockerEntity
 import com.yapp.itemfinder.domain.repository.LockerRepository
 import com.yapp.itemfinder.domain.repository.ItemRepository
@@ -48,4 +49,21 @@ class LockerDetailViewModel @Inject constructor(
             setState(LockerDetailState.Error(it))
         }
     }
+
+    fun applyFocusFirstItem(position: Int) {
+        withState<LockerDetailState.Success> { state ->
+            state.lastFocusedItem?.applyItemFocus(false)
+            if (state.dataList.isNotEmpty()) {
+                val focusItem = state.dataList[position] as Item
+                focusItem.applyItemFocus(true)
+                setState(
+                    state.copy(
+                        needToFetch = false,
+                        lastFocusedItem = focusItem
+                    )
+                )
+            }
+        }
+    }
+
 }
