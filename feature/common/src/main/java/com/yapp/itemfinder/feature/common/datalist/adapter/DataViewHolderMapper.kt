@@ -2,6 +2,8 @@ package com.yapp.itemfinder.feature.common.datalist.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import com.yapp.itemfinder.domain.model.AddItemExpirationDate
+import com.yapp.itemfinder.domain.model.AddItemMemo
 import com.yapp.itemfinder.domain.model.CellType
 import com.yapp.itemfinder.domain.model.Data
 import com.yapp.itemfinder.feature.common.databinding.*
@@ -29,6 +31,7 @@ object DataViewHolderMapper {
             CellType.ADD_LOCKER_SPACE_CELL -> AddLockerSpaceViewHolder(AddLockerSpaceBinding.inflate(inflater, parent, false))
             CellType.LOCKER_ICONS_CELL -> LockerIconsViewHolder(LockerIconsBinding.inflate(inflater, parent, false))
             CellType.ADD_LOCKER_IMAGE_CELL -> AddLockerPhotoViewHolder(AddLockerPhotoBinding.inflate(inflater, parent, false))
+            CellType.SELECT_SPACE_CELL -> SelectSpaceViewHolder(SelectSpaceBinding.inflate(inflater, parent, false))
             CellType.ITEM_SIMPLE_CELL ->  ItemSimpleViewHolder(ItemSimpleItemBinding.inflate(inflater,parent,false))
             CellType.ADD_ITEM_IMAGES_CELL -> AddItemImagesViewHolder(AddItemImagesBinding.inflate(inflater, parent, false))
             CellType.ADD_ITEM_NAME_CELL -> AddItemNameViewHolder(AddItemNameBinding.inflate(inflater, parent, false))

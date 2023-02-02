@@ -20,6 +20,8 @@ class DataBindHelper @Inject constructor(
     var manageSpaceItemBinder: ManageSpaceItemBinder,
     var manageSpaceAddSpaceBinder: AddSpaceBinder,
     var addLockerSpaceBinder: AddLockerSpaceBinder,
+    var selectSpaceBinder: SelectSpaceBinder,
+    var addLockerPhotoItemBinder: AddLockerPhotoItemBinder,
     var addItemNameBinder: AddItemNameBinder,
     var addItemCategoryBinder: AddItemCategoryBinder,
     var addItemCountBinder: AddItemCountBinder,
@@ -28,8 +30,8 @@ class DataBindHelper @Inject constructor(
     var addItemPurchaseDateBinder: AddItemPurchaseDateBinder,
     var addItemMemoBinder: AddItemMemoBinder,
     var addItemImagesBinder: AddItemImagesBinder,
+    var addItemMemoBinder: AddItemMemoBinder
 ) {
-
 
     @SuppressLint("CheckResult")
     fun bindList(dataList: List<Data>, viewModel: BaseViewModel) {
@@ -64,6 +66,12 @@ class DataBindHelper @Inject constructor(
             CellType.ADD_LOCKER_SPACE_CELL -> {
                 addLockerSpaceBinder.bindData(data as AddLockerSpace, viewModel)
             }
+            CellType.SELECT_SPACE_CELL -> {
+                selectSpaceBinder.bindData(data as SelectSpace, viewModel)
+            }
+            CellType.ADD_LOCKER_IMAGE_CELL -> {
+                addLockerPhotoItemBinder.bindData(data as AddLockerPhoto, viewModel)
+            }
             CellType.ADD_ITEM_CATEGORY_CELL -> {
                 addItemCategoryBinder.bindData(data as AddItemCategory, viewModel)
             }
@@ -92,5 +100,4 @@ class DataBindHelper @Inject constructor(
             else -> {}
         }
     }
-
 }

@@ -56,7 +56,7 @@
 
     <style name="DefaultToolbar" parent="Widget.AppCompat.Toolbar">
         <item name="android:theme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
-        <item name="android:minHeight">?attr/actionBarSize</item>
+        <item name="android:minHeight">@dimen/toolbar_container_height</item>
         <item name="android:textAppearance">@style/ItemFinderTypography.Head</item>
         <item name="titleTextAppearance">@style/ItemFinderTypography.Head</item>
         <item name="popupTheme">@style/ThemeOverlay.AppCompat.Light</item>

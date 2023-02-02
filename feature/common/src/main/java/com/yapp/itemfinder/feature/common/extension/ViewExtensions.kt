@@ -2,6 +2,7 @@ package com.yapp.itemfinder.feature.common.extension
 
 import android.content.Context
 import android.view.View
+import android.view.ViewTreeObserver
 import android.view.inputmethod.InputMethodManager
 
 fun View.hideSoftInput() {
@@ -19,4 +20,17 @@ fun View.invisible(){
 
 fun View.gone(){
     visibility = View.GONE
+}
+
+inline fun View.doOnGlobalLayout(crossinline action: (view: View) -> Unit) {
+    val vto = viewTreeObserver
+    vto.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+        override fun onGlobalLayout() {
+            action(this@doOnGlobalLayout)
+            when {
+                vto.isAlive -> vto.removeOnGlobalLayoutListener(this)
+                else -> viewTreeObserver.removeOnGlobalLayoutListener(this)
+            }
+        }
+    })
 }
