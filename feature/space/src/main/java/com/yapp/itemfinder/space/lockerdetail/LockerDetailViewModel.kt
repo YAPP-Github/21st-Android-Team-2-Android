@@ -50,6 +50,10 @@ class LockerDetailViewModel @Inject constructor(
         }
     }
 
+    fun moveItemDetail(itemId: Long) {
+        postSideEffect(LockerDetailSideEffect.MoveItemDetail(itemId))
+    }
+    
     fun applyFocusFirstItem(position: Int) {
         withState<LockerDetailState.Success> { state ->
             state.lastFocusedItem?.applyItemFocus(false)

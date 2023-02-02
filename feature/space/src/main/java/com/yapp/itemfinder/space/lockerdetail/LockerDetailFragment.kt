@@ -1,5 +1,7 @@
 package com.yapp.itemfinder.space.lockerdetail
 
+import android.os.Bundle
+import android.util.Log
 import android.animation.Animator
 import android.animation.ValueAnimator
 import android.view.View
@@ -20,6 +22,7 @@ import com.google.android.material.divider.MaterialDividerItemDecoration
 import com.yapp.itemfinder.domain.model.Data
 import com.yapp.itemfinder.domain.model.Item
 import com.yapp.itemfinder.feature.common.BaseStateFragment
+import com.yapp.itemfinder.feature.common.FragmentNavigator
 import com.yapp.itemfinder.feature.common.R.string
 import com.yapp.itemfinder.feature.common.binding.viewBinding
 import com.yapp.itemfinder.feature.common.datalist.adapter.DataListAdapter
@@ -35,10 +38,11 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import com.yapp.itemfinder.feature.common.R as CR
-
+import com.yapp.itemfinder.space.itemdetail.ItemDetailFragment
 
 @AndroidEntryPoint
-class LockerDetailFragment : BaseStateFragment<LockerDetailViewModel, FragmentLockerDetailBinding>() {
+class LockerDetailFragment :
+    BaseStateFragment<LockerDetailViewModel, FragmentLockerDetailBinding>() {
 
     override val vm by viewModels<LockerDetailViewModel>()
 
@@ -116,7 +120,8 @@ class LockerDetailFragment : BaseStateFragment<LockerDetailViewModel, FragmentLo
             tagButton.isClickable = isActive
         }
 
-        val behavior = BottomSheetBehavior.from(binding.bottomSheet.root) as CustomDraggableBottomSheetBehaviour
+        val behavior =
+            BottomSheetBehavior.from(binding.bottomSheet.root) as CustomDraggableBottomSheetBehaviour
         behavior.addBottomSheetCallback(object : BottomSheetCallback() {
             override fun onStateChanged(bottomSheet: View, newState: Int) {
                 with(binding.bottomSheet.toggleImageView) {
@@ -266,12 +271,33 @@ class LockerDetailFragment : BaseStateFragment<LockerDetailViewModel, FragmentLo
                 }
                 launch {
                     vm.sideEffectFlow.collect { sideEffect ->
-//
+                        when (sideEffect) {
+                            is LockerDetailSideEffect.MoveItemDetail -> {
+                                moveItemDetail(itemId = sideEffect.itemId)
+                            }
+                        }
                     }
                 }
             }
         }
         return job
+    }
+
+    private fun moveItemDetail(itemId: Long) {
+        when (val activity = requireActivity()) {
+            is FragmentNavigator -> {
+                val bundle = Bundle()
+                bundle.apply {
+                    putString(ItemDetailFragment.SPACE_NAME_KEY, "주방")
+                    putString(ItemDetailFragment.LOCKER_NAME_KEY, "냉장고")
+                    putLong(ItemDetailFragment.ITEM_ID_KEY, itemId)
+                }
+                activity.addFragmentBackStack(
+                    ItemDetailFragment.TAG,
+                    bundle = bundle
+                )
+            }
+        }
     }
 
     private fun handleLoading() {
@@ -294,6 +320,9 @@ class LockerDetailFragment : BaseStateFragment<LockerDetailViewModel, FragmentLo
         dataBindHelper.bindList(dataList, vm)
         dataListAdapter?.submitList(dataList)
 
+        val itemCount: Int = dataListAdapter?.itemCount ?: 0
+        binding.bottomSheet.totalItemCount.text = getString(string.totalCount, itemCount)
+        binding.floatingActionButton.setOnClickListener { vm.moveItemDetail(1L) } // 각 물건별로 동작하도록 Item, ItemSimpleViewHolder 쪽에 핸들러 설정이 필요합니다.
         binding.bottomSheet.totalItemCount.text = getString(string.totalCount, dataList.size)
     }
 

@@ -79,4 +79,7 @@ class ItemMockRepositoryImpl @Inject constructor() : ItemRepository {
         }
     }
 
+    override fun getItemById(itemId: Long): Item {
+        return sample
+    }
 }
