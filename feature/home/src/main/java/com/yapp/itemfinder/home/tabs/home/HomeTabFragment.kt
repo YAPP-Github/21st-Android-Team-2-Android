@@ -69,6 +69,10 @@ class HomeTabFragment : BaseStateFragment<HomeTabViewModel, FragmentHomeTabBindi
                 vm.createSpaceItem(newSpaceName)
             }
         }
+
+        setFragmentResultListener(ManageSpaceFragment.NEW_SPACE_ADDED_REQUEST_KEY){ _, _ ->
+            vm.fetchData()
+        }
     }
 
 

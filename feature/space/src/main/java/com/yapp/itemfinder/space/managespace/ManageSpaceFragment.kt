@@ -3,6 +3,8 @@ package com.yapp.itemfinder.space.managespace
 import android.app.AlertDialog
 import android.view.ContextThemeWrapper
 import android.widget.Toast
+import androidx.core.os.bundleOf
+import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -113,6 +115,9 @@ class ManageSpaceFragment : BaseStateFragment<ManageSpaceViewModel, FragmentMana
                                     dialog.show()
                                 }
                             }
+                            is ManageSpaceSideEffect.AddSpaceSuccessResult -> {
+                                setFragmentResult(NEW_SPACE_ADDED_REQUEST_KEY, bundleOf())
+                            }
                         }
                     }
                 }
@@ -138,6 +143,8 @@ class ManageSpaceFragment : BaseStateFragment<ManageSpaceViewModel, FragmentMana
 
         val TAG = ManageSpaceFragment::class.simpleName.toString()
         const val MY_SPACE_TITLE_KEY = "MY_SPACE_TITLE_KEY"
+        const val NEW_SPACE_ADDED_REQUEST_KEY = "NEW_SPACE_ADDED"
+        const val NEW_SPACE_ADDED_BUNDLE_KEY = "NEW_SPACE_ADDED"
 
         fun newInstance() = ManageSpaceFragment()
 

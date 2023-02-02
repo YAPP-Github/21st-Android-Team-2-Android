@@ -59,6 +59,7 @@ class ManageSpaceViewModel @Inject constructor(
                         }
                     )
                 )
+                postSideEffect(ManageSpaceSideEffect.AddSpaceSuccessResult)
             }.onFailure { e ->
                 setState(ManageSpaceState.Error(e))
                 postSideEffect(
