@@ -214,7 +214,7 @@ class AddItemViewModel @Inject constructor(
                 postSideEffect(AddItemSideEffect.FillOutNameSnackBar)
                 return
             }
-            if (itemCategory == "") {
+            if (itemCategory == ItemCategorySelection.DEFAULT.label) {
                 postSideEffect(AddItemSideEffect.FillOutCategorySnackBar)
                 return
             }

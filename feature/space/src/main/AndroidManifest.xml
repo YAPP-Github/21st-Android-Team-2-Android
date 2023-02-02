@@ -6,9 +6,13 @@
         <activity
             android:name=".addlocker.AddLockerActivity"
             android:exported="true"
-            android:theme="@style/ItemFinderTheme">
-        </activity>
+            android:theme="@style/ItemFinderTheme" />
+        <activity
+            android:name=".selectspace.SelectSpaceActivity"
+            android:theme="@style/ItemFinderTheme" />
         <activity android:name=".additem.AddItemActivity"
+            android:theme="@style/ItemFinderTheme"/>
+        <activity android:name=".edititem.EditItemActivity"
             android:theme="@style/ItemFinderTheme"/>
     </application>
 

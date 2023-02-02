@@ -1,6 +1,7 @@
 package com.yapp.itemfinder.feature.common.datalist.adapter
 
 import com.yapp.itemfinder.domain.model.AddItemLocation
+import com.yapp.itemfinder.domain.model.ScreenMode
 import com.yapp.itemfinder.feature.common.databinding.AddItemLocationBinding
 import com.yapp.itemfinder.feature.common.extension.gone
 import com.yapp.itemfinder.feature.common.extension.visible
@@ -10,6 +11,12 @@ class AddItemLocationViewHolder(
 ) : DataViewHolder<AddItemLocation>(binding) {
     override fun reset() {
         return
+    }
+
+    override fun bindData(data: AddItemLocation) {
+        super.bindData(data)
+        binding.itemLocationSpaceTextView.text = data.spaceName
+        binding.itemLocationLockerTextView.text = data.lockerName
     }
 
     override fun bindViews(data: AddItemLocation) {

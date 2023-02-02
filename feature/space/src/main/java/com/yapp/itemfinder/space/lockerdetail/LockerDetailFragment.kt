@@ -2,22 +2,35 @@ package com.yapp.itemfinder.space.lockerdetail
 
 import android.os.Bundle
 import android.util.Log
+import android.animation.Animator
+import android.animation.ValueAnimator
 import android.view.View
 import android.widget.Toast
+import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.core.graphics.Insets
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updateLayoutParams
+import androidx.core.view.updatePadding
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.*
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetBehavior.BottomSheetCallback
 import com.google.android.material.divider.MaterialDividerItemDecoration
 import com.yapp.itemfinder.domain.model.Data
+import com.yapp.itemfinder.domain.model.Item
 import com.yapp.itemfinder.feature.common.BaseStateFragment
 import com.yapp.itemfinder.feature.common.FragmentNavigator
+import com.yapp.itemfinder.feature.common.R.string
 import com.yapp.itemfinder.feature.common.binding.viewBinding
 import com.yapp.itemfinder.feature.common.datalist.adapter.DataListAdapter
 import com.yapp.itemfinder.feature.common.datalist.binder.DataBindHelper
+import com.yapp.itemfinder.feature.common.extension.dimen
+import com.yapp.itemfinder.feature.common.extension.screenHeight
+import com.yapp.itemfinder.feature.common.extension.screenWidth
+import com.yapp.itemfinder.feature.common.views.behavior.CustomDraggableBottomSheetBehaviour
 import com.yapp.itemfinder.space.R
 import com.yapp.itemfinder.space.databinding.FragmentLockerDetailBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -45,13 +58,21 @@ class LockerDetailFragment :
     @Inject
     lateinit var dataBindHelper: DataBindHelper
 
+    private var inset: Insets? = null
     override fun initViews() = with(binding) {
+        ViewCompat.setOnApplyWindowInsetsListener(requireView()) { v, insets ->
+            inset = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            // View 계층에 반영될 Inset들을 반환한다.
+            insets
+        }
+
         initToolBar()
         if (dataListAdapter == null) {
             dataListAdapter = DataListAdapter()
         }
 
         initBottomSheet()
+        handleRecyclerViewListener()
     }
 
     private fun initToolBar() = with(binding.defaultTopNavigationView) {
@@ -77,7 +98,16 @@ class LockerDetailFragment :
                 ).apply {
                     isLastItemDecorated = false
                     dividerColor =
-                        requireContext().getColor(com.yapp.itemfinder.feature.common.R.color.gray_01)
+                        requireContext().getColor(CR.color.gray_01)
+                }
+            )
+
+            val screenRatio = requireContext().screenHeight() / requireContext().screenWidth().toFloat()
+            recyclerview.updatePadding(
+                bottom = if (screenRatio > 2) {
+                    requireContext().dimen(CR.dimen.bottom_sheet_bottom_padding_large).toInt()
+                } else {
+                    requireContext().dimen(CR.dimen.bottom_sheet_bottom_padding_default).toInt()
                 }
             )
         }
@@ -137,16 +167,110 @@ class LockerDetailFragment :
                             - resources.getDimension(CR.dimen.collapsing_toolbar_container_height)
                             - inset.top
                             ).toInt()
-            }
-            insets
-        }
+        setBottomSheetPeekHeight(isExpand = true)
 
         behavior.draggableView = binding.bottomSheet.itemsDraggableContainer
 
     }
 
+    private fun setBottomSheetPeekHeight(isExpand: Boolean, isAnimate: Boolean = false) {
+        val behavior = BottomSheetBehavior.from(binding.bottomSheet.root) as CustomDraggableBottomSheetBehaviour
+        binding.itemsMarkerMapView.post {
+            val toolBarInset = inset?.top ?: 0
+            val toolbarContainerHeight = requireContext().dimen(CR.dimen.collapsing_toolbar_container_height).toInt()
+            val toolbarHeight = binding.toolbar.measuredHeight
+            behavior.maxHeight = binding.root.measuredHeight - binding.toolbar.measuredHeight - toolBarInset
+            val peekHeight = (binding.root.measuredHeight
+                - binding.itemsMarkerMapView.getImageHeight()
+                - (if (isExpand) toolbarContainerHeight else toolbarHeight)
+                - toolBarInset)
+            behavior.setPeekHeight(peekHeight, isAnimate)
+        }
+    }
+
+    private fun handleRecyclerViewListener() = with(binding.bottomSheet.recyclerview) {
+        var filterCollapseAnimator: Animator? = null
+        var filterExpandAnimator: Animator? = null
+        var isFilterCollapsed = false
+        var isFilterExpanded = false
+        var isInitialized = false
+
+        fun isAnimateRunning() =
+            filterExpandAnimator?.isRunning == true
+                || filterCollapseAnimator?.isRunning == true
+
+        fun startChangeFilterShape(startHeight: Int, endHeight: Int, isExpand: Boolean, isAnimate: Boolean = true) {
+            val animator = ValueAnimator.ofInt(startHeight, endHeight)
+                .setDuration(if (isAnimate) BOTTOM_SHEET_TRANSITION_DURATION else 0).apply {
+                    addUpdateListener { animation ->
+                        val value = animation.animatedValue as Int
+                        binding.filterContainer.updateLayoutParams<CoordinatorLayout.LayoutParams> {
+                            height = value
+                        }
+                        binding.itemsMarkerMapView.updateLayoutParams<CoordinatorLayout.LayoutParams> {
+                            topMargin = value
+                        }
+                    }
+                    start()
+                    isFilterExpanded = isExpand
+                    isFilterCollapsed = isExpand.not()
+                }
+            if (isExpand) {
+                filterExpandAnimator = animator
+            } else {
+                filterCollapseAnimator = animator
+            }
+        }
+
+        fun handleExpandFilter(isExpand: Boolean, isAnimate: Boolean = true) {
+            post {
+                val toolbarContainerHeight = requireContext().dimen(CR.dimen.collapsing_toolbar_container_height).toInt()
+                val toolbarHeight = binding.toolbar.measuredHeight
+
+                if (isExpand) {
+                    if (isAnimateRunning() || isFilterExpanded) return@post
+                    startChangeFilterShape(toolbarHeight, toolbarContainerHeight, isExpand = true, isAnimate = isAnimate)
+                    setBottomSheetPeekHeight(isExpand = true, isAnimate = isAnimate)
+                } else {
+                    if (isAnimateRunning() || isFilterCollapsed) return@post
+                    startChangeFilterShape(toolbarContainerHeight, toolbarHeight, isExpand = false, isAnimate = isAnimate)
+                    setBottomSheetPeekHeight(isExpand = false, isAnimate = isAnimate)
+                }
+            }
+        }
+
+        fun focusCurrentVisibleItem() {
+            val firstVisibleItemPosition =
+                (layoutManager as LinearLayoutManager).findFirstCompletelyVisibleItemPosition()
+            if (firstVisibleItemPosition != RecyclerView.NO_POSITION) {
+                vm.applyFocusFirstItem(
+                    if (!canScrollVertically(1)) {
+                        requireNotNull(adapter).itemCount - 1
+                    } else {
+                        firstVisibleItemPosition
+                    }
+                )
+            }
+        }
+
+        setOnScrollChangeListener { _: View?, scrollX: Int, scrollY: Int, oldScrollX: Int, oldScrollY: Int ->
+            when {
+                isInitialized.not() -> handleExpandFilter(true, isAnimate = false)
+                scrollState == RecyclerView.SCROLL_STATE_SETTLING -> {
+                    if (oldScrollY in 0..10) {
+                        handleExpandFilter(true)
+                    } else {
+                        handleExpandFilter(scrollY < oldScrollY)
+                    }
+                }
+
+            }
+            focusCurrentVisibleItem()
+            isInitialized = true
+        }
+    }
+
     override fun observeData(): Job {
-        Log.i("LockerDetailFragment", "observeData: ")
         val job = viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
@@ -193,14 +317,29 @@ class LockerDetailFragment :
     }
 
     private fun handleSuccess(lockerDetailState: LockerDetailState.Success) {
+        if (lockerDetailState.needToFetch.not()) {
+            lockerDetailState.lastFocusedItem?.let {
+                binding.itemsMarkerMapView.applyFocusMarker(it)
+            }
+            return
+        }
+
+        val dataList = lockerDetailState.dataList
+        handleItemMarkers(dataList.map { it as Item })
+
         binding.defaultTopNavigationView.titleText = lockerDetailState.locker.name
 
-        dataBindHelper.bindList(lockerDetailState.dataList, vm)
-        dataListAdapter?.submitList(lockerDetailState.dataList)
+        dataBindHelper.bindList(dataList, vm)
+        dataListAdapter?.submitList(dataList)
 
         val itemCount: Int = dataListAdapter?.itemCount ?: 0
         binding.bottomSheet.totalItemCount.text = getString(string.totalCount, itemCount)
         binding.floatingActionButton.setOnClickListener { vm.moveItemDetail(1L) } // 각 물건별로 동작하도록 Item, ItemSimpleViewHolder 쪽에 핸들러 설정이 필요합니다.
+        binding.bottomSheet.totalItemCount.text = getString(string.totalCount, dataList.size)
+    }
+
+    private fun handleItemMarkers(items: List<Item>) = with(binding) {
+        itemsMarkerMapView.fetchItems(items)
     }
 
     companion object {
@@ -208,6 +347,8 @@ class LockerDetailFragment :
         val TAG = LockerDetailFragment::class.simpleName.toString()
 
         const val LOCKER_ENTITY_KEY = "LOCKER_ENTITY_KEY"
+
+        const val BOTTOM_SHEET_TRANSITION_DURATION = 150L
 
         fun newInstance() = LockerDetailFragment()
     }
