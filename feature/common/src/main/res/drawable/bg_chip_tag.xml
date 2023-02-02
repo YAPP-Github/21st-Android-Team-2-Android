@@ -1,6 +1,6 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
 
     <solid android:color="@color/brown_03" />
-
+    <padding android:left="8dp" android:right="8dp" android:top="4dp" android:bottom="4dp"/>
     <corners android:radius="@dimen/tag_or_category_radius" />
 </shape>
