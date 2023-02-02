@@ -2,8 +2,6 @@ package com.yapp.itemfinder.feature.common.datalist.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import com.yapp.itemfinder.domain.model.AddItemExpirationDate
-import com.yapp.itemfinder.domain.model.AddItemMemo
 import com.yapp.itemfinder.domain.model.CellType
 import com.yapp.itemfinder.domain.model.Data
 import com.yapp.itemfinder.feature.common.databinding.*
@@ -17,7 +15,7 @@ object DataViewHolderMapper {
     ): DataViewHolder<D> {
         val inflater = LayoutInflater.from(parent.context)
         val viewHolder = when (type) {
-            CellType.EMPTY_CELL -> EmptyCellViewHolder(EmptyCellItemBinding.inflate(inflater,parent,false))
+            CellType.ADD_ITEM_MARKER_MAP_CELL, CellType.EMPTY_CELL -> EmptyCellViewHolder(EmptyCellItemBinding.inflate(inflater,parent,false))
             CellType.CATEGORY_CELL -> CategoryViewHolder(ViewholderStorageBinding.inflate(inflater,parent,false))
             CellType.LIKE_CELL -> LikeViewHolder(LikeItemBinding.inflate(inflater, parent, false))
             CellType.SPACE_CELL -> SpaceViewHolder(SpaceItemBinding.inflate(inflater,parent,false))
@@ -45,6 +43,9 @@ object DataViewHolderMapper {
                 AddItemExpirationDateBinding.inflate(inflater, parent, false))
             CellType.ADD_ITEM_PURCHASE_DATE_CELL -> AddItemPurchaseDateViewHolder(
                 AddItemPurchaseDateBinding.inflate(inflater, parent, false))
+            CellType.ADD_ITEM_SELECT_SPACE_CELL -> AddItemSelectSpaceViewHolder(
+                ViewholderAddItemSelectSpaceBinding.inflate(inflater, parent, false)
+            )
         }
 
         return viewHolder as DataViewHolder<D>

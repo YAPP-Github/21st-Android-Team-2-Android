@@ -8,11 +8,10 @@ import com.yapp.itemfinder.feature.common.extension.visible
 class AddItemLocationViewHolder(
     val binding: AddItemLocationBinding
 ) : DataViewHolder<AddItemLocation>(binding) {
-    override fun reset() {
-        return
-    }
+    override fun reset() = Unit
 
-    override fun bindViews(data: AddItemLocation) {
+    override fun bindData(data: AddItemLocation) {
+        super.bindData(data)
         if (data.spaceName == "" && data.lockerName == "") {
             binding.itemLocationGroup.gone()
             binding.arrowForward.gone()
@@ -21,6 +20,12 @@ class AddItemLocationViewHolder(
             binding.itemLocationHintTextView.gone()
             binding.itemLocationGroup.visible()
             binding.arrowForward.visible()
+        }
+    }
+
+    override fun bindViews(data: AddItemLocation) {
+        binding.root.setOnClickListener {
+            data.runMoveSelectSpace()
         }
     }
 }

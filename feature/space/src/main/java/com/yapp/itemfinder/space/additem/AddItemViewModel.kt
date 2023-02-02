@@ -245,4 +245,9 @@ class AddItemViewModel @Inject constructor(
     fun openSelectCategoryDialog() {
         postSideEffect(AddItemSideEffect.OpenSelectCategoryDialog)
     }
+
+    fun moveSelectSpace() {
+        postSideEffect(AddItemSideEffect.MoveSelectSpace)
+    }
+
 }

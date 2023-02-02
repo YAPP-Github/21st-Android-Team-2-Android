@@ -20,6 +20,7 @@ import com.yapp.itemfinder.feature.common.datalist.adapter.DataListAdapter
 import com.yapp.itemfinder.feature.common.datalist.binder.DataBindHelper
 import com.yapp.itemfinder.feature.common.views.SnackBarView
 import com.yapp.itemfinder.space.R
+import com.yapp.itemfinder.space.additem.sekectspace.AddItemSelectSpaceActivity
 import com.yapp.itemfinder.feature.common.R as CR
 import com.yapp.itemfinder.space.databinding.ActivityAddItemBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -136,6 +137,11 @@ class AddItemActivity : BaseStateActivity<AddItemViewModel, ActivityAddItemBindi
                         }
                         is AddItemSideEffect.MemoLengthLimitSnackBar -> {
                             SnackBarView.make(binding.root, "메모는 한글 기준 최대 200자까지 작성 가능해요").show()
+                        }
+                        is AddItemSideEffect.MoveSelectSpace -> {
+                            startActivity(
+                                AddItemSelectSpaceActivity.newIntent(this@AddItemActivity)
+                            )
                         }
                     }
                 }

@@ -42,7 +42,7 @@ abstract class RepositoryModule {
 
     @Binds
     @Singleton
-    abstract fun bindSelectSpaceMockRepository(repository: SelectSpaceMockRepositoryImpl): SelectSpaceRepository
+    abstract fun bindSpaceMockRepository(repository: SpaceMockRepositoryImpl): SpaceRepository
 
     @Binds
     @Singleton

@@ -15,20 +15,22 @@ class DataBindHelper @Inject constructor(
     private val homeSpaceItemBinder: SpaceItemBinder,
     @HomeMySpaceUpperCellItemQualifier
     private val homeMySpaceUpperCellItemBinder: CellItemBinder,
-    var lockerItemBinder: LockerItemBinder,
-    var addLockerItemBinder: AddLockerItemBinder,
-    var manageSpaceItemBinder: ManageSpaceItemBinder,
-    var manageSpaceAddSpaceBinder: AddSpaceBinder,
-    var addLockerSpaceBinder: AddLockerSpaceBinder,
-    var selectSpaceBinder: SelectSpaceBinder,
-    var addLockerPhotoItemBinder: AddLockerPhotoItemBinder,
-    var addItemNameBinder: AddItemNameBinder,
-    var addItemCategoryBinder: AddItemCategoryBinder,
-    var addItemCountBinder: AddItemCountBinder,
-    var addItemAdditionalBinder: AddItemAdditionalBinder,
-    var addItemExpirationDateBinder: AddItemExpirationDateBinder,
-    var addItemPurchaseDateBinder: AddItemPurchaseDateBinder,
-    var addItemMemoBinder: AddItemMemoBinder
+    private val lockerItemBinder: LockerItemBinder,
+    private val addLockerItemBinder: AddLockerItemBinder,
+    private val manageSpaceItemBinder: ManageSpaceItemBinder,
+    private val manageSpaceAddSpaceBinder: AddSpaceBinder,
+    private val addLockerSpaceBinder: AddLockerSpaceBinder,
+    private val selectSpaceBinder: SelectSpaceBinder,
+    private val addLockerPhotoItemBinder: AddLockerPhotoItemBinder,
+    private val addItemNameBinder: AddItemNameBinder,
+    private val addItemCategoryBinder: AddItemCategoryBinder,
+    private val addItemCountBinder: AddItemCountBinder,
+    private val addItemAdditionalBinder: AddItemAdditionalBinder,
+    private val addItemLocationBinder: AddItemLocationBinder,
+    private val addItemExpirationDateBinder: AddItemExpirationDateBinder,
+    private val addItemPurchaseDateBinder: AddItemPurchaseDateBinder,
+    private val addItemMemoBinder: AddItemMemoBinder,
+    private val addItemSelectSpaceBinder: AddItemSelectSpaceBinder,
 ) {
 
     @SuppressLint("CheckResult")
@@ -79,6 +81,9 @@ class DataBindHelper @Inject constructor(
             CellType.ADD_ITEM_ADDITIONAL_CELL -> {
                 addItemAdditionalBinder.bindData(data as AddItemAdditional, viewModel)
             }
+            CellType.ADD_ITEM_LOCATION_CELL -> {
+                addItemLocationBinder.bindData(data as AddItemLocation, viewModel)
+            }
             CellType.ADD_ITEM_EXPIRATION_DATE_CELL -> {
                 addItemExpirationDateBinder.bindData(data as AddItemExpirationDate, viewModel)
             }
@@ -91,6 +96,9 @@ class DataBindHelper @Inject constructor(
             )
             CellType.ADD_ITEM_MEMO_CELL -> addItemMemoBinder.bindDate(
                 data as AddItemMemo, viewModel
+            )
+            CellType.ADD_ITEM_SELECT_SPACE_CELL -> addItemSelectSpaceBinder.bindData(
+                data as AddItemSelectSpaceEntity, viewModel
             )
             else -> {}
         }

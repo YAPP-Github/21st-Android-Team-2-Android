@@ -3,7 +3,7 @@ package com.yapp.itemfinder.space.selectspace
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.yapp.itemfinder.domain.model.SelectSpace
-import com.yapp.itemfinder.domain.repository.SelectSpaceRepository
+import com.yapp.itemfinder.domain.repository.SpaceRepository
 import com.yapp.itemfinder.feature.common.BaseStateViewModel
 import com.yapp.itemfinder.space.addlocker.AddLockerActivity
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -15,7 +15,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SelectSpaceViewModel @Inject constructor(
-    private val selectSpaceMockRepository: SelectSpaceRepository,
+    private val selectSpaceMockRepository: SpaceRepository,
     private val savedStateHandle: SavedStateHandle
 ) :
     BaseStateViewModel<SelectSpaceState, SelectSpaceSideEffect>() {

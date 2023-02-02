@@ -4,7 +4,7 @@ data class ManageSpaceEntity(
     val name: String,
     override var id: Long = 0,
     override var type: CellType = CellType.MANAGE_SPACE_CELL
-) : Data(){
+) : Data() {
 
     var editSpaceDialogHandler: DataHandler = {}
     fun editSpaceDialog() = editSpaceDialogHandler.invoke(this)
@@ -12,6 +12,7 @@ data class ManageSpaceEntity(
     var deleteSpaceDialogHandler: DataHandler = {}
     fun deleteSpaceDialog() = deleteSpaceDialogHandler.invoke(this)
 
-
+    fun mapAddItemSelectSpaceEntity() =
+        AddItemSelectSpaceEntity(id = id, name = name)
 
 }
