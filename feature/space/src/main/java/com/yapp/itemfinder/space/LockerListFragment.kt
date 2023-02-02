@@ -21,6 +21,7 @@ import com.yapp.itemfinder.feature.common.extension.parcelable
 import com.yapp.itemfinder.space.additem.AddItemActivity
 import com.yapp.itemfinder.space.addlocker.AddLockerActivity
 import com.yapp.itemfinder.space.databinding.FragmentLockerListBinding
+import com.yapp.itemfinder.space.edititem.EditItemActivity
 import com.yapp.itemfinder.space.lockerdetail.LockerDetailFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job

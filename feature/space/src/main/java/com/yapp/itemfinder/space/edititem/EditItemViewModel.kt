@@ -1,4 +1,4 @@
-package com.yapp.itemfinder.space.additem
+package com.yapp.itemfinder.space.edititem
 
 import androidx.lifecycle.viewModelScope
 import com.yapp.itemfinder.domain.model.*
@@ -11,37 +11,73 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class AddItemViewModel @Inject constructor(
+class EditItemViewModel @Inject constructor(
 
-) : BaseStateViewModel<AddItemState, AddItemSideEffect>() {
-    override val _stateFlow: MutableStateFlow<AddItemState> =
-        MutableStateFlow(AddItemState.Uninitialized)
-    override val _sideEffectFlow: MutableSharedFlow<AddItemSideEffect> = MutableSharedFlow()
+) : BaseStateViewModel<EditItemState, EditItemSideEffect>() {
+    override val _stateFlow: MutableStateFlow<EditItemState> =
+        MutableStateFlow(EditItemState.Uninitialized)
+    override val _sideEffectFlow: MutableSharedFlow<EditItemSideEffect> = MutableSharedFlow()
 
     override fun fetchData(): Job = viewModelScope.launch {
-        setState(AddItemState.Loading)
-        setState(
-            AddItemState.Success(
-                dataList = listOf(
-                    AddItemName(mode = ScreenMode.ADD_MODE),
-                    AddItemCategory(category = ItemCategorySelection.DEFAULT),
-                    AddItemLocation(),
-                    AddItemCount(),
-                    AddItemTags(listOf()),
-                    AddItemAdditional()
+        setState(EditItemState.Loading)
+        // api call or 이전 페이지에서 전달
+        val sampleItem = Item(
+            id = 1,
+            lockerId = 1,
+            itemCategory = ItemCategory.FOOD,
+            name = "선크림",
+            expirationDate = "2022.12.25.",
+            purchaseDate = null,
+            memo = null,
+            imageUrl = "http://source.unsplash.com/random/150x150",
+            tags = listOf(Tag("생활"), Tag("화장품")),
+            count = 1
+        )
+        val dataList = mutableListOf<Data>(
+            AddItemName(name = sampleItem.name, mode = ScreenMode.EDIT_MODE),
+            AddItemCategory(category = ItemCategorySelection.FOOD),
+            AddItemLocation(
+                spaceName = "주방",
+                spaceId = 111,
+                lockerName = "냉장고",
+                lockerId = 222
+            ),
+            AddItemCount(count = sampleItem.count)
+        ).apply {
+            sampleItem.tags?.let { add(AddItemTags(it)) }
+            sampleItem.memo?.let {
+                add(
+                    AddItemMemo(
+                        memo = sampleItem.memo!!,
+                        mode = ScreenMode.EDIT_MODE
+                    )
                 )
+            }
+            sampleItem.expirationDate?.let { add(AddItemExpirationDate(it)) }
+            sampleItem.purchaseDate?.let { add(AddItemPurchaseDate(it)) }
+            add(
+                AddItemAdditional(
+                    hasMemo = (sampleItem.memo != null),
+                    hasExpirationDate = sampleItem.expirationDate != null,
+                    hasPurchaseDate = sampleItem.purchaseDate != null
+                )
+            )
+        }
+        setState(
+            EditItemState.Success(
+                dataList = dataList
             )
         )
     }
 
     fun setName(newName: String) {
-        withState<AddItemState.Success> { state ->
+        withState<EditItemState.Success> { state ->
             val newDataList = ArrayList(state.dataList)
             val nameIndex = newDataList.indexOf(newDataList.find { it is AddItemName })
             newDataList[nameIndex] =
                 (newDataList[nameIndex] as AddItemName).copy(name = newName)
             setState(
-                AddItemState.Success(
+                EditItemState.Success(
                     newDataList,
                     isRefreshNeed = false
                 )
@@ -50,13 +86,13 @@ class AddItemViewModel @Inject constructor(
     }
 
     fun setCategory(newCategory: ItemCategorySelection) {
-        withState<AddItemState.Success> { state ->
+        withState<EditItemState.Success> { state ->
             val newDataList = ArrayList(state.dataList)
             val categoryIndex = newDataList.indexOf(newDataList.find { it is AddItemCategory })
             newDataList[categoryIndex] =
                 (newDataList[categoryIndex] as AddItemCategory).copy(category = newCategory)
             setState(
-                AddItemState.Success(
+                EditItemState.Success(
                     newDataList
                 )
             )
@@ -64,7 +100,7 @@ class AddItemViewModel @Inject constructor(
     }
 
     fun countPlusOne() {
-        withState<AddItemState.Success> { state ->
+        withState<EditItemState.Success> { state ->
             val newDataList = ArrayList(state.dataList)
             val addItemCountItem = newDataList.find { it is AddItemCount } as AddItemCount
             val countIndex = newDataList.indexOf(addItemCountItem)
@@ -72,7 +108,7 @@ class AddItemViewModel @Inject constructor(
                 count = addItemCountItem.count.plus(1)
             )
             setState(
-                AddItemState.Success(
+                EditItemState.Success(
                     newDataList
                 )
             )
@@ -80,7 +116,7 @@ class AddItemViewModel @Inject constructor(
     }
 
     fun countMinusOne() {
-        withState<AddItemState.Success> { state ->
+        withState<EditItemState.Success> { state ->
             val newDataList = ArrayList(state.dataList)
             val addItemCountItem = newDataList.find { it is AddItemCount } as AddItemCount
             val countIndex = newDataList.indexOf(addItemCountItem)
@@ -88,7 +124,7 @@ class AddItemViewModel @Inject constructor(
                 count = addItemCountItem.count.minus(1)
             )
             setState(
-                AddItemState.Success(
+                EditItemState.Success(
                     newDataList
                 )
             )
@@ -96,7 +132,7 @@ class AddItemViewModel @Inject constructor(
     }
 
     fun addMemoCell() {
-        withState<AddItemState.Success> { state ->
+        withState<EditItemState.Success> { state ->
             val newDataList = ArrayList(state.dataList)
             val addItemAdditional =
                 newDataList.find { it is AddItemAdditional } as AddItemAdditional
@@ -104,7 +140,7 @@ class AddItemViewModel @Inject constructor(
             newDataList.add(idx, AddItemMemo(mode = ScreenMode.ADD_MODE))
             newDataList[idx + 1] = addItemAdditional.copy(hasMemo = true)
             setState(
-                AddItemState.Success(
+                EditItemState.Success(
                     newDataList
                 )
             )
@@ -112,7 +148,7 @@ class AddItemViewModel @Inject constructor(
     }
 
     fun addExpirationDateCell() {
-        withState<AddItemState.Success> { state ->
+        withState<EditItemState.Success> { state ->
             val newDataList = ArrayList(state.dataList)
             val addItemAdditional =
                 newDataList.find { it is AddItemAdditional } as AddItemAdditional
@@ -120,7 +156,7 @@ class AddItemViewModel @Inject constructor(
             newDataList.add(idx, AddItemExpirationDate())
             newDataList[idx + 1] = addItemAdditional.copy(hasExpirationDate = true)
             setState(
-                AddItemState.Success(
+                EditItemState.Success(
                     newDataList
                 )
             )
@@ -128,7 +164,7 @@ class AddItemViewModel @Inject constructor(
     }
 
     fun addPurchaseDateCell() {
-        withState<AddItemState.Success> { state ->
+        withState<EditItemState.Success> { state ->
             val newDataList = ArrayList(state.dataList)
             val addItemAdditional =
                 newDataList.find { it is AddItemAdditional } as AddItemAdditional
@@ -136,7 +172,7 @@ class AddItemViewModel @Inject constructor(
             newDataList.add(idx, AddItemPurchaseDate())
             newDataList[idx + 1] = addItemAdditional.copy(hasPurchaseDate = true)
             setState(
-                AddItemState.Success(
+                EditItemState.Success(
                     newDataList
                 )
             )
@@ -144,13 +180,13 @@ class AddItemViewModel @Inject constructor(
     }
 
     fun setMemo(newMemo: String) {
-        withState<AddItemState.Success> { state ->
+        withState<EditItemState.Success> { state ->
             val newDataList = ArrayList(state.dataList)
             val memoIndex = newDataList.indexOf(newDataList.find { it is AddItemMemo })
             newDataList[memoIndex] =
                 (newDataList[memoIndex] as AddItemMemo).copy(memo = newMemo)
             setState(
-                AddItemState.Success(
+                EditItemState.Success(
                     newDataList
                 )
             )
@@ -158,12 +194,12 @@ class AddItemViewModel @Inject constructor(
     }
 
     fun setExpirationDate(date: String) {
-        withState<AddItemState.Success> { state ->
+        withState<EditItemState.Success> { state ->
             val newDataList = ArrayList(state.dataList)
             val idx = newDataList.indexOf(newDataList.find { it is AddItemExpirationDate })
             newDataList[idx] = AddItemExpirationDate(expirationDate = date)
             setState(
-                AddItemState.Success(
+                EditItemState.Success(
                     newDataList
                 )
             )
@@ -171,12 +207,12 @@ class AddItemViewModel @Inject constructor(
     }
 
     fun setPurchaseDate(date: String) {
-        withState<AddItemState.Success> { state ->
+        withState<EditItemState.Success> { state ->
             val newDataList = ArrayList(state.dataList)
             val idx = newDataList.indexOf(newDataList.find { it is AddItemPurchaseDate })
             newDataList[idx] = AddItemPurchaseDate(purchaseDate = date)
             setState(
-                AddItemState.Success(
+                EditItemState.Success(
                     newDataList
                 )
             )
@@ -184,7 +220,7 @@ class AddItemViewModel @Inject constructor(
     }
 
     fun saveItem() {
-        withState<AddItemState.Success> { state ->
+        withState<EditItemState.Success> { state ->
             val dataList = state.dataList
             var itemName = ""
             var itemCategory = ""
@@ -207,27 +243,27 @@ class AddItemViewModel @Inject constructor(
                 if (it is AddItemPurchaseDate) itemPurchase = it.purchaseDate
             }
             if (itemName == "" && itemCategory == ItemCategorySelection.DEFAULT.label && itemSpace == "" && itemLocker == "") {
-                postSideEffect(AddItemSideEffect.FillOutRequiredSnackBar)
+                postSideEffect(EditItemSideEffect.FillOutRequiredSnackBar)
                 return
             }
             if (itemName == "") {
-                postSideEffect(AddItemSideEffect.FillOutNameSnackBar)
+                postSideEffect(EditItemSideEffect.FillOutNameSnackBar)
                 return
             }
             if (itemCategory == ItemCategorySelection.DEFAULT.label) {
-                postSideEffect(AddItemSideEffect.FillOutCategorySnackBar)
+                postSideEffect(EditItemSideEffect.FillOutCategorySnackBar)
                 return
             }
             if (itemSpace == "") {
-                postSideEffect(AddItemSideEffect.FillOutLocationSnackBar)
+                postSideEffect(EditItemSideEffect.FillOutLocationSnackBar)
                 return
             }
             if (itemName.length > 30) {
-                postSideEffect(AddItemSideEffect.NameLengthLimitSnackBar)
+                postSideEffect(EditItemSideEffect.NameLengthLimitSnackBar)
                 return
             }
             if (itemCategory.length > 200) {
-                postSideEffect(AddItemSideEffect.MemoLengthLimitSnackBar)
+                postSideEffect(EditItemSideEffect.MemoLengthLimitSnackBar)
                 return
             }
             // save
@@ -235,14 +271,14 @@ class AddItemViewModel @Inject constructor(
     }
 
     fun openExpirationDatePicker() {
-        postSideEffect(AddItemSideEffect.OpenExpirationDatePicker)
+        postSideEffect(EditItemSideEffect.OpenExpirationDatePicker)
     }
 
     fun openPurchaseDatePicker() {
-        postSideEffect(AddItemSideEffect.OpenPurchaseDatePicker)
+        postSideEffect(EditItemSideEffect.OpenPurchaseDatePicker)
     }
 
     fun openSelectCategoryDialog() {
-        postSideEffect(AddItemSideEffect.OpenSelectCategoryDialog)
+        postSideEffect(EditItemSideEffect.OpenSelectCategoryDialog)
     }
 }
