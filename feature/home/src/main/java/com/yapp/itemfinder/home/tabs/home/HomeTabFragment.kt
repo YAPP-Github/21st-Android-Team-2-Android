@@ -1,5 +1,6 @@
 package com.yapp.itemfinder.home.tabs.home
 
+import android.os.Bundle
 import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.setFragmentResultListener
@@ -59,8 +60,8 @@ class HomeTabFragment : BaseStateFragment<HomeTabViewModel, FragmentHomeTabBindi
 
     private var addSpaceDialog: AddSpaceDialog? = null
 
-    override fun initState() {
-        super.initState()
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
 
         setFragmentResultListener(ManageSpaceFragment.NEW_SPACE_NAME_REQUEST_KEY) { _, bundle ->
             val newSpaceName = bundle.getString(ManageSpaceFragment.NAME_KEY)
@@ -69,6 +70,7 @@ class HomeTabFragment : BaseStateFragment<HomeTabViewModel, FragmentHomeTabBindi
             }
         }
     }
+
 
     override fun initViews() = with(binding) {
         initToolBar()
