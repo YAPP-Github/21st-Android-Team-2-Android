@@ -9,11 +9,6 @@ import androidx.activity.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import android.widget.Toast
-import androidx.activity.viewModels
-import androidx.coordinatorlayout.widget.CoordinatorLayout
-import androidx.lifecycle.Lifecycle
-import com.google.android.material.snackbar.Snackbar
 import com.yapp.itemfinder.domain.model.Data
 import com.yapp.itemfinder.domain.model.ItemCategorySelection
 import com.yapp.itemfinder.feature.common.BaseStateActivity
@@ -21,11 +16,10 @@ import com.yapp.itemfinder.feature.common.binding.viewBinding
 import com.yapp.itemfinder.feature.common.datalist.adapter.DataListAdapter
 import com.yapp.itemfinder.feature.common.datalist.binder.DataBindHelper
 import com.yapp.itemfinder.feature.common.views.SnackBarView
+import com.yapp.itemfinder.space.databinding.ActivityAddItemBinding
 import com.yapp.itemfinder.feature.common.R as CR
-import com.yapp.itemfinder.space.R
 import dagger.hilt.android.AndroidEntryPoint
 import gun0912.tedimagepicker.builder.TedImagePicker
-import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import java.util.*

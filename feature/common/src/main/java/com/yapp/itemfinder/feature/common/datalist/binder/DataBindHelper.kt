@@ -28,7 +28,6 @@ class DataBindHelper @Inject constructor(
     var addItemAdditionalBinder: AddItemAdditionalBinder,
     var addItemExpirationDateBinder: AddItemExpirationDateBinder,
     var addItemPurchaseDateBinder: AddItemPurchaseDateBinder,
-    var addItemMemoBinder: AddItemMemoBinder,
     var addItemImagesBinder: AddItemImagesBinder,
     var addItemMemoBinder: AddItemMemoBinder
 ) {
