@@ -15,9 +15,11 @@ import com.yapp.itemfinder.feature.common.R
 import com.yapp.itemfinder.feature.common.binding.viewBinding
 import com.yapp.itemfinder.feature.common.datalist.adapter.DataListAdapter
 import com.yapp.itemfinder.feature.common.datalist.binder.DataBindHelper
+import com.yapp.itemfinder.feature.common.extension.showShortToast
 import com.yapp.itemfinder.space.databinding.ActivityAddLockerBinding
 import com.yapp.itemfinder.space.selectspace.SelectSpaceActivity
 import dagger.hilt.android.AndroidEntryPoint
+import gun0912.tedimagepicker.builder.TedImagePicker
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -31,6 +33,7 @@ class AddLockerActivity : BaseStateActivity<AddLockerViewModel, ActivityAddLocke
 
     private var dataListAdapter: DataListAdapter<Data>? = null
     private lateinit var resultLauncher: ActivityResultLauncher<Intent>
+
 
     @Inject
     lateinit var dataBindHelper: DataBindHelper
@@ -75,14 +78,20 @@ class AddLockerActivity : BaseStateActivity<AddLockerViewModel, ActivityAddLocke
                             intent.putExtra(SPACE_ID_KEY, id) // 현재 locker의 spacdId로 설정
                             resultLauncher.launch(intent)
                         }
+                        is AddLockerSideEffect.UploadImage -> {
+                            handleUploadImage()
+                        }
+                        is AddLockerSideEffect.ShowToast -> {
+                            showShortToast(sideEffect.message)
+                        }
                     }
+
                 }
             }
         }
     }
 
     private fun handleLoading(addLockerState: AddLockerState) {
-
     }
 
     private fun handleSuccess(addLockerState: AddLockerState.Success) {
@@ -91,7 +100,11 @@ class AddLockerActivity : BaseStateActivity<AddLockerViewModel, ActivityAddLocke
     }
 
     private fun handleError(addLockerState: AddLockerState.Error) {
+    }
 
+    private fun handleUploadImage() {
+        TedImagePicker.with(this)
+            .start { vm.uploadImage(it)  }
     }
 
     private fun setResultNext() {

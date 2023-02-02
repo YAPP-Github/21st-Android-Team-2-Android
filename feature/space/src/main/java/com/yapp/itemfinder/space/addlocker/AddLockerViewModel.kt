@@ -1,13 +1,17 @@
 package com.yapp.itemfinder.space.addlocker
 
-import com.yapp.itemfinder.domain.model.AddLockerNameInput
-import com.yapp.itemfinder.domain.model.AddLockerPhoto
-import com.yapp.itemfinder.domain.model.AddLockerSpace
-import com.yapp.itemfinder.domain.model.LockerIcons
+import android.net.Uri
+import androidx.lifecycle.viewModelScope
+import com.yapp.itemfinder.domain.model.*
 import com.yapp.itemfinder.feature.common.BaseStateViewModel
+import com.yapp.itemfinder.feature.common.extension.onErrorWithResult
+import com.yapp.itemfinder.feature.common.extension.runCatchingWithErrorHandler
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -64,6 +68,35 @@ class AddLockerViewModel @Inject constructor(
                     }
                 )
             )
+        }
+    }
+
+    fun addImage() {
+        withState<AddLockerState.Success> {
+            postSideEffect(AddLockerSideEffect.UploadImage)
+        }
+    }
+
+    fun uploadImage(uri: Uri): Job = viewModelScope.launch {
+        // 실제구현: 서버 업로드가 성공할 경우
+        withState<AddLockerState.Success> {
+            runCatchingWithErrorHandler {
+                setState(AddLockerState.Loading)
+
+                val idx = it.dataList.indexOfFirst { data -> data is AddLockerPhoto }
+                val newDataList = it.dataList.toMutableList().apply {
+                    this[idx] = AddLockerPhoto(uriString = uri.toString())
+                }
+
+                newDataList
+            }.onSuccess {
+                setState(AddLockerState.Success(it))
+            }.onErrorWithResult {
+                setState(AddLockerState.Error(it))
+                val message = it.errorResultEntity.message ?: return@launch
+                postSideEffect(AddLockerSideEffect.ShowToast(message))
+
+            }
         }
     }
 }
