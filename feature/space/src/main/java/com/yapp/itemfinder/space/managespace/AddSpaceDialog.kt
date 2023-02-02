@@ -50,6 +50,7 @@ class AddSpaceDialog : DialogFragment() {
     companion object {
         const val NEW_SPACE_REQUEST_KEY = "new space request"
         const val NEW_SPACE_NAME_BUNDLE_KEY ="new space name"
+        const val TAG = "add space dialog"
         fun newInstance(): AddSpaceDialog = AddSpaceDialog()
     }
 
