@@ -22,6 +22,4 @@ dependencies {
     testImplementation "io.mockk:mockk:$mockkVersion"
 
     implementation "io.github.ParkSangGwon:tedimagepicker:$tedImagePickerVersion"
-
-
 }

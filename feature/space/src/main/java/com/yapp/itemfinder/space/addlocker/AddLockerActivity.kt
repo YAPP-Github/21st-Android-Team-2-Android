@@ -85,7 +85,6 @@ class AddLockerActivity : BaseStateActivity<AddLockerViewModel, ActivityAddLocke
                             showShortToast(sideEffect.message)
                         }
                     }
-
                 }
             }
         }

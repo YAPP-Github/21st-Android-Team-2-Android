@@ -2,6 +2,7 @@ package com.yapp.itemfinder.feature.common.extension
 
 import android.content.Context
 import android.graphics.drawable.Drawable
+import android.net.Uri
 import android.util.DisplayMetrics
 import androidx.appcompat.content.res.AppCompatResources
 
@@ -20,3 +21,8 @@ fun String.toDrawable(context: Context): Drawable? {
     return AppCompatResources.getDrawable(context, context.resources.getIdentifier(this.lowercase(), "drawable", context.packageName))
 
 }
+
+fun List<String>.toUriList() = this.map { Uri.parse(it) }
+
+fun List<Uri>.toStringList() = this.map { it.toString() }
+

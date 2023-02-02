@@ -78,20 +78,18 @@ class AddLockerViewModel @Inject constructor(
 
     fun uploadImage(uri: Uri): Job = viewModelScope.launch {
         // 실제구현: 서버 업로드가 성공할 경우
-        withState<AddLockerState.Success> {
+        withState<AddLockerState.Success> { successState ->
             runCatchingWithErrorHandler {
                 setState(AddLockerState.Loading)
 
-                val idx = it.dataList.indexOfFirst { data -> data is AddLockerPhoto }
-                val newDataList = it.dataList.toMutableList().apply {
+                val idx = successState.dataList.indexOfFirst { data -> data is AddLockerPhoto }
+                val newDataList = successState.dataList.toMutableList().apply {
                     this[idx] = AddLockerPhoto(uriString = uri.toString())
                 }
 
                 newDataList
             }.onSuccess {
-                withState<AddLockerState.Success> { state ->
-                    setState(state.copy(dataList = it))
-                }
+                    setState(successState.copy(dataList = it))
             }.onErrorWithResult {
                 setState(AddLockerState.Error(it))
                 val message = it.errorResultEntity.message ?: return@launch

@@ -105,8 +105,14 @@ abstract class ItemDataBinderModule {
 
     @Binds
     @Singleton
+    abstract fun bindAddIteImagesBinder(
+        addItemMemoBinder: AddItemScreenImagesBinder
+    ): AddItemImagesBinder
+
+    @Binds
     @EditItemMemoQualifier
     abstract fun bindEditItemMemoBinder(
         editItemMemoBinder: EditItemScreenMemoBinder
     ): AddItemMemoBinder
+
 }

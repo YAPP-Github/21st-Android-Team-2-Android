@@ -43,6 +43,7 @@ class DataBindHelper @Inject constructor(
     var editItemExpirationDateBinder: AddItemExpirationDateBinder,
     @AddItemPurchaseDateQualifier
     var addItemPurchaseDateBinder: AddItemPurchaseDateBinder,
+    var addItemImagesBinder: AddItemImagesBinder,
     @EditItemPurchaseDateQualifier
     var editItemPurchaseDateBinder: AddItemPurchaseDateBinder,
     @AddItemMemoQualifier
@@ -118,6 +119,13 @@ class DataBindHelper @Inject constructor(
                 addItemMemoBinder.bindDate(data as AddItemMemo, viewModel)
                 editItemMemoBinder.bindDate(data as AddItemMemo, viewModel)
             }
+            CellType.ADD_ITEM_NAME_CELL -> addItemNameBinder.bindData(
+                data as AddItemName,
+                viewModel
+            )
+            CellType.ADD_ITEM_IMAGES_CELL -> addItemImagesBinder.bindData(
+                data as AddItemImages, viewModel
+            )
             else -> {}
         }
     }

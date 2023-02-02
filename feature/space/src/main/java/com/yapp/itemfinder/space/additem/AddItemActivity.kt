@@ -4,13 +4,11 @@ import android.app.ActionBar.LayoutParams
 import android.app.DatePickerDialog
 import android.content.Context
 import android.content.Intent
-import android.widget.Toast
+import android.net.Uri
 import androidx.activity.viewModels
-import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import com.google.android.material.snackbar.Snackbar
 import com.yapp.itemfinder.domain.model.Data
 import com.yapp.itemfinder.domain.model.ItemCategorySelection
 import com.yapp.itemfinder.feature.common.BaseStateActivity
@@ -18,10 +16,10 @@ import com.yapp.itemfinder.feature.common.binding.viewBinding
 import com.yapp.itemfinder.feature.common.datalist.adapter.DataListAdapter
 import com.yapp.itemfinder.feature.common.datalist.binder.DataBindHelper
 import com.yapp.itemfinder.feature.common.views.SnackBarView
-import com.yapp.itemfinder.space.R
-import com.yapp.itemfinder.feature.common.R as CR
 import com.yapp.itemfinder.space.databinding.ActivityAddItemBinding
+import com.yapp.itemfinder.feature.common.R as CR
 import dagger.hilt.android.AndroidEntryPoint
+import gun0912.tedimagepicker.builder.TedImagePicker
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import java.util.*
@@ -133,6 +131,17 @@ class AddItemActivity : BaseStateActivity<AddItemViewModel, ActivityAddItemBindi
                         is AddItemSideEffect.MemoLengthLimitSnackBar -> {
                             SnackBarView.make(binding.root, "메모는 한글 기준 최대 200자까지 작성 가능해요").show()
                         }
+                        is AddItemSideEffect.OpenPhotoPicker -> {
+                            val addItemImages = sideEffect.addItemImages
+                            TedImagePicker.with(this@AddItemActivity)
+                                .max(
+                                    addItemImages.maxCount
+                                    , "${addItemImages.maxCount}개초과!"
+                                ).selectedUri(addItemImages.uriStringList.map { Uri.parse(it) })
+                                .startMultiImage { uris ->
+                                    vm.doneChooseImages(uris)
+                                }
+                        }
                     }
                 }
             }
@@ -166,7 +175,6 @@ class AddItemActivity : BaseStateActivity<AddItemViewModel, ActivityAddItemBindi
     }
 
     private fun handleLoading(addLockerState: AddItemState) {
-
     }
 
     private fun handleSuccess(addLockerState: AddItemState.Success) {
@@ -176,7 +184,6 @@ class AddItemActivity : BaseStateActivity<AddItemViewModel, ActivityAddItemBindi
     }
 
     private fun handleError(addLockerState: AddItemState.Error) {
-
     }
 
     companion object {
@@ -185,5 +192,4 @@ class AddItemActivity : BaseStateActivity<AddItemViewModel, ActivityAddItemBindi
         const val CHECKED_CATEGORY_KEY = "CHECKED_CATEGORY_KEY"
         fun newIntent(context: Context) = Intent(context, AddItemActivity::class.java)
     }
-
 }
