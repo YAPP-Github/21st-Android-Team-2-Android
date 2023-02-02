@@ -11,7 +11,7 @@ import javax.inject.Singleton
 class ItemMockRepositoryImpl @Inject constructor() : ItemRepository {
 
     private val sample = Item(
-        id = 1,
+        id = (0..100).random().toLong(),
         lockerId = 1,
         itemCategory = ItemCategory.FOOD,
         name = "선크림",
@@ -33,26 +33,50 @@ class ItemMockRepositoryImpl @Inject constructor() : ItemRepository {
 
     override fun getAllItems(): List<Item> {
         return mutableListOf<Item>().apply {
-            add(sampleLongTag)
+            add(
+                sampleLongTag.copy(
+                    id = (0..100).random().toLong(),
+                    position = Item.Position(
+                        (0..100).random().toFloat(),
+                        (0..100).random().toFloat(),
+                    )
+                )
+            )
             for (i in 1..10)
-                add(sample)
+                add(
+                    sample.copy(
+                        id = (0..100).random().toLong(),
+                        position = Item.Position(
+                            (0..100).random().toFloat(),
+                            (0..100).random().toFloat(),
+                        )
+                    )
+                )
         }
     }
 
     override fun getItemsByLockerId(lockerId: Long): List<Item> {
-        return listOf(
-            sampleLongTag,
-            sample,
-            sample,
-            sample,
-            sample,
-            sample,
-            sample,
-            sample,
-            sample,
-            sample,
-            sample,
-            sample
-        )
+        return mutableListOf<Item>().apply {
+            add(
+                sampleLongTag.copy(
+                    id = (0..100).random().toLong(),
+                    position = Item.Position(
+                        (0..100).random().toFloat(),
+                        (0..100).random().toFloat(),
+                    )
+                )
+            )
+            for (i in 1..10)
+                add(
+                    sample.copy(
+                        id = i.toLong(),
+                        position = Item.Position(
+                            (0..100).random().toFloat(),
+                            (0..100).random().toFloat(),
+                        )
+                    )
+                )
+        }
     }
+
 }

@@ -8,13 +8,29 @@
     <dimen name="typography_head">18dp</dimen>
     <dimen name="typography_title">20dp</dimen>
 
+    <dimen name="stroke_1dp">1dp</dimen>
+    <dimen name="stroke_2dp">2dp</dimen>
+    <dimen name="stroke_3dp">3dp</dimen>
+    <dimen name="stroke_4dp">4dp</dimen>
+    <dimen name="stroke_5dp">5dp</dimen>
+    <dimen name="stroke_6dp">6dp</dimen>
+    <dimen name="stroke_7dp">7dp</dimen>
+    <dimen name="stroke_8dp">8dp</dimen>
+
     <dimen name="radius_8dp">8dp</dimen>
     <dimen name="radius_12dp">12dp</dimen>
     <dimen name="radius_capsule">360dp</dimen>
 
     <dimen name="tools_bottom_sheet_height">294dp</dimen>
     <dimen name="tag_or_category_radius">4dp</dimen>
+    <dimen name="add_locker_image_radius">12dp</dimen>
     <dimen name="filter_radius">8dp</dimen>
 
+    <dimen name="toolbar_container_height">56dp</dimen>
+
     <dimen name="collapsing_toolbar_container_height">112dp</dimen>
+    <dimen name="marker_map_view_max_width">400dp</dimen>
+
+    <dimen name="bottom_sheet_bottom_padding_default">420dp</dimen>
+    <dimen name="bottom_sheet_bottom_padding_large">510dp</dimen>
 </resources>
