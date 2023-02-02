@@ -83,7 +83,7 @@ class ItemDetailFragment : BaseStateFragment<ItemDetailViewModel, FragmentItemDe
             Glide.with(requireContext()).load(item.imageUrl).into(itemMainImage)
         }
         itemName.text = item.name
-        itemCategory.text = item.itemCategory?.label
+        itemCategory.text = item.itemCategory?.labelResId?.let { getString(it) }
         itemSpace.text = arguments?.getString(SPACE_NAME_KEY)
         itemLocker.text = arguments?.getString(LOCKER_NAME_KEY)
         itemCount.text = getString(R.string.countText, item.count)

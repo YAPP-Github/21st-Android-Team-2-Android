@@ -38,8 +38,6 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import com.yapp.itemfinder.feature.common.R as CR
-import com.yapp.itemfinder.feature.common.R.string
-import com.yapp.itemfinder.feature.common.views.behavior.CustomDraggableBottomSheetBehaviour
 import com.yapp.itemfinder.space.itemdetail.ItemDetailFragment
 
 @AndroidEntryPoint
@@ -155,18 +153,6 @@ class LockerDetailFragment :
             }
         })
 
-        ViewCompat.setOnApplyWindowInsetsListener(requireView()) { v, insets ->
-            val inset = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            // View 계층에 반영될 Inset들을 반환한다.
-            binding.lockerDetailImageView.post {
-                behavior.maxHeight =
-                    binding.root.measuredHeight - binding.toolbar.measuredHeight - inset.top
-                behavior.peekHeight =
-                    (binding.root.measuredHeight
-                            - binding.lockerDetailImageView.measuredHeight
-                            - resources.getDimension(CR.dimen.collapsing_toolbar_container_height)
-                            - inset.top
-                            ).toInt()
         setBottomSheetPeekHeight(isExpand = true)
 
         behavior.draggableView = binding.bottomSheet.itemsDraggableContainer
@@ -301,9 +287,11 @@ class LockerDetailFragment :
         when (val activity = requireActivity()) {
             is FragmentNavigator -> {
                 val bundle = Bundle()
-                bundle.putString(ItemDetailFragment.SPACE_NAME_KEY, "주방")
-                bundle.putString(ItemDetailFragment.LOCKER_NAME_KEY, "냉장고")
-                bundle.putLong(ItemDetailFragment.ITEM_ID_KEY, itemId)
+                bundle.apply {
+                    putString(ItemDetailFragment.SPACE_NAME_KEY, "주방")
+                    putString(ItemDetailFragment.LOCKER_NAME_KEY, "냉장고")
+                    putLong(ItemDetailFragment.ITEM_ID_KEY, itemId)
+                }
                 activity.addFragmentBackStack(
                     ItemDetailFragment.TAG,
                     bundle = bundle
