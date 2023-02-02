@@ -66,6 +66,7 @@ class DataBindHelper @Inject constructor(
             }
             CellType.SELECT_SPACE_CELL -> {
                 selectSpaceBinder.bindData(data as SelectSpace, viewModel)
+            }
             CellType.ADD_LOCKER_IMAGE_CELL -> {
                 addLockerPhotoItemBinder.bindData(data as AddLockerPhoto, viewModel)
             }

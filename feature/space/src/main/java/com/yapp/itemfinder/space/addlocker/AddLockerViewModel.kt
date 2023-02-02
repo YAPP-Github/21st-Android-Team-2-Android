@@ -8,7 +8,6 @@ import com.yapp.itemfinder.feature.common.extension.onErrorWithResult
 import com.yapp.itemfinder.feature.common.extension.runCatchingWithErrorHandler
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
@@ -90,7 +89,9 @@ class AddLockerViewModel @Inject constructor(
 
                 newDataList
             }.onSuccess {
-                setState(AddLockerState.Success(it))
+                withState<AddLockerState.Success> { state ->
+                    setState(state.copy(dataList = it))
+                }
             }.onErrorWithResult {
                 setState(AddLockerState.Error(it))
                 val message = it.errorResultEntity.message ?: return@launch
