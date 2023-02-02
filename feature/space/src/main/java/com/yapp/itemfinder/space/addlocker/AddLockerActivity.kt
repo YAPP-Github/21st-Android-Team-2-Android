@@ -71,7 +71,8 @@ class AddLockerActivity : BaseStateActivity<AddLockerViewModel, ActivityAddLocke
                     when (sideEffect) {
                         is AddLockerSideEffect.OpenSelectSpace -> {
                             val intent = SelectSpaceActivity.newIntent(this@AddLockerActivity)
-                            intent.putExtra(SPACE_ID_KEY, 2L) // 현재 locker의 spacdId로 설정
+                            val id = vm.getSpaceId()
+                            intent.putExtra(SPACE_ID_KEY, id) // 현재 locker의 spacdId로 설정
                             resultLauncher.launch(intent)
                         }
                     }
@@ -98,8 +99,11 @@ class AddLockerActivity : BaseStateActivity<AddLockerViewModel, ActivityAddLocke
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
                 if (result.resultCode == Activity.RESULT_OK) {
                     val spaceId = result.data?.getLongExtra(NEW_SPACE_ID, 0)
+                    if (spaceId != null) {
+                        vm.setSpaceId(spaceId)
+                    }
                     val spaceName = result.data?.getStringExtra(NEW_SPACE_NAME)
-                    if (spaceName != null) {
+                    if (spaceName != null && spaceName != "") {
                         vm.changeSpace(spaceName)
                     }
                 }

@@ -2,6 +2,7 @@ package com.yapp.itemfinder.space.selectspace
 
 import android.content.Context
 import android.content.Intent
+import android.view.KeyEvent
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.yapp.itemfinder.domain.model.Data
@@ -41,13 +42,7 @@ class SelectSpaceActivity : BaseStateActivity<SelectSpaceViewModel, ActivitySele
         backButtonImageResId = CR.drawable.ic_back
         containerColor = CR.color.brown_02
         backButtonClickListener = {
-            val spaceId = vm.getNewSpaceId()
-            val spaceName = vm.getNewSpaceName()
-            intent.apply {
-                putExtra(AddLockerActivity.NEW_SPACE_ID, spaceId)
-                putExtra(AddLockerActivity.NEW_SPACE_NAME, spaceName)
-            }
-            setResult(RESULT_OK, intent)
+            setSelectSpaceResult()
             finish()
         }
         titleText = "보관함 위치"
@@ -83,6 +78,21 @@ class SelectSpaceActivity : BaseStateActivity<SelectSpaceViewModel, ActivitySele
 
     private fun handleError(selectSpaceState: SelectSpaceState) {
 
+    }
+
+    private fun setSelectSpaceResult(){
+        val spaceId = vm.getNewSpaceId()
+        val spaceName = vm.getNewSpaceName()
+        intent.apply {
+            putExtra(AddLockerActivity.NEW_SPACE_ID, spaceId)
+            putExtra(AddLockerActivity.NEW_SPACE_NAME, spaceName)
+        }
+        setResult(RESULT_OK, intent)
+    }
+
+    override fun onBackPressed() {
+        setSelectSpaceResult()
+        super.onBackPressed()
     }
 
     companion object {

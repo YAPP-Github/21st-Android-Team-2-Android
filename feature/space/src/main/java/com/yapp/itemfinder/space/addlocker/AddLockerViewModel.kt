@@ -26,7 +26,8 @@ class AddLockerViewModel @Inject constructor(
                     AddLockerSpace(name = "주방"),
                     LockerIcons(),
                     AddLockerPhoto()
-                )
+                ),
+                spaceId = 2L
             )
         )
     }
@@ -34,6 +35,22 @@ class AddLockerViewModel @Inject constructor(
     fun openSelectSpace() {
         withState<AddLockerState.Success> {
             postSideEffect(AddLockerSideEffect.OpenSelectSpace)
+        }
+    }
+
+    fun getSpaceId(): Long {
+        var id = 0L
+        withState<AddLockerState.Success> { state ->
+            id = state.spaceId
+        }
+        return id
+    }
+
+    fun setSpaceId(id: Long) {
+        withState<AddLockerState.Success> { state ->
+            setState(
+                state.copy(spaceId = id)
+            )
         }
     }
 
