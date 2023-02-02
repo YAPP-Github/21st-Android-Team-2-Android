@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="24dp">
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/addMemoButton"
+        style="@style/ItemFinderTypography.Body1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="10dp"
+        android:background="@drawable/bg_select_space_button"
+        android:drawableStart="@drawable/ic_plus_10"
+        android:drawablePadding="6dp"
+        android:drawableTint="@color/gray_04"
+        android:minHeight="0dp"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="8dp"
+        android:text="@string/memo"
+        android:textColor="@color/gray_05" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/addExpirationDateButton"
+        style="@style/ItemFinderTypography.Body1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="10dp"
+        android:background="@drawable/bg_select_space_button"
+        android:drawableStart="@drawable/ic_plus_10"
+        android:drawablePadding="6dp"
+        android:drawableTint="@color/gray_04"
+        android:minHeight="0dp"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="8dp"
+        android:text="@string/expirationDate"
+        android:textColor="@color/gray_05" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/addPurchaseDateButton"
+        style="@style/ItemFinderTypography.Body1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_select_space_button"
+        android:drawableStart="@drawable/ic_plus_10"
+        android:drawablePadding="6dp"
+        android:drawableTint="@color/gray_04"
+        android:minHeight="0dp"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="8dp"
+        android:text="@string/purchaseDate"
+        android:textColor="@color/gray_05" />
+
+</LinearLayout>

@@ -2,6 +2,8 @@ package com.yapp.itemfinder.feature.common.datalist.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import com.yapp.itemfinder.domain.model.AddItemExpirationDate
+import com.yapp.itemfinder.domain.model.AddItemMemo
 import com.yapp.itemfinder.domain.model.CellType
 import com.yapp.itemfinder.domain.model.Data
 import com.yapp.itemfinder.feature.common.databinding.*
@@ -29,7 +31,20 @@ object DataViewHolderMapper {
             CellType.ADD_LOCKER_SPACE_CELL -> AddLockerSpaceViewHolder(AddLockerSpaceBinding.inflate(inflater, parent, false))
             CellType.LOCKER_ICONS_CELL -> LockerIconsViewHolder(LockerIconsBinding.inflate(inflater, parent, false))
             CellType.ADD_LOCKER_IMAGE_CELL -> AddLockerPhotoViewHolder(AddLockerPhotoBinding.inflate(inflater, parent, false))
+            CellType.SELECT_SPACE_CELL -> SelectSpaceViewHolder(SelectSpaceBinding.inflate(inflater, parent, false))
             CellType.ITEM_SIMPLE_CELL ->  ItemSimpleViewHolder(ItemSimpleItemBinding.inflate(inflater,parent,false))
+            CellType.ADD_ITEM_NAME_CELL -> AddItemNameViewHolder(AddItemNameBinding.inflate(inflater, parent, false))
+            CellType.ADD_ITEM_CATEGORY_CELL -> AddItemCategoryViewHolder(AddItemCategoryBinding.inflate(inflater, parent, false))
+            CellType.ADD_ITEM_LOCATION_CELL -> AddItemLocationViewHolder(AddItemLocationBinding.inflate(inflater, parent, false))
+            CellType.ADD_ITEM_COUNT_CELL -> AddItemCountViewHolder(AddItemCountBinding.inflate(inflater, parent, false))
+            CellType.ADD_ITEM_TAGS_CELL -> AddItemTagsViewHolder(AddItemTagsBinding.inflate(inflater, parent, false))
+            CellType.ADD_ITEM_ADDITIONAL_CELL -> AddItemAdditionalViewHolder(
+                AddItemAdditionalBinding.inflate(inflater, parent, false))
+            CellType.ADD_ITEM_MEMO_CELL -> AddItemMemoViewHolder(AddItemMemoBinding.inflate(inflater, parent, false))
+            CellType.ADD_ITEM_EXPIRATION_DATE_CELL -> AddItemExpirationDateViewHolder(
+                AddItemExpirationDateBinding.inflate(inflater, parent, false))
+            CellType.ADD_ITEM_PURCHASE_DATE_CELL -> AddItemPurchaseDateViewHolder(
+                AddItemPurchaseDateBinding.inflate(inflater, parent, false))
         }
 
         return viewHolder as DataViewHolder<D>
