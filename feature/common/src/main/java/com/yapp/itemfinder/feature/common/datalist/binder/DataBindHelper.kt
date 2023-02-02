@@ -123,9 +123,6 @@ class DataBindHelper @Inject constructor(
                 data as AddItemName,
                 viewModel
             )
-            CellType.ADD_ITEM_MEMO_CELL -> addItemMemoBinder.bindDate(
-                data as AddItemMemo, viewModel
-            )
             CellType.ADD_ITEM_IMAGES_CELL -> addItemImagesBinder.bindData(
                 data as AddItemImages, viewModel
             )
