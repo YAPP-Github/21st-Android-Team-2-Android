@@ -87,7 +87,7 @@ class ManageSpaceFragment : BaseStateFragment<ManageSpaceViewModel, FragmentMana
                             is ManageSpaceSideEffect.OpenAddSpaceDialog -> {
                                 val dialog: AddSpaceDialog = AddSpaceDialog.newInstance()
                                 activity?.supportFragmentManager?.let { fragmentManager ->
-                                    dialog.show(fragmentManager, ADD_SPACE_DIALOG_TAG)
+                                    dialog.show(fragmentManager, AddSpaceDialog.TAG)
                                 }
                             }
                             is ManageSpaceSideEffect.AddSpaceFailedToast -> {
@@ -137,7 +137,6 @@ class ManageSpaceFragment : BaseStateFragment<ManageSpaceViewModel, FragmentMana
     companion object {
 
         val TAG = ManageSpaceFragment::class.simpleName.toString()
-        const val ADD_SPACE_DIALOG_TAG = "add space dialog"
         const val MY_SPACE_TITLE_KEY = "MY_SPACE_TITLE_KEY"
 
         fun newInstance() = ManageSpaceFragment()

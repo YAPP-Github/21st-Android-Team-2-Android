@@ -132,7 +132,7 @@ class HomeTabFragment : BaseStateFragment<HomeTabViewModel, FragmentHomeTabBindi
                             if (addSpaceDialog == null) {
                                 addSpaceDialog = AddSpaceDialog.newInstance()
                             }
-                            addSpaceDialog?.show(parentFragmentManager, ManageSpaceFragment.ADD_SPACE_DIALOG_TAG)
+                            addSpaceDialog?.show(parentFragmentManager, AddSpaceDialog.TAG)
                         }
                     }
                 }
