@@ -45,8 +45,8 @@ class ManageSpaceFragment : BaseStateFragment<ManageSpaceViewModel, FragmentMana
             dataListAdapter = DataListAdapter()
             recyclerView.adapter = dataListAdapter
         }
-        setFragmentResultListener(NEW_SPACE_NAME_REQUEST_KEY) { requestKey, bundle ->
-            val newSpaceName = bundle.getString(NAME_KEY)
+        setFragmentResultListener(AddSpaceDialog.NEW_SPACE_REQUEST_KEY) { requestKey, bundle ->
+            val newSpaceName = bundle.getString(AddSpaceDialog.NEW_SPACE_NAME_BUNDLE_KEY)
             if (newSpaceName != null) {
                 vm.addItem(newSpaceName)
             }
@@ -137,10 +137,7 @@ class ManageSpaceFragment : BaseStateFragment<ManageSpaceViewModel, FragmentMana
     companion object {
 
         val TAG = ManageSpaceFragment::class.simpleName.toString()
-
-        const val NEW_SPACE_NAME_REQUEST_KEY = "new space name"
         const val ADD_SPACE_DIALOG_TAG = "add space dialog"
-        const val NAME_KEY = "name"
         const val MY_SPACE_TITLE_KEY = "MY_SPACE_TITLE_KEY"
 
         fun newInstance() = ManageSpaceFragment()

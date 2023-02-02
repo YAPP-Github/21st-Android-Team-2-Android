@@ -63,8 +63,8 @@ class HomeTabFragment : BaseStateFragment<HomeTabViewModel, FragmentHomeTabBindi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setFragmentResultListener(ManageSpaceFragment.NEW_SPACE_NAME_REQUEST_KEY) { _, bundle ->
-            val newSpaceName = bundle.getString(ManageSpaceFragment.NAME_KEY)
+        setFragmentResultListener(AddSpaceDialog.NEW_SPACE_REQUEST_KEY) { _, bundle ->
+            val newSpaceName = bundle.getString(AddSpaceDialog.NEW_SPACE_NAME_BUNDLE_KEY)
             if (newSpaceName != null) {
                 vm.createSpaceItem(newSpaceName)
             }

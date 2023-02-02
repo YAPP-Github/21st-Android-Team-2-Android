@@ -41,14 +41,15 @@ class AddSpaceDialog : DialogFragment() {
 
     private fun passName(name: String) {
         setFragmentResult(
-            ManageSpaceFragment.NEW_SPACE_NAME_REQUEST_KEY,
-            bundleOf(ManageSpaceFragment.NAME_KEY to name)
+            NEW_SPACE_REQUEST_KEY,
+            bundleOf(NEW_SPACE_NAME_BUNDLE_KEY to name)
         )
         dismiss()
     }
 
     companion object {
-
+        const val NEW_SPACE_REQUEST_KEY = "new space request"
+        const val NEW_SPACE_NAME_BUNDLE_KEY ="new space name"
         fun newInstance(): AddSpaceDialog = AddSpaceDialog()
     }
 
