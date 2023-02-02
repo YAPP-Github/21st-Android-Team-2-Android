@@ -20,6 +20,7 @@ class DataBindHelper @Inject constructor(
     var manageSpaceItemBinder: ManageSpaceItemBinder,
     var manageSpaceAddSpaceBinder: AddSpaceBinder,
     var addLockerSpaceBinder: AddLockerSpaceBinder,
+    var selectSpaceBinder: SelectSpaceBinder,
     var addLockerPhotoItemBinder: AddLockerPhotoItemBinder,
     var addItemNameBinder: AddItemNameBinder,
     var addItemCategoryBinder: AddItemCategoryBinder,
@@ -62,6 +63,9 @@ class DataBindHelper @Inject constructor(
             }
             CellType.ADD_LOCKER_SPACE_CELL -> {
                 addLockerSpaceBinder.bindData(data as AddLockerSpace, viewModel)
+            }
+            CellType.SELECT_SPACE_CELL -> {
+                selectSpaceBinder.bindData(data as SelectSpace, viewModel)
             }
             CellType.ADD_LOCKER_IMAGE_CELL -> {
                 addLockerPhotoItemBinder.bindData(data as AddLockerPhoto, viewModel)

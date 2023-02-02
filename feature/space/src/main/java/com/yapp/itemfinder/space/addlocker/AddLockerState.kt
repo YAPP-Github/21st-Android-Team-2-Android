@@ -9,7 +9,8 @@ sealed class AddLockerState : State {
     object Loading: AddLockerState()
 
     data class Success(
-        val dataList: List<Data>
+        val dataList: List<Data>,
+        val spaceId: Long
     ): AddLockerState()
 
     data class Error(

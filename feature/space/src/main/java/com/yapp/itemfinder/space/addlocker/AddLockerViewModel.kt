@@ -8,7 +8,6 @@ import com.yapp.itemfinder.feature.common.extension.onErrorWithResult
 import com.yapp.itemfinder.feature.common.extension.runCatchingWithErrorHandler
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
@@ -27,10 +26,11 @@ class AddLockerViewModel @Inject constructor(
             AddLockerState.Success(
                 listOf(
                     AddLockerNameInput(),
-                    AddLockerSpace(name = "옷장"),
+                    AddLockerSpace(name = "주방"),
                     LockerIcons(),
                     AddLockerPhoto()
-                )
+                ),
+                spaceId = 2L
             )
         )
     }
@@ -38,6 +38,22 @@ class AddLockerViewModel @Inject constructor(
     fun openSelectSpace() {
         withState<AddLockerState.Success> {
             postSideEffect(AddLockerSideEffect.OpenSelectSpace)
+        }
+    }
+
+    fun getSpaceId(): Long {
+        var id = 0L
+        withState<AddLockerState.Success> { state ->
+            id = state.spaceId
+        }
+        return id
+    }
+
+    fun setSpaceId(id: Long) {
+        withState<AddLockerState.Success> { state ->
+            setState(
+                state.copy(spaceId = id)
+            )
         }
     }
 
@@ -73,7 +89,9 @@ class AddLockerViewModel @Inject constructor(
 
                 newDataList
             }.onSuccess {
-                setState(AddLockerState.Success(it))
+                withState<AddLockerState.Success> { state ->
+                    setState(state.copy(dataList = it))
+                }
             }.onErrorWithResult {
                 setState(AddLockerState.Error(it))
                 val message = it.errorResultEntity.message ?: return@launch
