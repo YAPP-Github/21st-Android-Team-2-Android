@@ -37,11 +37,17 @@ class SelectSpaceActivity : BaseStateActivity<SelectSpaceViewModel, ActivitySele
         }
     }
 
-    private fun initToolbar() = with(binding.defaultNavigationView){
+    private fun initToolbar() = with(binding.defaultNavigationView) {
         backButtonImageResId = CR.drawable.ic_back
         containerColor = CR.color.brown_02
         backButtonClickListener = {
-            //
+            val spaceId = vm.getNewSpaceId()
+            val spaceName = vm.getNewSpaceName()
+            intent.apply {
+                putExtra(AddLockerActivity.NEW_SPACE_ID, spaceId)
+                putExtra(AddLockerActivity.NEW_SPACE_NAME, spaceName)
+            }
+            setResult(RESULT_OK, intent)
             finish()
         }
         titleText = "보관함 위치"

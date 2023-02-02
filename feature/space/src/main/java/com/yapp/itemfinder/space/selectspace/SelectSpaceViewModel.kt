@@ -32,6 +32,7 @@ class SelectSpaceViewModel @Inject constructor(
             SelectSpaceState.Success(
                 dataList = spaces,
                 spaceId = spaceId,
+                spaceName = "",
                 checkedIndex = checkedIndex
             )
         )
@@ -49,8 +50,29 @@ class SelectSpaceViewModel @Inject constructor(
         newDataList[clickedIndex] =
             (newDataList[clickedIndex] as SelectSpace).copy(isChecked = true)
         setState(
-            SelectSpaceState.Success(newDataList, newDataList[clickedIndex].id, clickedIndex)
+            SelectSpaceState.Success(
+                newDataList,
+                newDataList[clickedIndex].id,
+                (newDataList[clickedIndex] as SelectSpace).name,
+                clickedIndex
+            )
         )
+    }
+
+    fun getNewSpaceId(): Long {
+        var id = 0L
+        withState<SelectSpaceState.Success> { state ->
+            id = state.spaceId
+        }
+        return id
+    }
+
+    fun getNewSpaceName(): String {
+        var name = ""
+        withState<SelectSpaceState.Success> { state ->
+            name = state.spaceName
+        }
+        return name
     }
 
 }

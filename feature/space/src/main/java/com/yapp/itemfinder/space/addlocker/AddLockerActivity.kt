@@ -1,7 +1,10 @@
 package com.yapp.itemfinder.space.addlocker
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -27,6 +30,7 @@ class AddLockerActivity : BaseStateActivity<AddLockerViewModel, ActivityAddLocke
     override val binding by viewBinding(ActivityAddLockerBinding::inflate)
 
     private var dataListAdapter: DataListAdapter<Data>? = null
+    private lateinit var resultLauncher: ActivityResultLauncher<Intent>
 
     @Inject
     lateinit var dataBindHelper: DataBindHelper
@@ -37,9 +41,10 @@ class AddLockerActivity : BaseStateActivity<AddLockerViewModel, ActivityAddLocke
             dataListAdapter = DataListAdapter()
             recyclerView.adapter = dataListAdapter
         }
+        setResultNext()
     }
 
-    private fun initToolbar() = with(binding.defaultNavigationView){
+    private fun initToolbar() = with(binding.defaultNavigationView) {
         backButtonImageResId = R.drawable.ic_close_round
         containerColor = R.color.brown_03
         backButtonClickListener = {
@@ -50,7 +55,7 @@ class AddLockerActivity : BaseStateActivity<AddLockerViewModel, ActivityAddLocke
     }
 
     override fun observeData(): Job = lifecycleScope.launch {
-        repeatOnLifecycle(Lifecycle.State.STARTED){
+        repeatOnLifecycle(Lifecycle.State.STARTED) {
             launch {
                 vm.stateFlow.collect { state ->
                     when (state) {
@@ -67,10 +72,7 @@ class AddLockerActivity : BaseStateActivity<AddLockerViewModel, ActivityAddLocke
                         is AddLockerSideEffect.OpenSelectSpace -> {
                             val intent = SelectSpaceActivity.newIntent(this@AddLockerActivity)
                             intent.putExtra(SPACE_ID_KEY, 2L) // 현재 locker의 spacdId로 설정
-                            startActivity(intent)
-                            // 수정된 보관함 위치로 변경
-                            // val name = "서재"
-                            // vm.changeSpace(name)
+                            resultLauncher.launch(intent)
                         }
                     }
                 }
@@ -91,8 +93,23 @@ class AddLockerActivity : BaseStateActivity<AddLockerViewModel, ActivityAddLocke
 
     }
 
+    private fun setResultNext() {
+        resultLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+                if (result.resultCode == Activity.RESULT_OK) {
+                    val spaceId = result.data?.getLongExtra(NEW_SPACE_ID, 0)
+                    val spaceName = result.data?.getStringExtra(NEW_SPACE_NAME)
+                    if (spaceName != null) {
+                        vm.changeSpace(spaceName)
+                    }
+                }
+            }
+    }
+
     companion object {
         const val SPACE_ID_KEY = "SPACE_ID_KEY"
+        const val NEW_SPACE_NAME = "NEW_SPACE_NAME_KEY"
+        const val NEW_SPACE_ID = "NEW_SPACE_ID"
         fun newIntent(context: Context) = Intent(context, AddLockerActivity::class.java)
     }
 }

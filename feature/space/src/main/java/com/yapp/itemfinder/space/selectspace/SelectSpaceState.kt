@@ -9,6 +9,7 @@ sealed class SelectSpaceState : State {
     data class Success(
         val dataList: List<Data>,
         var spaceId: Long,
+        var spaceName: String,
         var checkedIndex: Int
     ) : SelectSpaceState()
 
