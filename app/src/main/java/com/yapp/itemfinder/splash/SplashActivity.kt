@@ -9,6 +9,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.yapp.itemfinder.databinding.ActivitySplashBinding
 import com.yapp.itemfinder.feature.common.BaseStateActivity
+import com.yapp.itemfinder.feature.common.Depth
 import com.yapp.itemfinder.feature.common.binding.viewBinding
 import com.yapp.itemfinder.feature.common.coroutines.coroutineExceptionHandler
 import com.yapp.itemfinder.home.HomeActivity
@@ -28,6 +29,9 @@ class SplashActivity : BaseStateActivity<SplashViewModel, ActivitySplashBinding>
     override val vm by viewModels<SplashViewModel>()
 
     override val binding by viewBinding(ActivitySplashBinding::inflate)
+
+    override val depth: Depth
+        get() = Depth.FIRST
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

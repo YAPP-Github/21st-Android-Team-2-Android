@@ -17,6 +17,7 @@ import com.yapp.itemfinder.domain.model.Data
 import com.yapp.itemfinder.domain.model.LockerEntity
 import com.yapp.itemfinder.domain.model.SpaceItem
 import com.yapp.itemfinder.feature.common.BaseStateFragment
+import com.yapp.itemfinder.feature.common.Depth
 import com.yapp.itemfinder.feature.common.datalist.binder.DataBindHelper
 import com.yapp.itemfinder.feature.common.extension.gone
 import com.yapp.itemfinder.feature.common.extension.showShortToast

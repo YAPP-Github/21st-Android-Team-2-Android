@@ -11,6 +11,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.yapp.itemfinder.domain.model.Data
 import com.yapp.itemfinder.feature.common.BaseStateActivity
+import com.yapp.itemfinder.feature.common.Depth
 import com.yapp.itemfinder.feature.common.R
 import com.yapp.itemfinder.feature.common.binding.viewBinding
 import com.yapp.itemfinder.feature.common.datalist.adapter.DataListAdapter
@@ -34,6 +35,8 @@ class AddLockerActivity : BaseStateActivity<AddLockerViewModel, ActivityAddLocke
     private var dataListAdapter: DataListAdapter<Data>? = null
     private lateinit var resultLauncher: ActivityResultLauncher<Intent>
 
+    override val depth: Depth
+        get() = Depth.THIRD
 
     @Inject
     lateinit var dataBindHelper: DataBindHelper

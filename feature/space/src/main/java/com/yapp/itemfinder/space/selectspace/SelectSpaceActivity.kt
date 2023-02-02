@@ -7,6 +7,7 @@ import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.yapp.itemfinder.domain.model.Data
 import com.yapp.itemfinder.feature.common.BaseStateActivity
+import com.yapp.itemfinder.feature.common.Depth
 import com.yapp.itemfinder.feature.common.R as CR
 import com.yapp.itemfinder.feature.common.binding.viewBinding
 import com.yapp.itemfinder.feature.common.datalist.adapter.DataListAdapter
@@ -20,6 +21,9 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class SelectSpaceActivity : BaseStateActivity<SelectSpaceViewModel, ActivitySelectSpaceBinding>() {
+
+    override val depth: Depth
+        get() = Depth.SECOND
 
     override val vm by viewModels<SelectSpaceViewModel>()
 

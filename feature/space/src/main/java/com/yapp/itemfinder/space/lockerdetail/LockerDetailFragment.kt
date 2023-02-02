@@ -20,6 +20,7 @@ import com.google.android.material.divider.MaterialDividerItemDecoration
 import com.yapp.itemfinder.domain.model.Data
 import com.yapp.itemfinder.domain.model.Item
 import com.yapp.itemfinder.feature.common.BaseStateFragment
+import com.yapp.itemfinder.feature.common.Depth
 import com.yapp.itemfinder.feature.common.R.string
 import com.yapp.itemfinder.feature.common.binding.viewBinding
 import com.yapp.itemfinder.feature.common.datalist.adapter.DataListAdapter
