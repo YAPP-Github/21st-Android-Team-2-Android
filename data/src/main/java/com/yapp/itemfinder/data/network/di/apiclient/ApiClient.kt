@@ -5,7 +5,7 @@ import com.yapp.itemfinder.data.network.api.AppApi
 import com.yapp.itemfinder.data.network.api.managespace.ManageSpaceApi
 import com.yapp.itemfinder.data.network.api.auth.AuthApi
 import com.yapp.itemfinder.data.network.api.home.HomeSpaceApi
-import com.yapp.itemfinder.data.network.api.lockerlist.LockerListApi
+import com.yapp.itemfinder.data.network.api.lockerlist.LockerApi
 import com.yapp.itemfinder.data.network.di.okhttp.OkHttpClientQualifier
 import com.yapp.itemfinder.domain.di.ApiGsonQualifier
 import com.yapp.itemfinder.domain.provider.UrlProvider
@@ -56,7 +56,7 @@ class ApiClient @Inject constructor(
     fun provideHomeSpaceApi(): HomeSpaceApi =
         apiAdapter.create(HomeSpaceApi::class.java)
 
-    fun provideLockerListApi(): LockerListApi =
-        apiAdapter.create(LockerListApi::class.java)
+    fun provideLockerListApi(): LockerApi =
+        apiAdapter.create(LockerApi::class.java)
 
 }

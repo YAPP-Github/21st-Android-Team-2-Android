@@ -47,7 +47,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/ic_locker_icon_selector"
             android:button="@null"
-            android:drawableStart="@drawable/ic_basket_large" />
+            android:drawableStart="@drawable/ic_container_2" />
 
         <Space
             android:layout_width="wrap_content"
@@ -60,7 +60,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/ic_locker_icon_selector"
             android:button="@null"
-            android:drawableStart="@drawable/ic_drawer_large" />
+            android:drawableStart="@drawable/ic_container_3" />
 
         <Space
             android:layout_width="wrap_content"
@@ -73,7 +73,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/ic_locker_icon_selector"
             android:button="@null"
-            android:drawableStart="@drawable/ic_bookshelf_large" />
+            android:drawableStart="@drawable/ic_container_4" />
 
     </RadioGroup>
 
@@ -94,7 +94,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/ic_locker_icon_selector"
             android:button="@null"
-            android:drawableStart="@drawable/ic_fridge_large" />
+            android:drawableStart="@drawable/ic_container_5" />
 
         <Space
             android:layout_width="wrap_content"
@@ -107,7 +107,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/ic_locker_icon_selector"
             android:button="@null"
-            android:drawableStart="@drawable/ic_closet_large" />
+            android:drawableStart="@drawable/ic_container_6" />
 
         <Space
             android:layout_width="wrap_content"
@@ -120,7 +120,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/ic_locker_icon_selector"
             android:button="@null"
-            android:drawableStart="@drawable/ic_dressing_table_large" />
+            android:drawableStart="@drawable/ic_container_7" />
 
         <Space
             android:layout_width="wrap_content"
@@ -133,7 +133,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/ic_locker_icon_selector"
             android:button="@null"
-            android:drawableStart="@drawable/ic_builtin_closet_large" />
+            android:drawableStart="@drawable/ic_container_8" />
 
     </RadioGroup>
 </androidx.constraintlayout.widget.ConstraintLayout>

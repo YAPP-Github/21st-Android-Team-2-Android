@@ -55,6 +55,9 @@ class AddLockerActivity : BaseStateActivity<AddLockerViewModel, ActivityAddLocke
         }
         titleText = "보관함 추가"
         rightFirstIcon = R.drawable.ic_done
+        rightFirstIconClickListener = {
+            vm.addNewLocker()
+        }
     }
 
     override fun observeData(): Job = lifecycleScope.launch {

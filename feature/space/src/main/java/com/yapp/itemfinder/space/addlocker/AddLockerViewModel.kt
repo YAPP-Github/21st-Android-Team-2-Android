@@ -2,6 +2,7 @@ package com.yapp.itemfinder.space.addlocker
 
 import android.net.Uri
 import androidx.lifecycle.viewModelScope
+import com.yapp.itemfinder.data.network.api.lockerlist.LockerApi
 import com.yapp.itemfinder.domain.model.*
 import com.yapp.itemfinder.feature.common.BaseStateViewModel
 import com.yapp.itemfinder.feature.common.extension.onErrorWithResult
@@ -15,7 +16,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AddLockerViewModel @Inject constructor(
-
+    private val lockerApi: LockerApi
 ) : BaseStateViewModel<AddLockerState, AddLockerSideEffect>() {
     override val _stateFlow: MutableStateFlow<AddLockerState> =
         MutableStateFlow(AddLockerState.Uninitialized)
@@ -70,6 +71,21 @@ class AddLockerViewModel @Inject constructor(
         }
     }
 
+    fun addNewLocker() = viewModelScope.launch {
+        withState<AddLockerState.Success> { state ->
+            runCatchingWithErrorHandler {
+                lockerApi.addNewLocker(
+                    AddLockerRequest(name = "새 보관함", spaceId = 13, icon = "IC_CONTAINER_2")
+                )
+            }.onSuccess { res ->
+
+            }.onErrorWithResult { e ->
+
+            }
+
+        }
+    }
+
     fun addImage() {
         withState<AddLockerState.Success> {
             postSideEffect(AddLockerSideEffect.UploadImage)
@@ -89,7 +105,7 @@ class AddLockerViewModel @Inject constructor(
 
                 newDataList
             }.onSuccess {
-                    setState(successState.copy(dataList = it))
+                setState(successState.copy(dataList = it))
             }.onErrorWithResult {
                 setState(AddLockerState.Error(it))
                 val message = it.errorResultEntity.message ?: return@launch
