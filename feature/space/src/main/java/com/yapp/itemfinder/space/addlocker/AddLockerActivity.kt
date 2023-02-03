@@ -51,12 +51,14 @@ class AddLockerActivity : BaseStateActivity<AddLockerViewModel, ActivityAddLocke
         backButtonImageResId = R.drawable.ic_close_round
         containerColor = R.color.brown_03
         backButtonClickListener = {
+            setResult(Activity.RESULT_CANCELED)
             finish()
         }
         titleText = "보관함 추가"
         rightFirstIcon = R.drawable.ic_done
         rightFirstIconClickListener = {
             vm.addNewLocker()
+            setResult(Activity.RESULT_OK)
             finish()
         }
     }

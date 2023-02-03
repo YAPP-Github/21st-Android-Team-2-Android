@@ -1,7 +1,11 @@
 package com.yapp.itemfinder.space
 
+import android.app.Activity
+import android.content.Intent
 import android.widget.Toast
 import android.os.Bundle
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
@@ -47,6 +51,8 @@ class LockerListFragment : BaseStateFragment<LockerListViewModel, FragmentLocker
     @Inject
     lateinit var dataBindHelper: DataBindHelper
 
+    private lateinit var resultLauncher: ActivityResultLauncher<Intent>
+
     override fun initState() {
         super.initState()
         setFragmentResultListener(SPACE_ID_REQUEST_KEY) { requestKey, bundle ->
@@ -62,6 +68,7 @@ class LockerListFragment : BaseStateFragment<LockerListViewModel, FragmentLocker
             recyclerView.adapter = dataListAdapter
         }
         addItemFAB.setOnClickListener { vm.moveAddItemActivity() }
+        setResultLauncher()
     }
 
     private fun initToolBar() = with(binding.defaultTopNavigationView) {
@@ -107,8 +114,13 @@ class LockerListFragment : BaseStateFragment<LockerListViewModel, FragmentLocker
                             is LockerListSideEffect.MoveToAddLocker -> {
                                 val intent = AddLockerActivity.newIntent(requireActivity())
                                 spaceId.let { intent.putExtra(AddLockerActivity.SPACE_ID_KEY, it) }
-                                spaceName.let { intent.putExtra(AddLockerActivity.SPACE_NAME_KEY, it) }
-                                startActivity(intent)
+                                spaceName.let {
+                                    intent.putExtra(
+                                        AddLockerActivity.SPACE_NAME_KEY,
+                                        it
+                                    )
+                                }
+                                resultLauncher.launch(intent)
                             }
                             is LockerListSideEffect.MoveToAddItem -> {
                                 startActivity(AddItemActivity.newIntent(requireContext()))
@@ -143,6 +155,15 @@ class LockerListFragment : BaseStateFragment<LockerListViewModel, FragmentLocker
     }
 
     private fun handleError(lockerListState: LockerListState.Error) {
+    }
+
+    private fun setResultLauncher() {
+        resultLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+                if (result.resultCode == Activity.RESULT_OK) {
+                    vm.fetchLockerList(spaceId)
+                }
+            }
     }
 
     companion object {
