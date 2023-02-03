@@ -18,7 +18,7 @@ import javax.inject.Inject
 @HiltViewModel
 class AddLockerViewModel @Inject constructor(
     private val lockerApi: LockerApi,
-    private val savedStateHandle: SavedStateHandle
+    savedStateHandle: SavedStateHandle
 ) : BaseStateViewModel<AddLockerState, AddLockerSideEffect>() {
     override val _stateFlow: MutableStateFlow<AddLockerState> =
         MutableStateFlow(AddLockerState.Uninitialized)
@@ -37,7 +37,8 @@ class AddLockerViewModel @Inject constructor(
                 ),
                 lockerName = "",
                 spaceId = savedStateHandle.get<Long>(AddLockerActivity.SPACE_ID_KEY) ?: 0,
-                icon = "IC_CONTAINER_1"
+                icon = LockerIconId.LOCKER_ICON1.iconId,
+                url = null
             )
         )
     }
@@ -56,6 +57,18 @@ class AddLockerViewModel @Inject constructor(
         return id
     }
 
+    fun setLockerName(name: String) {
+        withState<AddLockerState.Success> { state ->
+            setState(state.copy(lockerName = name, isRefreshNeed = false))
+        }
+    }
+
+    fun setLockerIcon(icon: String) {
+        withState<AddLockerState.Success> { state ->
+            setState(state.copy(icon = icon, isRefreshNeed = false))
+        }
+    }
+
     fun changeSpace(name: String, spaceId: Long) {
         withState<AddLockerState.Success> { state ->
             setState(
@@ -64,7 +77,8 @@ class AddLockerViewModel @Inject constructor(
                     dataList = ArrayList(state.dataList).apply {
                         removeAt(1)
                         add(1, AddLockerSpace(name = name))
-                    }
+                    },
+                    isRefreshNeed = true
                 )
             )
         }
@@ -74,14 +88,18 @@ class AddLockerViewModel @Inject constructor(
         withState<AddLockerState.Success> { state ->
             runCatchingWithErrorHandler {
                 lockerApi.addNewLocker(
-                    AddLockerRequest(name = "새 보관함", spaceId = 13, icon = "IC_CONTAINER_2")
+                    AddLockerRequest(
+                        name = state.lockerName,
+                        spaceId = state.spaceId,
+                        icon = state.icon,
+                        url = state.url
+                    )
                 )
-            }.onSuccess { res ->
+            }.onSuccess { result ->
 
             }.onErrorWithResult { e ->
-
+                setState(AddLockerState.Error(e))
             }
-
         }
     }
 
@@ -104,7 +122,13 @@ class AddLockerViewModel @Inject constructor(
 
                 newDataList
             }.onSuccess {
-                setState(successState.copy(dataList = it))
+                setState(
+                    successState.copy(
+                        dataList = it,
+                        url = uri.toString(),
+                        isRefreshNeed = true
+                    )
+                )
             }.onErrorWithResult {
                 setState(AddLockerState.Error(it))
                 val message = it.errorResultEntity.message ?: return@launch

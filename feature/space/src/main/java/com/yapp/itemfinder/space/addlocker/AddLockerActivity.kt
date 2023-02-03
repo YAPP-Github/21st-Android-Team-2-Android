@@ -57,6 +57,7 @@ class AddLockerActivity : BaseStateActivity<AddLockerViewModel, ActivityAddLocke
         rightFirstIcon = R.drawable.ic_done
         rightFirstIconClickListener = {
             vm.addNewLocker()
+            finish()
         }
     }
 
@@ -97,6 +98,7 @@ class AddLockerActivity : BaseStateActivity<AddLockerViewModel, ActivityAddLocke
     }
 
     private fun handleSuccess(addLockerState: AddLockerState.Success) {
+        if (addLockerState.isRefreshNeed.not()) return
         dataBindHelper.bindList(addLockerState.dataList, vm)
         dataListAdapter?.submitList(addLockerState.dataList)
     }
@@ -106,7 +108,7 @@ class AddLockerActivity : BaseStateActivity<AddLockerViewModel, ActivityAddLocke
 
     private fun handleUploadImage() {
         TedImagePicker.with(this)
-            .start { vm.uploadImage(it)  }
+            .start { vm.uploadImage(it) }
     }
 
     private fun setResultNext() {
