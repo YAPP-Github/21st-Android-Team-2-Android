@@ -53,14 +53,6 @@ class LockerListFragment : BaseStateFragment<LockerListViewModel, FragmentLocker
 
     private lateinit var resultLauncher: ActivityResultLauncher<Intent>
 
-    override fun initState() {
-        super.initState()
-        setFragmentResultListener(SPACE_ID_REQUEST_KEY) { requestKey, bundle ->
-            val spaceId = bundle.getLong(SPACE_ID_KEY)
-            vm.fetchLockerList(spaceId)
-        }
-    }
-
     override fun initViews() = with(binding) {
         initToolBar()
         if (dataListAdapter == null) {
@@ -161,7 +153,7 @@ class LockerListFragment : BaseStateFragment<LockerListViewModel, FragmentLocker
         resultLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
                 if (result.resultCode == Activity.RESULT_OK) {
-                    vm.fetchLockerList(spaceId)
+                    vm.fetchData()
                 }
             }
     }
