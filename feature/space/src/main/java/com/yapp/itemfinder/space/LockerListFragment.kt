@@ -41,6 +41,8 @@ class LockerListFragment : BaseStateFragment<LockerListViewModel, FragmentLocker
         get() = Depth.SECOND
 
     private val spaceItem by lazy { requireArguments().parcelable<SpaceItem>(SPACE_ITEM_KEY) }
+    private val spaceId by lazy { requireArguments().getLong(SPACE_ID_KEY) }
+    private val spaceName by lazy { requireArguments().getString(SPACE_NAME_KEY) }
 
     @Inject
     lateinit var dataBindHelper: DataBindHelper
@@ -69,7 +71,7 @@ class LockerListFragment : BaseStateFragment<LockerListViewModel, FragmentLocker
         }
 
         containerColor = CR.color.brown_02
-        titleText = spaceItem?.name
+        titleText = spaceName
 
         rightSecondIcon = CR.drawable.ic_search
         rightSecondIconClickListener = {
@@ -103,7 +105,10 @@ class LockerListFragment : BaseStateFragment<LockerListViewModel, FragmentLocker
                                 moveLockerDetail(sideEffect.locker)
                             }
                             is LockerListSideEffect.MoveToAddLocker -> {
-                                startActivity(AddLockerActivity.newIntent(requireActivity()))
+                                val intent = AddLockerActivity.newIntent(requireActivity())
+                                spaceId.let { intent.putExtra(AddLockerActivity.SPACE_ID_KEY, it) }
+                                spaceName.let { intent.putExtra(AddLockerActivity.SPACE_NAME_KEY, it) }
+                                startActivity(intent)
                             }
                             is LockerListSideEffect.MoveToAddItem -> {
                                 startActivity(AddItemActivity.newIntent(requireContext()))
@@ -145,6 +150,7 @@ class LockerListFragment : BaseStateFragment<LockerListViewModel, FragmentLocker
         val TAG = LockerListFragment::class.simpleName.toString()
         const val SPACE_ID_REQUEST_KEY = "space id for locker list screen"
         const val SPACE_ID_KEY = "spaceId"
+        const val SPACE_NAME_KEY = "SPACE_NAME_KEY"
         const val SPACE_ITEM_KEY = "SPACE_ITEM_KEY"
 
         fun newInstance() = LockerListFragment()

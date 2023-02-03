@@ -10,6 +10,8 @@ sealed class AddLockerState : State {
 
     data class Success(
         val dataList: List<Data>,
+        val lockerName: String,
+        val icon: String,
         val spaceId: Long
     ): AddLockerState()
 

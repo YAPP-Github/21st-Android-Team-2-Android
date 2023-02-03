@@ -1,6 +1,7 @@
 package com.yapp.itemfinder.space.addlocker
 
 import android.net.Uri
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.yapp.itemfinder.data.network.api.lockerlist.LockerApi
 import com.yapp.itemfinder.domain.model.*
@@ -16,7 +17,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AddLockerViewModel @Inject constructor(
-    private val lockerApi: LockerApi
+    private val lockerApi: LockerApi,
+    private val savedStateHandle: SavedStateHandle
 ) : BaseStateViewModel<AddLockerState, AddLockerSideEffect>() {
     override val _stateFlow: MutableStateFlow<AddLockerState> =
         MutableStateFlow(AddLockerState.Uninitialized)
@@ -27,11 +29,15 @@ class AddLockerViewModel @Inject constructor(
             AddLockerState.Success(
                 listOf(
                     AddLockerNameInput(),
-                    AddLockerSpace(name = "주방"),
+                    AddLockerSpace(
+                        name = savedStateHandle.get<String>(AddLockerActivity.SPACE_NAME_KEY) ?: ""
+                    ),
                     LockerIcons(),
                     AddLockerPhoto()
                 ),
-                spaceId = 2L
+                lockerName = "",
+                spaceId = savedStateHandle.get<Long>(AddLockerActivity.SPACE_ID_KEY) ?: 0,
+                icon = "IC_CONTAINER_1"
             )
         )
     }
@@ -50,18 +56,11 @@ class AddLockerViewModel @Inject constructor(
         return id
     }
 
-    fun setSpaceId(id: Long) {
-        withState<AddLockerState.Success> { state ->
-            setState(
-                state.copy(spaceId = id)
-            )
-        }
-    }
-
-    fun changeSpace(name: String) {
+    fun changeSpace(name: String, spaceId: Long) {
         withState<AddLockerState.Success> { state ->
             setState(
                 state.copy(
+                    spaceId = spaceId,
                     dataList = ArrayList(state.dataList).apply {
                         removeAt(1)
                         add(1, AddLockerSpace(name = name))
