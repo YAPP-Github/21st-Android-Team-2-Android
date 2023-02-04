@@ -5,7 +5,6 @@ import android.app.Activity
 import android.app.DatePickerDialog
 import android.content.Context
 import android.content.Intent
-import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.lifecycle.Lifecycle
@@ -20,10 +19,8 @@ import com.yapp.itemfinder.feature.common.binding.viewBinding
 import com.yapp.itemfinder.feature.common.datalist.adapter.DataListAdapter
 import com.yapp.itemfinder.feature.common.datalist.binder.DataBindHelper
 import com.yapp.itemfinder.feature.common.extension.parcelable
-import com.yapp.itemfinder.feature.common.extension.showShortToast
 import com.yapp.itemfinder.feature.common.views.SnackBarView
 import com.yapp.itemfinder.space.additem.selectspace.AddItemSelectSpaceActivity
-import com.yapp.itemfinder.space.addlocker.AddLockerActivity
 import com.yapp.itemfinder.feature.common.R as CR
 import com.yapp.itemfinder.space.databinding.ActivityAddItemBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -51,7 +48,6 @@ class AddItemActivity : BaseStateActivity<AddItemViewModel, ActivityAddItemBindi
         if (result.resultCode == Activity.RESULT_OK) {
             result.data?.parcelable<SpaceAndLockerEntity>(SELECTED_SPACE_AND_LOCKER_KEY)?.let {
                 vm.setSelectedSpaceAndLocker(it)
-                showShortToast(it.toString())
             }
         }
     }
