@@ -29,9 +29,13 @@ class LockerListViewModel @Inject constructor(
         runCatchingWithErrorHandler {
             lockerRepository.getLockers(savedStateHandle.get<Long>(LockerListFragment.SPACE_ID_KEY)!!)
         }.onSuccess { lockers ->
+            val spaceId = savedStateHandle.get<Long>(LockerListFragment.SPACE_ID_KEY)!!
+            val spaceName = savedStateHandle.get<String>(LockerListFragment.SPACE_NAME_KEY)!!
             setState(
                 LockerListState.Success(
-                    dataList = listOf(AddLocker()) + lockers
+                    dataList = listOf(AddLocker()) + lockers,
+                    spaceId = spaceId,
+                    spaceName = spaceName
                 )
             )
         }.onErrorWithResult { errorWithResult ->
@@ -69,5 +73,21 @@ class LockerListViewModel @Inject constructor(
 
     fun moveLockerDetail(locker: LockerEntity) {
         postSideEffect(LockerListSideEffect.MoveToLockerDetail(locker))
+    }
+
+    fun getSpaceId(): Long {
+        var spaceId: Long = -1
+        withState<LockerListState.Success> { state ->
+            spaceId = state.spaceId
+        }
+        return spaceId
+    }
+
+    fun getSpaceName(): String {
+        var spaceName: String = ""
+        withState<LockerListState.Success> { state ->
+            spaceName = state.spaceName
+        }
+        return spaceName
     }
 }
