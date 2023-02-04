@@ -48,10 +48,10 @@ class SelectSpaceViewModel @Inject constructor(
                     checkedIndex = checkedIndex
                 )
             )
-        }.onErrorWithResult { e ->
-            setState(
-                SelectSpaceState.Error(e)
-            )
+        }.onErrorWithResult { errorWithResult ->
+            setState(SelectSpaceState.Error(errorWithResult))
+            val message = errorWithResult.errorResultEntity.message
+            message?.let { postSideEffect(SelectSpaceSideEffect.ShowToast(it)) }
         }
     }
 

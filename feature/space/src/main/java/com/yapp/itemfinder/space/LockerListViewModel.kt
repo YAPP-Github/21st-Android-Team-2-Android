@@ -34,8 +34,10 @@ class LockerListViewModel @Inject constructor(
                     dataList = listOf(AddLocker()) + lockers
                 )
             )
-        }.onErrorWithResult { e ->
-            setState(LockerListState.Error(e))
+        }.onErrorWithResult { errorWithResult ->
+            setState(LockerListState.Error(errorWithResult))
+            val message = errorWithResult.errorResultEntity.message
+            message?.let { postSideEffect(LockerListSideEffect.ShowToast(message)) }
         }
     }
 

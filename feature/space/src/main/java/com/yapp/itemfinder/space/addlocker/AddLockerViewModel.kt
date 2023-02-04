@@ -97,8 +97,10 @@ class AddLockerViewModel @Inject constructor(
                 )
             }.onSuccess { result ->
 
-            }.onErrorWithResult { e ->
-                setState(AddLockerState.Error(e))
+            }.onErrorWithResult { errorWithResult ->
+                setState(AddLockerState.Error(errorWithResult))
+                val message = errorWithResult.errorResultEntity.message
+                message?.let { postSideEffect(AddLockerSideEffect.ShowToast(it)) }
             }
         }
     }

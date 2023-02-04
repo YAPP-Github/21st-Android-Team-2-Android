@@ -117,7 +117,9 @@ class LockerListFragment : BaseStateFragment<LockerListViewModel, FragmentLocker
                             is LockerListSideEffect.MoveToAddItem -> {
                                 startActivity(AddItemActivity.newIntent(requireContext()))
                             }
-                            else -> {}
+                            is LockerListSideEffect.ShowToast -> {
+                                Toast.makeText(requireContext(), sideEffect.message, Toast.LENGTH_SHORT).show()
+                            }
                         }
                     }
                 }
