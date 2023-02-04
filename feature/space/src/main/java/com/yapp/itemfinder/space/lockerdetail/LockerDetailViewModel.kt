@@ -19,7 +19,8 @@ import javax.inject.Inject
 @HiltViewModel
 class LockerDetailViewModel @Inject constructor(
     private val itemRepository: ItemRepository,
-    @LockerRepositoryQualifiers private val lockerRepository: LockerRepository,
+    @LockerRepositoryQualifiers
+    private val lockerRepository: LockerRepository,
     private val savedStateHandle: SavedStateHandle
 ) : BaseStateViewModel<LockerDetailState, LockerDetailSideEffect>() {
 

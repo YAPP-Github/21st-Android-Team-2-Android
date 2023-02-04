@@ -1,4 +1,4 @@
-package com.yapp.itemfinder.space.additem.sekectspace
+package com.yapp.itemfinder.space.additem.selectspace
 
 import com.yapp.itemfinder.domain.model.Data
 import com.yapp.itemfinder.feature.common.State

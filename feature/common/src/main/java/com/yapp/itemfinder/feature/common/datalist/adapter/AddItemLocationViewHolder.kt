@@ -12,14 +12,18 @@ class AddItemLocationViewHolder(
 
     override fun bindData(data: AddItemLocation) {
         super.bindData(data)
-        if (data.spaceName == "" && data.lockerName == "") {
-            binding.itemLocationGroup.gone()
-            binding.arrowForward.gone()
-            binding.itemLocationHintTextView.visible()
-        } else {
-            binding.itemLocationHintTextView.gone()
-            binding.itemLocationGroup.visible()
-            binding.arrowForward.visible()
+        with(binding) {
+            if (data.spaceName == "" && data.lockerName == "") {
+                itemLocationGroup.gone()
+                arrowForward.gone()
+                itemLocationHintTextView.visible()
+            } else {
+                itemLocationHintTextView.gone()
+                itemLocationGroup.visible()
+                arrowForward.visible()
+                itemLocationSpaceTextView.text = data.spaceName
+                itemLocationLockerTextView.text = data.lockerName
+            }
         }
     }
 

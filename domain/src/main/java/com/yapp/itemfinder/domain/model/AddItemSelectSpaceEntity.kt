@@ -11,4 +11,7 @@ data class AddItemSelectSpaceEntity(
     var selectSpaceHandler: AddItemSelectSpaceHandler = {}
     fun runSelectSpace() = selectSpaceHandler.invoke(this)
 
+    fun mapManageSpaceEntity() =
+        ManageSpaceEntity(id = id, name = name)
+
 }

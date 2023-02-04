@@ -31,6 +31,7 @@ class DataBindHelper @Inject constructor(
     private val addItemPurchaseDateBinder: AddItemPurchaseDateBinder,
     private val addItemMemoBinder: AddItemMemoBinder,
     private val addItemSelectSpaceBinder: AddItemSelectSpaceBinder,
+    private val selectLockerBinder: SelectLockerBinder
 ) {
 
     @SuppressLint("CheckResult")
@@ -99,6 +100,9 @@ class DataBindHelper @Inject constructor(
             )
             CellType.ADD_ITEM_SELECT_SPACE_CELL -> addItemSelectSpaceBinder.bindData(
                 data as AddItemSelectSpaceEntity, viewModel
+            )
+            CellType.SELECT_LOCKER_CELL -> selectLockerBinder.bindData(
+                data as SelectLockerEntity, viewModel
             )
             else -> {}
         }

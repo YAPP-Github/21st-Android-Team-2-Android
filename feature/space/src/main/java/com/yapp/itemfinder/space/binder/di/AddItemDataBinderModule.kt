@@ -3,6 +3,7 @@ package com.yapp.itemfinder.space.binder.di
 import com.yapp.itemfinder.feature.common.datalist.binder.*
 import com.yapp.itemfinder.space.binder.*
 import com.yapp.itemfinder.space.binder.additem.AddItemScreenAddItemLocationBinder
+import com.yapp.itemfinder.space.binder.additem.selectlocker.AddItemSelectLockerBinder
 import com.yapp.itemfinder.space.binder.additem.selectspace.AddItemSelectSpaceScreenAddItemSelectSpaceBinder
 import dagger.Binds
 import dagger.Module
@@ -67,5 +68,11 @@ abstract class AddItemDataBinderModule {
     abstract fun bindAddItemSelectSpaceBinder(
         addItemSelectSpaceBinder: AddItemSelectSpaceScreenAddItemSelectSpaceBinder
     ): AddItemSelectSpaceBinder
+
+    @Binds
+    @Singleton
+    abstract fun bindAddItemSelectLockerBinder(
+        addItemSelectLockerBinder: AddItemSelectLockerBinder
+    ): SelectLockerBinder
 
 }

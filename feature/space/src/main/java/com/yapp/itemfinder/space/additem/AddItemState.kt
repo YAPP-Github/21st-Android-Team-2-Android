@@ -1,6 +1,7 @@
 package com.yapp.itemfinder.space.additem
 
 import com.yapp.itemfinder.domain.model.Data
+import com.yapp.itemfinder.domain.model.SpaceAndLockerEntity
 import com.yapp.itemfinder.feature.common.State
 
 sealed class AddItemState : State {
@@ -10,7 +11,8 @@ sealed class AddItemState : State {
 
     data class Success(
         val dataList: List<Data>,
-        val isRefreshNeed: Boolean = true
+        val isRefreshNeed: Boolean = true,
+        val spaceAndLockerEntity: SpaceAndLockerEntity? = null
     ): AddItemState()
 
     data class Error(
