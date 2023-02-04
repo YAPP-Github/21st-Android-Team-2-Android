@@ -16,6 +16,8 @@
     <dimen name="stroke_6dp">6dp</dimen>
     <dimen name="stroke_7dp">7dp</dimen>
     <dimen name="stroke_8dp">8dp</dimen>
+    
+    <dimen name="toolbar_button_size">24dp</dimen>
 
     <dimen name="radius_8dp">8dp</dimen>
     <dimen name="radius_12dp">12dp</dimen>
