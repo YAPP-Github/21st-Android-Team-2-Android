@@ -17,10 +17,10 @@ class AddItemScreenCountBinder @Inject constructor() : AddItemCountBinder {
 
     private fun setAddItemViewModelHandler(item: AddItemCount, vm: AddItemViewModel) {
         item.plusHandler = {
-            vm.countPlusOne()
+            if (item.count < 99) vm.countPlusOne()
         }
         item.minusHandler = {
-            vm.countMinusOne()
+            if (item.count > 1) vm.countMinusOne()
         }
     }
 }

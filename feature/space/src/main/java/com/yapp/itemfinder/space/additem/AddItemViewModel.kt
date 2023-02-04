@@ -1,5 +1,6 @@
 package com.yapp.itemfinder.space.additem
 
+import android.net.Uri
 import androidx.lifecycle.viewModelScope
 import com.yapp.itemfinder.domain.model.*
 import com.yapp.itemfinder.feature.common.BaseStateViewModel
@@ -23,6 +24,7 @@ class AddItemViewModel @Inject constructor(
         setState(
             AddItemState.Success(
                 dataList = listOf(
+                    AddItemImages(mutableListOf()),
                     AddItemName(mode = ScreenMode.ADD_MODE),
                     AddItemCategory(category = ItemCategorySelection.DEFAULT),
                     AddItemLocation(),
@@ -33,6 +35,44 @@ class AddItemViewModel @Inject constructor(
                 spaceAndLockerEntity = null,
             )
         )
+    }
+
+    fun startChooseImages(){
+        withState<AddItemState.Success> { state ->
+            val idx = state.dataList.indexOfFirst { data -> data is AddItemImages }
+            postSideEffect(AddItemSideEffect.OpenPhotoPicker(state.dataList[idx] as AddItemImages))
+        }
+
+    }
+    // 이미지 피커에서 이미지를 선택한 다음, 하나의 이미지의 삭제 버튼을 눌렀을 경우 호출합니다.
+    fun cancelImageUpload(uriStringList: List<String>){
+        withState<AddItemState.Success> { state ->
+            val newDataList = state.dataList.toMutableList()
+            val imageIndex = newDataList.indexOfFirst { data -> data is AddItemImages }
+            newDataList[imageIndex] = (state.dataList[imageIndex] as AddItemImages).copy(
+                uriStringList = uriStringList
+            )
+            setState(AddItemState.Success(newDataList))
+
+        }
+
+    }
+
+
+    fun doneChooseImages(uris: List<Uri>){
+        withState<AddItemState.Success> { state ->
+            val newDataList = state.dataList.toMutableList()
+            val imageIndex = newDataList.indexOfFirst { data -> data is AddItemImages }
+            newDataList[imageIndex] = (state.dataList[imageIndex] as AddItemImages).copy(
+                uriStringList = uris.map { it.toString() }
+            )
+            setState(
+                AddItemState.Success(
+                    newDataList
+                )
+            )
+        }
+
     }
 
     fun setName(newName: String) {
@@ -235,7 +275,7 @@ class AddItemViewModel @Inject constructor(
                 postSideEffect(AddItemSideEffect.FillOutNameSnackBar)
                 return
             }
-            if (itemCategory == "") {
+            if (itemCategory == ItemCategorySelection.DEFAULT.label) {
                 postSideEffect(AddItemSideEffect.FillOutCategorySnackBar)
                 return
             }

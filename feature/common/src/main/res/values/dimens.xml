@@ -16,9 +16,10 @@
     <dimen name="stroke_6dp">6dp</dimen>
     <dimen name="stroke_7dp">7dp</dimen>
     <dimen name="stroke_8dp">8dp</dimen>
-    
+
     <dimen name="toolbar_button_size">24dp</dimen>
 
+    <dimen name="radius_4dp">4dp</dimen>
     <dimen name="radius_8dp">8dp</dimen>
     <dimen name="radius_12dp">12dp</dimen>
     <dimen name="radius_capsule">360dp</dimen>
@@ -31,6 +32,10 @@
     <dimen name="toolbar_container_height">56dp</dimen>
 
     <dimen name="collapsing_toolbar_container_height">112dp</dimen>
+
+    <dimen name="add_images_recyclerview_margin">16dp</dimen>
+    <dimen name="add_images_background_radius">4dp</dimen>
+
     <dimen name="marker_map_view_max_width">400dp</dimen>
 
     <dimen name="bottom_sheet_bottom_padding_default">420dp</dimen>

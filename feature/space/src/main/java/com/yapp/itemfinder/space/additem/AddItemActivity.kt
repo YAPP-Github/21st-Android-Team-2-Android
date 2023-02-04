@@ -6,6 +6,7 @@ import android.app.DatePickerDialog
 import android.content.Context
 import android.content.Intent
 import androidx.activity.result.contract.ActivityResultContracts
+import android.net.Uri
 import androidx.activity.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -24,6 +25,7 @@ import com.yapp.itemfinder.space.additem.selectspace.AddItemSelectSpaceActivity
 import com.yapp.itemfinder.feature.common.R as CR
 import com.yapp.itemfinder.space.databinding.ActivityAddItemBinding
 import dagger.hilt.android.AndroidEntryPoint
+import gun0912.tedimagepicker.builder.TedImagePicker
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import java.util.*
@@ -145,6 +147,17 @@ class AddItemActivity : BaseStateActivity<AddItemViewModel, ActivityAddItemBindi
                         }
                         is AddItemSideEffect.MemoLengthLimitSnackBar -> {
                             SnackBarView.make(binding.root, "메모는 한글 기준 최대 200자까지 작성 가능해요").show()
+                        }
+                        is AddItemSideEffect.OpenPhotoPicker -> {
+                            val addItemImages = sideEffect.addItemImages
+                            TedImagePicker.with(this@AddItemActivity)
+                                .max(
+                                    addItemImages.maxCount
+                                    , "${addItemImages.maxCount}개초과!"
+                                ).selectedUri(addItemImages.uriStringList.map { Uri.parse(it) })
+                                .startMultiImage { uris ->
+                                    vm.doneChooseImages(uris)
+                                }
                         }
                         is AddItemSideEffect.MoveSelectSpace -> {
                             spaceAndLockerLauncher.launch(

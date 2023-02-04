@@ -6,7 +6,13 @@
     <string name="create">추가</string>
     <string name="cancel">취소</string>
     <string name="failedToAddSpace">공간 추가 실패</string>
-
+    <string name="location">위치</string>
+    <string name="count">개수</string>
+    <string name="tag">태그</string>
+    <string name="memo">메모</string>
+    <string name="purchaseDate">구매일</string>
+    <string name="expirationDate">소비기한</string>
+    <string name="countText">%d개</string>
     <string name="camera">카메라</string>
     <string name="gallery">갤러리</string>
     <string name="attach_photo">사진 첨부</string>
