@@ -102,8 +102,14 @@ class LockerListFragment : BaseStateFragment<LockerListViewModel, FragmentLocker
                             is LockerListSideEffect.MoveToAddLocker -> {
                                 val intent = AddLockerActivity.newIntent(requireActivity())
                                 intent.apply {
-                                    putExtra(AddLockerActivity.SPACE_ID_KEY, vm.getSpaceId())
-                                    putExtra(AddLockerActivity.SPACE_NAME_KEY, vm.getSpaceName())
+                                    putExtra(
+                                        AddLockerActivity.SPACE_ID_KEY,
+                                        requireArguments().getLong(SPACE_ID_KEY)
+                                    )
+                                    putExtra(
+                                        AddLockerActivity.SPACE_NAME_KEY,
+                                        requireArguments().getString(SPACE_NAME_KEY)
+                                    )
                                 }
                                 resultLauncher.launch(intent)
                             }
@@ -111,7 +117,11 @@ class LockerListFragment : BaseStateFragment<LockerListViewModel, FragmentLocker
                                 startActivity(AddItemActivity.newIntent(requireContext()))
                             }
                             is LockerListSideEffect.ShowToast -> {
-                                Toast.makeText(requireContext(), sideEffect.message, Toast.LENGTH_SHORT).show()
+                                Toast.makeText(
+                                    requireContext(),
+                                    sideEffect.message,
+                                    Toast.LENGTH_SHORT
+                                ).show()
                             }
                         }
                     }

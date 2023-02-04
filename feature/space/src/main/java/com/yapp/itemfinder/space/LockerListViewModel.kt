@@ -75,19 +75,4 @@ class LockerListViewModel @Inject constructor(
         postSideEffect(LockerListSideEffect.MoveToLockerDetail(locker))
     }
 
-    fun getSpaceId(): Long {
-        var spaceId: Long = -1
-        withState<LockerListState.Success> { state ->
-            spaceId = state.spaceId
-        }
-        return spaceId
-    }
-
-    fun getSpaceName(): String {
-        var spaceName: String = ""
-        withState<LockerListState.Success> { state ->
-            spaceName = state.spaceName
-        }
-        return spaceName
-    }
 }
