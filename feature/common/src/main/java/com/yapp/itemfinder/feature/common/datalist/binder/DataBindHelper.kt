@@ -50,6 +50,7 @@ class DataBindHelper @Inject constructor(
     var addItemMemoBinder: AddItemMemoBinder,
     @EditItemMemoQualifier
     var editItemMemoBinder: AddItemMemoBinder,
+    private val addItemLocationBinder: AddItemLocationBinder,
     private val addItemSelectSpaceBinder: AddItemSelectSpaceBinder,
     private val selectLockerBinder: SelectLockerBinder
 ) {
@@ -124,10 +125,6 @@ class DataBindHelper @Inject constructor(
                 addItemMemoBinder.bindDate(data as AddItemMemo, viewModel)
                 editItemMemoBinder.bindDate(data as AddItemMemo, viewModel)
             }
-            CellType.ADD_ITEM_NAME_CELL -> addItemNameBinder.bindData(
-                data as AddItemName,
-                viewModel
-            )
             CellType.ADD_ITEM_IMAGES_CELL -> addItemImagesBinder.bindData(
                 data as AddItemImages, viewModel
             )

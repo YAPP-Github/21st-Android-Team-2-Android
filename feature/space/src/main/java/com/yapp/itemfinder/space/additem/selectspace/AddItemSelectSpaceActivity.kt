@@ -15,7 +15,6 @@ import com.yapp.itemfinder.feature.common.binding.viewBinding
 import com.yapp.itemfinder.feature.common.datalist.adapter.DataListAdapter
 import com.yapp.itemfinder.feature.common.datalist.binder.DataBindHelper
 import com.yapp.itemfinder.feature.common.extension.parcelable
-import com.yapp.itemfinder.feature.common.extension.showShortToast
 import com.yapp.itemfinder.space.R
 import com.yapp.itemfinder.space.additem.AddItemActivity.Companion.SELECTED_SPACE_AND_LOCKER_KEY
 import com.yapp.itemfinder.space.additem.selectlocker.AddItemSelectLockerActivity
@@ -104,7 +103,6 @@ class AddItemSelectSpaceActivity : BaseStateActivity<AddItemSelectSpaceViewModel
         spaceAndLockerLauncher.launch(
             AddItemSelectLockerActivity.newIntent(this, sideEffect.spaceAndLockerEntity)
         )
-        showShortToast(sideEffect.spaceAndLockerEntity.toString())
     }
 
     companion object {

@@ -11,6 +11,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.yapp.itemfinder.domain.model.Data
 import com.yapp.itemfinder.domain.model.ItemCategorySelection
 import com.yapp.itemfinder.feature.common.BaseStateActivity
+import com.yapp.itemfinder.feature.common.Depth
 import com.yapp.itemfinder.feature.common.binding.viewBinding
 import com.yapp.itemfinder.feature.common.datalist.adapter.DataListAdapter
 import com.yapp.itemfinder.feature.common.datalist.binder.DataBindHelper
@@ -30,6 +31,9 @@ class EditItemActivity : BaseStateActivity<EditItemViewModel, ActivityAddItemBin
     override val vm by viewModels<EditItemViewModel>()
 
     override val binding by viewBinding(ActivityAddItemBinding::inflate)
+
+    override val depth: Depth
+        get() = Depth.THIRD
 
     private var dataListAdapter: DataListAdapter<Data>? = null
 
