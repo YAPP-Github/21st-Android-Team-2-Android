@@ -1,7 +1,6 @@
 package com.yapp.itemfinder.feature.common.datalist.adapter
 
 import android.net.Uri
-import android.view.RoundedCorner
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners

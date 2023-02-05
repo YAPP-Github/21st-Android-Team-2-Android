@@ -58,8 +58,6 @@ class AddLockerActivity : BaseStateActivity<AddLockerViewModel, ActivityAddLocke
         rightFirstIcon = R.drawable.ic_done
         rightFirstIconClickListener = {
             vm.addNewLocker()
-            setResult(Activity.RESULT_OK)
-            finish()
         }
     }
 
@@ -89,6 +87,10 @@ class AddLockerActivity : BaseStateActivity<AddLockerViewModel, ActivityAddLocke
                         }
                         is AddLockerSideEffect.ShowToast -> {
                             showShortToast(sideEffect.message)
+                        }
+                        is AddLockerSideEffect.SuccessRegister -> {
+                            setResult(Activity.RESULT_OK)
+                            finish()
                         }
                     }
                 }
