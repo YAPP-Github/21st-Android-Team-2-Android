@@ -7,6 +7,7 @@ import android.content.Context
 import android.content.Intent
 import androidx.activity.result.contract.ActivityResultContracts
 import android.net.Uri
+import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -46,13 +47,14 @@ class AddItemActivity : BaseStateActivity<AddItemViewModel, ActivityAddItemBindi
     @Inject
     lateinit var dataBindHelper: DataBindHelper
 
-    private val spaceAndLockerLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-        if (result.resultCode == Activity.RESULT_OK) {
-            result.data?.parcelable<SpaceAndLockerEntity>(SELECTED_SPACE_AND_LOCKER_KEY)?.let {
-                vm.setSelectedSpaceAndLocker(it)
+    private val spaceAndLockerLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                result.data?.parcelable<SpaceAndLockerEntity>(SELECTED_SPACE_AND_LOCKER_KEY)?.let {
+                    vm.setSelectedSpaceAndLocker(it)
+                }
             }
         }
-    }
 
     override fun initViews() = with(binding) {
         initToolBar()
@@ -108,6 +110,12 @@ class AddItemActivity : BaseStateActivity<AddItemViewModel, ActivityAddItemBindi
                     when (sideEffect) {
                         is AddItemSideEffect.OpenSelectCategoryDialog -> {
                             val dialog = SelectCategoryDialog.getInstance()
+                            dialog.arguments = Bundle().apply {
+                                putString(
+                                    SelectCategoryDialog.SELECTED_CATEGORY_KEY,
+                                    vm.getSelectedCategory().label
+                                )
+                            }
                             this@AddItemActivity.supportFragmentManager?.let { fragmentManager ->
                                 dialog.show(fragmentManager, SELECT_CATEGORY_DIALOG)
                             }
@@ -152,8 +160,7 @@ class AddItemActivity : BaseStateActivity<AddItemViewModel, ActivityAddItemBindi
                             val addItemImages = sideEffect.addItemImages
                             TedImagePicker.with(this@AddItemActivity)
                                 .max(
-                                    addItemImages.maxCount
-                                    , "${addItemImages.maxCount}개초과!"
+                                    addItemImages.maxCount, "${addItemImages.maxCount}개초과!"
                                 ).selectedUri(addItemImages.uriStringList.map { Uri.parse(it) })
                                 .startMultiImage { uris ->
                                     vm.doneChooseImages(uris)
@@ -161,7 +168,10 @@ class AddItemActivity : BaseStateActivity<AddItemViewModel, ActivityAddItemBindi
                         }
                         is AddItemSideEffect.MoveSelectSpace -> {
                             spaceAndLockerLauncher.launch(
-                                AddItemSelectSpaceActivity.newIntent(this@AddItemActivity, sideEffect.spaceAndLockerEntity)
+                                AddItemSelectSpaceActivity.newIntent(
+                                    this@AddItemActivity,
+                                    sideEffect.spaceAndLockerEntity
+                                )
                             )
                         }
                     }

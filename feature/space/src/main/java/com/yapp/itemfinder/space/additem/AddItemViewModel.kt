@@ -105,6 +105,15 @@ class AddItemViewModel @Inject constructor(
         }
     }
 
+    fun getSelectedCategory(): ItemCategorySelection {
+        var category = ItemCategorySelection.DEFAULT
+        withState<AddItemState.Success> { state ->
+            category = state.dataList.filterIsInstance<AddItemCategory>().firstOrNull()?.category
+                ?: ItemCategorySelection.DEFAULT
+        }
+        return category
+    }
+
     fun countPlusOne() {
         withState<AddItemState.Success> { state ->
             val newDataList = ArrayList(state.dataList)
