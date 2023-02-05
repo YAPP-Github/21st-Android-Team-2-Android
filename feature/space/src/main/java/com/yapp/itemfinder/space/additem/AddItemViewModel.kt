@@ -37,15 +37,16 @@ class AddItemViewModel @Inject constructor(
         )
     }
 
-    fun startChooseImages(){
+    fun startChooseImages() {
         withState<AddItemState.Success> { state ->
             val idx = state.dataList.indexOfFirst { data -> data is AddItemImages }
             postSideEffect(AddItemSideEffect.OpenPhotoPicker(state.dataList[idx] as AddItemImages))
         }
 
     }
+
     // 이미지 피커에서 이미지를 선택한 다음, 하나의 이미지의 삭제 버튼을 눌렀을 경우 호출합니다.
-    fun cancelImageUpload(uriStringList: List<String>){
+    fun cancelImageUpload(uriStringList: List<String>) {
         withState<AddItemState.Success> { state ->
             val newDataList = state.dataList.toMutableList()
             val imageIndex = newDataList.indexOfFirst { data -> data is AddItemImages }
@@ -59,7 +60,7 @@ class AddItemViewModel @Inject constructor(
     }
 
 
-    fun doneChooseImages(uris: List<Uri>){
+    fun doneChooseImages(uris: List<Uri>) {
         withState<AddItemState.Success> { state ->
             val newDataList = state.dataList.toMutableList()
             val imageIndex = newDataList.indexOfFirst { data -> data is AddItemImages }
@@ -246,6 +247,10 @@ class AddItemViewModel @Inject constructor(
 
     fun saveItem() {
         withState<AddItemState.Success> { state ->
+            state.dataList.filterIsInstance<AddItemName>().firstOrNull()?.saveName()
+            state.dataList.filterIsInstance<AddItemMemo>().firstOrNull()?.saveMemo()
+        }
+        withState<AddItemState.Success> { state ->
             val dataList = state.dataList
             var itemName = ""
             var itemCategory = ""
@@ -287,7 +292,7 @@ class AddItemViewModel @Inject constructor(
                 postSideEffect(AddItemSideEffect.NameLengthLimitSnackBar)
                 return
             }
-            if (itemCategory.length > 200) {
+            if (itemMemo.length > 200) {
                 postSideEffect(AddItemSideEffect.MemoLengthLimitSnackBar)
                 return
             }

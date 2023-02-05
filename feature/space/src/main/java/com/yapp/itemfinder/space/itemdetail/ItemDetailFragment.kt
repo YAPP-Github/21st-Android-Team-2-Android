@@ -17,6 +17,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import com.yapp.itemfinder.feature.common.R as CR
 import com.yapp.itemfinder.space.databinding.FragmentItemDetailBinding
+import com.yapp.itemfinder.space.edititem.EditItemActivity
 
 @AndroidEntryPoint
 class ItemDetailFragment : BaseStateFragment<ItemDetailViewModel, FragmentItemDetailBinding>() {
@@ -45,7 +46,10 @@ class ItemDetailFragment : BaseStateFragment<ItemDetailViewModel, FragmentItemDe
         }
         rightSecondIcon = CR.drawable.ic_edit_white
         rightSecondIconClickListener = {
-            Toast.makeText(requireContext(), "수정 버튼 클릭", Toast.LENGTH_SHORT).show()
+            val intent = EditItemActivity.newIntent(requireContext()).apply {
+                putExtra(ITEM_ID_KEY, requireArguments().getLong(ITEM_ID_KEY))
+            }
+            startActivity(intent)
         }
         containerColor = CR.color.transparent
     }
@@ -66,7 +70,11 @@ class ItemDetailFragment : BaseStateFragment<ItemDetailViewModel, FragmentItemDe
                 }
                 launch {
                     vm.sideEffectFlow.collect { sideEffect ->
-
+                        when (sideEffect) {
+                            is ItemDetailSideEffect.MoveToEditItem -> {
+                                // EditItemActivity
+                            }
+                        }
                     }
                 }
             }

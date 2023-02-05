@@ -7,4 +7,7 @@ data class AddItemMemo(
 ) : Data() {
     var enterHandler: StringHandler = {}
     fun setItemMemo(newMemo: String) = enterHandler.invoke(newMemo)
+
+    var saveHandler: ActionHandler = { }
+    fun saveMemo() = saveHandler.invoke()
 }

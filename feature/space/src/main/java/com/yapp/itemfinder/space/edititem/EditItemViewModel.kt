@@ -1,8 +1,11 @@
 package com.yapp.itemfinder.space.edititem
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.yapp.itemfinder.domain.model.*
 import com.yapp.itemfinder.feature.common.BaseStateViewModel
+import com.yapp.itemfinder.feature.common.extension.runCatchingWithErrorHandler
+import com.yapp.itemfinder.space.itemdetail.ItemDetailFragment
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -12,7 +15,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class EditItemViewModel @Inject constructor(
-
+    private val savedStateHandle: SavedStateHandle
 ) : BaseStateViewModel<EditItemState, EditItemSideEffect>() {
     override val _stateFlow: MutableStateFlow<EditItemState> =
         MutableStateFlow(EditItemState.Uninitialized)
@@ -20,7 +23,10 @@ class EditItemViewModel @Inject constructor(
 
     override fun fetchData(): Job = viewModelScope.launch {
         setState(EditItemState.Loading)
-        // api call or 이전 페이지에서 전달
+        val itemId = savedStateHandle.get<Long>(ItemDetailFragment.ITEM_ID_KEY)
+        runCatchingWithErrorHandler {
+            // itemId로 api call
+        }
         val sampleItem = Item(
             id = 1,
             lockerId = 1,
@@ -221,6 +227,10 @@ class EditItemViewModel @Inject constructor(
 
     fun saveItem() {
         withState<EditItemState.Success> { state ->
+            state.dataList.filterIsInstance<AddItemName>().firstOrNull()?.saveName()
+            state.dataList.filterIsInstance<AddItemMemo>().firstOrNull()?.saveMemo()
+        }
+        withState<EditItemState.Success> { state ->
             val dataList = state.dataList
             var itemName = ""
             var itemCategory = ""
@@ -262,7 +272,7 @@ class EditItemViewModel @Inject constructor(
                 postSideEffect(EditItemSideEffect.NameLengthLimitSnackBar)
                 return
             }
-            if (itemCategory.length > 200) {
+            if (itemMemo.length > 200) {
                 postSideEffect(EditItemSideEffect.MemoLengthLimitSnackBar)
                 return
             }
