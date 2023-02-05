@@ -9,6 +9,10 @@ import android.os.Build
 import android.provider.MediaStore
 import android.util.DisplayMetrics
 import androidx.appcompat.content.res.AppCompatResources
+import java.io.File
+import java.io.FileOutputStream
+import java.util.UUID
+
 fun Int.dpToPx(context: Context): Int{
     return this * (context.resources.displayMetrics.densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT).toInt()
 }
@@ -66,5 +70,18 @@ fun Bitmap.crop(): Bitmap {
 
     return croppedBitmap
 
+}
+
+fun Bitmap.toJpeg(context: Context): String {
+
+    val storage = context.cacheDir
+    val fileName = String.format("%s.%s", UUID.randomUUID(), "jpeg")
+    val tempFile = File(storage, fileName).apply { createNewFile() }
+    val fos = FileOutputStream(tempFile)
+    this.compress(Bitmap.CompressFormat.JPEG, 10, fos)
+    this.recycle()
+    fos.flush()
+    fos.close()
+    return tempFile.absolutePath
 }
 
