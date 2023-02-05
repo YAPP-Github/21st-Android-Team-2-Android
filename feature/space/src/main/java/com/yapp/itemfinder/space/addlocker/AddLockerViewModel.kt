@@ -128,19 +128,20 @@ class AddLockerViewModel @Inject constructor(
         withState<AddLockerState.Success> { successState ->
             runCatchingWithErrorHandler {
                 setState(AddLockerState.Loading)
+                val filePath = uri.toBitMap(applicationContext).crop().toJpeg(applicationContext)
+                val imageUrl = imageRepository.addImages(listOf(filePath)).first()
+                imageUrl
+            }.onSuccess {
 
                 val idx = successState.dataList.indexOfFirst { data -> data is AddLockerPhoto }
                 val newDataList = successState.dataList.toMutableList().apply {
-                    this[idx] = AddLockerPhoto(uriString = uri.toString())
+                    this[idx] = AddLockerPhoto(url = it)
                 }
-
-                newDataList
-            }.onSuccess {
                 setState(
                     successState.copy(
-                        dataList = it,
-                        url = uri.toString(),
-                        isRefreshNeed = true
+                        dataList = newDataList,
+                        isRefreshNeed = true,
+                        url = it
                     )
                 )
             }.onErrorWithResult {

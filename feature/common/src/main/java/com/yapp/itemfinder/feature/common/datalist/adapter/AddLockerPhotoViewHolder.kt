@@ -22,7 +22,7 @@ class AddLockerPhotoViewHolder(
     override fun bindData(data: AddLockerPhoto) {
         super.bindData(data)
         with(binding) {
-            data.uriString?.let {
+            data.url?.let {
                 photoIconImageView.visible()
                 photoImageView.visible()
 
