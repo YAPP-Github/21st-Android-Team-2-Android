@@ -6,7 +6,9 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.allViews
+import com.bumptech.glide.Glide
 import com.yapp.itemfinder.domain.model.Item
+import com.yapp.itemfinder.domain.model.LockerEntity
 import com.yapp.itemfinder.feature.common.databinding.LayoutItemsMarkerMapBinding
 
 class ItemsMarkerMapView
@@ -24,7 +26,11 @@ class ItemsMarkerMapView
         LayoutItemsMarkerMapBinding.inflate(LayoutInflater.from(context), this, true)
 
     private val itemMarkerViews = mutableListOf<ItemMarkerView>()
-    fun fetchItems(items: List<Item>) = with(binding) {
+    fun fetchItems(lockerEntity: LockerEntity, items: List<Item>) = with(binding) {
+        Glide.with(context)
+            .load(lockerEntity.imageUrl)
+            .into(binding.markerBackgroundImageView)
+
         allViews.filterIsInstance<ItemMarkerView>().forEach {
             removeView(it)
         }

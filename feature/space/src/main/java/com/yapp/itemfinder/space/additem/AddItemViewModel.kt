@@ -242,7 +242,9 @@ class AddItemViewModel @Inject constructor(
             locker?.let {
                 newDataList.add(
                     AddItemMarkerMap(
-                        lockerEntity = locker,
+                        lockerEntity = locker.copy(
+                            imageUrl = "https://imgur.com/a/ksRw6Zm"
+                        ),
                         item = null
                     )
                 )

@@ -16,7 +16,7 @@ object DataViewHolderMapper {
     ): DataViewHolder<D> {
         val inflater = LayoutInflater.from(parent.context)
         val viewHolder = when (type) {
-            CellType.ADD_ITEM_MARKER_MAP_CELL, CellType.EMPTY_CELL -> EmptyCellViewHolder(EmptyCellItemBinding.inflate(inflater,parent,false))
+            CellType.EMPTY_CELL -> EmptyCellViewHolder(EmptyCellItemBinding.inflate(inflater,parent,false))
             CellType.CATEGORY_CELL -> CategoryViewHolder(ViewholderStorageBinding.inflate(inflater,parent,false))
             CellType.LIKE_CELL -> LikeViewHolder(LikeItemBinding.inflate(inflater, parent, false))
             CellType.SPACE_CELL -> SpaceViewHolder(SpaceItemBinding.inflate(inflater,parent,false))
@@ -48,6 +48,8 @@ object DataViewHolderMapper {
                 AddItemSelectSpaceViewHolder(ViewholderAddItemSelectSpaceBinding.inflate(inflater, parent, false))
             CellType.SELECT_LOCKER_CELL ->
                 SelectLockerViewHolder(ViewholderSelectLockerBinding.inflate(inflater, parent, false))
+            CellType.ADD_ITEM_MARKER_MAP_CELL ->
+                AddItemMarkerMapViewHolder(ViewholderAddItemMarkerMapBinding.inflate(inflater, parent, false))
 
         }
 
