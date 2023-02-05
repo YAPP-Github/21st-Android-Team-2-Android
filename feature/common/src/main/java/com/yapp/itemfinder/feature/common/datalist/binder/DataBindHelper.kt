@@ -33,7 +33,8 @@ class DataBindHelper @Inject constructor(
     private val addItemMemoBinder: AddItemMemoBinder,
     private val addItemLocationBinder: AddItemLocationBinder,
     private val addItemSelectSpaceBinder: AddItemSelectSpaceBinder,
-    private val selectLockerBinder: SelectLockerBinder
+    private val selectLockerBinder: SelectLockerBinder,
+    private val addItemMarkerMapBinder: AddItemMarkerMapBinder,
 ) {
 
     @SuppressLint("CheckResult")
