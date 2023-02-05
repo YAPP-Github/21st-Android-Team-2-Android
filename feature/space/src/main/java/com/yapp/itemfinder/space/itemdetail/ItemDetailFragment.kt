@@ -19,7 +19,6 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import com.yapp.itemfinder.feature.common.R as CR
 import com.yapp.itemfinder.space.databinding.FragmentItemDetailBinding
-import com.yapp.itemfinder.space.edititem.EditItemActivity
 
 @AndroidEntryPoint
 class ItemDetailFragment : BaseStateFragment<ItemDetailViewModel, FragmentItemDetailBinding>() {
@@ -50,7 +49,7 @@ class ItemDetailFragment : BaseStateFragment<ItemDetailViewModel, FragmentItemDe
         rightSecondIconClickListener = {
             val intent = AddItemActivity.newIntent(requireContext()).apply {
                 putExtra(ITEM_ID_KEY, requireArguments().getLong(ITEM_ID_KEY))
-                putExtra(AddItemActivity.SCREEN_MODE, ScreenMode.EDIT_MODE)
+                putExtra(AddItemActivity.SCREEN_MODE, ScreenMode.EDIT_MODE.label)
             }
             startActivity(intent)
         }

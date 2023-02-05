@@ -6,7 +6,6 @@ import androidx.lifecycle.viewModelScope
 import com.yapp.itemfinder.domain.model.*
 import com.yapp.itemfinder.feature.common.BaseStateViewModel
 import com.yapp.itemfinder.feature.common.extension.runCatchingWithErrorHandler
-import com.yapp.itemfinder.space.edititem.EditItemState
 import com.yapp.itemfinder.space.itemdetail.ItemDetailFragment
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
@@ -25,9 +24,9 @@ class AddItemViewModel @Inject constructor(
 
     override fun fetchData(): Job = viewModelScope.launch {
         setState(AddItemState.Loading)
-        val screenMode = savedStateHandle.get<ScreenMode>(AddItemActivity.SCREEN_MODE)
-        when (screenMode){
-            ScreenMode.ADD_MODE -> {
+        val screenMode = savedStateHandle.get<String>(AddItemActivity.SCREEN_MODE)
+        when (screenMode) {
+            ScreenMode.ADD_MODE.label -> {
                 setState(
                     AddItemState.Success(
                         dataList = listOf(
@@ -43,7 +42,7 @@ class AddItemViewModel @Inject constructor(
                     )
                 )
             }
-            ScreenMode.EDIT_MODE -> {
+            ScreenMode.EDIT_MODE.label -> {
                 val itemId = savedStateHandle.get<Long>(ItemDetailFragment.ITEM_ID_KEY)
                 runCatchingWithErrorHandler {
                     // itemId로 api call
