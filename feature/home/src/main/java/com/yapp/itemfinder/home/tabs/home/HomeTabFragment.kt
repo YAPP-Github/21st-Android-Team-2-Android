@@ -61,24 +61,29 @@ class HomeTabFragment : BaseStateFragment<HomeTabViewModel, FragmentHomeTabBindi
 
     private var addSpaceDialog: AddSpaceDialog? = null
 
+
     private val gridItemDecoration: SpaceItemDecoration by lazy {
         SpaceItemDecoration(
             bottomFullSpacingDp = 16,
             horizontalHalfSpacingDp = 6
         )
-
     }
 
     override fun initState() {
         super.initState()
 
-        setFragmentResultListener(ManageSpaceFragment.NEW_SPACE_NAME_REQUEST_KEY) { _, bundle ->
-            val newSpaceName = bundle.getString(ManageSpaceFragment.NAME_KEY)
+        setFragmentResultListener(AddSpaceDialog.NEW_SPACE_REQUEST_KEY) { _, bundle ->
+            val newSpaceName = bundle.getString(AddSpaceDialog.NEW_SPACE_NAME_BUNDLE_KEY)
             if (newSpaceName != null) {
                 vm.createSpaceItem(newSpaceName)
             }
         }
+
+        setFragmentResultListener(ManageSpaceFragment.NEW_SPACE_ADDED_REQUEST_KEY){ _, _ ->
+            vm.fetchData()
+        }
     }
+
 
     override fun initViews() = with(binding) {
         initToolBar()
@@ -146,7 +151,7 @@ class HomeTabFragment : BaseStateFragment<HomeTabViewModel, FragmentHomeTabBindi
                             }
                             addSpaceDialog?.show(
                                 parentFragmentManager,
-                                ManageSpaceFragment.ADD_SPACE_DIALOG_TAG
+                                AddSpaceDialog.NEW_SPACE_REQUEST_KEY
                             )
                         }
                     }
