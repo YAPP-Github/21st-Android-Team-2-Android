@@ -1,9 +1,12 @@
 package com.yapp.itemfinder.space.additem
 
 import android.net.Uri
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.yapp.itemfinder.domain.model.*
 import com.yapp.itemfinder.feature.common.BaseStateViewModel
+import com.yapp.itemfinder.feature.common.extension.runCatchingWithErrorHandler
+import com.yapp.itemfinder.space.itemdetail.ItemDetailFragment
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -13,7 +16,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AddItemViewModel @Inject constructor(
-
+    private val savedStateHandle: SavedStateHandle
 ) : BaseStateViewModel<AddItemState, AddItemSideEffect>() {
     override val _stateFlow: MutableStateFlow<AddItemState> =
         MutableStateFlow(AddItemState.Uninitialized)
@@ -21,20 +24,80 @@ class AddItemViewModel @Inject constructor(
 
     override fun fetchData(): Job = viewModelScope.launch {
         setState(AddItemState.Loading)
-        setState(
-            AddItemState.Success(
-                dataList = listOf(
-                    AddItemImages(mutableListOf()),
-                    AddItemName(mode = ScreenMode.ADD_MODE),
-                    AddItemCategory(category = ItemCategorySelection.DEFAULT),
-                    AddItemLocation(),
-                    AddItemCount(),
-                    AddItemTags(listOf()),
-                    AddItemAdditional()
-                ),
-                spaceAndLockerEntity = null,
-            )
-        )
+        val screenMode = savedStateHandle.get<String>(AddItemActivity.SCREEN_MODE)
+        when (screenMode) {
+            ScreenMode.ADD_MODE.label -> {
+                setState(
+                    AddItemState.Success(
+                        dataList = listOf(
+                            AddItemImages(mutableListOf()),
+                            AddItemName(mode = ScreenMode.ADD_MODE),
+                            AddItemCategory(category = ItemCategorySelection.DEFAULT),
+                            AddItemLocation(),
+                            AddItemCount(),
+                            AddItemTags(listOf()),
+                            AddItemAdditional()
+                        ),
+                        spaceAndLockerEntity = null,
+                    )
+                )
+            }
+            ScreenMode.EDIT_MODE.label -> {
+                val itemId = savedStateHandle.get<Long>(ItemDetailFragment.ITEM_ID_KEY)
+                runCatchingWithErrorHandler {
+                    // itemId로 api call
+                }
+                // api 연결하면서 sampleItem 제거
+                val sampleItem = Item(
+                    id = 1,
+                    lockerId = 1,
+                    itemCategory = ItemCategory.FOOD,
+                    name = "선크림",
+                    expirationDate = "2022.12.25.",
+                    purchaseDate = null,
+                    memo = null,
+                    imageUrl = "http://source.unsplash.com/random/150x150",
+                    tags = listOf(Tag("생활"), Tag("화장품")),
+                    count = 1
+                )
+                val dataList = mutableListOf<Data>(
+                    AddItemName(name = sampleItem.name, mode = ScreenMode.EDIT_MODE),
+                    AddItemCategory(category = ItemCategorySelection.FOOD),
+                    AddItemLocation(
+                        spaceName = "주방",
+                        spaceId = 111,
+                        lockerName = "냉장고",
+                        lockerId = 222
+                    ),
+                    AddItemCount(count = sampleItem.count)
+                ).apply {
+                    sampleItem.tags?.let { add(AddItemTags(it)) }
+                    sampleItem.memo?.let {
+                        add(
+                            AddItemMemo(
+                                memo = sampleItem.memo!!,
+                                mode = ScreenMode.EDIT_MODE
+                            )
+                        )
+                    }
+                    sampleItem.expirationDate?.let { add(AddItemExpirationDate(it)) }
+                    sampleItem.purchaseDate?.let { add(AddItemPurchaseDate(it)) }
+                    add(
+                        AddItemAdditional(
+                            hasMemo = (sampleItem.memo != null),
+                            hasExpirationDate = sampleItem.expirationDate != null,
+                            hasPurchaseDate = sampleItem.purchaseDate != null
+                        )
+                    )
+                }
+                setState(
+                    AddItemState.Success(
+                        dataList = dataList
+                    )
+                )
+            }
+            else -> {}
+        }
     }
 
     fun startChooseImages() {
