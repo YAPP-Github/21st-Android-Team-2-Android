@@ -31,17 +31,17 @@ class ItemsMarkerMapView
             .load(lockerEntity.imageUrl)
             .into(binding.markerBackgroundImageView)
 
-        allViews.filterIsInstance<ItemMarkerView>().forEach {
-            removeView(it)
-        }
+        allViews.filterIsInstance<ItemMarkerView>().forEach { removeView(it) }
 
         items.forEach { item ->
-            val itemMarkerView = ItemMarkerView(context)
-            addView(itemMarkerView)
-            itemMarkerView.id = item.id.toInt()
-            itemMarkerView.item = item
-            itemMarkerView.position = item.position
-            itemMarkerViews.add(itemMarkerView)
+            addView(
+                ItemMarkerView(context).apply {
+                    this.id = item.id.toInt()
+                    this.item = item
+                    this.position = item.position
+                    itemMarkerViews.add(this)
+                }
+            )
         }
     }
 
@@ -52,6 +52,34 @@ class ItemsMarkerMapView
                 it.bringToFront()
             }
         }
+    }
+
+    fun createFocusMarker(x: Float, y: Float): Item {
+        allViews.filterIsInstance<ItemMarkerView>().forEach { removeView(it) }
+
+        val mapHorizontalGap = (binding.markerMapContainer.measuredWidth - binding.markerBackgroundImageView.measuredWidth) / 2
+
+        val mapStartX: Int = mapHorizontalGap
+        val mapEndX: Int = binding.markerMapContainer.measuredWidth - mapHorizontalGap
+        val mapStartY = 0
+        val mapEndY: Int = binding.markerMapContainer.measuredHeight
+
+        val xPosition: Int = when {
+            x < mapStartX -> mapStartX
+            x > mapEndX -> mapEndX
+            else -> x.toInt()
+        }
+        val yPosition: Int = when {
+            y < mapStartY -> mapStartY
+            y > mapEndY -> mapEndY
+            else -> y.toInt()
+        }
+
+        val xRatioPosition = (xPosition - mapStartX) / binding.markerBackgroundImageView.measuredWidth.toFloat() * 100
+        val yRatioPosition = yPosition / binding.markerBackgroundImageView.measuredHeight.toFloat() * 100
+
+        val position = Item.Position(xRatioPosition, yRatioPosition)
+        return Item.createEmptyItem(position)
     }
 
     fun getImageHeight() = binding.markerBackgroundImageView.measuredHeight

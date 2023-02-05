@@ -1,7 +1,9 @@
 package com.yapp.itemfinder.space.additem.itemposition
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.view.MotionEvent
 import androidx.activity.viewModels
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
@@ -11,6 +13,7 @@ import com.yapp.itemfinder.feature.common.Depth
 import com.yapp.itemfinder.feature.common.R as CR
 import com.yapp.itemfinder.feature.common.binding.viewBinding
 import com.yapp.itemfinder.space.R
+import com.yapp.itemfinder.space.additem.AddItemActivity.Companion.LOCKER_AND_ITEM_KEY
 import com.yapp.itemfinder.space.databinding.ActivityAddItemPositionDefineBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
@@ -26,11 +29,23 @@ class AddItemPositionDefineActivity : BaseStateActivity<AddItemPositionDefineVie
 
     override val binding by viewBinding(ActivityAddItemPositionDefineBinding::inflate)
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun initViews() = with(binding) {
         initToolbar()
 
         initializePinButton.setOnClickListener {
             vm.initializePin()
+        }
+
+        itemsMarkerMapView.setOnTouchListener { view, motionEvent ->
+            when (motionEvent.action) {
+                MotionEvent.ACTION_DOWN -> {
+                    val item = itemsMarkerMapView.createFocusMarker(motionEvent.x, motionEvent.y)
+                    vm.setItem(item)
+                    return@setOnTouchListener true
+                }
+            }
+            false
         }
     }
 
@@ -58,7 +73,9 @@ class AddItemPositionDefineActivity : BaseStateActivity<AddItemPositionDefineVie
         }
         launch {
             vm.sideEffectFlow.collect { sideEffect ->
-
+                when (sideEffect) {
+                    is AddItemPositionDefineSideEffect.SaveItemPosition -> saveItemPosition(sideEffect)
+                }
             }
         }
 
@@ -83,9 +100,12 @@ class AddItemPositionDefineActivity : BaseStateActivity<AddItemPositionDefineVie
 
     }
 
-    companion object {
+    private fun saveItemPosition(sideEffect: AddItemPositionDefineSideEffect.SaveItemPosition) {
+        setResult(RESULT_OK, Intent().putExtra(LOCKER_AND_ITEM_KEY, sideEffect.lockerAndItemEntity))
+        finish()
+    }
 
-        const val LOCKER_AND_ITEM_KEY = "LOCKER_AND_ITEM_KEY"
+    companion object {
 
         fun newIntent(context: Context, lockerAndItemEntity: LockerAndItemEntity) =
             Intent(context, AddItemPositionDefineActivity::class.java).apply {

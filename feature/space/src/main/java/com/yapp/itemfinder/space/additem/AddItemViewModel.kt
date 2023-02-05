@@ -95,11 +95,28 @@ class AddItemViewModel @Inject constructor(
         withState<AddItemState.Success> { state ->
             val newDataList = ArrayList(state.dataList)
             val categoryIndex = newDataList.indexOf(newDataList.find { it is AddItemCategory })
+
+            val addItemMarkerMap = newDataList.find { it is AddItemMarkerMap } as? AddItemMarkerMap
+            val itemCategory = newCategory.toItemCateogry()
             newDataList[categoryIndex] =
                 (newDataList[categoryIndex] as AddItemCategory).copy(category = newCategory)
+
+
+            addItemMarkerMap?.runItemCategorySet(itemCategory)
+            val addItemMarkerMapIndex = newDataList.indexOf(addItemMarkerMap)
+            if (addItemMarkerMapIndex > -1) {
+                newDataList[addItemMarkerMapIndex] = addItemMarkerMap?.copy(
+                    item = addItemMarkerMap.item?.copy(itemCategory = itemCategory)
+                )
+            }
             setState(
-                AddItemState.Success(
-                    newDataList
+                state.copy(
+                    dataList = newDataList,
+                    lockerAndItemEntity = state.lockerAndItemEntity?.copy(
+                        item = state.lockerAndItemEntity.item?.copy(
+                            itemCategory = itemCategory
+                        )
+                    )
                 )
             )
         }
@@ -228,14 +245,16 @@ class AddItemViewModel @Inject constructor(
     fun setSelectedSpaceAndLocker(spaceAndLockerEntity: SpaceAndLockerEntity) {
         withState<AddItemState.Success> { state ->
             val newDataList = ArrayList(state.dataList)
-            val idx = newDataList.indexOf(newDataList.find { it is AddItemLocation })
+            val addItemLocationIdx = newDataList.indexOf(newDataList.find { it is AddItemLocation })
             val (space, locker) = spaceAndLockerEntity
-            newDataList[idx] = AddItemLocation(
+            newDataList[addItemLocationIdx] = AddItemLocation(
                 spaceId = space.id,
                 spaceName = space.name,
                 lockerId = locker?.id ?: 0L,
                 lockerName = locker?.name ?: ""
             )
+
+            val addItemCategory = newDataList.find { it is AddItemCategory } as AddItemCategory
 
             val markerMap = newDataList.find { it is AddItemMarkerMap } as? AddItemMarkerMap
             markerMap?.let { newDataList.remove(it) }
@@ -243,16 +262,31 @@ class AddItemViewModel @Inject constructor(
                 newDataList.add(
                     AddItemMarkerMap(
                         lockerEntity = locker,
-                        item = null
+                        item = state.lockerAndItemEntity?.item?.copy(
+                            itemCategory = addItemCategory.category.toItemCateogry()
+                        )
+                    )
+                )
+                setState(
+                    state.copy(
+                        dataList = newDataList,
+                        spaceAndLockerEntity = spaceAndLockerEntity,
+                        lockerAndItemEntity = state.lockerAndItemEntity?.copy(
+                            lockerEntity = locker,
+                            item = Item.createEmptyItem().copy(
+                                itemCategory = addItemCategory.category.toItemCateogry()
+                            )
+                        )
+                    )
+                )
+            } ?: run {
+                setState(
+                    state.copy(
+                        dataList = newDataList,
+                        spaceAndLockerEntity = spaceAndLockerEntity,
                     )
                 )
             }
-            setState(
-                state.copy(
-                    dataList = newDataList,
-                    spaceAndLockerEntity = spaceAndLockerEntity
-                )
-            )
         }
     }
 
@@ -260,10 +294,18 @@ class AddItemViewModel @Inject constructor(
         withState<AddItemState.Success> { state ->
             val newDataList = ArrayList(state.dataList)
             val addItemMarkerMap = newDataList.find { it is AddItemMarkerMap } as? AddItemMarkerMap
+
+            val addItemCategory = newDataList.find { it is AddItemCategory } as AddItemCategory
+            val itemCategory = addItemCategory.category.toItemCateogry()
+
             addItemMarkerMap?.let {
                 val idx = newDataList.indexOf(addItemMarkerMap)
-                val (locker, item) = lockerAndItemEntity
-                newDataList[idx] = addItemMarkerMap.copy(item = item)
+                val (_, item) = lockerAndItemEntity
+                newDataList[idx] = addItemMarkerMap.copy(
+                    item = item?.copy(
+                        itemCategory = itemCategory
+                    )
+                )
             }
             setState(
                 state.copy(
@@ -349,7 +391,13 @@ class AddItemViewModel @Inject constructor(
 
     fun moveItemPositionDefine() {
         withState<AddItemState.Success> { state ->
-            state.spaceAndLockerEntity?.lockerEntity?.let { lockerEntity ->
+            state.lockerAndItemEntity?.let { lockerAndItemEntity ->
+                postSideEffect(
+                    AddItemSideEffect.MoveItemPositionDefine(
+                        lockerAndItemEntity = lockerAndItemEntity
+                    )
+                )
+            } ?: state.spaceAndLockerEntity?.lockerEntity?.let { lockerEntity ->
                 postSideEffect(
                     AddItemSideEffect.MoveItemPositionDefine(
                         lockerAndItemEntity = LockerAndItemEntity(

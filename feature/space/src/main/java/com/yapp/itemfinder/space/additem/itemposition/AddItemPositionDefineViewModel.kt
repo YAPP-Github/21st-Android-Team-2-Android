@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.yapp.itemfinder.domain.model.Item
 import com.yapp.itemfinder.domain.model.LockerAndItemEntity
 import com.yapp.itemfinder.feature.common.BaseStateViewModel
-import com.yapp.itemfinder.space.additem.itemposition.AddItemPositionDefineActivity.Companion.LOCKER_AND_ITEM_KEY
+import com.yapp.itemfinder.space.additem.AddItemActivity.Companion.LOCKER_AND_ITEM_KEY
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -42,15 +42,12 @@ class AddItemPositionDefineViewModel @Inject constructor(
         }
     }
 
-    fun selectItemPosition(itemPosition: Item.Position) {
+    fun setItem(item: Item) {
         withState<AddItemPositionDefineState.Success> { state ->
-            val item = state.lockerAndItemEntity.item
             setState(
                 AddItemPositionDefineState.Success(
                     lockerAndItemEntity.copy(
-                        item = item?.copy(
-                            position = itemPosition
-                        )
+                        item = item
                     )
                 )
             )
@@ -58,7 +55,13 @@ class AddItemPositionDefineViewModel @Inject constructor(
     }
 
     fun saveItemPosition() {
-
+        withState<AddItemPositionDefineState.Success> { state ->
+            postSideEffect(
+                AddItemPositionDefineSideEffect.SaveItemPosition(
+                    state.lockerAndItemEntity
+                )
+            )
+        }
     }
 
 }

@@ -1,6 +1,8 @@
 package com.yapp.itemfinder.feature.common.datalist.adapter.viewholder
 
 import com.yapp.itemfinder.domain.model.AddItemMarkerMap
+import com.yapp.itemfinder.domain.model.Item
+import com.yapp.itemfinder.domain.model.LockerEntity
 import com.yapp.itemfinder.feature.common.databinding.ViewholderAddItemMarkerMapBinding
 import com.yapp.itemfinder.feature.common.datalist.adapter.DataViewHolder
 
@@ -18,14 +20,21 @@ class AddItemMarkerMapViewHolder(
 
     override fun bindData(data: AddItemMarkerMap) {
         super.bindData(data)
-        with(binding) {
-            val item = data.item
-            itemsMarkerMapView.fetchItems(
-                lockerEntity = data.lockerEntity,
-                items = if (item != null) listOf(item) else listOf()
-            )
-            item?.let { itemsMarkerMapView.applyFocusMarker(it) }
+        data.itemCategorySetHandler = {
+            val item = data.item?.copy(itemCategory = it)
+            setItem(data.lockerEntity, item)
         }
+
+        val item = data.item
+        setItem(data.lockerEntity, item)
+    }
+
+    private fun setItem(lockerEntity: LockerEntity, item: Item?) = with(binding) {
+        itemsMarkerMapView.fetchItems(
+            lockerEntity = lockerEntity,
+            items = if (item != null) listOf(item) else listOf()
+        )
+        item?.let { itemsMarkerMapView.applyFocusMarker(it) }
     }
 
 }

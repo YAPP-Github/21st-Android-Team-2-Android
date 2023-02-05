@@ -58,7 +58,7 @@ class AddItemActivity : BaseStateActivity<AddItemViewModel, ActivityAddItemBindi
 
     private val itemPositionDefineLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
-            result.data?.parcelable<LockerAndItemEntity>(SELECTED_SPACE_AND_LOCKER_KEY)?.let {
+            result.data?.parcelable<LockerAndItemEntity>(LOCKER_AND_ITEM_KEY)?.let {
                 vm.setDefinedLockerAndItem(it)
             }
         }
@@ -231,6 +231,7 @@ class AddItemActivity : BaseStateActivity<AddItemViewModel, ActivityAddItemBindi
         const val CHECKED_CATEGORY_KEY = "CHECKED_CATEGORY_KEY"
 
         const val SELECTED_SPACE_AND_LOCKER_KEY = "SELECTED_SPACE_AND_LOCKER_KEY"
+        const val LOCKER_AND_ITEM_KEY = "LOCKER_AND_ITEM_KEY"
 
         fun newIntent(context: Context) = Intent(context, AddItemActivity::class.java)
 
