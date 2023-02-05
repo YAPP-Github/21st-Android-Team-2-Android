@@ -60,6 +60,14 @@ class HomeTabFragment : BaseStateFragment<HomeTabViewModel, FragmentHomeTabBindi
 
     private var addSpaceDialog: AddSpaceDialog? = null
 
+    private val gridItemDecoration: SpaceItemDecoration by lazy {
+        SpaceItemDecoration(
+            bottomFullSpacingDp = 16,
+            horizontalHalfSpacingDp = 6
+        )
+
+    }
+
     override fun initState() {
         super.initState()
 
@@ -82,7 +90,7 @@ class HomeTabFragment : BaseStateFragment<HomeTabViewModel, FragmentHomeTabBindi
                         dataListWithSpan[position].span
                 }
             }
-
+            recyclerView.addItemDecoration(gridItemDecoration)
         }
     }
 
@@ -197,14 +205,9 @@ class HomeTabFragment : BaseStateFragment<HomeTabViewModel, FragmentHomeTabBindi
         dataListWithSpan = homeTabState.dataListWithSpan
         dataBindHelper.bindList(dataListWithSpan.map { it.data }, vm)
         dataListAdapter?.submitList(dataListWithSpan.map { it.data })
-        binding.recyclerView.addItemDecoration(
-            SpaceItemDecoration(
-                bottomFullSpacingDp = 16,
-                horizontalHalfSpacingDp = 6,
-                range = dataListWithSpan.indexOfFirst { it.data.type == CellType.SPACE_CELL }
-                        ..dataListWithSpan.indexOfLast { it.data.type == CellType.SPACE_CELL }
-            )
-        )
+        gridItemDecoration.range =
+            dataListWithSpan.indexOfFirst { it.data.type == CellType.SPACE_CELL }..
+        dataListWithSpan.indexOfLast { it.data.type == CellType.SPACE_CELL }
     }
 
     private fun handleEmpty() = with(binding) {
