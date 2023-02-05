@@ -437,7 +437,6 @@ abstract fun bindViews(data: T) // 뷰에 리스너를 달고, 액션이 일어�
 ### 각 타입에 맞는 인스턴스를 매핑 - DataMapper
 
 - 서버에서 내려주는 응답에 type이 들어오면, 이를 적합한 데이터 타입으로 컨버트 해줍니다.
-- 
 
 ```kotlin
 @Singleton
