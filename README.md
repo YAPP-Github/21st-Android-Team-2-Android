@@ -210,7 +210,7 @@ class LikeTabViewModel : BaseStateViewModel<LikeTabState, LikeTabSideEffect>() {
     override val _sideEffectFlow: MutableSharedFlow<LikeTabSideEffect>
         get() = MutableSharedFlow()
 
-		override fun fetchData(): Job = viewModelScope.launch {
+    override fun fetchData(): Job = viewModelScope.launch {
         setState(LikeTabState.Loading)
         setState(
             LikeTabState.Success(
@@ -222,10 +222,10 @@ class LikeTabViewModel : BaseStateViewModel<LikeTabState, LikeTabSideEffect>() {
                 }
             )
         )
-				...
-		}
+    ...
+    }
 
-		...
+    ...
 
 }
 ```
@@ -277,18 +277,18 @@ class LikeTabFragment : BaseStateFragment<LikeTabViewModel, FragmentLikeTabBindi
 @AndroidEntryPoint
 class LikeTabFragment : BaseStateFragment<LikeTabViewModel, FragmentLikeTabBinding>() {
 
-		...
-		@Inject
+    ...
+    @Inject
     lateinit var dataBindHelper: DataBindHelper
 
-		...
+    ...
 
-		private fun handleSuccess(likeTabState: LikeTabState.Success) {
-		    dataBindHelper.bindList(likeTabState.dataList, vm)
-		    dataListAdapter?.submitList(likeTabState.dataList)
-		}
+    private fun handleSuccess(likeTabState: LikeTabState.Success) {
+	dataBindHelper.bindList(likeTabState.dataList, vm)
+	dataListAdapter?.submitList(likeTabState.dataList)
+    }
 
-		...
+    ...
 
 }
 ```
@@ -480,7 +480,7 @@ class DataMapper @Inject constructor(
 ```kotlin
 object DataViewHolderMapper {
 		
-		@Suppress("UNCHECKED_CAST")
+    @Suppress("UNCHECKED_CAST")
     fun <D: Data> map(
         parent: ViewGroup,
         type: CellType,
@@ -559,7 +559,7 @@ class LikeTabViewModel : BaseStateViewModel<LikeTabState, LikeTabSideEffect>() {
         }
     }
 
-		...
+    ...
 
 }
 ```
