@@ -43,17 +43,17 @@ fun Uri.toBitMap(context: Context): Bitmap{
     return bitmap
 }
 
-fun Bitmap.crop(): Bitmap {
+fun Bitmap.crop(widthRatio: Int, heightRatio: Int): Bitmap {
     val bitmapWidth = this.width
     val bitmapHeight = this.height
     var cropStartX = 0
     var cropStartY = 0
     var cropWidth = bitmapWidth
-    var cropHeight = (bitmapWidth * (3.0.div(4.0))).toInt()
+    var cropHeight = (bitmapWidth * (heightRatio.toFloat().div(widthRatio.toFloat()))).toInt()
 
     if (cropHeight > bitmapHeight){
         cropHeight = bitmapHeight
-        cropWidth = (bitmapHeight * (3.0.div(4.0))).toInt()
+        cropWidth = (bitmapHeight * (heightRatio.toFloat().div(widthRatio.toFloat()))).toInt()
         cropStartX = (bitmapWidth - cropWidth).div(2.0).toInt()
     }else{
         cropStartY = (bitmapHeight - cropHeight).div(2.0).toInt()
@@ -72,13 +72,30 @@ fun Bitmap.crop(): Bitmap {
 
 }
 
+fun Bitmap.reduceSize(): Bitmap{
+    val isSquare = this.width == this.height
+
+    if (isSquare && this.width>1024){
+        return Bitmap.createScaledBitmap(this,1080,1080,false)
+    }
+
+    val ratio = this.height.toFloat().div(this.width.toFloat())
+    val is4to3 = ratio in 0.72..0.78
+
+    if (is4to3 && this.width > 1440) {
+        return Bitmap.createScaledBitmap(this,1440,1080,false)
+    }
+
+    return this
+}
+
 fun Bitmap.toJpeg(context: Context): String {
 
     val storage = context.cacheDir
     val fileName = String.format("%s.%s", UUID.randomUUID(), "jpeg")
     val tempFile = File(storage, fileName).apply { createNewFile() }
     val fos = FileOutputStream(tempFile)
-    this.compress(Bitmap.CompressFormat.JPEG, 10, fos)
+    this.compress(Bitmap.CompressFormat.JPEG, 70, fos)
     this.recycle()
     fos.flush()
     fos.close()
