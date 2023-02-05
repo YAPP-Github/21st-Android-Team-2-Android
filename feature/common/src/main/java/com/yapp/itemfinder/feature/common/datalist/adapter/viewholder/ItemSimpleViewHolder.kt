@@ -1,4 +1,4 @@
-package com.yapp.itemfinder.feature.common.datalist.adapter
+package com.yapp.itemfinder.feature.common.datalist.adapter.viewholder
 
 import android.widget.FrameLayout
 import android.widget.FrameLayout.LayoutParams
@@ -10,6 +10,7 @@ import com.bumptech.glide.Glide
 import com.yapp.itemfinder.domain.model.Item
 import com.yapp.itemfinder.feature.common.R
 import com.yapp.itemfinder.feature.common.databinding.ItemSimpleItemBinding
+import com.yapp.itemfinder.feature.common.datalist.adapter.DataViewHolder
 import com.yapp.itemfinder.feature.common.extension.dpToPx
 import com.yapp.itemfinder.feature.common.extension.gone
 

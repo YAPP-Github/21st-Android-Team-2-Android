@@ -1,7 +1,8 @@
-package com.yapp.itemfinder.feature.common.datalist.adapter
+package com.yapp.itemfinder.feature.common.datalist.adapter.viewholder
 
 import com.yapp.itemfinder.domain.model.LikeItem
 import com.yapp.itemfinder.feature.common.databinding.LikeItemBinding
+import com.yapp.itemfinder.feature.common.datalist.adapter.DataViewHolder
 
 class LikeViewHolder(
     val binding: LikeItemBinding

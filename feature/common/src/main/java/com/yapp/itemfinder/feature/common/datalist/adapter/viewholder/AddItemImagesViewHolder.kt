@@ -1,10 +1,11 @@
-package com.yapp.itemfinder.feature.common.datalist.adapter
+package com.yapp.itemfinder.feature.common.datalist.adapter.viewholder
 
 import com.yapp.itemfinder.domain.model.AddItemImages
 import com.yapp.itemfinder.feature.common.R
 import com.yapp.itemfinder.feature.common.adaper.AddItemImagesInnerAdapter
 import com.yapp.itemfinder.feature.common.adaper.AddItemImagesInnerData
 import com.yapp.itemfinder.feature.common.databinding.AddItemImagesBinding
+import com.yapp.itemfinder.feature.common.datalist.adapter.DataViewHolder
 import com.yapp.itemfinder.feature.common.utility.AddImagesItemDecoration
 
 class AddItemImagesViewHolder(

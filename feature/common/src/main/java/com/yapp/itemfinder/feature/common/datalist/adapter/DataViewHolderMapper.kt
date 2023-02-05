@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import com.yapp.itemfinder.domain.model.CellType
 import com.yapp.itemfinder.domain.model.Data
 import com.yapp.itemfinder.feature.common.databinding.*
+import com.yapp.itemfinder.feature.common.datalist.adapter.viewholder.*
 
 object DataViewHolderMapper {
 
@@ -47,6 +48,7 @@ object DataViewHolderMapper {
                 AddItemSelectSpaceViewHolder(ViewholderAddItemSelectSpaceBinding.inflate(inflater, parent, false))
             CellType.SELECT_LOCKER_CELL ->
                 SelectLockerViewHolder(ViewholderSelectLockerBinding.inflate(inflater, parent, false))
+
         }
 
         return viewHolder as DataViewHolder<D>

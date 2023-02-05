@@ -1,13 +1,13 @@
-package com.yapp.itemfinder.feature.common.datalist.adapter
+package com.yapp.itemfinder.feature.common.datalist.adapter.viewholder
 
 import android.net.Uri
-import android.view.RoundedCorner
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.yapp.itemfinder.domain.model.AddLockerPhoto
 import com.yapp.itemfinder.feature.common.R
 import com.yapp.itemfinder.feature.common.databinding.AddLockerPhotoBinding
+import com.yapp.itemfinder.feature.common.datalist.adapter.DataViewHolder
 import com.yapp.itemfinder.feature.common.extension.gone
 import com.yapp.itemfinder.feature.common.extension.visible
 

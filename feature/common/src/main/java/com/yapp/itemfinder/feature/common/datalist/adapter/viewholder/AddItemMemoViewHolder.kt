@@ -1,4 +1,4 @@
-package com.yapp.itemfinder.feature.common.datalist.adapter
+package com.yapp.itemfinder.feature.common.datalist.adapter.viewholder
 
 import android.text.InputType
 import android.view.KeyEvent
@@ -6,6 +6,7 @@ import android.view.inputmethod.EditorInfo
 import com.yapp.itemfinder.domain.model.AddItemMemo
 import com.yapp.itemfinder.domain.model.ScreenMode
 import com.yapp.itemfinder.feature.common.databinding.AddItemMemoBinding
+import com.yapp.itemfinder.feature.common.datalist.adapter.DataViewHolder
 
 class AddItemMemoViewHolder(
     val binding: AddItemMemoBinding

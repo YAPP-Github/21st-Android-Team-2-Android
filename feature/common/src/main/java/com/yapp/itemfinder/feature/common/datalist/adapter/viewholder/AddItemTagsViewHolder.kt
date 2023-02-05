@@ -1,4 +1,4 @@
-package com.yapp.itemfinder.feature.common.datalist.adapter
+package com.yapp.itemfinder.feature.common.datalist.adapter.viewholder
 
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -6,6 +6,7 @@ import androidx.core.content.res.ResourcesCompat
 import com.yapp.itemfinder.domain.model.AddItemTags
 import com.yapp.itemfinder.feature.common.R
 import com.yapp.itemfinder.feature.common.databinding.AddItemTagsBinding
+import com.yapp.itemfinder.feature.common.datalist.adapter.DataViewHolder
 
 class AddItemTagsViewHolder(
     val binding: AddItemTagsBinding

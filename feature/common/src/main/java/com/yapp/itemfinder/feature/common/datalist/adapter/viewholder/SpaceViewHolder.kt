@@ -1,10 +1,11 @@
-package com.yapp.itemfinder.feature.common.datalist.adapter
+package com.yapp.itemfinder.feature.common.datalist.adapter.viewholder
 
 import com.bumptech.glide.Glide
 import com.yapp.itemfinder.domain.model.LockerEntity
 import com.yapp.itemfinder.domain.model.SpaceItem
 import com.yapp.itemfinder.feature.common.R
 import com.yapp.itemfinder.feature.common.databinding.SpaceItemBinding
+import com.yapp.itemfinder.feature.common.datalist.adapter.DataViewHolder
 import com.yapp.itemfinder.feature.common.extension.invisible
 import com.yapp.itemfinder.feature.common.extension.toDrawable
 import com.yapp.itemfinder.feature.common.extension.visible

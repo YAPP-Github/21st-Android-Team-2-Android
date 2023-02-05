@@ -37,15 +37,16 @@ class AddItemViewModel @Inject constructor(
         )
     }
 
-    fun startChooseImages(){
+    fun startChooseImages() {
         withState<AddItemState.Success> { state ->
             val idx = state.dataList.indexOfFirst { data -> data is AddItemImages }
             postSideEffect(AddItemSideEffect.OpenPhotoPicker(state.dataList[idx] as AddItemImages))
         }
 
     }
+
     // 이미지 피커에서 이미지를 선택한 다음, 하나의 이미지의 삭제 버튼을 눌렀을 경우 호출합니다.
-    fun cancelImageUpload(uriStringList: List<String>){
+    fun cancelImageUpload(uriStringList: List<String>) {
         withState<AddItemState.Success> { state ->
             val newDataList = state.dataList.toMutableList()
             val imageIndex = newDataList.indexOfFirst { data -> data is AddItemImages }
@@ -59,7 +60,7 @@ class AddItemViewModel @Inject constructor(
     }
 
 
-    fun doneChooseImages(uris: List<Uri>){
+    fun doneChooseImages(uris: List<Uri>) {
         withState<AddItemState.Success> { state ->
             val newDataList = state.dataList.toMutableList()
             val imageIndex = newDataList.indexOfFirst { data -> data is AddItemImages }
@@ -235,6 +236,17 @@ class AddItemViewModel @Inject constructor(
                 lockerId = locker?.id ?: 0L,
                 lockerName = locker?.name ?: ""
             )
+
+            val markerMap = newDataList.find { it is AddItemMarkerMap } as? AddItemMarkerMap
+            markerMap?.let { newDataList.remove(it) }
+            locker?.let {
+                newDataList.add(
+                    AddItemMarkerMap(
+                        lockerEntity = locker,
+                        item = null
+                    )
+                )
+            }
             setState(
                 state.copy(
                     dataList = newDataList,

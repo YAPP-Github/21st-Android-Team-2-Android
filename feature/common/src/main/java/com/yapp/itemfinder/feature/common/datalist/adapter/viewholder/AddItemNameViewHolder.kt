@@ -1,4 +1,4 @@
-package com.yapp.itemfinder.feature.common.datalist.adapter
+package com.yapp.itemfinder.feature.common.datalist.adapter.viewholder
 
 import android.view.KeyEvent
 import android.view.KeyEvent.KEYCODE_ENTER
@@ -6,6 +6,7 @@ import android.view.inputmethod.EditorInfo
 import com.yapp.itemfinder.domain.model.AddItemName
 import com.yapp.itemfinder.domain.model.ScreenMode
 import com.yapp.itemfinder.feature.common.databinding.AddItemNameBinding
+import com.yapp.itemfinder.feature.common.datalist.adapter.DataViewHolder
 
 class AddItemNameViewHolder(
     val binding: AddItemNameBinding

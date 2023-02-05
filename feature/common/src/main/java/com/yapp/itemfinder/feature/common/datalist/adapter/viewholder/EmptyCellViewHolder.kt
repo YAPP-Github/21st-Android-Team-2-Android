@@ -1,8 +1,9 @@
-package com.yapp.itemfinder.feature.common.datalist.adapter
+package com.yapp.itemfinder.feature.common.datalist.adapter.viewholder
 
 import android.widget.LinearLayout
 import com.yapp.itemfinder.domain.model.EmptyCellItem
 import com.yapp.itemfinder.feature.common.databinding.EmptyCellItemBinding
+import com.yapp.itemfinder.feature.common.datalist.adapter.DataViewHolder
 import com.yapp.itemfinder.feature.common.extension.dpToPx
 
 class EmptyCellViewHolder(

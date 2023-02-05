@@ -1,7 +1,8 @@
-package com.yapp.itemfinder.feature.common.datalist.adapter
+package com.yapp.itemfinder.feature.common.datalist.adapter.viewholder
 
 import com.yapp.itemfinder.domain.model.MySpaceUpperCellItem
 import com.yapp.itemfinder.feature.common.databinding.HometabMyspaceUpperCellItemBinding
+import com.yapp.itemfinder.feature.common.datalist.adapter.DataViewHolder
 
 class HomeTabMySpaceUpperCellViewHolder(
     val binding: HometabMyspaceUpperCellItemBinding

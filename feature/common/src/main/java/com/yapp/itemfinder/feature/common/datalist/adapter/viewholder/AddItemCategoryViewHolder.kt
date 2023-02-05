@@ -1,9 +1,10 @@
-package com.yapp.itemfinder.feature.common.datalist.adapter
+package com.yapp.itemfinder.feature.common.datalist.adapter.viewholder
 
 import com.yapp.itemfinder.domain.model.AddItemCategory
 import com.yapp.itemfinder.domain.model.ItemCategorySelection
 import com.yapp.itemfinder.feature.common.R
 import com.yapp.itemfinder.feature.common.databinding.AddItemCategoryBinding
+import com.yapp.itemfinder.feature.common.datalist.adapter.DataViewHolder
 
 class AddItemCategoryViewHolder(
     val binding: AddItemCategoryBinding

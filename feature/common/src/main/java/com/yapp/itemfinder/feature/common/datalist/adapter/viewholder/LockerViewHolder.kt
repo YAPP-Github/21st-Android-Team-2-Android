@@ -1,21 +1,27 @@
-package com.yapp.itemfinder.feature.common.datalist.adapter
+package com.yapp.itemfinder.feature.common.datalist.adapter.viewholder
 
 import android.os.Build
 import android.view.Gravity
 import android.widget.PopupMenu
-import com.yapp.itemfinder.domain.model.ManageSpaceEntity
+import com.yapp.itemfinder.domain.model.LockerEntity
 import com.yapp.itemfinder.feature.common.R
-import com.yapp.itemfinder.feature.common.databinding.ManageSpaceItemBinding
+import com.yapp.itemfinder.feature.common.databinding.LockerListItemBinding
+import com.yapp.itemfinder.feature.common.datalist.adapter.DataViewHolder
+import com.yapp.itemfinder.feature.common.extension.toDrawable
 
-class ManageSpaceViewHolder(
-    val binding: ManageSpaceItemBinding
-) : DataViewHolder<ManageSpaceEntity>(binding){
+class LockerViewHolder(
+    val binding: LockerListItemBinding
+) : DataViewHolder<LockerEntity>(binding) {
     override fun reset() {
-        return
     }
 
-    override fun bindViews(data: ManageSpaceEntity) {
-        binding.spaceName.text = data.name
+    override fun bindData(data: LockerEntity) {
+        super.bindData(data)
+        binding.lockerItemTextView.text = data.name
+        binding.lockerItemImageView.setImageDrawable(data.icon.toDrawable(binding.root.context))
+    }
+
+    override fun bindViews(data: LockerEntity) {
         binding.spinnerImageButton.setOnClickListener {
             val popupMenu = PopupMenu(itemView.context, binding.spinnerImageButton, Gravity.END, 0, R.style.PopupMenu)
             popupMenu.inflate(R.menu.pop_up_menu)
@@ -25,11 +31,11 @@ class ManageSpaceViewHolder(
             popupMenu.setOnMenuItemClickListener { menuItem ->
                 when(menuItem.itemId){
                     R.id.edit_menu -> {
-                        data.editSpaceDialog()
+                        data.editLocker()
                         true
                     }
                     R.id.delete_menu -> {
-                        data.deleteSpaceDialog()
+                        data.deleteLocker()
                         true
                     }
                     else -> false
@@ -37,7 +43,8 @@ class ManageSpaceViewHolder(
             }
             popupMenu.show()
         }
+        binding.root.setOnClickListener {
+            data.moveLockerDetail()
+        }
     }
-
-
 }

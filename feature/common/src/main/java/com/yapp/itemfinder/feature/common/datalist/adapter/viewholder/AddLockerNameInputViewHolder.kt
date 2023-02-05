@@ -1,8 +1,9 @@
-package com.yapp.itemfinder.feature.common.datalist.adapter
+package com.yapp.itemfinder.feature.common.datalist.adapter.viewholder
 
 import android.view.inputmethod.EditorInfo
 import com.yapp.itemfinder.domain.model.AddLockerNameInput
 import com.yapp.itemfinder.feature.common.databinding.AddLockerNameInputBinding
+import com.yapp.itemfinder.feature.common.datalist.adapter.DataViewHolder
 
 class AddLockerNameInputViewHolder(
     val binding: AddLockerNameInputBinding

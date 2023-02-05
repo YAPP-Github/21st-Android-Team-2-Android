@@ -1,7 +1,8 @@
-package com.yapp.itemfinder.feature.common.datalist.adapter
+package com.yapp.itemfinder.feature.common.datalist.adapter.viewholder
 
 import com.yapp.itemfinder.domain.model.AddItemExpirationDate
 import com.yapp.itemfinder.feature.common.databinding.AddItemExpirationDateBinding
+import com.yapp.itemfinder.feature.common.datalist.adapter.DataViewHolder
 
 class AddItemExpirationDateViewHolder(
     val binding: AddItemExpirationDateBinding

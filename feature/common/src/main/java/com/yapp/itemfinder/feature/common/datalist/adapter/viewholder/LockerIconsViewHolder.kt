@@ -1,4 +1,4 @@
-package com.yapp.itemfinder.feature.common.datalist.adapter
+package com.yapp.itemfinder.feature.common.datalist.adapter.viewholder
 
 import android.widget.RadioGroup
 import android.widget.RadioGroup.OnCheckedChangeListener
@@ -6,6 +6,7 @@ import com.yapp.itemfinder.domain.model.LockerIconId
 import com.yapp.itemfinder.domain.model.LockerIcons
 import com.yapp.itemfinder.feature.common.R
 import com.yapp.itemfinder.feature.common.databinding.LockerIconsBinding
+import com.yapp.itemfinder.feature.common.datalist.adapter.DataViewHolder
 
 class LockerIconsViewHolder(
     val binding: LockerIconsBinding

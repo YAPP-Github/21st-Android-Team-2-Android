@@ -1,7 +1,8 @@
-package com.yapp.itemfinder.feature.common.datalist.adapter
+package com.yapp.itemfinder.feature.common.datalist.adapter.viewholder
 
 import com.yapp.itemfinder.domain.model.AddItemCount
 import com.yapp.itemfinder.feature.common.databinding.AddItemCountBinding
+import com.yapp.itemfinder.feature.common.datalist.adapter.DataViewHolder
 
 class AddItemCountViewHolder(
     val binding: AddItemCountBinding
