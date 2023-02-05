@@ -55,11 +55,11 @@
 ### 데이터 클래스 - Model
 
 ```kotlin
+@Parcelize
 open class Data(
-  @PrimaryKey(autoGenerate = true)
-  @ColumnInfo(name = "data_id") open var id: Long = 0,
-  @ColumnInfo(name = "data_type") open var type: String = CellType.EMPTY_CELL.type,
-  @Ignore open var scheme: String = "null"
+    open val id: Long = 0,
+    open val type: String = CellType.EMPTY_CELL.type,
+    open val scheme: String? = null
 ) : Parcelable
 ```
 
@@ -77,19 +77,10 @@ var deleteHandler: DataHandlera = { }
 
 ```kotlin
 data class User(
-  @ColumnInfo var login: String,
-  @ColumnInfo var number: Int,
-  @ColumnInfo var avatarUrl: String
+    val login: String,
+    val number: Int,
+    val avatarUrl: String
 ) : Data() {
-  ...
-  var isFavorite: Boolean = false
-  ...
-  var favoriteVariable: Variable<Boolean>? = null
-  ...
-  fun setIsFavorite(isFavorite: Boolean) {
-    this.isFavorite = isFavorite
-    favoriteVariable?.set(isFavorite)
-  }
   ...
   var favoriteHandler: DataHandler = { }
 
@@ -97,11 +88,7 @@ data class User(
 }
 ```
 
-위 예시의 경우 유저 리스트 표시에 필요한 데이터 클래스 User입니다. Data를 상속받고 필요한 프로퍼티 및 동작에 대해 정의할 수 있으며, 동적인 데이터 갱신을 위해 안드로이드 Jetpack에서 제공하는 LiveData 대신 Variable 클래스를 구현하여 동적으로 데이터를 갱신해주고 있습니다.
-
-제가 LiveData를 사용하지 않고 Variable를 만든 이유에 대해서는 제 블로그에 올려두었습니다.
-
-[RxJava로 LiveData 따라해보기](https://soda1127.github.io/reactive-variable-like-livedata/)
+위 예시의 경우 유저 리스트 표시에 필요한 데이터 클래스 User입니다. Data를 상속받고 필요한 프로퍼티 및 동작에 대해 정의할 수 있으며, 동적인 데이터 갱신을 위해 Handler라는 필드를 두어 처리합니다.
 
 ### BaseViewModel
 
