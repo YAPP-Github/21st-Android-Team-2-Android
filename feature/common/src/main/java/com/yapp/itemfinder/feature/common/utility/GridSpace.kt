@@ -11,7 +11,7 @@ import com.yapp.itemfinder.feature.common.extension.size
 
 //https://stackoverflow.com/questions/28531996/android-recyclerview-gridlayoutmanager-column-spacing
 class SpaceItemDecoration(
-    private val range: IntRange,
+    var range: IntRange = 0..0,
     private val bottomFullSpacingDp: Int,
     private val horizontalHalfSpacingDp: Int,
 ) : ItemDecoration() {
@@ -21,6 +21,8 @@ class SpaceItemDecoration(
         parent: RecyclerView,
         state: RecyclerView.State
     ) {
+        if (range.size() == 0) return
+
         val position: Int = parent.getChildAdapterPosition(view) // item position
         if (position  !in range) return
 
