@@ -86,6 +86,11 @@ class AddLockerViewModel @Inject constructor(
 
     fun addNewLocker() = viewModelScope.launch {
         withState<AddLockerState.Success> { state ->
+            state.dataList
+                .filterIsInstance<AddLockerNameInput>()
+                .firstOrNull()?.saveName()
+        }
+        withState<AddLockerState.Success> { state ->
             runCatchingWithErrorHandler {
                 lockerApi.addNewLocker(
                     AddLockerRequest(

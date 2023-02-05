@@ -5,7 +5,7 @@ data class AddItemName(
     override var type: CellType = CellType.ADD_ITEM_NAME_CELL,
     var mode: ScreenMode
 ) : Data() {
-    var enterHandler: EnterStringHandler = {}
+    var enterHandler: StringHandler = {}
     fun setItemName(newName: String) = enterHandler.invoke(newName)
 }
 

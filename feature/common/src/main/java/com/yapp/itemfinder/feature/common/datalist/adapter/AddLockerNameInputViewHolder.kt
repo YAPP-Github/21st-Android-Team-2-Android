@@ -11,6 +11,13 @@ class AddLockerNameInputViewHolder(
         return
     }
 
+    override fun bindData(data: AddLockerNameInput) {
+        super.bindData(data)
+        data.saveHandler = {
+            data.enterName(binding.lockerNameEditText.text.toString())
+        }
+    }
+
     override fun bindViews(data: AddLockerNameInput) {
         binding.lockerNameEditText.setOnEditorActionListener { textView, actionId, keyEvent ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
