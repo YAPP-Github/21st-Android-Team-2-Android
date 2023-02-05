@@ -15,6 +15,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.yapp.itemfinder.domain.model.Data
 import com.yapp.itemfinder.domain.model.SpaceItem
 import com.yapp.itemfinder.domain.model.LockerEntity
+import com.yapp.itemfinder.domain.model.ScreenMode
 import com.yapp.itemfinder.feature.common.BaseStateFragment
 import com.yapp.itemfinder.feature.common.Depth
 import com.yapp.itemfinder.feature.common.R as CR
@@ -115,7 +116,9 @@ class LockerListFragment : BaseStateFragment<LockerListViewModel, FragmentLocker
                                 resultLauncher.launch(intent)
                             }
                             is LockerListSideEffect.MoveToAddItem -> {
-                                startActivity(AddItemActivity.newIntent(requireContext()))
+                                startActivity(AddItemActivity.newIntent(requireContext()).apply {
+                                    putExtra(AddItemActivity.SCREEN_MODE, ScreenMode.ADD_MODE)
+                                })
                             }
                             is LockerListSideEffect.ShowToast -> {
                                 Toast.makeText(

@@ -184,7 +184,7 @@ class EditItemActivity : BaseStateActivity<EditItemViewModel, ActivityAddItemBin
         const val SELECT_CATEGORY_DIALOG = "SELECT_CATEGORY_DIALOG"
         const val CHECKED_CATEGORY_REQUEST_KEY = "CHECKED_CATEGORY_REQUEST_KEY"
         const val CHECKED_CATEGORY_KEY = "CHECKED_CATEGORY_KEY"
-        fun newIntent(context: Context) = Intent(context, EditItemActivity::class.java)
+        //fun newIntent(context: Context) = Intent(context, EditItemActivity::class.java)
     }
 
 }

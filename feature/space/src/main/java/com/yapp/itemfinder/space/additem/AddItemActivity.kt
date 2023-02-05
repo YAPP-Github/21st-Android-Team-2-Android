@@ -216,6 +216,7 @@ class AddItemActivity : BaseStateActivity<AddItemViewModel, ActivityAddItemBindi
         const val CHECKED_CATEGORY_KEY = "CHECKED_CATEGORY_KEY"
 
         const val SELECTED_SPACE_AND_LOCKER_KEY = "SELECTED_SPACE_AND_LOCKER_KEY"
+        const val SCREEN_MODE = "SCREEN_MODE"
 
         fun newIntent(context: Context) = Intent(context, AddItemActivity::class.java)
 

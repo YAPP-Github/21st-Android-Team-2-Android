@@ -12,7 +12,7 @@ data class AddItemName(
     fun saveName() = saveHandler.invoke()
 }
 
-enum class ScreenMode {
-    EDIT_MODE,
-    ADD_MODE
+enum class ScreenMode(val label: String) {
+    EDIT_MODE("EDIT"),
+    ADD_MODE("ADD")
 }
