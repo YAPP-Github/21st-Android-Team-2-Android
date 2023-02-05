@@ -540,9 +540,9 @@ DataViewHolder는 공통적으로 Data을 상속받은 모든 클래스에 대�
 ```kotlin
 class LikeTabViewModel : BaseStateViewModel<LikeTabState, LikeTabSideEffect>() {
 
-	...
+    ...
 	
-	fun deleteItem(item: LikeItem): Job = viewModelScope.launch {
+    fun deleteItem(item: LikeItem): Job = viewModelScope.launch {
         val withState = withState<LikeTabState.Success> { state ->
             setState(
                 state.copy(
