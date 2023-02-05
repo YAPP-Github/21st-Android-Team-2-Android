@@ -7,13 +7,16 @@
     android:layout_marginVertical="12dp">
 
     <EditText
+        android:id="@+id/lockerNameEditText"
         style="@style/ItemFinderTypography.Head"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:backgroundTint="@color/gray_02"
         android:hint="@string/lockerName"
-        android:textSize="18sp"
+        android:imeOptions="actionDone"
+        android:singleLine="true"
         android:textColorHint="@color/gray_03"
+        android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

@@ -21,6 +21,8 @@ class DataBindHelper @Inject constructor(
     var addLockerSpaceBinder: AddLockerSpaceBinder,
     var selectSpaceBinder: SelectSpaceBinder,
     var addLockerPhotoItemBinder: AddLockerPhotoItemBinder,
+    var addLockerNameBinder: AddLockerNameBinder,
+    var addLockerIconBinder: AddLockerIconBinder,
     @AddItemNameQualifier
     var addItemNameBinder: AddItemNameBinder,
     @EditItemNameQualifier
@@ -93,6 +95,12 @@ class DataBindHelper @Inject constructor(
             }
             CellType.ADD_LOCKER_IMAGE_CELL -> {
                 addLockerPhotoItemBinder.bindData(data as AddLockerPhoto, viewModel)
+            }
+            CellType.ADD_LOCKER_NAME_INPUT_CELL -> {
+                addLockerNameBinder.bindData(data as AddLockerNameInput, viewModel)
+            }
+            CellType.LOCKER_ICONS_CELL -> {
+                addLockerIconBinder.bindData(data as LockerIcons, viewModel)
             }
             CellType.ADD_ITEM_CATEGORY_CELL -> {
                 addItemCategoryBinder.bindData(data as AddItemCategory, viewModel)

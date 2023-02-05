@@ -54,10 +54,16 @@ class AddLockerActivity : BaseStateActivity<AddLockerViewModel, ActivityAddLocke
         backButtonImageResId = R.drawable.ic_close_round
         containerColor = R.color.brown_03
         backButtonClickListener = {
+            setResult(Activity.RESULT_CANCELED)
             finish()
         }
         titleText = "보관함 추가"
         rightFirstIcon = R.drawable.ic_done
+        rightFirstIconClickListener = {
+            vm.addNewLocker()
+            setResult(Activity.RESULT_OK)
+            finish()
+        }
     }
 
     override fun observeData(): Job = lifecycleScope.launch {
@@ -97,6 +103,7 @@ class AddLockerActivity : BaseStateActivity<AddLockerViewModel, ActivityAddLocke
     }
 
     private fun handleSuccess(addLockerState: AddLockerState.Success) {
+        if (addLockerState.isRefreshNeed.not()) return
         dataBindHelper.bindList(addLockerState.dataList, vm)
         dataListAdapter?.submitList(addLockerState.dataList)
     }
@@ -106,7 +113,7 @@ class AddLockerActivity : BaseStateActivity<AddLockerViewModel, ActivityAddLocke
 
     private fun handleUploadImage() {
         TedImagePicker.with(this)
-            .start { vm.uploadImage(it)  }
+            .start { vm.uploadImage(it) }
     }
 
     private fun setResultNext() {
@@ -114,12 +121,9 @@ class AddLockerActivity : BaseStateActivity<AddLockerViewModel, ActivityAddLocke
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
                 if (result.resultCode == Activity.RESULT_OK) {
                     val spaceId = result.data?.getLongExtra(NEW_SPACE_ID, 0)
-                    if (spaceId != null) {
-                        vm.setSpaceId(spaceId)
-                    }
                     val spaceName = result.data?.getStringExtra(NEW_SPACE_NAME)
-                    if (spaceName != null && spaceName != "") {
-                        vm.changeSpace(spaceName)
+                    if (spaceName != null && spaceName != "" && spaceId != null) {
+                        vm.changeSpace(spaceName, spaceId)
                     }
                 }
             }
@@ -127,6 +131,7 @@ class AddLockerActivity : BaseStateActivity<AddLockerViewModel, ActivityAddLocke
 
     companion object {
         const val SPACE_ID_KEY = "SPACE_ID_KEY"
+        const val SPACE_NAME_KEY = "SPACE_NAME_KEY"
         const val NEW_SPACE_NAME = "NEW_SPACE_NAME_KEY"
         const val NEW_SPACE_ID = "NEW_SPACE_ID"
         fun newIntent(context: Context) = Intent(context, AddLockerActivity::class.java)

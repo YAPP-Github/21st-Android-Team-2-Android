@@ -1,5 +1,6 @@
 package com.yapp.itemfinder.home.tabs.home
 
+import android.os.Bundle
 import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.setFragmentResultListener
@@ -60,6 +61,14 @@ class HomeTabFragment : BaseStateFragment<HomeTabViewModel, FragmentHomeTabBindi
 
     private var addSpaceDialog: AddSpaceDialog? = null
 
+    private val gridItemDecoration: SpaceItemDecoration by lazy {
+        SpaceItemDecoration(
+            bottomFullSpacingDp = 16,
+            horizontalHalfSpacingDp = 6
+        )
+
+    }
+
     override fun initState() {
         super.initState()
 
@@ -82,7 +91,7 @@ class HomeTabFragment : BaseStateFragment<HomeTabViewModel, FragmentHomeTabBindi
                         dataListWithSpan[position].span
                 }
             }
-
+            recyclerView.addItemDecoration(gridItemDecoration)
         }
     }
 
@@ -118,7 +127,11 @@ class HomeTabFragment : BaseStateFragment<HomeTabViewModel, FragmentHomeTabBindi
                         }
                         is HomeTabSideEffect.ShowToast -> {
                             if (sideEffect.message != null || sideEffect.msgResId != null) {
-                                requireContext().showShortToast(sideEffect.message ?: getString(sideEffect.msgResId!!))
+                                requireContext().showShortToast(
+                                    sideEffect.message ?: getString(
+                                        sideEffect.msgResId!!
+                                    )
+                                )
                             }
                         }
                         is HomeTabSideEffect.MoveSpacesManage -> {
@@ -131,7 +144,10 @@ class HomeTabFragment : BaseStateFragment<HomeTabViewModel, FragmentHomeTabBindi
                             if (addSpaceDialog == null) {
                                 addSpaceDialog = AddSpaceDialog.newInstance()
                             }
-                            addSpaceDialog?.show(parentFragmentManager, ManageSpaceFragment.ADD_SPACE_DIALOG_TAG)
+                            addSpaceDialog?.show(
+                                parentFragmentManager,
+                                ManageSpaceFragment.ADD_SPACE_DIALOG_TAG
+                            )
                         }
                     }
                 }
@@ -144,8 +160,16 @@ class HomeTabFragment : BaseStateFragment<HomeTabViewModel, FragmentHomeTabBindi
             LockerListFragment.SPACE_ID_REQUEST_KEY,
             bundleOf(LockerListFragment.SPACE_ID_KEY to space.id)
         )
+        val bundle = Bundle()
+        bundle.apply {
+            putLong(LockerListFragment.SPACE_ID_KEY, space.id)
+            putString(LockerListFragment.SPACE_NAME_KEY, space.name)
+        }
         when (activity) {
-            is HomeActivity -> (activity as HomeActivity).addFragmentBackStack(LockerListFragment.TAG)
+            is HomeActivity -> (activity as HomeActivity).addFragmentBackStack(
+                LockerListFragment.TAG,
+                bundle
+            )
         }
     }
 
@@ -182,14 +206,9 @@ class HomeTabFragment : BaseStateFragment<HomeTabViewModel, FragmentHomeTabBindi
         dataListWithSpan = homeTabState.dataListWithSpan
         dataBindHelper.bindList(dataListWithSpan.map { it.data }, vm)
         dataListAdapter?.submitList(dataListWithSpan.map { it.data })
-        binding.recyclerView.addItemDecoration(
-            SpaceItemDecoration(
-                bottomFullSpacingDp = 16,
-                horizontalHalfSpacingDp = 6,
-                range = dataListWithSpan.indexOfFirst { it.data.type == CellType.SPACE_CELL }
-                    ..dataListWithSpan.indexOfLast { it.data.type == CellType.SPACE_CELL }
-            )
-        )
+        gridItemDecoration.range =
+            dataListWithSpan.indexOfFirst { it.data.type == CellType.SPACE_CELL }..
+        dataListWithSpan.indexOfLast { it.data.type == CellType.SPACE_CELL }
     }
 
     private fun handleEmpty() = with(binding) {
