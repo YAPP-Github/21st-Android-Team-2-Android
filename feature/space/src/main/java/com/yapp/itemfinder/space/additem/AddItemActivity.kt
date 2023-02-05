@@ -11,10 +11,7 @@ import androidx.activity.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import com.yapp.itemfinder.domain.model.Data
-import com.yapp.itemfinder.domain.model.ItemCategorySelection
-import com.yapp.itemfinder.domain.model.LockerAndItemEntity
-import com.yapp.itemfinder.domain.model.SpaceAndLockerEntity
+import com.yapp.itemfinder.domain.model.*
 import com.yapp.itemfinder.feature.common.BaseStateActivity
 import com.yapp.itemfinder.feature.common.Depth
 import com.yapp.itemfinder.feature.common.binding.viewBinding
@@ -48,13 +45,14 @@ class AddItemActivity : BaseStateActivity<AddItemViewModel, ActivityAddItemBindi
     @Inject
     lateinit var dataBindHelper: DataBindHelper
 
-    private val spaceAndLockerLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-        if (result.resultCode == Activity.RESULT_OK) {
-            result.data?.parcelable<SpaceAndLockerEntity>(SELECTED_SPACE_AND_LOCKER_KEY)?.let {
-                vm.setSelectedSpaceAndLocker(it)
+    private val spaceAndLockerLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                result.data?.parcelable<SpaceAndLockerEntity>(SELECTED_SPACE_AND_LOCKER_KEY)?.let {
+                    vm.setSelectedSpaceAndLocker(it)
+                }
             }
         }
-    }
 
     private val itemPositionDefineLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
@@ -94,7 +92,10 @@ class AddItemActivity : BaseStateActivity<AddItemViewModel, ActivityAddItemBindi
             // 잠시만요! 팝업
             finish()
         }
-        titleText = "물건 추가"
+        when (intent.getStringExtra(SCREEN_MODE)) {
+            ScreenMode.ADD_MODE.label -> titleText = "물건 추가"
+            ScreenMode.EDIT_MODE.label -> titleText = "물건 수정"
+        }
         rightFirstIcon = CR.drawable.ic_done
         rightFirstIconClickListener = {
             vm.saveItem()
@@ -162,8 +163,7 @@ class AddItemActivity : BaseStateActivity<AddItemViewModel, ActivityAddItemBindi
                             val addItemImages = sideEffect.addItemImages
                             TedImagePicker.with(this@AddItemActivity)
                                 .max(
-                                    addItemImages.maxCount
-                                    , "${addItemImages.maxCount}개초과!"
+                                    addItemImages.maxCount, "${addItemImages.maxCount}개초과!"
                                 ).selectedUri(addItemImages.uriStringList.map { Uri.parse(it) })
                                 .startMultiImage { uris ->
                                     vm.doneChooseImages(uris)
@@ -171,7 +171,10 @@ class AddItemActivity : BaseStateActivity<AddItemViewModel, ActivityAddItemBindi
                         }
                         is AddItemSideEffect.MoveSelectSpace -> {
                             spaceAndLockerLauncher.launch(
-                                AddItemSelectSpaceActivity.newIntent(this@AddItemActivity, sideEffect.spaceAndLockerEntity)
+                                AddItemSelectSpaceActivity.newIntent(
+                                    this@AddItemActivity,
+                                    sideEffect.spaceAndLockerEntity
+                                )
                             )
                         }
                         is AddItemSideEffect.MoveItemPositionDefine -> {
@@ -231,6 +234,7 @@ class AddItemActivity : BaseStateActivity<AddItemViewModel, ActivityAddItemBindi
         const val CHECKED_CATEGORY_KEY = "CHECKED_CATEGORY_KEY"
 
         const val SELECTED_SPACE_AND_LOCKER_KEY = "SELECTED_SPACE_AND_LOCKER_KEY"
+        const val SCREEN_MODE = "SCREEN_MODE"
         const val LOCKER_AND_ITEM_KEY = "LOCKER_AND_ITEM_KEY"
 
         fun newIntent(context: Context) = Intent(context, AddItemActivity::class.java)

@@ -7,11 +7,13 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.*
 import com.bumptech.glide.Glide
+import com.yapp.itemfinder.domain.model.ScreenMode
 import com.yapp.itemfinder.feature.common.BaseStateFragment
 import com.yapp.itemfinder.feature.common.Depth
 import com.yapp.itemfinder.feature.common.binding.viewBinding
 import com.yapp.itemfinder.feature.common.extension.visible
 import com.yapp.itemfinder.space.R
+import com.yapp.itemfinder.space.additem.AddItemActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
@@ -45,7 +47,11 @@ class ItemDetailFragment : BaseStateFragment<ItemDetailViewModel, FragmentItemDe
         }
         rightSecondIcon = CR.drawable.ic_edit_white
         rightSecondIconClickListener = {
-            Toast.makeText(requireContext(), "수정 버튼 클릭", Toast.LENGTH_SHORT).show()
+            val intent = AddItemActivity.newIntent(requireContext()).apply {
+                putExtra(ITEM_ID_KEY, requireArguments().getLong(ITEM_ID_KEY))
+                putExtra(AddItemActivity.SCREEN_MODE, ScreenMode.EDIT_MODE.label)
+            }
+            startActivity(intent)
         }
         containerColor = CR.color.transparent
     }
@@ -66,7 +72,11 @@ class ItemDetailFragment : BaseStateFragment<ItemDetailViewModel, FragmentItemDe
                 }
                 launch {
                     vm.sideEffectFlow.collect { sideEffect ->
-
+                        when (sideEffect) {
+                            is ItemDetailSideEffect.MoveToEditItem -> {
+                                // EditItemActivity
+                            }
+                        }
                     }
                 }
             }

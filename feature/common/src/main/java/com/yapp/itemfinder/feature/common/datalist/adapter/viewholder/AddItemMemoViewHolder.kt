@@ -18,6 +18,9 @@ class AddItemMemoViewHolder(
     override fun bindData(data: AddItemMemo) {
         super.bindData(data)
         if (data.mode == ScreenMode.EDIT_MODE) binding.memoEditText.setText(data.memo)
+        data.saveHandler = {
+            data.setItemMemo(binding.memoEditText.text.toString())
+        }
     }
 
     override fun bindViews(data: AddItemMemo) {
