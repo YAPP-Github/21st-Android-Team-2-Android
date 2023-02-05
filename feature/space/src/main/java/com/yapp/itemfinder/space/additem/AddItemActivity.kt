@@ -13,6 +13,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.yapp.itemfinder.domain.model.Data
 import com.yapp.itemfinder.domain.model.ItemCategorySelection
+import com.yapp.itemfinder.domain.model.LockerAndItemEntity
 import com.yapp.itemfinder.domain.model.SpaceAndLockerEntity
 import com.yapp.itemfinder.feature.common.BaseStateActivity
 import com.yapp.itemfinder.feature.common.Depth
@@ -21,6 +22,7 @@ import com.yapp.itemfinder.feature.common.datalist.adapter.DataListAdapter
 import com.yapp.itemfinder.feature.common.datalist.binder.DataBindHelper
 import com.yapp.itemfinder.feature.common.extension.parcelable
 import com.yapp.itemfinder.feature.common.views.SnackBarView
+import com.yapp.itemfinder.space.additem.itemposition.AddItemPositionDefineActivity
 import com.yapp.itemfinder.space.additem.selectspace.AddItemSelectSpaceActivity
 import com.yapp.itemfinder.feature.common.R as CR
 import com.yapp.itemfinder.space.databinding.ActivityAddItemBinding
@@ -50,6 +52,14 @@ class AddItemActivity : BaseStateActivity<AddItemViewModel, ActivityAddItemBindi
         if (result.resultCode == Activity.RESULT_OK) {
             result.data?.parcelable<SpaceAndLockerEntity>(SELECTED_SPACE_AND_LOCKER_KEY)?.let {
                 vm.setSelectedSpaceAndLocker(it)
+            }
+        }
+    }
+
+    private val itemPositionDefineLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            result.data?.parcelable<LockerAndItemEntity>(SELECTED_SPACE_AND_LOCKER_KEY)?.let {
+                vm.setDefinedLockerAndItem(it)
             }
         }
     }
@@ -162,6 +172,11 @@ class AddItemActivity : BaseStateActivity<AddItemViewModel, ActivityAddItemBindi
                         is AddItemSideEffect.MoveSelectSpace -> {
                             spaceAndLockerLauncher.launch(
                                 AddItemSelectSpaceActivity.newIntent(this@AddItemActivity, sideEffect.spaceAndLockerEntity)
+                            )
+                        }
+                        is AddItemSideEffect.MoveItemPositionDefine -> {
+                            itemPositionDefineLauncher.launch(
+                                AddItemPositionDefineActivity.newIntent(this@AddItemActivity, sideEffect.lockerAndItemEntity)
                             )
                         }
                     }

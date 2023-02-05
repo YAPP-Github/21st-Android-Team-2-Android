@@ -5,4 +5,10 @@ data class AddItemMarkerMap(
     val lockerEntity: LockerEntity,
     val item: Item? = null,
     override var type: CellType = CellType.ADD_ITEM_MARKER_MAP_CELL
-): Data(id, type)
+): Data(id, type) {
+
+    var moveItemPositionDefineHandler: ActionHandler = { }
+
+    fun runMoveItemPositionDefine() = moveItemPositionDefineHandler.invoke()
+
+}

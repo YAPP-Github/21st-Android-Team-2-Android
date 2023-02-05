@@ -20,6 +20,9 @@
         <activity
             android:name=".additem.selectlocker.AddItemSelectLockerActivity"
             android:theme="@style/ItemFinderTheme" />
+        <activity
+            android:name=".additem.itemposition.AddItemPositionDefineActivity"
+            android:theme="@style/ItemFinderTheme" />
     </application>
 
 </manifest>

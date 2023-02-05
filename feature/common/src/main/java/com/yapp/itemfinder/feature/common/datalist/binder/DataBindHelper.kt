@@ -54,7 +54,8 @@ class DataBindHelper @Inject constructor(
     var editItemMemoBinder: AddItemMemoBinder,
     private val addItemLocationBinder: AddItemLocationBinder,
     private val addItemSelectSpaceBinder: AddItemSelectSpaceBinder,
-    private val selectLockerBinder: SelectLockerBinder
+    private val selectLockerBinder: SelectLockerBinder,
+    private val addItemMarkerMapBinder: AddItemMarkerMapBinder,
 ) {
 
     @SuppressLint("CheckResult")
@@ -104,34 +105,34 @@ class DataBindHelper @Inject constructor(
             }
             CellType.ADD_ITEM_CATEGORY_CELL -> {
                 addItemCategoryBinder.bindData(data as AddItemCategory, viewModel)
-                editItemCategoryBinder.bindData(data as AddItemCategory, viewModel)
+                editItemCategoryBinder.bindData(data, viewModel)
             }
             CellType.ADD_ITEM_COUNT_CELL -> {
                 addItemCountBinder.bindData(data as AddItemCount, viewModel)
-                editItemCountBinder.bindData(data as AddItemCount, viewModel)
+                editItemCountBinder.bindData(data, viewModel)
             }
             CellType.ADD_ITEM_ADDITIONAL_CELL -> {
                 addItemAdditionalBinder.bindData(data as AddItemAdditional, viewModel)
-                editItemAdditionalBinder.bindData(data as AddItemAdditional, viewModel)
+                editItemAdditionalBinder.bindData(data, viewModel)
             }
             CellType.ADD_ITEM_LOCATION_CELL -> {
                 addItemLocationBinder.bindData(data as AddItemLocation, viewModel)
             }
             CellType.ADD_ITEM_EXPIRATION_DATE_CELL -> {
                 addItemExpirationDateBinder.bindData(data as AddItemExpirationDate, viewModel)
-                editItemExpirationDateBinder.bindData(data as AddItemExpirationDate, viewModel)
+                editItemExpirationDateBinder.bindData(data, viewModel)
             }
             CellType.ADD_ITEM_PURCHASE_DATE_CELL -> {
                 addItemPurchaseDateBinder.bindData(data as AddItemPurchaseDate, viewModel)
-                editItemPurchaseDateBinder.bindData(data as AddItemPurchaseDate, viewModel)
+                editItemPurchaseDateBinder.bindData(data, viewModel)
             }
             CellType.ADD_ITEM_NAME_CELL -> {
                 addItemNameBinder.bindData(data as AddItemName, viewModel)
-                editItemNameBinder.bindData(data as AddItemName, viewModel)
+                editItemNameBinder.bindData(data, viewModel)
             }
             CellType.ADD_ITEM_MEMO_CELL -> {
                 addItemMemoBinder.bindDate(data as AddItemMemo, viewModel)
-                editItemMemoBinder.bindDate(data as AddItemMemo, viewModel)
+                editItemMemoBinder.bindDate(data, viewModel)
             }
             CellType.ADD_ITEM_IMAGES_CELL -> addItemImagesBinder.bindData(
                 data as AddItemImages, viewModel
@@ -141,6 +142,9 @@ class DataBindHelper @Inject constructor(
             )
             CellType.SELECT_LOCKER_CELL -> selectLockerBinder.bindData(
                 data as SelectLockerEntity, viewModel
+            )
+            CellType.ADD_ITEM_MARKER_MAP_CELL -> addItemMarkerMapBinder.bindData(
+                data as AddItemMarkerMap, viewModel
             )
             else -> {}
         }

@@ -242,9 +242,7 @@ class AddItemViewModel @Inject constructor(
             locker?.let {
                 newDataList.add(
                     AddItemMarkerMap(
-                        lockerEntity = locker.copy(
-                            imageUrl = "https://imgur.com/a/ksRw6Zm"
-                        ),
+                        lockerEntity = locker,
                         item = null
                     )
                 )
@@ -253,6 +251,24 @@ class AddItemViewModel @Inject constructor(
                 state.copy(
                     dataList = newDataList,
                     spaceAndLockerEntity = spaceAndLockerEntity
+                )
+            )
+        }
+    }
+
+    fun setDefinedLockerAndItem(lockerAndItemEntity: LockerAndItemEntity) {
+        withState<AddItemState.Success> { state ->
+            val newDataList = ArrayList(state.dataList)
+            val addItemMarkerMap = newDataList.find { it is AddItemMarkerMap } as? AddItemMarkerMap
+            addItemMarkerMap?.let {
+                val idx = newDataList.indexOf(addItemMarkerMap)
+                val (locker, item) = lockerAndItemEntity
+                newDataList[idx] = addItemMarkerMap.copy(item = item)
+            }
+            setState(
+                state.copy(
+                    dataList = newDataList,
+                    lockerAndItemEntity = lockerAndItemEntity
                 )
             )
         }
@@ -328,6 +344,21 @@ class AddItemViewModel @Inject constructor(
                     spaceAndLockerEntity = state.spaceAndLockerEntity
                 )
             )
+        }
+    }
+
+    fun moveItemPositionDefine() {
+        withState<AddItemState.Success> { state ->
+            state.spaceAndLockerEntity?.lockerEntity?.let { lockerEntity ->
+                postSideEffect(
+                    AddItemSideEffect.MoveItemPositionDefine(
+                        lockerAndItemEntity = LockerAndItemEntity(
+                            lockerEntity = lockerEntity,
+                            item = null
+                        )
+                    )
+                )
+            }
         }
     }
 

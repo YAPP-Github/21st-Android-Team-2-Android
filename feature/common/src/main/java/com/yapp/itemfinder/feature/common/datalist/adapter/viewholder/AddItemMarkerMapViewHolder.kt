@@ -11,6 +11,13 @@ class AddItemMarkerMapViewHolder(
     override fun reset() = Unit
 
     override fun bindViews(data: AddItemMarkerMap) {
+        binding.root.setOnClickListener {
+            data.runMoveItemPositionDefine()
+        }
+    }
+
+    override fun bindData(data: AddItemMarkerMap) {
+        super.bindData(data)
         with(binding) {
             val item = data.item
             itemsMarkerMapView.fetchItems(
@@ -20,4 +27,5 @@ class AddItemMarkerMapViewHolder(
             item?.let { itemsMarkerMapView.applyFocusMarker(it) }
         }
     }
+
 }
