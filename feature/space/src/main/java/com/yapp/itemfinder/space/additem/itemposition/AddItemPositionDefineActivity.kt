@@ -88,10 +88,10 @@ class AddItemPositionDefineActivity : BaseStateActivity<AddItemPositionDefineVie
     private fun handleSuccess(state: AddItemPositionDefineState.Success) = with(binding) {
         val (locker, item) = state.lockerAndItemEntity
 
-        itemsMarkerMapView.fetchItems(locker, if (item == null) listOf() else listOf(item))
+        itemsMarkerMapView.fetchItems(locker, if (item?.position != null) listOf(item) else listOf())
         item?.let { itemsMarkerMapView.applyFocusMarker(it) }
 
-        val isItemExist = item != null
+        val isItemExist = item?.position != null
         defineItemPositionTextView.isVisible = isItemExist.not()
         initializePinButton.isVisible = isItemExist
     }

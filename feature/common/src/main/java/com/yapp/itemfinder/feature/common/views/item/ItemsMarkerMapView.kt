@@ -10,6 +10,8 @@ import com.bumptech.glide.Glide
 import com.yapp.itemfinder.domain.model.Item
 import com.yapp.itemfinder.domain.model.LockerEntity
 import com.yapp.itemfinder.feature.common.databinding.LayoutItemsMarkerMapBinding
+import com.yapp.itemfinder.feature.common.extension.invisible
+import com.yapp.itemfinder.feature.common.extension.visible
 
 class ItemsMarkerMapView
 @JvmOverloads constructor(
@@ -55,8 +57,6 @@ class ItemsMarkerMapView
     }
 
     fun createFocusMarker(x: Float, y: Float): Item {
-        allViews.filterIsInstance<ItemMarkerView>().forEach { removeView(it) }
-
         val mapHorizontalGap = (binding.markerMapContainer.measuredWidth - binding.markerBackgroundImageView.measuredWidth) / 2
 
         val mapStartX: Int = mapHorizontalGap

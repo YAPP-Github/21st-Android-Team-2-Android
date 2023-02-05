@@ -33,9 +33,11 @@ class AddItemPositionDefineViewModel @Inject constructor(
     fun initializePin() {
         withState<AddItemPositionDefineState.Success> { state ->
             setState(
-                AddItemPositionDefineState.Success(
-                    lockerAndItemEntity.copy(
-                        item = null
+                state.copy(
+                    lockerAndItemEntity = lockerAndItemEntity.copy(
+                        item = lockerAndItemEntity.item?.copy(
+                            position = null
+                        )
                     )
                 )
             )
@@ -45,9 +47,12 @@ class AddItemPositionDefineViewModel @Inject constructor(
     fun setItem(item: Item) {
         withState<AddItemPositionDefineState.Success> { state ->
             setState(
-                AddItemPositionDefineState.Success(
-                    lockerAndItemEntity.copy(
-                        item = item
+                state.copy(
+                    lockerAndItemEntity = lockerAndItemEntity.copy(
+                        item = state.lockerAndItemEntity.item?.copy(
+                            position = item.position,
+                            itemCategory = state.lockerAndItemEntity.item?.itemCategory
+                        ) ?: item
                     )
                 )
             )

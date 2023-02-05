@@ -116,8 +116,11 @@ class AddItemViewModel @Inject constructor(
             newDataList[imageIndex] = (state.dataList[imageIndex] as AddItemImages).copy(
                 uriStringList = uriStringList
             )
-            setState(AddItemState.Success(newDataList))
-
+            setState(
+                state.copy(
+                    dataList = newDataList
+                )
+            )
         }
 
     }
@@ -131,8 +134,8 @@ class AddItemViewModel @Inject constructor(
                 uriStringList = uris.map { it.toString() }
             )
             setState(
-                AddItemState.Success(
-                    newDataList
+                state.copy(
+                    dataList = newDataList
                 )
             )
         }
@@ -146,8 +149,8 @@ class AddItemViewModel @Inject constructor(
             newDataList[nameIndex] =
                 (newDataList[nameIndex] as AddItemName).copy(name = newName)
             setState(
-                AddItemState.Success(
-                    newDataList,
+                state.copy(
+                    dataList = newDataList,
                     isRefreshNeed = false
                 )
             )
@@ -194,8 +197,8 @@ class AddItemViewModel @Inject constructor(
                 count = addItemCountItem.count.plus(1)
             )
             setState(
-                AddItemState.Success(
-                    newDataList
+                state.copy(
+                    dataList = newDataList,
                 )
             )
         }
@@ -210,8 +213,8 @@ class AddItemViewModel @Inject constructor(
                 count = addItemCountItem.count.minus(1)
             )
             setState(
-                AddItemState.Success(
-                    newDataList
+                state.copy(
+                    dataList = newDataList,
                 )
             )
         }
@@ -226,8 +229,8 @@ class AddItemViewModel @Inject constructor(
             newDataList.add(idx, AddItemMemo(mode = ScreenMode.ADD_MODE))
             newDataList[idx + 1] = addItemAdditional.copy(hasMemo = true)
             setState(
-                AddItemState.Success(
-                    newDataList
+                state.copy(
+                    dataList = newDataList,
                 )
             )
         }
@@ -242,8 +245,8 @@ class AddItemViewModel @Inject constructor(
             newDataList.add(idx, AddItemExpirationDate())
             newDataList[idx + 1] = addItemAdditional.copy(hasExpirationDate = true)
             setState(
-                AddItemState.Success(
-                    newDataList
+                state.copy(
+                    dataList = newDataList,
                 )
             )
         }
@@ -258,8 +261,8 @@ class AddItemViewModel @Inject constructor(
             newDataList.add(idx, AddItemPurchaseDate())
             newDataList[idx + 1] = addItemAdditional.copy(hasPurchaseDate = true)
             setState(
-                AddItemState.Success(
-                    newDataList
+                state.copy(
+                    dataList = newDataList,
                 )
             )
         }
@@ -272,8 +275,8 @@ class AddItemViewModel @Inject constructor(
             newDataList[memoIndex] =
                 (newDataList[memoIndex] as AddItemMemo).copy(memo = newMemo)
             setState(
-                AddItemState.Success(
-                    newDataList
+                state.copy(
+                    dataList = newDataList,
                 )
             )
         }
@@ -285,8 +288,8 @@ class AddItemViewModel @Inject constructor(
             val idx = newDataList.indexOf(newDataList.find { it is AddItemExpirationDate })
             newDataList[idx] = AddItemExpirationDate(expirationDate = date)
             setState(
-                AddItemState.Success(
-                    newDataList
+                state.copy(
+                    dataList = newDataList,
                 )
             )
         }
@@ -298,8 +301,8 @@ class AddItemViewModel @Inject constructor(
             val idx = newDataList.indexOf(newDataList.find { it is AddItemPurchaseDate })
             newDataList[idx] = AddItemPurchaseDate(purchaseDate = date)
             setState(
-                AddItemState.Success(
-                    newDataList
+                state.copy(
+                    dataList = newDataList,
                 )
             )
         }
@@ -322,12 +325,14 @@ class AddItemViewModel @Inject constructor(
             val markerMap = newDataList.find { it is AddItemMarkerMap } as? AddItemMarkerMap
             markerMap?.let { newDataList.remove(it) }
             locker?.let {
+                val newItem = state.lockerAndItemEntity?.item?.copy(
+                    itemCategory = addItemCategory.category.toItemCateogry()
+                )
+
                 newDataList.add(
                     AddItemMarkerMap(
                         lockerEntity = locker,
-                        item = state.lockerAndItemEntity?.item?.copy(
-                            itemCategory = addItemCategory.category.toItemCateogry()
-                        )
+                        item = newItem
                     )
                 )
                 setState(
@@ -336,9 +341,7 @@ class AddItemViewModel @Inject constructor(
                         spaceAndLockerEntity = spaceAndLockerEntity,
                         lockerAndItemEntity = state.lockerAndItemEntity?.copy(
                             lockerEntity = locker,
-                            item = Item.createEmptyItem().copy(
-                                itemCategory = addItemCategory.category.toItemCateogry()
-                            )
+                            item = newItem
                         )
                     )
                 )
@@ -458,10 +461,20 @@ class AddItemViewModel @Inject constructor(
 
     fun moveItemPositionDefine() {
         withState<AddItemState.Success> { state ->
+            val addItemCategory = state.dataList.find { it is AddItemCategory } as AddItemCategory
+            val itemCategory = addItemCategory.category.toItemCateogry()
             state.lockerAndItemEntity?.let { lockerAndItemEntity ->
                 postSideEffect(
                     AddItemSideEffect.MoveItemPositionDefine(
-                        lockerAndItemEntity = lockerAndItemEntity
+                        lockerAndItemEntity = if (lockerAndItemEntity.item == null) {
+                            lockerAndItemEntity.copy(
+                                item = Item.createEmptyItem().copy(
+                                    itemCategory = itemCategory
+                                )
+                            )
+                        } else {
+                            lockerAndItemEntity
+                        }
                     )
                 )
             } ?: state.spaceAndLockerEntity?.lockerEntity?.let { lockerEntity ->
@@ -469,7 +482,9 @@ class AddItemViewModel @Inject constructor(
                     AddItemSideEffect.MoveItemPositionDefine(
                         lockerAndItemEntity = LockerAndItemEntity(
                             lockerEntity = lockerEntity,
-                            item = null
+                            item = Item.createEmptyItem().copy(
+                                itemCategory = itemCategory
+                            )
                         )
                     )
                 )

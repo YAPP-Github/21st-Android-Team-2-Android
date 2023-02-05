@@ -32,7 +32,7 @@ class AddItemMarkerMapViewHolder(
     private fun setItem(lockerEntity: LockerEntity, item: Item?) = with(binding) {
         itemsMarkerMapView.fetchItems(
             lockerEntity = lockerEntity,
-            items = if (item != null) listOf(item) else listOf()
+            items = if (item?.position != null) listOf(item) else listOf()
         )
         item?.let { itemsMarkerMapView.applyFocusMarker(it) }
     }
