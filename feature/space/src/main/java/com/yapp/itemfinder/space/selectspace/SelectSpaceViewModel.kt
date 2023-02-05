@@ -2,17 +2,13 @@ package com.yapp.itemfinder.space.selectspace
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
-import com.yapp.itemfinder.data.repositories.di.SelectSpaceRepositoryQualifiers
-import com.yapp.itemfinder.domain.model.AddSpace
-import com.yapp.itemfinder.domain.model.ManageSpaceEntity
+import com.yapp.itemfinder.data.repositories.di.SpaceRepositoryQualifiers
 import com.yapp.itemfinder.domain.model.SelectSpace
-import com.yapp.itemfinder.domain.repository.ManageSpaceRepository
-import com.yapp.itemfinder.domain.repository.SelectSpaceRepository
+import com.yapp.itemfinder.domain.repository.SpaceRepository
 import com.yapp.itemfinder.feature.common.BaseStateViewModel
 import com.yapp.itemfinder.feature.common.extension.onErrorWithResult
 import com.yapp.itemfinder.feature.common.extension.runCatchingWithErrorHandler
 import com.yapp.itemfinder.space.addlocker.AddLockerActivity
-import com.yapp.itemfinder.space.managespace.ManageSpaceState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -22,8 +18,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SelectSpaceViewModel @Inject constructor(
-    @SelectSpaceRepositoryQualifiers
-    private val selectSpaceRepository: SelectSpaceRepository,
+    @SpaceRepositoryQualifiers
+    private val spaceRepository: SpaceRepository,
     private val savedStateHandle: SavedStateHandle
 ) :
     BaseStateViewModel<SelectSpaceState, SelectSpaceSideEffect>() {
@@ -35,7 +31,7 @@ class SelectSpaceViewModel @Inject constructor(
         setState(SelectSpaceState.Loading)
 
         runCatchingWithErrorHandler {
-            selectSpaceRepository.getAllSpaces()
+            spaceRepository.getAllSpaces()
         }.onSuccess { spaces ->
             val spaceId = savedStateHandle.get<Long>(AddLockerActivity.SPACE_ID_KEY) ?: 0
             val checkedIndex = spaces.indexOf(spaces.firstOrNull { it.id == spaceId })
