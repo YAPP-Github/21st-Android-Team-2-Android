@@ -150,7 +150,7 @@ class HomeTabFragment : BaseStateFragment<HomeTabViewModel, FragmentHomeTabBindi
                             }
                             addSpaceDialog?.show(
                                 parentFragmentManager,
-                                ManageSpaceFragment.ADD_SPACE_DIALOG_TAG
+                                AddSpaceDialog.NEW_SPACE_REQUEST_KEY
                             )
                         }
                     }

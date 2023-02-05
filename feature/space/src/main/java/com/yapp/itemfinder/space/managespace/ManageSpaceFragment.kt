@@ -144,7 +144,6 @@ class ManageSpaceFragment : BaseStateFragment<ManageSpaceViewModel, FragmentMana
         val TAG = ManageSpaceFragment::class.simpleName.toString()
         const val MY_SPACE_TITLE_KEY = "MY_SPACE_TITLE_KEY"
         const val NEW_SPACE_ADDED_REQUEST_KEY = "NEW_SPACE_ADDED"
-        const val NEW_SPACE_ADDED_BUNDLE_KEY = "NEW_SPACE_ADDED"
 
         fun newInstance() = ManageSpaceFragment()
 
