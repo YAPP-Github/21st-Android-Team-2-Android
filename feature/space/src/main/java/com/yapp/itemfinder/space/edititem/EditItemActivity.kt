@@ -40,9 +40,9 @@ class EditItemActivity : BaseStateActivity<EditItemViewModel, ActivityAddItemBin
         initToolBar()
         if (dataListAdapter == null) {
             dataListAdapter = DataListAdapter()
-            recyclerView.adapter = dataListAdapter
-            recyclerView.itemAnimator = null
         }
+        recyclerView.adapter = dataListAdapter
+        recyclerView.itemAnimator = null
         supportFragmentManager.setFragmentResultListener(
             CHECKED_CATEGORY_REQUEST_KEY,
             this@EditItemActivity

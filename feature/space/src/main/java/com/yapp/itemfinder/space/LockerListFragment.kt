@@ -57,8 +57,8 @@ class LockerListFragment : BaseStateFragment<LockerListViewModel, FragmentLocker
         initToolBar()
         if (dataListAdapter == null) {
             dataListAdapter = DataListAdapter()
-            recyclerView.adapter = dataListAdapter
         }
+        recyclerView.adapter = dataListAdapter
         addItemFAB.setOnClickListener { vm.moveAddItemActivity() }
     }
 
