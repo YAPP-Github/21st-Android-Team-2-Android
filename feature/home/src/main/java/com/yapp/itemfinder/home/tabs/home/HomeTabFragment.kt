@@ -131,7 +131,11 @@ class HomeTabFragment : BaseStateFragment<HomeTabViewModel, FragmentHomeTabBindi
                         }
                         is HomeTabSideEffect.ShowToast -> {
                             if (sideEffect.message != null || sideEffect.msgResId != null) {
-                                requireContext().showShortToast(sideEffect.message ?: getString(sideEffect.msgResId!!))
+                                requireContext().showShortToast(
+                                    sideEffect.message ?: getString(
+                                        sideEffect.msgResId!!
+                                    )
+                                )
                             }
                         }
                         is HomeTabSideEffect.MoveSpacesManage -> {
@@ -144,7 +148,10 @@ class HomeTabFragment : BaseStateFragment<HomeTabViewModel, FragmentHomeTabBindi
                             if (addSpaceDialog == null) {
                                 addSpaceDialog = AddSpaceDialog.newInstance()
                             }
-                            addSpaceDialog?.show(parentFragmentManager, AddSpaceDialog.TAG)
+                            addSpaceDialog?.show(
+                                parentFragmentManager,
+                                ManageSpaceFragment.ADD_SPACE_DIALOG_TAG
+                            )
                         }
                     }
                 }
@@ -157,8 +164,16 @@ class HomeTabFragment : BaseStateFragment<HomeTabViewModel, FragmentHomeTabBindi
             LockerListFragment.SPACE_ID_REQUEST_KEY,
             bundleOf(LockerListFragment.SPACE_ID_KEY to space.id)
         )
+        val bundle = Bundle()
+        bundle.apply {
+            putLong(LockerListFragment.SPACE_ID_KEY, space.id)
+            putString(LockerListFragment.SPACE_NAME_KEY, space.name)
+        }
         when (activity) {
-            is HomeActivity -> (activity as HomeActivity).addFragmentBackStack(LockerListFragment.TAG)
+            is HomeActivity -> (activity as HomeActivity).addFragmentBackStack(
+                LockerListFragment.TAG,
+                bundle
+            )
         }
     }
 
