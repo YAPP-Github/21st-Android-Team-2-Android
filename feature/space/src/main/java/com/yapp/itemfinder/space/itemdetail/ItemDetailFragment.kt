@@ -8,6 +8,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.*
 import com.bumptech.glide.Glide
 import com.yapp.itemfinder.feature.common.BaseStateFragment
+import com.yapp.itemfinder.feature.common.Depth
 import com.yapp.itemfinder.feature.common.binding.viewBinding
 import com.yapp.itemfinder.feature.common.extension.visible
 import com.yapp.itemfinder.space.R

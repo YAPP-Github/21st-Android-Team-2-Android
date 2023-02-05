@@ -31,7 +31,8 @@ class AddItemViewModel @Inject constructor(
                     AddItemCount(),
                     AddItemTags(listOf()),
                     AddItemAdditional()
-                )
+                ),
+                spaceAndLockerEntity = null,
             )
         )
     }
@@ -223,6 +224,26 @@ class AddItemViewModel @Inject constructor(
         }
     }
 
+    fun setSelectedSpaceAndLocker(spaceAndLockerEntity: SpaceAndLockerEntity) {
+        withState<AddItemState.Success> { state ->
+            val newDataList = ArrayList(state.dataList)
+            val idx = newDataList.indexOf(newDataList.find { it is AddItemLocation })
+            val (space, locker) = spaceAndLockerEntity
+            newDataList[idx] = AddItemLocation(
+                spaceId = space.id,
+                spaceName = space.name,
+                lockerId = locker?.id ?: 0L,
+                lockerName = locker?.name ?: ""
+            )
+            setState(
+                state.copy(
+                    dataList = newDataList,
+                    spaceAndLockerEntity = spaceAndLockerEntity
+                )
+            )
+        }
+    }
+
     fun saveItem() {
         withState<AddItemState.Success> { state ->
             val dataList = state.dataList
@@ -285,4 +306,15 @@ class AddItemViewModel @Inject constructor(
     fun openSelectCategoryDialog() {
         postSideEffect(AddItemSideEffect.OpenSelectCategoryDialog)
     }
+
+    fun moveSelectSpace() {
+        withState<AddItemState.Success> { state ->
+            postSideEffect(
+                AddItemSideEffect.MoveSelectSpace(
+                    spaceAndLockerEntity = state.spaceAndLockerEntity
+                )
+            )
+        }
+    }
+
 }

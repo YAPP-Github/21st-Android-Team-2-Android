@@ -6,4 +6,9 @@ data class AddItemLocation(
     var lockerId: Long = 0,
     var lockerName: String = "",
     override var type: CellType = CellType.ADD_ITEM_LOCATION_CELL
-) : Data()
+) : Data() {
+
+    var moveSelectSpaceHandler: ActionHandler = {}
+    fun runMoveSelectSpace() = moveSelectSpaceHandler.invoke()
+
+}

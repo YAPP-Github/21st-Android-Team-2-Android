@@ -16,6 +16,7 @@ import com.yapp.itemfinder.domain.model.Data
 import com.yapp.itemfinder.domain.model.SpaceItem
 import com.yapp.itemfinder.domain.model.LockerEntity
 import com.yapp.itemfinder.feature.common.BaseStateFragment
+import com.yapp.itemfinder.feature.common.Depth
 import com.yapp.itemfinder.feature.common.R as CR
 import com.yapp.itemfinder.feature.common.FragmentNavigator
 import com.yapp.itemfinder.feature.common.binding.viewBinding

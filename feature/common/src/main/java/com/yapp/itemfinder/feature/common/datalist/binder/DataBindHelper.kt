@@ -51,7 +51,10 @@ class DataBindHelper @Inject constructor(
     @AddItemMemoQualifier
     var addItemMemoBinder: AddItemMemoBinder,
     @EditItemMemoQualifier
-    var editItemMemoBinder: AddItemMemoBinder
+    var editItemMemoBinder: AddItemMemoBinder,
+    private val addItemLocationBinder: AddItemLocationBinder,
+    private val addItemSelectSpaceBinder: AddItemSelectSpaceBinder,
+    private val selectLockerBinder: SelectLockerBinder
 ) {
 
     @SuppressLint("CheckResult")
@@ -111,6 +114,9 @@ class DataBindHelper @Inject constructor(
                 addItemAdditionalBinder.bindData(data as AddItemAdditional, viewModel)
                 editItemAdditionalBinder.bindData(data as AddItemAdditional, viewModel)
             }
+            CellType.ADD_ITEM_LOCATION_CELL -> {
+                addItemLocationBinder.bindData(data as AddItemLocation, viewModel)
+            }
             CellType.ADD_ITEM_EXPIRATION_DATE_CELL -> {
                 addItemExpirationDateBinder.bindData(data as AddItemExpirationDate, viewModel)
                 editItemExpirationDateBinder.bindData(data as AddItemExpirationDate, viewModel)
@@ -127,12 +133,14 @@ class DataBindHelper @Inject constructor(
                 addItemMemoBinder.bindDate(data as AddItemMemo, viewModel)
                 editItemMemoBinder.bindDate(data as AddItemMemo, viewModel)
             }
-            CellType.ADD_ITEM_NAME_CELL -> addItemNameBinder.bindData(
-                data as AddItemName,
-                viewModel
-            )
             CellType.ADD_ITEM_IMAGES_CELL -> addItemImagesBinder.bindData(
                 data as AddItemImages, viewModel
+            )
+            CellType.ADD_ITEM_SELECT_SPACE_CELL -> addItemSelectSpaceBinder.bindData(
+                data as AddItemSelectSpaceEntity, viewModel
+            )
+            CellType.SELECT_LOCKER_CELL -> selectLockerBinder.bindData(
+                data as SelectLockerEntity, viewModel
             )
             else -> {}
         }
