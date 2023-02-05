@@ -7,9 +7,12 @@ data class AddItemName(
 ) : Data() {
     var enterHandler: StringHandler = {}
     fun setItemName(newName: String) = enterHandler.invoke(newName)
+
+    var saveHandler: ActionHandler = { }
+    fun saveName() = saveHandler.invoke()
 }
 
-enum class ScreenMode{
+enum class ScreenMode {
     EDIT_MODE,
     ADD_MODE
 }
