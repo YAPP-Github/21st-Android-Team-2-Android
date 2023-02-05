@@ -1,12 +1,29 @@
 # Find Things Architecture
 
-<img width="653" alt="App Architecture" src="https://user-images.githubusercontent.com/8112952/216831834-a53da45d-899c-42b3-a1e9-1e2d6f82bf16.png">
+## 목차
+- [MVVM + UDA](#mvvm--uda)
+- [아키텍쳐, 바인딩 등에 대한 구조적 설명(MVVM, Model 상속받아서 처리하는 방식, JSON구조, DataBindHelper 구현)](#%EC%95%84%ED%82%A4%ED%85%8D%EC%B3%90-%EB%B0%94%EC%9D%B8%EB%94%A9-%EB%93%B1%EC%97%90-%EB%8C%80%ED%95%9C-%EA%B5%AC%EC%A1%B0%EC%A0%81-%EC%84%A4%EB%AA%85mvvm-model-%EC%83%81%EC%86%8D%EB%B0%9B%EC%95%84%EC%84%9C-%EC%B2%98%EB%A6%AC%ED%95%98%EB%8A%94-%EB%B0%A9%EC%8B%9D-json%EA%B5%AC%EC%A1%B0-databindhelper-%EA%B5%AC%ED%98%84)
+  - [아키텍쳐 - MV(VC)VM(Action in Model)](#아키텍쳐---mvvcvmaction-in-model)
+  - [서버에서 Response받는 JSON 구조 - ex) 유저 리스트 Response](#서버에서-response받는-json-구조---ex-유저-리스트-response)
+  - [데이터 클래스 - Model](#데이터-클래스---model)
+  - [Data를 상속받은 자식 클래스 - ex) User.kt](#data를-상속받은-자식-클래스---ex-userkt)
+  - [BaseViewModel](#baseviewmodel)
+  - [BaseStateViewModel](#basestateviewmodel)
+  - [뷰 모델 - ex) LikeTabViewModel](#뷰-모델---ex-liketabviewmodel)
+  - [VM에서 구독한 데이터를 받아 뷰에 뿌려주는 VC - ex) LikeTabFragment](#vm에서-구독한-데이터를-받아-뷰에-뿌려주는-vc---ex-liketabfragment)
+  - [Data의 액션핸들러의 기능을 정의해주는 헬퍼 - DataBindHelper](#data의-액션핸들러의-기능을-정의해주는-헬퍼---databindhelper)
+  - [DataListAdapter를 이용한 type별 셀 분류](#datalistadapter를-이용한-type별-셀-분류)
+  - [각 타입에 맞는 인스턴스를 매핑 - DataMapper](#각-타입에-맞는-인스턴스를-매핑---datamapper)
+  - [각 레이아웃에 맞는 뷰 홀더 매핑 - DataViewHolderMapper](#각-레이아웃에-맞는-뷰-홀더-매핑---dataviewholdermapper)
+  - [뷰 홀더 구현 - ex) UserViewHolder.kt](#뷰-홀더-구현---ex-userviewholderkt)
+  - [데이터에 대한 동적인 갱신](#데이터에-대한-동적인-갱신)
 
-# MVVM - Action In Model
+## MVVM + UDA
+<img width="653" alt="App Architecture" src="https://user-images.githubusercontent.com/8112952/216831834-a53da45d-899c-42b3-a1e9-1e2d6f82bf16.png">
 
 ---
 
-### 아키텍쳐, 바인딩 등에 대한 구조적 설명(MVVM, Model 상속받아서 처리하는 방식, JSON구조, DataBindHelper 구현)
+## 아키텍쳐, 바인딩 등에 대한 구조적 설명(MVVM, Model 상속받아서 처리하는 방식, JSON구조, DataBindHelper 구현)
 
 ### 아키텍쳐 - MV(VC)VM(Action in Model)
 
