@@ -7,6 +7,7 @@ import android.content.Context
 import android.content.Intent
 import androidx.activity.result.contract.ActivityResultContracts
 import android.net.Uri
+import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -113,6 +114,12 @@ class AddItemActivity : BaseStateActivity<AddItemViewModel, ActivityAddItemBindi
                     when (sideEffect) {
                         is AddItemSideEffect.OpenSelectCategoryDialog -> {
                             val dialog = SelectCategoryDialog.getInstance()
+                            dialog.arguments = Bundle().apply {
+                                putString(
+                                    SelectCategoryDialog.SELECTED_CATEGORY_KEY,
+                                    vm.getSelectedCategory().label
+                                )
+                            }
                             this@AddItemActivity.supportFragmentManager?.let { fragmentManager ->
                                 dialog.show(fragmentManager, SELECT_CATEGORY_DIALOG)
                             }
