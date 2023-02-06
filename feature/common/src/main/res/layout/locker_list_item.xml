@@ -23,17 +23,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_margin="7dp"
-            tools:src="@drawable/ic_container_1" />
+            tools:src="@drawable/ic_container_2" />
     </androidx.cardview.widget.CardView>
 
     <TextView
         android:id="@+id/lockerItemTextView"
+        style="@style/ItemFinderTypography.Subhead"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
         android:textColor="@color/black"
-        android:textFontWeight="600"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@id/lockerItemCardView"

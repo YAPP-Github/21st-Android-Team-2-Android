@@ -6,6 +6,8 @@ data class SelectSpace(
     override var type: CellType = CellType.SELECT_SPACE_CELL,
     var isChecked: Boolean = false
 ) : Data() {
+
     var checkHandler: ActionHandler = {}
     fun checkSelectSpace() = checkHandler.invoke()
+
 }

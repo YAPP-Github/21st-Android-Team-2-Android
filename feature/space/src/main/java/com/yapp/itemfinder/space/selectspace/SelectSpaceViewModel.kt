@@ -2,9 +2,12 @@ package com.yapp.itemfinder.space.selectspace
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
+import com.yapp.itemfinder.data.repositories.di.SpaceRepositoryQualifiers
 import com.yapp.itemfinder.domain.model.SelectSpace
-import com.yapp.itemfinder.domain.repository.SelectSpaceRepository
+import com.yapp.itemfinder.domain.repository.SpaceRepository
 import com.yapp.itemfinder.feature.common.BaseStateViewModel
+import com.yapp.itemfinder.feature.common.extension.onErrorWithResult
+import com.yapp.itemfinder.feature.common.extension.runCatchingWithErrorHandler
 import com.yapp.itemfinder.space.addlocker.AddLockerActivity
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
@@ -15,7 +18,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SelectSpaceViewModel @Inject constructor(
-    private val selectSpaceMockRepository: SelectSpaceRepository,
+    @SpaceRepositoryQualifiers
+    private val spaceRepository: SpaceRepository,
     private val savedStateHandle: SavedStateHandle
 ) :
     BaseStateViewModel<SelectSpaceState, SelectSpaceSideEffect>() {
@@ -24,18 +28,27 @@ class SelectSpaceViewModel @Inject constructor(
     override val _sideEffectFlow: MutableSharedFlow<SelectSpaceSideEffect> = MutableSharedFlow()
 
     override fun fetchData(): Job = viewModelScope.launch {
-        val spaces = selectSpaceMockRepository.getAllSpaces()
-        val spaceId = savedStateHandle.get<Long>(AddLockerActivity.SPACE_ID_KEY) ?: 0
-        val checkedIndex = spaces.indexOf(spaces.firstOrNull { it.id == spaceId })
-        spaces[checkedIndex].isChecked = true
-        setState(
-            SelectSpaceState.Success(
-                dataList = spaces,
-                spaceId = spaceId,
-                spaceName = "",
-                checkedIndex = checkedIndex
+        setState(SelectSpaceState.Loading)
+
+        runCatchingWithErrorHandler {
+            spaceRepository.getAllSpaces()
+        }.onSuccess { spaces ->
+            val spaceId = savedStateHandle.get<Long>(AddLockerActivity.SPACE_ID_KEY) ?: 0
+            val checkedIndex = spaces.indexOf(spaces.firstOrNull { it.id == spaceId })
+            spaces[checkedIndex].isChecked = true
+            setState(
+                SelectSpaceState.Success(
+                    dataList = spaces,
+                    spaceId = spaceId,
+                    spaceName = "",
+                    checkedIndex = checkedIndex
+                )
             )
-        )
+        }.onErrorWithResult { errorWithResult ->
+            setState(SelectSpaceState.Error(errorWithResult))
+            val message = errorWithResult.errorResultEntity.message
+            message?.let { postSideEffect(SelectSpaceSideEffect.ShowToast(it)) }
+        }
     }
 
     fun changeChecked(selectSpace: SelectSpace) = withState<SelectSpaceState.Success> { state ->

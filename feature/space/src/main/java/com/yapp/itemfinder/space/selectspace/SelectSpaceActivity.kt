@@ -3,10 +3,14 @@ package com.yapp.itemfinder.space.selectspace
 import android.content.Context
 import android.content.Intent
 import android.view.KeyEvent
+import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.yapp.itemfinder.domain.model.Data
 import com.yapp.itemfinder.feature.common.BaseStateActivity
+import com.yapp.itemfinder.feature.common.Depth
 import com.yapp.itemfinder.feature.common.R as CR
 import com.yapp.itemfinder.feature.common.binding.viewBinding
 import com.yapp.itemfinder.feature.common.datalist.adapter.DataListAdapter
@@ -20,6 +24,9 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class SelectSpaceActivity : BaseStateActivity<SelectSpaceViewModel, ActivitySelectSpaceBinding>() {
+
+    override val depth: Depth
+        get() = Depth.SECOND
 
     override val vm by viewModels<SelectSpaceViewModel>()
 
@@ -49,22 +56,27 @@ class SelectSpaceActivity : BaseStateActivity<SelectSpaceViewModel, ActivitySele
     }
 
     override fun observeData(): Job = lifecycleScope.launch {
-        launch {
-            vm.stateFlow.collect { state ->
-                when (state) {
-                    is SelectSpaceState.Uninitialized -> Unit
-                    is SelectSpaceState.Loading -> handleLoading(state)
-                    is SelectSpaceState.Success -> handleSuccess(state)
-                    is SelectSpaceState.Error -> handleError(state)
+        repeatOnLifecycle(Lifecycle.State.STARTED){
+            launch {
+                vm.stateFlow.collect { state ->
+                    when (state) {
+                        is SelectSpaceState.Uninitialized -> Unit
+                        is SelectSpaceState.Loading -> handleLoading(state)
+                        is SelectSpaceState.Success -> handleSuccess(state)
+                        is SelectSpaceState.Error -> handleError(state)
+                    }
+                }
+            }
+            launch {
+                vm.sideEffectFlow.collect { sideEffect ->
+                    when (sideEffect) {
+                        is SelectSpaceSideEffect.ShowToast -> {
+                            Toast.makeText(this@SelectSpaceActivity, sideEffect.message, Toast.LENGTH_SHORT).show()
+                        }
+                    }
                 }
             }
         }
-        launch {
-            vm.sideEffectFlow.collect {
-
-            }
-        }
-
     }
 
     private fun handleLoading(selectSpaceState: SelectSpaceState) {
@@ -80,7 +92,7 @@ class SelectSpaceActivity : BaseStateActivity<SelectSpaceViewModel, ActivitySele
 
     }
 
-    private fun setSelectSpaceResult(){
+    private fun setSelectSpaceResult() {
         val spaceId = vm.getNewSpaceId()
         val spaceName = vm.getNewSpaceName()
         intent.apply {

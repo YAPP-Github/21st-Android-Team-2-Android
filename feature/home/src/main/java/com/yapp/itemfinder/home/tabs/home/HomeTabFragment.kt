@@ -1,5 +1,6 @@
 package com.yapp.itemfinder.home.tabs.home
 
+import android.os.Bundle
 import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.setFragmentResultListener
@@ -17,6 +18,7 @@ import com.yapp.itemfinder.domain.model.Data
 import com.yapp.itemfinder.domain.model.LockerEntity
 import com.yapp.itemfinder.domain.model.SpaceItem
 import com.yapp.itemfinder.feature.common.BaseStateFragment
+import com.yapp.itemfinder.feature.common.Depth
 import com.yapp.itemfinder.feature.common.datalist.binder.DataBindHelper
 import com.yapp.itemfinder.feature.common.extension.gone
 import com.yapp.itemfinder.feature.common.extension.showShortToast
@@ -59,24 +61,29 @@ class HomeTabFragment : BaseStateFragment<HomeTabViewModel, FragmentHomeTabBindi
 
     private var addSpaceDialog: AddSpaceDialog? = null
 
+
     private val gridItemDecoration: SpaceItemDecoration by lazy {
         SpaceItemDecoration(
             bottomFullSpacingDp = 16,
             horizontalHalfSpacingDp = 6
         )
-
     }
 
     override fun initState() {
         super.initState()
 
-        setFragmentResultListener(ManageSpaceFragment.NEW_SPACE_NAME_REQUEST_KEY) { _, bundle ->
-            val newSpaceName = bundle.getString(ManageSpaceFragment.NAME_KEY)
+        setFragmentResultListener(AddSpaceDialog.NEW_SPACE_REQUEST_KEY) { _, bundle ->
+            val newSpaceName = bundle.getString(AddSpaceDialog.NEW_SPACE_NAME_BUNDLE_KEY)
             if (newSpaceName != null) {
                 vm.createSpaceItem(newSpaceName)
             }
         }
+
+        setFragmentResultListener(ManageSpaceFragment.NEW_SPACE_ADDED_REQUEST_KEY){ _, _ ->
+            vm.fetchData()
+        }
     }
+
 
     override fun initViews() = with(binding) {
         initToolBar()
@@ -125,7 +132,11 @@ class HomeTabFragment : BaseStateFragment<HomeTabViewModel, FragmentHomeTabBindi
                         }
                         is HomeTabSideEffect.ShowToast -> {
                             if (sideEffect.message != null || sideEffect.msgResId != null) {
-                                requireContext().showShortToast(sideEffect.message ?: getString(sideEffect.msgResId!!))
+                                requireContext().showShortToast(
+                                    sideEffect.message ?: getString(
+                                        sideEffect.msgResId!!
+                                    )
+                                )
                             }
                         }
                         is HomeTabSideEffect.MoveSpacesManage -> {
@@ -138,7 +149,10 @@ class HomeTabFragment : BaseStateFragment<HomeTabViewModel, FragmentHomeTabBindi
                             if (addSpaceDialog == null) {
                                 addSpaceDialog = AddSpaceDialog.newInstance()
                             }
-                            addSpaceDialog?.show(parentFragmentManager, ManageSpaceFragment.ADD_SPACE_DIALOG_TAG)
+                            addSpaceDialog?.show(
+                                parentFragmentManager,
+                                AddSpaceDialog.NEW_SPACE_REQUEST_KEY
+                            )
                         }
                     }
                 }
@@ -151,8 +165,16 @@ class HomeTabFragment : BaseStateFragment<HomeTabViewModel, FragmentHomeTabBindi
             LockerListFragment.SPACE_ID_REQUEST_KEY,
             bundleOf(LockerListFragment.SPACE_ID_KEY to space.id)
         )
+        val bundle = Bundle()
+        bundle.apply {
+            putLong(LockerListFragment.SPACE_ID_KEY, space.id)
+            putString(LockerListFragment.SPACE_NAME_KEY, space.name)
+        }
         when (activity) {
-            is HomeActivity -> (activity as HomeActivity).addFragmentBackStack(LockerListFragment.TAG)
+            is HomeActivity -> (activity as HomeActivity).addFragmentBackStack(
+                LockerListFragment.TAG,
+                bundle
+            )
         }
     }
 

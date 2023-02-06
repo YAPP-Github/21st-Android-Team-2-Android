@@ -1,5 +1,6 @@
 package com.yapp.itemfinder.space.additem
 
+import com.yapp.itemfinder.domain.model.SpaceAndLockerEntity
 import com.yapp.itemfinder.domain.model.AddItemImages
 import com.yapp.itemfinder.feature.common.SideEffect
 
@@ -14,4 +15,8 @@ sealed class AddItemSideEffect : SideEffect {
     object FillOutLocationSnackBar : AddItemSideEffect()
     object NameLengthLimitSnackBar : AddItemSideEffect()
     object MemoLengthLimitSnackBar : AddItemSideEffect()
+    data class MoveSelectSpace(
+        val spaceAndLockerEntity: SpaceAndLockerEntity? = null
+    ) : AddItemSideEffect()
+
 }

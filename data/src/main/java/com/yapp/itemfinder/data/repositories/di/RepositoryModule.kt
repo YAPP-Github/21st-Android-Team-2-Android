@@ -40,9 +40,15 @@ abstract class RepositoryModule {
     @Singleton
     abstract fun bindManageSpaceRepository(repository: ManageSpaceRepositoryImpl): ManageSpaceRepository
 
+    @SpaceMockRepositoryQualifiers
     @Binds
     @Singleton
-    abstract fun bindSelectSpaceMockRepository(repository: SelectSpaceMockRepositoryImpl): SelectSpaceRepository
+    abstract fun bindSpaceMockRepository(repository: SpaceMockRepositoryImpl): SpaceRepository
+
+    @SpaceRepositoryQualifiers
+    @Binds
+    @Singleton
+    abstract fun bindSelectSpaceRepository(repository: SelectSpaceRepositoryImpl): SpaceRepository
 
     @Binds
     @Singleton

@@ -1,27 +1,28 @@
 package com.yapp.itemfinder.space
 
+import android.app.Activity
+import android.content.Intent
 import android.widget.Toast
-import android.os.Bundle
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.os.bundleOf
-import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.yapp.itemfinder.domain.model.Data
-import com.yapp.itemfinder.domain.model.SpaceItem
 import com.yapp.itemfinder.domain.model.LockerEntity
+import com.yapp.itemfinder.domain.model.ScreenMode
 import com.yapp.itemfinder.feature.common.BaseStateFragment
+import com.yapp.itemfinder.feature.common.Depth
 import com.yapp.itemfinder.feature.common.R as CR
 import com.yapp.itemfinder.feature.common.FragmentNavigator
 import com.yapp.itemfinder.feature.common.binding.viewBinding
 import com.yapp.itemfinder.feature.common.datalist.adapter.DataListAdapter
 import com.yapp.itemfinder.feature.common.datalist.binder.DataBindHelper
-import com.yapp.itemfinder.feature.common.extension.parcelable
 import com.yapp.itemfinder.space.additem.AddItemActivity
 import com.yapp.itemfinder.space.addlocker.AddLockerActivity
 import com.yapp.itemfinder.space.databinding.FragmentLockerListBinding
-import com.yapp.itemfinder.space.edititem.EditItemActivity
 import com.yapp.itemfinder.space.lockerdetail.LockerDetailFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
@@ -40,18 +41,10 @@ class LockerListFragment : BaseStateFragment<LockerListViewModel, FragmentLocker
     override val depth: Depth
         get() = Depth.SECOND
 
-    private val spaceItem by lazy { requireArguments().parcelable<SpaceItem>(SPACE_ITEM_KEY) }
-
     @Inject
     lateinit var dataBindHelper: DataBindHelper
 
-    override fun initState() {
-        super.initState()
-        setFragmentResultListener(SPACE_ID_REQUEST_KEY) { requestKey, bundle ->
-            val spaceId = bundle.getLong(SPACE_ID_KEY)
-            vm.fetchLockerList(spaceId)
-        }
-    }
+    private lateinit var resultLauncher: ActivityResultLauncher<Intent>
 
     override fun initViews() = with(binding) {
         initToolBar()
@@ -60,6 +53,7 @@ class LockerListFragment : BaseStateFragment<LockerListViewModel, FragmentLocker
         }
         recyclerView.adapter = dataListAdapter
         addItemFAB.setOnClickListener { vm.moveAddItemActivity() }
+        setResultLauncher()
     }
 
     private fun initToolBar() = with(binding.defaultTopNavigationView) {
@@ -69,7 +63,7 @@ class LockerListFragment : BaseStateFragment<LockerListViewModel, FragmentLocker
         }
 
         containerColor = CR.color.brown_02
-        titleText = spaceItem?.name
+        titleText = requireArguments().getString(SPACE_NAME_KEY)
 
         rightSecondIcon = CR.drawable.ic_search
         rightSecondIconClickListener = {
@@ -103,12 +97,31 @@ class LockerListFragment : BaseStateFragment<LockerListViewModel, FragmentLocker
                                 moveLockerDetail(sideEffect.locker)
                             }
                             is LockerListSideEffect.MoveToAddLocker -> {
-                                startActivity(AddLockerActivity.newIntent(requireActivity()))
+                                val intent = AddLockerActivity.newIntent(requireActivity())
+                                intent.apply {
+                                    putExtra(
+                                        AddLockerActivity.SPACE_ID_KEY,
+                                        requireArguments().getLong(SPACE_ID_KEY)
+                                    )
+                                    putExtra(
+                                        AddLockerActivity.SPACE_NAME_KEY,
+                                        requireArguments().getString(SPACE_NAME_KEY)
+                                    )
+                                }
+                                resultLauncher.launch(intent)
                             }
                             is LockerListSideEffect.MoveToAddItem -> {
-                                startActivity(AddItemActivity.newIntent(requireContext()))
+                                startActivity(AddItemActivity.newIntent(requireContext()).apply {
+                                    putExtra(AddItemActivity.SCREEN_MODE, ScreenMode.ADD_MODE.label)
+                                })
                             }
-                            else -> {}
+                            is LockerListSideEffect.ShowToast -> {
+                                Toast.makeText(
+                                    requireContext(),
+                                    sideEffect.message,
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
                         }
                     }
                 }
@@ -140,11 +153,21 @@ class LockerListFragment : BaseStateFragment<LockerListViewModel, FragmentLocker
     private fun handleError(lockerListState: LockerListState.Error) {
     }
 
+    private fun setResultLauncher() {
+        resultLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+                if (result.resultCode == Activity.RESULT_OK) {
+                    vm.fetchData()
+                }
+            }
+    }
+
     companion object {
 
         val TAG = LockerListFragment::class.simpleName.toString()
         const val SPACE_ID_REQUEST_KEY = "space id for locker list screen"
         const val SPACE_ID_KEY = "spaceId"
+        const val SPACE_NAME_KEY = "SPACE_NAME_KEY"
         const val SPACE_ITEM_KEY = "SPACE_ITEM_KEY"
 
         fun newInstance() = LockerListFragment()

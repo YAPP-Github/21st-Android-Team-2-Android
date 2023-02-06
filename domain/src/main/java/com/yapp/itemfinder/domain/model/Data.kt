@@ -5,8 +5,8 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 open class Data(
-    open var id: Long = 0,
-    open var type: CellType = CellType.EMPTY_CELL,
+    open val id: Long = 0,
+    open val type: CellType = CellType.EMPTY_CELL,
 ) : Parcelable {
 
     var handler: DataHandler = { }

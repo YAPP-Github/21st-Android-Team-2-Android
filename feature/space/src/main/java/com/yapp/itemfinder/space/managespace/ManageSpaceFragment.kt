@@ -3,6 +3,8 @@ package com.yapp.itemfinder.space.managespace
 import android.app.AlertDialog
 import android.view.ContextThemeWrapper
 import android.widget.Toast
+import androidx.core.os.bundleOf
+import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -10,6 +12,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.yapp.itemfinder.domain.model.Data
 import com.yapp.itemfinder.feature.common.BaseStateFragment
+import com.yapp.itemfinder.feature.common.Depth
 import com.yapp.itemfinder.feature.common.binding.viewBinding
 import com.yapp.itemfinder.feature.common.datalist.adapter.DataListAdapter
 import com.yapp.itemfinder.feature.common.datalist.binder.DataBindHelper
@@ -45,8 +48,8 @@ class ManageSpaceFragment : BaseStateFragment<ManageSpaceViewModel, FragmentMana
             dataListAdapter = DataListAdapter()
         }
         recyclerView.adapter = dataListAdapter
-        setFragmentResultListener(NEW_SPACE_NAME_REQUEST_KEY) { requestKey, bundle ->
-            val newSpaceName = bundle.getString(NAME_KEY)
+        setFragmentResultListener(AddSpaceDialog.NEW_SPACE_REQUEST_KEY) { requestKey, bundle ->
+            val newSpaceName = bundle.getString(AddSpaceDialog.NEW_SPACE_NAME_BUNDLE_KEY)
             if (newSpaceName != null) {
                 vm.addItem(newSpaceName)
             }
@@ -87,7 +90,7 @@ class ManageSpaceFragment : BaseStateFragment<ManageSpaceViewModel, FragmentMana
                             is ManageSpaceSideEffect.OpenAddSpaceDialog -> {
                                 val dialog: AddSpaceDialog = AddSpaceDialog.newInstance()
                                 activity?.supportFragmentManager?.let { fragmentManager ->
-                                    dialog.show(fragmentManager, ADD_SPACE_DIALOG_TAG)
+                                    dialog.show(fragmentManager, AddSpaceDialog.TAG)
                                 }
                             }
                             is ManageSpaceSideEffect.AddSpaceFailedToast -> {
@@ -113,6 +116,9 @@ class ManageSpaceFragment : BaseStateFragment<ManageSpaceViewModel, FragmentMana
                                     dialog.show()
                                 }
                             }
+                            is ManageSpaceSideEffect.AddSpaceSuccessResult -> {
+                                setFragmentResult(NEW_SPACE_ADDED_REQUEST_KEY, bundleOf())
+                            }
                         }
                     }
                 }
@@ -137,11 +143,8 @@ class ManageSpaceFragment : BaseStateFragment<ManageSpaceViewModel, FragmentMana
     companion object {
 
         val TAG = ManageSpaceFragment::class.simpleName.toString()
-
-        const val NEW_SPACE_NAME_REQUEST_KEY = "new space name"
-        const val ADD_SPACE_DIALOG_TAG = "add space dialog"
-        const val NAME_KEY = "name"
         const val MY_SPACE_TITLE_KEY = "MY_SPACE_TITLE_KEY"
+        const val NEW_SPACE_ADDED_REQUEST_KEY = "NEW_SPACE_ADDED"
 
         fun newInstance() = ManageSpaceFragment()
 

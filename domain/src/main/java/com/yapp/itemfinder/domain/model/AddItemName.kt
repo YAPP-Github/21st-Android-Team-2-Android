@@ -5,11 +5,14 @@ data class AddItemName(
     override var type: CellType = CellType.ADD_ITEM_NAME_CELL,
     var mode: ScreenMode
 ) : Data() {
-    var enterHandler: EnterStringHandler = {}
+    var enterHandler: StringHandler = {}
     fun setItemName(newName: String) = enterHandler.invoke(newName)
+
+    var saveHandler: ActionHandler = { }
+    fun saveName() = saveHandler.invoke()
 }
 
-enum class ScreenMode{
-    EDIT_MODE,
-    ADD_MODE
+enum class ScreenMode(val label: String) {
+    EDIT_MODE("EDIT"),
+    ADD_MODE("ADD")
 }

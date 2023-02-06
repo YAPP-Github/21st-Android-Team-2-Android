@@ -2,6 +2,7 @@ package com.yapp.itemfinder.home.tabs.reminder
 
 import androidx.fragment.app.viewModels
 import com.yapp.itemfinder.feature.common.BaseFragment
+import com.yapp.itemfinder.feature.common.Depth
 import com.yapp.itemfinder.feature.common.binding.viewBinding
 import com.yapp.itemfinder.feature.home.databinding.FragmentHomeTabBinding
 import com.yapp.itemfinder.feature.home.databinding.FragmentReminderTabBinding

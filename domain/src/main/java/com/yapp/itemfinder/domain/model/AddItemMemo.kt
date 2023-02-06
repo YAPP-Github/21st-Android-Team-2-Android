@@ -5,6 +5,9 @@ data class AddItemMemo(
     override var type: CellType = CellType.ADD_ITEM_MEMO_CELL,
     var mode: ScreenMode
 ) : Data() {
-    var enterHandler: EnterStringHandler = {}
+    var enterHandler: StringHandler = {}
     fun setItemMemo(newMemo: String) = enterHandler.invoke(newMemo)
+
+    var saveHandler: ActionHandler = { }
+    fun saveMemo() = saveHandler.invoke()
 }

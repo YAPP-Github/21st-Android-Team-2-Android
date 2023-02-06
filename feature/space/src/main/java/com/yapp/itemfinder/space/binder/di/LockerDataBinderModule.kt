@@ -1,11 +1,7 @@
 package com.yapp.itemfinder.space.binder.di
 
-import com.yapp.itemfinder.feature.common.datalist.binder.AddLockerItemBinder
-import com.yapp.itemfinder.feature.common.datalist.binder.AddLockerPhotoItemBinder
-import com.yapp.itemfinder.feature.common.datalist.binder.LockerItemBinder
-import com.yapp.itemfinder.space.binder.LockerAddLockerItemBinder
-import com.yapp.itemfinder.space.binder.LockerAddLockerPhotoItemBinder
-import com.yapp.itemfinder.space.binder.LockerLockerItemBinder
+import com.yapp.itemfinder.feature.common.datalist.binder.*
+import com.yapp.itemfinder.space.binder.*
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -33,4 +29,15 @@ abstract class LockerDataBinderModule {
         addLockerPhoto: LockerAddLockerPhotoItemBinder
     ): AddLockerPhotoItemBinder
 
+    @Binds
+    @Singleton
+    abstract fun bindAddLockerNameBinder(
+        addLockerNameBinder: AddLockerScreenNameBinder
+    ): AddLockerNameBinder
+
+    @Binds
+    @Singleton
+    abstract fun bindAddLockerIconBinder(
+        addLockerIconBinder: AddLockerScreenIconBinder
+    ): AddLockerIconBinder
 }

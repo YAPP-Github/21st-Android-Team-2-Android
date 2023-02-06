@@ -1,6 +1,7 @@
 package com.yapp.itemfinder.data.network.api.managespace
 
 import com.yapp.itemfinder.domain.model.ManageSpaceEntity
+import com.yapp.itemfinder.domain.model.SelectSpace
 
 data class SpaceResponse(
     val name: String,
@@ -12,4 +13,8 @@ data class SpaceResponse(
         id = id.toLong()
     )
 
+    fun toSelectSpaceEntity() = SelectSpace(
+        name = name,
+        id = id.toLong()
+    )
 }

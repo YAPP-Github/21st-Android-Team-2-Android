@@ -1,9 +1,11 @@
 package com.yapp.itemfinder.space.additem
 
 import android.app.ActionBar.LayoutParams
+import android.app.Activity
 import android.app.DatePickerDialog
 import android.content.Context
 import android.content.Intent
+import androidx.activity.result.contract.ActivityResultContracts
 import android.net.Uri
 import androidx.activity.viewModels
 import androidx.lifecycle.Lifecycle
@@ -11,13 +13,18 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.yapp.itemfinder.domain.model.Data
 import com.yapp.itemfinder.domain.model.ItemCategorySelection
+import com.yapp.itemfinder.domain.model.ScreenMode
+import com.yapp.itemfinder.domain.model.SpaceAndLockerEntity
 import com.yapp.itemfinder.feature.common.BaseStateActivity
+import com.yapp.itemfinder.feature.common.Depth
 import com.yapp.itemfinder.feature.common.binding.viewBinding
 import com.yapp.itemfinder.feature.common.datalist.adapter.DataListAdapter
 import com.yapp.itemfinder.feature.common.datalist.binder.DataBindHelper
+import com.yapp.itemfinder.feature.common.extension.parcelable
 import com.yapp.itemfinder.feature.common.views.SnackBarView
-import com.yapp.itemfinder.space.databinding.ActivityAddItemBinding
+import com.yapp.itemfinder.space.additem.selectspace.AddItemSelectSpaceActivity
 import com.yapp.itemfinder.feature.common.R as CR
+import com.yapp.itemfinder.space.databinding.ActivityAddItemBinding
 import dagger.hilt.android.AndroidEntryPoint
 import gun0912.tedimagepicker.builder.TedImagePicker
 import kotlinx.coroutines.Job
@@ -32,10 +39,22 @@ class AddItemActivity : BaseStateActivity<AddItemViewModel, ActivityAddItemBindi
 
     override val binding by viewBinding(ActivityAddItemBinding::inflate)
 
+    override val depth: Depth
+        get() = Depth.THIRD
+
     private var dataListAdapter: DataListAdapter<Data>? = null
 
     @Inject
     lateinit var dataBindHelper: DataBindHelper
+
+    private val spaceAndLockerLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                result.data?.parcelable<SpaceAndLockerEntity>(SELECTED_SPACE_AND_LOCKER_KEY)?.let {
+                    vm.setSelectedSpaceAndLocker(it)
+                }
+            }
+        }
 
     override fun initViews() = with(binding) {
         initToolBar()
@@ -67,7 +86,10 @@ class AddItemActivity : BaseStateActivity<AddItemViewModel, ActivityAddItemBindi
             // 잠시만요! 팝업
             finish()
         }
-        titleText = "물건 추가"
+        when (intent.getStringExtra(SCREEN_MODE)) {
+            ScreenMode.ADD_MODE.label -> titleText = "물건 추가"
+            ScreenMode.EDIT_MODE.label -> titleText = "물건 수정"
+        }
         rightFirstIcon = CR.drawable.ic_done
         rightFirstIconClickListener = {
             vm.saveItem()
@@ -135,12 +157,19 @@ class AddItemActivity : BaseStateActivity<AddItemViewModel, ActivityAddItemBindi
                             val addItemImages = sideEffect.addItemImages
                             TedImagePicker.with(this@AddItemActivity)
                                 .max(
-                                    addItemImages.maxCount
-                                    , "${addItemImages.maxCount}개초과!"
+                                    addItemImages.maxCount, "${addItemImages.maxCount}개초과!"
                                 ).selectedUri(addItemImages.uriStringList.map { Uri.parse(it) })
                                 .startMultiImage { uris ->
                                     vm.doneChooseImages(uris)
                                 }
+                        }
+                        is AddItemSideEffect.MoveSelectSpace -> {
+                            spaceAndLockerLauncher.launch(
+                                AddItemSelectSpaceActivity.newIntent(
+                                    this@AddItemActivity,
+                                    sideEffect.spaceAndLockerEntity
+                                )
+                            )
                         }
                     }
                 }
@@ -175,6 +204,7 @@ class AddItemActivity : BaseStateActivity<AddItemViewModel, ActivityAddItemBindi
     }
 
     private fun handleLoading(addLockerState: AddItemState) {
+
     }
 
     private fun handleSuccess(addLockerState: AddItemState.Success) {
@@ -184,12 +214,19 @@ class AddItemActivity : BaseStateActivity<AddItemViewModel, ActivityAddItemBindi
     }
 
     private fun handleError(addLockerState: AddItemState.Error) {
+
     }
 
     companion object {
         const val SELECT_CATEGORY_DIALOG = "SELECT_CATEGORY_DIALOG"
         const val CHECKED_CATEGORY_REQUEST_KEY = "CHECKED_CATEGORY_REQUEST_KEY"
         const val CHECKED_CATEGORY_KEY = "CHECKED_CATEGORY_KEY"
+
+        const val SELECTED_SPACE_AND_LOCKER_KEY = "SELECTED_SPACE_AND_LOCKER_KEY"
+        const val SCREEN_MODE = "SCREEN_MODE"
+
         fun newIntent(context: Context) = Intent(context, AddItemActivity::class.java)
+
     }
+
 }

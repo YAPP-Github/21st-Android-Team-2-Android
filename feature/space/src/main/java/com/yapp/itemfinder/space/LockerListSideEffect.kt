@@ -7,4 +7,5 @@ sealed class LockerListSideEffect : SideEffect {
     data class MoveToLockerDetail(val locker: LockerEntity) : LockerListSideEffect()
     object MoveToAddLocker : LockerListSideEffect()
     object MoveToAddItem : LockerListSideEffect()
+    data class ShowToast(val message: String) : LockerListSideEffect()
 }

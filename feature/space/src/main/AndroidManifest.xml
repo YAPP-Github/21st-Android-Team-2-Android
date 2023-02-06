@@ -12,8 +12,12 @@
             android:theme="@style/ItemFinderTheme" />
         <activity android:name=".additem.AddItemActivity"
             android:theme="@style/ItemFinderTheme"/>
-        <activity android:name=".edititem.EditItemActivity"
-            android:theme="@style/ItemFinderTheme"/>
+        <activity
+            android:name=".additem.selectspace.AddItemSelectSpaceActivity"
+            android:theme="@style/ItemFinderTheme" />
+        <activity
+            android:name=".additem.selectlocker.AddItemSelectLockerActivity"
+            android:theme="@style/ItemFinderTheme" />
     </application>
 
 </manifest>

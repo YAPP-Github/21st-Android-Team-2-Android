@@ -61,8 +61,13 @@
         <item name="titleTextAppearance">@style/ItemFinderTypography.Head</item>
         <item name="popupTheme">@style/ThemeOverlay.AppCompat.Light</item>
         <item name="contentInsetLeft">0dp</item>
+        <item name="contentInsetRight">0dp</item>
         <item name="contentInsetStart">0dp</item>
+        <item name="contentInsetEnd">0dp</item>
+        <item name="android:paddingStart">0dp</item>
         <item name="android:paddingLeft">0dp</item>
+        <item name="android:paddingRight">0dp</item>
+        <item name="android:paddingEnd">0dp</item>
     </style>
 
     <style name="ChipButton" parent="@style/Widget.AppCompat.Button.Borderless">
