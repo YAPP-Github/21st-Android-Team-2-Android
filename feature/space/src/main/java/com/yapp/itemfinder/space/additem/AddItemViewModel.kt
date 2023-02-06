@@ -1,9 +1,12 @@
 package com.yapp.itemfinder.space.additem
 
 import android.net.Uri
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.yapp.itemfinder.domain.model.*
 import com.yapp.itemfinder.feature.common.BaseStateViewModel
+import com.yapp.itemfinder.feature.common.extension.runCatchingWithErrorHandler
+import com.yapp.itemfinder.space.itemdetail.ItemDetailFragment
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -13,7 +16,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AddItemViewModel @Inject constructor(
-
+    private val savedStateHandle: SavedStateHandle
 ) : BaseStateViewModel<AddItemState, AddItemSideEffect>() {
     override val _stateFlow: MutableStateFlow<AddItemState> =
         MutableStateFlow(AddItemState.Uninitialized)
@@ -21,44 +24,109 @@ class AddItemViewModel @Inject constructor(
 
     override fun fetchData(): Job = viewModelScope.launch {
         setState(AddItemState.Loading)
-        setState(
-            AddItemState.Success(
-                dataList = listOf(
-                    AddItemImages(mutableListOf()),
-                    AddItemName(mode = ScreenMode.ADD_MODE),
-                    AddItemCategory(category = ItemCategorySelection.DEFAULT),
-                    AddItemLocation(),
-                    AddItemCount(),
-                    AddItemTags(listOf()),
-                    AddItemAdditional()
+        val screenMode = savedStateHandle.get<String>(AddItemActivity.SCREEN_MODE)
+        when (screenMode) {
+            ScreenMode.ADD_MODE.label -> {
+                setState(
+                    AddItemState.Success(
+                        dataList = listOf(
+                            AddItemImages(mutableListOf()),
+                            AddItemName(mode = ScreenMode.ADD_MODE),
+                            AddItemCategory(category = ItemCategorySelection.DEFAULT),
+                            AddItemLocation(),
+                            AddItemCount(),
+                            AddItemTags(listOf()),
+                            AddItemAdditional()
+                        ),
+                        spaceAndLockerEntity = null,
+                    )
                 )
-            )
-        )
+            }
+            ScreenMode.EDIT_MODE.label -> {
+                val itemId = savedStateHandle.get<Long>(ItemDetailFragment.ITEM_ID_KEY)
+                runCatchingWithErrorHandler {
+                    // itemId로 api call
+                }
+                // api 연결하면서 sampleItem 제거
+                val sampleItem = Item(
+                    id = 1,
+                    lockerId = 1,
+                    itemCategory = ItemCategory.FOOD,
+                    name = "선크림",
+                    expirationDate = "2022.12.25.",
+                    purchaseDate = null,
+                    memo = null,
+                    imageUrl = "http://source.unsplash.com/random/150x150",
+                    tags = listOf(Tag("생활"), Tag("화장품")),
+                    count = 1
+                )
+                val dataList = mutableListOf<Data>(
+                    AddItemName(name = sampleItem.name, mode = ScreenMode.EDIT_MODE),
+                    AddItemCategory(category = ItemCategorySelection.FOOD),
+                    AddItemLocation(
+                        spaceName = "주방",
+                        spaceId = 111,
+                        lockerName = "냉장고",
+                        lockerId = 222
+                    ),
+                    AddItemCount(count = sampleItem.count)
+                ).apply {
+                    sampleItem.tags?.let { add(AddItemTags(it)) }
+                    sampleItem.memo?.let {
+                        add(
+                            AddItemMemo(
+                                memo = sampleItem.memo!!,
+                                mode = ScreenMode.EDIT_MODE
+                            )
+                        )
+                    }
+                    sampleItem.expirationDate?.let { add(AddItemExpirationDate(it)) }
+                    sampleItem.purchaseDate?.let { add(AddItemPurchaseDate(it)) }
+                    add(
+                        AddItemAdditional(
+                            hasMemo = (sampleItem.memo != null),
+                            hasExpirationDate = sampleItem.expirationDate != null,
+                            hasPurchaseDate = sampleItem.purchaseDate != null
+                        )
+                    )
+                }
+                setState(
+                    AddItemState.Success(
+                        dataList = dataList
+                    )
+                )
+            }
+            else -> {}
+        }
     }
 
-    fun startChooseImages(){
+    fun startChooseImages() {
         withState<AddItemState.Success> { state ->
             val idx = state.dataList.indexOfFirst { data -> data is AddItemImages }
             postSideEffect(AddItemSideEffect.OpenPhotoPicker(state.dataList[idx] as AddItemImages))
         }
 
     }
+
     // 이미지 피커에서 이미지를 선택한 다음, 하나의 이미지의 삭제 버튼을 눌렀을 경우 호출합니다.
-    fun cancelImageUpload(uriStringList: List<String>){
+    fun cancelImageUpload(uriStringList: List<String>) {
         withState<AddItemState.Success> { state ->
             val newDataList = state.dataList.toMutableList()
             val imageIndex = newDataList.indexOfFirst { data -> data is AddItemImages }
             newDataList[imageIndex] = (state.dataList[imageIndex] as AddItemImages).copy(
                 uriStringList = uriStringList
             )
-            setState(AddItemState.Success(newDataList))
-
+            setState(
+                state.copy(
+                    dataList = newDataList
+                )
+            )
         }
 
     }
 
 
-    fun doneChooseImages(uris: List<Uri>){
+    fun doneChooseImages(uris: List<Uri>) {
         withState<AddItemState.Success> { state ->
             val newDataList = state.dataList.toMutableList()
             val imageIndex = newDataList.indexOfFirst { data -> data is AddItemImages }
@@ -66,8 +134,8 @@ class AddItemViewModel @Inject constructor(
                 uriStringList = uris.map { it.toString() }
             )
             setState(
-                AddItemState.Success(
-                    newDataList
+                state.copy(
+                    dataList = newDataList
                 )
             )
         }
@@ -81,8 +149,8 @@ class AddItemViewModel @Inject constructor(
             newDataList[nameIndex] =
                 (newDataList[nameIndex] as AddItemName).copy(name = newName)
             setState(
-                AddItemState.Success(
-                    newDataList,
+                state.copy(
+                    dataList = newDataList,
                     isRefreshNeed = false
                 )
             )
@@ -93,14 +161,40 @@ class AddItemViewModel @Inject constructor(
         withState<AddItemState.Success> { state ->
             val newDataList = ArrayList(state.dataList)
             val categoryIndex = newDataList.indexOf(newDataList.find { it is AddItemCategory })
+
+            val addItemMarkerMap = newDataList.find { it is AddItemMarkerMap } as? AddItemMarkerMap
+            val itemCategory = newCategory.toItemCateogry()
             newDataList[categoryIndex] =
                 (newDataList[categoryIndex] as AddItemCategory).copy(category = newCategory)
+
+
+            addItemMarkerMap?.runItemCategorySet(itemCategory)
+            val addItemMarkerMapIndex = newDataList.indexOf(addItemMarkerMap)
+            if (addItemMarkerMapIndex > -1) {
+                newDataList[addItemMarkerMapIndex] = addItemMarkerMap?.copy(
+                    item = addItemMarkerMap.item?.copy(itemCategory = itemCategory)
+                )
+            }
             setState(
-                AddItemState.Success(
-                    newDataList
+                state.copy(
+                    dataList = newDataList,
+                    lockerAndItemEntity = state.lockerAndItemEntity?.copy(
+                        item = state.lockerAndItemEntity.item?.copy(
+                            itemCategory = itemCategory
+                        )
+                    )
                 )
             )
         }
+    }
+
+    fun getSelectedCategory(): ItemCategorySelection {
+        var category = ItemCategorySelection.DEFAULT
+        withState<AddItemState.Success> { state ->
+            category = state.dataList.filterIsInstance<AddItemCategory>().firstOrNull()?.category
+                ?: ItemCategorySelection.DEFAULT
+        }
+        return category
     }
 
     fun countPlusOne() {
@@ -112,8 +206,8 @@ class AddItemViewModel @Inject constructor(
                 count = addItemCountItem.count.plus(1)
             )
             setState(
-                AddItemState.Success(
-                    newDataList
+                state.copy(
+                    dataList = newDataList,
                 )
             )
         }
@@ -128,8 +222,8 @@ class AddItemViewModel @Inject constructor(
                 count = addItemCountItem.count.minus(1)
             )
             setState(
-                AddItemState.Success(
-                    newDataList
+                state.copy(
+                    dataList = newDataList,
                 )
             )
         }
@@ -144,8 +238,8 @@ class AddItemViewModel @Inject constructor(
             newDataList.add(idx, AddItemMemo(mode = ScreenMode.ADD_MODE))
             newDataList[idx + 1] = addItemAdditional.copy(hasMemo = true)
             setState(
-                AddItemState.Success(
-                    newDataList
+                state.copy(
+                    dataList = newDataList,
                 )
             )
         }
@@ -160,8 +254,8 @@ class AddItemViewModel @Inject constructor(
             newDataList.add(idx, AddItemExpirationDate())
             newDataList[idx + 1] = addItemAdditional.copy(hasExpirationDate = true)
             setState(
-                AddItemState.Success(
-                    newDataList
+                state.copy(
+                    dataList = newDataList,
                 )
             )
         }
@@ -176,8 +270,8 @@ class AddItemViewModel @Inject constructor(
             newDataList.add(idx, AddItemPurchaseDate())
             newDataList[idx + 1] = addItemAdditional.copy(hasPurchaseDate = true)
             setState(
-                AddItemState.Success(
-                    newDataList
+                state.copy(
+                    dataList = newDataList,
                 )
             )
         }
@@ -190,8 +284,8 @@ class AddItemViewModel @Inject constructor(
             newDataList[memoIndex] =
                 (newDataList[memoIndex] as AddItemMemo).copy(memo = newMemo)
             setState(
-                AddItemState.Success(
-                    newDataList
+                state.copy(
+                    dataList = newDataList,
                 )
             )
         }
@@ -203,8 +297,8 @@ class AddItemViewModel @Inject constructor(
             val idx = newDataList.indexOf(newDataList.find { it is AddItemExpirationDate })
             newDataList[idx] = AddItemExpirationDate(expirationDate = date)
             setState(
-                AddItemState.Success(
-                    newDataList
+                state.copy(
+                    dataList = newDataList,
                 )
             )
         }
@@ -216,14 +310,92 @@ class AddItemViewModel @Inject constructor(
             val idx = newDataList.indexOf(newDataList.find { it is AddItemPurchaseDate })
             newDataList[idx] = AddItemPurchaseDate(purchaseDate = date)
             setState(
-                AddItemState.Success(
-                    newDataList
+                state.copy(
+                    dataList = newDataList,
+                )
+            )
+        }
+    }
+
+    fun setSelectedSpaceAndLocker(spaceAndLockerEntity: SpaceAndLockerEntity) {
+        withState<AddItemState.Success> { state ->
+            val newDataList = ArrayList(state.dataList)
+            val addItemLocationIdx = newDataList.indexOf(newDataList.find { it is AddItemLocation })
+            val (space, locker) = spaceAndLockerEntity
+            newDataList[addItemLocationIdx] = AddItemLocation(
+                spaceId = space.id,
+                spaceName = space.name,
+                lockerId = locker?.id ?: 0L,
+                lockerName = locker?.name ?: ""
+            )
+
+            val addItemCategory = newDataList.find { it is AddItemCategory } as AddItemCategory
+
+            val markerMap = newDataList.find { it is AddItemMarkerMap } as? AddItemMarkerMap
+            markerMap?.let { newDataList.remove(it) }
+            locker?.let {
+                val newItem = state.lockerAndItemEntity?.item?.copy(
+                    itemCategory = addItemCategory.category.toItemCateogry()
+                )
+
+                newDataList.add(
+                    AddItemMarkerMap(
+                        lockerEntity = locker,
+                        item = newItem
+                    )
+                )
+                setState(
+                    state.copy(
+                        dataList = newDataList,
+                        spaceAndLockerEntity = spaceAndLockerEntity,
+                        lockerAndItemEntity = state.lockerAndItemEntity?.copy(
+                            lockerEntity = locker,
+                            item = newItem
+                        )
+                    )
+                )
+            } ?: run {
+                setState(
+                    state.copy(
+                        dataList = newDataList,
+                        spaceAndLockerEntity = spaceAndLockerEntity,
+                    )
+                )
+            }
+        }
+    }
+
+    fun setDefinedLockerAndItem(lockerAndItemEntity: LockerAndItemEntity) {
+        withState<AddItemState.Success> { state ->
+            val newDataList = ArrayList(state.dataList)
+            val addItemMarkerMap = newDataList.find { it is AddItemMarkerMap } as? AddItemMarkerMap
+
+            val addItemCategory = newDataList.find { it is AddItemCategory } as AddItemCategory
+            val itemCategory = addItemCategory.category.toItemCateogry()
+
+            addItemMarkerMap?.let {
+                val idx = newDataList.indexOf(addItemMarkerMap)
+                val (_, item) = lockerAndItemEntity
+                newDataList[idx] = addItemMarkerMap.copy(
+                    item = item?.copy(
+                        itemCategory = itemCategory
+                    )
+                )
+            }
+            setState(
+                state.copy(
+                    dataList = newDataList,
+                    lockerAndItemEntity = lockerAndItemEntity
                 )
             )
         }
     }
 
     fun saveItem() {
+        withState<AddItemState.Success> { state ->
+            state.dataList.filterIsInstance<AddItemName>().firstOrNull()?.saveName()
+            state.dataList.filterIsInstance<AddItemMemo>().firstOrNull()?.saveMemo()
+        }
         withState<AddItemState.Success> { state ->
             val dataList = state.dataList
             var itemName = ""
@@ -266,7 +438,7 @@ class AddItemViewModel @Inject constructor(
                 postSideEffect(AddItemSideEffect.NameLengthLimitSnackBar)
                 return
             }
-            if (itemCategory.length > 200) {
+            if (itemMemo.length > 200) {
                 postSideEffect(AddItemSideEffect.MemoLengthLimitSnackBar)
                 return
             }
@@ -285,4 +457,48 @@ class AddItemViewModel @Inject constructor(
     fun openSelectCategoryDialog() {
         postSideEffect(AddItemSideEffect.OpenSelectCategoryDialog)
     }
+
+    fun moveSelectSpace() {
+        withState<AddItemState.Success> { state ->
+            postSideEffect(
+                AddItemSideEffect.MoveSelectSpace(
+                    spaceAndLockerEntity = state.spaceAndLockerEntity
+                )
+            )
+        }
+    }
+
+    fun moveItemPositionDefine() {
+        withState<AddItemState.Success> { state ->
+            val addItemCategory = state.dataList.find { it is AddItemCategory } as AddItemCategory
+            val itemCategory = addItemCategory.category.toItemCateogry()
+            state.lockerAndItemEntity?.let { lockerAndItemEntity ->
+                postSideEffect(
+                    AddItemSideEffect.MoveItemPositionDefine(
+                        lockerAndItemEntity = if (lockerAndItemEntity.item == null) {
+                            lockerAndItemEntity.copy(
+                                item = Item.createEmptyItem().copy(
+                                    itemCategory = itemCategory
+                                )
+                            )
+                        } else {
+                            lockerAndItemEntity
+                        }
+                    )
+                )
+            } ?: state.spaceAndLockerEntity?.lockerEntity?.let { lockerEntity ->
+                postSideEffect(
+                    AddItemSideEffect.MoveItemPositionDefine(
+                        lockerAndItemEntity = LockerAndItemEntity(
+                            lockerEntity = lockerEntity,
+                            item = Item.createEmptyItem().copy(
+                                itemCategory = itemCategory
+                            )
+                        )
+                    )
+                )
+            }
+        }
+    }
+
 }

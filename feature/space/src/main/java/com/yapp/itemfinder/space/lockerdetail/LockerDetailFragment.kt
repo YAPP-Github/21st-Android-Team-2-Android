@@ -1,7 +1,6 @@
 package com.yapp.itemfinder.space.lockerdetail
 
 import android.os.Bundle
-import android.util.Log
 import android.animation.Animator
 import android.animation.ValueAnimator
 import android.view.View
@@ -21,8 +20,10 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior.BottomSheetCa
 import com.google.android.material.divider.MaterialDividerItemDecoration
 import com.yapp.itemfinder.domain.model.Data
 import com.yapp.itemfinder.domain.model.Item
+import com.yapp.itemfinder.domain.model.LockerEntity
 import com.yapp.itemfinder.feature.common.BaseStateFragment
 import com.yapp.itemfinder.feature.common.FragmentNavigator
+import com.yapp.itemfinder.feature.common.Depth
 import com.yapp.itemfinder.feature.common.R.string
 import com.yapp.itemfinder.feature.common.binding.viewBinding
 import com.yapp.itemfinder.feature.common.datalist.adapter.DataListAdapter
@@ -313,7 +314,7 @@ class LockerDetailFragment :
         }
 
         val dataList = lockerDetailState.dataList
-        handleItemMarkers(dataList.map { it as Item })
+        handleItemMarkers(lockerDetailState.locker , dataList.map { it as Item })
 
         binding.defaultTopNavigationView.titleText = lockerDetailState.locker.name
 
@@ -326,8 +327,8 @@ class LockerDetailFragment :
         binding.bottomSheet.totalItemCount.text = getString(string.totalCount, dataList.size)
     }
 
-    private fun handleItemMarkers(items: List<Item>) = with(binding) {
-        itemsMarkerMapView.fetchItems(items)
+    private fun handleItemMarkers(lockerEntity: LockerEntity, items: List<Item>) = with(binding) {
+        itemsMarkerMapView.fetchItems(lockerEntity, items)
     }
 
     companion object {

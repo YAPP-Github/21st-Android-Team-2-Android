@@ -9,6 +9,7 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.yapp.itemfinder.feature.common.BaseActivity
+import com.yapp.itemfinder.feature.common.Depth
 import com.yapp.itemfinder.feature.common.FragmentNavigator
 import com.yapp.itemfinder.feature.common.binding.viewBinding
 import com.yapp.itemfinder.feature.common.extension.hideSoftInput
@@ -31,6 +32,9 @@ class HomeActivity : BaseActivity<HomeViewModel, ActivityHomeBinding>(), Fragmen
     override val vm by viewModels<HomeViewModel>()
 
     override val binding by viewBinding(ActivityHomeBinding::inflate)
+
+    override val depth: Depth
+        get() = Depth.FIRST
 
     override fun initViews() {
         initNavigationBar()

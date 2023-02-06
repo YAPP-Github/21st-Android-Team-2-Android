@@ -3,4 +3,5 @@
     <string name="item_category_living">생활</string>
     <string name="item_category_food">식품</string>
     <string name="item_category_fashion">패션</string>
+    <string name="item_category_none">기타</string>
 </resources>

@@ -18,6 +18,7 @@ import com.yapp.itemfinder.domain.entity.signup.SignUpEntity
 import com.yapp.itemfinder.domain.type.GenderType
 import com.yapp.itemfinder.domain.type.SocialType
 import com.yapp.itemfinder.feature.common.BaseStateActivity
+import com.yapp.itemfinder.feature.common.Depth
 import com.yapp.itemfinder.feature.common.binding.viewBinding
 import com.yapp.itemfinder.feature.common.extension.gone
 import com.yapp.itemfinder.feature.common.extension.visible
@@ -32,6 +33,9 @@ class PreloginActivity : BaseStateActivity<PreloginViewModel, AcitivityPreloginB
     override val vm by viewModels<PreloginViewModel>()
 
     override val binding by viewBinding(AcitivityPreloginBinding::inflate)
+
+    override val depth: Depth
+        get() = Depth.FIRST
 
     override fun initViews() = with(binding) {
         kakaoLoginButton.setOnClickListener {

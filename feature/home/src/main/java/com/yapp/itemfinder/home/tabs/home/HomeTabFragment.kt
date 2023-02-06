@@ -18,6 +18,7 @@ import com.yapp.itemfinder.domain.model.Data
 import com.yapp.itemfinder.domain.model.LockerEntity
 import com.yapp.itemfinder.domain.model.SpaceItem
 import com.yapp.itemfinder.feature.common.BaseStateFragment
+import com.yapp.itemfinder.feature.common.Depth
 import com.yapp.itemfinder.feature.common.datalist.binder.DataBindHelper
 import com.yapp.itemfinder.feature.common.extension.gone
 import com.yapp.itemfinder.feature.common.extension.showShortToast
@@ -60,38 +61,43 @@ class HomeTabFragment : BaseStateFragment<HomeTabViewModel, FragmentHomeTabBindi
 
     private var addSpaceDialog: AddSpaceDialog? = null
 
+
     private val gridItemDecoration: SpaceItemDecoration by lazy {
         SpaceItemDecoration(
             bottomFullSpacingDp = 16,
             horizontalHalfSpacingDp = 6
         )
-
     }
 
     override fun initState() {
         super.initState()
 
-        setFragmentResultListener(ManageSpaceFragment.NEW_SPACE_NAME_REQUEST_KEY) { _, bundle ->
-            val newSpaceName = bundle.getString(ManageSpaceFragment.NAME_KEY)
+        setFragmentResultListener(AddSpaceDialog.NEW_SPACE_REQUEST_KEY) { _, bundle ->
+            val newSpaceName = bundle.getString(AddSpaceDialog.NEW_SPACE_NAME_BUNDLE_KEY)
             if (newSpaceName != null) {
                 vm.createSpaceItem(newSpaceName)
             }
         }
+
+        setFragmentResultListener(ManageSpaceFragment.NEW_SPACE_ADDED_REQUEST_KEY){ _, _ ->
+            vm.fetchData()
+        }
     }
+
 
     override fun initViews() = with(binding) {
         initToolBar()
         if (dataListAdapter == null) {
             dataListAdapter = DataListAdapter()
-            recyclerView.adapter = dataListAdapter
-            recyclerView.layoutManager = GridLayoutManager(activity, 2).apply {
-                spanSizeLookup = object : SpanSizeLookup() {
-                    override fun getSpanSize(position: Int): Int =
-                        dataListWithSpan[position].span
-                }
-            }
-            recyclerView.addItemDecoration(gridItemDecoration)
         }
+        recyclerView.adapter = dataListAdapter
+        recyclerView.layoutManager = GridLayoutManager(activity, 2).apply {
+            spanSizeLookup = object : SpanSizeLookup() {
+                override fun getSpanSize(position: Int): Int =
+                    dataListWithSpan[position].span
+            }
+        }
+        recyclerView.addItemDecoration(gridItemDecoration)
     }
 
     private fun initToolBar() = with(binding.searchTopNavigationView) {
@@ -145,7 +151,7 @@ class HomeTabFragment : BaseStateFragment<HomeTabViewModel, FragmentHomeTabBindi
                             }
                             addSpaceDialog?.show(
                                 parentFragmentManager,
-                                ManageSpaceFragment.ADD_SPACE_DIALOG_TAG
+                                AddSpaceDialog.NEW_SPACE_REQUEST_KEY
                             )
                         }
                     }

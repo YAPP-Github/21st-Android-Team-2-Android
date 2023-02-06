@@ -2,11 +2,10 @@ package com.yapp.itemfinder.feature.common.datalist.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import com.yapp.itemfinder.domain.model.AddItemExpirationDate
-import com.yapp.itemfinder.domain.model.AddItemMemo
 import com.yapp.itemfinder.domain.model.CellType
 import com.yapp.itemfinder.domain.model.Data
 import com.yapp.itemfinder.feature.common.databinding.*
+import com.yapp.itemfinder.feature.common.datalist.adapter.viewholder.*
 
 object DataViewHolderMapper {
 
@@ -26,8 +25,7 @@ object DataViewHolderMapper {
             CellType.HOMETAB_MYSPACE_UPPER_CELL -> HomeTabMySpaceUpperCellViewHolder(HometabMyspaceUpperCellItemBinding.inflate(inflater, parent, false))
             CellType.ADD_SPACE_CELL -> AddSpaceViewHolder(AddSpaceBinding.inflate(inflater, parent, false))
             CellType.MANAGE_SPACE_CELL -> ManageSpaceViewHolder(ManageSpaceItemBinding.inflate(inflater, parent, false))
-            CellType.ADD_LOCKER_NAME_INPUT_CELL -> AddLockerNameInputViewHolder(
-                AddLockerNameInputBinding.inflate(inflater, parent, false))
+            CellType.ADD_LOCKER_NAME_INPUT_CELL -> AddLockerNameInputViewHolder(AddLockerNameInputBinding.inflate(inflater, parent, false))
             CellType.ADD_LOCKER_SPACE_CELL -> AddLockerSpaceViewHolder(AddLockerSpaceBinding.inflate(inflater, parent, false))
             CellType.LOCKER_ICONS_CELL -> LockerIconsViewHolder(LockerIconsBinding.inflate(inflater, parent, false))
             CellType.ADD_LOCKER_IMAGE_CELL -> AddLockerPhotoViewHolder(AddLockerPhotoBinding.inflate(inflater, parent, false))
@@ -44,8 +42,15 @@ object DataViewHolderMapper {
             CellType.ADD_ITEM_MEMO_CELL -> AddItemMemoViewHolder(AddItemMemoBinding.inflate(inflater, parent, false))
             CellType.ADD_ITEM_EXPIRATION_DATE_CELL -> AddItemExpirationDateViewHolder(
                 AddItemExpirationDateBinding.inflate(inflater, parent, false))
-            CellType.ADD_ITEM_PURCHASE_DATE_CELL -> AddItemPurchaseDateViewHolder(
-                AddItemPurchaseDateBinding.inflate(inflater, parent, false))
+            CellType.ADD_ITEM_PURCHASE_DATE_CELL ->
+                AddItemPurchaseDateViewHolder(AddItemPurchaseDateBinding.inflate(inflater, parent, false))
+            CellType.ADD_ITEM_SELECT_SPACE_CELL ->
+                AddItemSelectSpaceViewHolder(ViewholderAddItemSelectSpaceBinding.inflate(inflater, parent, false))
+            CellType.SELECT_LOCKER_CELL ->
+                SelectLockerViewHolder(ViewholderSelectLockerBinding.inflate(inflater, parent, false))
+            CellType.ADD_ITEM_MARKER_MAP_CELL ->
+                AddItemMarkerMapViewHolder(ViewholderAddItemMarkerMapBinding.inflate(inflater, parent, false))
+
         }
 
         return viewHolder as DataViewHolder<D>

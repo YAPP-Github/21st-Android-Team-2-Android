@@ -1,20 +1,27 @@
 package com.yapp.itemfinder.domain.model
 
+import kotlinx.parcelize.IgnoredOnParcel
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
 data class LockerEntity(
-    override var id: Long,
+    override val id: Long,
+    override val type: CellType = CellType.LOCKER_CELL,
     val name: String,
     val icon: String,
     val spaceId: Long,
-    val imageUrl: String? = null,
-    override var type: CellType = CellType.LOCKER_CELL
+    val imageUrl: String? = "https://i.imgur.com/JteRnyp.jpeg"
 ) : Data() {
 
+    @IgnoredOnParcel
     var moveLockerDetailHandler: DataHandler = {}
     fun moveLockerDetail() = moveLockerDetailHandler.invoke(this)
 
+    @IgnoredOnParcel
     var editHandler: DataHandler = {}
     fun editLocker() = editHandler.invoke(this)
 
+    @IgnoredOnParcel
     var deleteHandler: DataHandler = {}
     fun deleteLocker() = deleteHandler.invoke(this)
 

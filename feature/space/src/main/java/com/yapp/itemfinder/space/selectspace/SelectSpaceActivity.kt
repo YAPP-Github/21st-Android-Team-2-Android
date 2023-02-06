@@ -10,6 +10,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.yapp.itemfinder.domain.model.Data
 import com.yapp.itemfinder.feature.common.BaseStateActivity
+import com.yapp.itemfinder.feature.common.Depth
 import com.yapp.itemfinder.feature.common.R as CR
 import com.yapp.itemfinder.feature.common.binding.viewBinding
 import com.yapp.itemfinder.feature.common.datalist.adapter.DataListAdapter
@@ -24,6 +25,9 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class SelectSpaceActivity : BaseStateActivity<SelectSpaceViewModel, ActivitySelectSpaceBinding>() {
 
+    override val depth: Depth
+        get() = Depth.SECOND
+
     override val vm by viewModels<SelectSpaceViewModel>()
 
     override val binding by viewBinding(ActivitySelectSpaceBinding::inflate)
@@ -37,8 +41,8 @@ class SelectSpaceActivity : BaseStateActivity<SelectSpaceViewModel, ActivitySele
         initToolbar()
         if (dataListAdapter == null) {
             dataListAdapter = DataListAdapter()
-            recyclerView.adapter = dataListAdapter
         }
+        recyclerView.adapter = dataListAdapter
     }
 
     private fun initToolbar() = with(binding.defaultNavigationView) {

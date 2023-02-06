@@ -1,8 +1,10 @@
 package com.yapp.itemfinder.feature.common
 
 import android.os.Bundle
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewbinding.ViewBinding
+import com.yapp.itemfinder.feature.common.extension.setStatusBarColor
 import kotlinx.coroutines.Job
 
 abstract class BaseActivity<VM: BaseViewModel, VB: ViewBinding>: AppCompatActivity() {
@@ -13,12 +15,22 @@ abstract class BaseActivity<VM: BaseViewModel, VB: ViewBinding>: AppCompatActivi
 
     private lateinit var fetchJob: Job
 
+    abstract val depth: Depth
+
+    open val onBackPressedCallback = object : OnBackPressedCallback(true) {
+        override fun handleOnBackPressed() {
+            finish()
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initState()
+        this.onBackPressedDispatcher.addCallback(this, onBackPressedCallback)
     }
 
     open fun initState() {
+        setStatusBarColor(depth.colorId)
         initViews()
         fetchJob = vm.fetchData()
         observeData()

@@ -1,4 +1,6 @@
 <resources>
+    <string name="my_space">내 공간</string>
+
     <string name="addSpaceDialogTitle">공간 추가</string>
     <string name="space_name">공간 이름</string>
     <string name="create">추가</string>
@@ -21,4 +23,8 @@
     <string name="life">생활</string>
     <string name="food">식품</string>
     <string name="fashion">패션</string>
+
+    <string name="item_position">물건 위치</string>
+    <string name="define_item_position_pin_guide">물건의 위치를 핀으로 찍어보세요.</string>
+    <string name="initialize_pin">핀 초기화</string>
 </resources>
