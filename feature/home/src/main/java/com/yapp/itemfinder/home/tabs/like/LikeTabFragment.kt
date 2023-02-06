@@ -35,8 +35,8 @@ class LikeTabFragment : BaseStateFragment<LikeTabViewModel, FragmentLikeTabBindi
     override fun initViews() = with(binding) {
         if (dataListAdapter == null) {
             dataListAdapter = DataListAdapter()
-            recyclerView.adapter = dataListAdapter
         }
+        recyclerView.adapter = dataListAdapter
     }
 
     override fun observeData(): Job {

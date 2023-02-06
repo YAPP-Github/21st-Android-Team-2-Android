@@ -45,8 +45,8 @@ class AddLockerActivity : BaseStateActivity<AddLockerViewModel, ActivityAddLocke
         initToolbar()
         if (dataListAdapter == null) {
             dataListAdapter = DataListAdapter()
-            recyclerView.adapter = dataListAdapter
         }
+        recyclerView.adapter = dataListAdapter
         setResultNext()
     }
 

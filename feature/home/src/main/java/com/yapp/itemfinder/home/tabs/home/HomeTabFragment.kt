@@ -89,15 +89,15 @@ class HomeTabFragment : BaseStateFragment<HomeTabViewModel, FragmentHomeTabBindi
         initToolBar()
         if (dataListAdapter == null) {
             dataListAdapter = DataListAdapter()
-            recyclerView.adapter = dataListAdapter
-            recyclerView.layoutManager = GridLayoutManager(activity, 2).apply {
-                spanSizeLookup = object : SpanSizeLookup() {
-                    override fun getSpanSize(position: Int): Int =
-                        dataListWithSpan[position].span
-                }
-            }
-            recyclerView.addItemDecoration(gridItemDecoration)
         }
+        recyclerView.adapter = dataListAdapter
+        recyclerView.layoutManager = GridLayoutManager(activity, 2).apply {
+            spanSizeLookup = object : SpanSizeLookup() {
+                override fun getSpanSize(position: Int): Int =
+                    dataListWithSpan[position].span
+            }
+        }
+        recyclerView.addItemDecoration(gridItemDecoration)
     }
 
     private fun initToolBar() = with(binding.searchTopNavigationView) {
