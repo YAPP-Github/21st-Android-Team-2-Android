@@ -12,10 +12,7 @@ import androidx.activity.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import com.yapp.itemfinder.domain.model.Data
-import com.yapp.itemfinder.domain.model.ItemCategorySelection
-import com.yapp.itemfinder.domain.model.ScreenMode
-import com.yapp.itemfinder.domain.model.SpaceAndLockerEntity
+import com.yapp.itemfinder.domain.model.*
 import com.yapp.itemfinder.feature.common.BaseStateActivity
 import com.yapp.itemfinder.feature.common.Depth
 import com.yapp.itemfinder.feature.common.binding.viewBinding
@@ -23,6 +20,7 @@ import com.yapp.itemfinder.feature.common.datalist.adapter.DataListAdapter
 import com.yapp.itemfinder.feature.common.datalist.binder.DataBindHelper
 import com.yapp.itemfinder.feature.common.extension.parcelable
 import com.yapp.itemfinder.feature.common.views.SnackBarView
+import com.yapp.itemfinder.space.additem.itemposition.AddItemPositionDefineActivity
 import com.yapp.itemfinder.space.additem.selectspace.AddItemSelectSpaceActivity
 import com.yapp.itemfinder.feature.common.R as CR
 import com.yapp.itemfinder.space.databinding.ActivityAddItemBinding
@@ -56,6 +54,14 @@ class AddItemActivity : BaseStateActivity<AddItemViewModel, ActivityAddItemBindi
                 }
             }
         }
+
+    private val itemPositionDefineLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            result.data?.parcelable<LockerAndItemEntity>(LOCKER_AND_ITEM_KEY)?.let {
+                vm.setDefinedLockerAndItem(it)
+            }
+        }
+    }
 
     override fun initViews() = with(binding) {
         initToolBar()
@@ -178,6 +184,11 @@ class AddItemActivity : BaseStateActivity<AddItemViewModel, ActivityAddItemBindi
                                 )
                             )
                         }
+                        is AddItemSideEffect.MoveItemPositionDefine -> {
+                            itemPositionDefineLauncher.launch(
+                                AddItemPositionDefineActivity.newIntent(this@AddItemActivity, sideEffect.lockerAndItemEntity)
+                            )
+                        }
                     }
                 }
             }
@@ -231,6 +242,7 @@ class AddItemActivity : BaseStateActivity<AddItemViewModel, ActivityAddItemBindi
 
         const val SELECTED_SPACE_AND_LOCKER_KEY = "SELECTED_SPACE_AND_LOCKER_KEY"
         const val SCREEN_MODE = "SCREEN_MODE"
+        const val LOCKER_AND_ITEM_KEY = "LOCKER_AND_ITEM_KEY"
 
         fun newIntent(context: Context) = Intent(context, AddItemActivity::class.java)
 

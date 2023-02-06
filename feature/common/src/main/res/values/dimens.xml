@@ -17,6 +17,16 @@
     <dimen name="stroke_7dp">7dp</dimen>
     <dimen name="stroke_8dp">8dp</dimen>
 
+    <dimen name="spacing_xxsm">2dp</dimen>
+    <dimen name="spacing_xsm">4dp</dimen>
+    <dimen name="spacing_sm">8dp</dimen>
+    <dimen name="spacing_lsm">12dp</dimen>
+    <dimen name="spacing">16dp</dimen>
+    <dimen name="spacing_llg">24dp</dimen>
+    <dimen name="spacing_lg">32dp</dimen>
+    <dimen name="spacing_xlg">64dp</dimen>
+    <dimen name="spacing_xxlg">128dp</dimen>
+
     <dimen name="toolbar_button_size">24dp</dimen>
 
     <dimen name="radius_4dp">4dp</dimen>

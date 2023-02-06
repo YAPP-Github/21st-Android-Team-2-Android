@@ -12,7 +12,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="@color/gray_01"
-        android:src="@drawable/bg_sample_locker"
+        tools:src="@drawable/bg_sample_locker"
         android:textAlignment="center"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"

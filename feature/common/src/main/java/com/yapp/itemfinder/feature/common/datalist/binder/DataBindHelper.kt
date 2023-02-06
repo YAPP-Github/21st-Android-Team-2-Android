@@ -14,26 +14,27 @@ class DataBindHelper @Inject constructor(
     private val homeSpaceItemBinder: SpaceItemBinder,
     @HomeMySpaceUpperCellItemQualifier
     private val homeMySpaceUpperCellItemBinder: CellItemBinder,
-    var lockerItemBinder: LockerItemBinder,
-    var addLockerItemBinder: AddLockerItemBinder,
-    var manageSpaceItemBinder: ManageSpaceItemBinder,
-    var manageSpaceAddSpaceBinder: AddSpaceBinder,
-    var addLockerSpaceBinder: AddLockerSpaceBinder,
-    var selectSpaceBinder: SelectSpaceBinder,
-    var addLockerPhotoItemBinder: AddLockerPhotoItemBinder,
-    var addLockerNameBinder: AddLockerNameBinder,
-    var addLockerIconBinder: AddLockerIconBinder,
-    var addItemNameBinder: AddItemNameBinder,
-    var addItemCategoryBinder: AddItemCategoryBinder,
-    var addItemCountBinder: AddItemCountBinder,
-    var addItemAdditionalBinder: AddItemAdditionalBinder,
-    var addItemExpirationDateBinder: AddItemExpirationDateBinder,
-    var addItemPurchaseDateBinder: AddItemPurchaseDateBinder,
-    var addItemImagesBinder: AddItemImagesBinder,
-    var addItemMemoBinder: AddItemMemoBinder,
+    private val lockerItemBinder: LockerItemBinder,
+    private val addLockerItemBinder: AddLockerItemBinder,
+    private val manageSpaceItemBinder: ManageSpaceItemBinder,
+    private val manageSpaceAddSpaceBinder: AddSpaceBinder,
+    private val addLockerSpaceBinder: AddLockerSpaceBinder,
+    private val selectSpaceBinder: SelectSpaceBinder,
+    private val addLockerPhotoItemBinder: AddLockerPhotoItemBinder,
+    private val addLockerNameBinder: AddLockerNameBinder,
+    private val addLockerIconBinder: AddLockerIconBinder,
+    private val addItemNameBinder: AddItemNameBinder,
+    private val addItemCategoryBinder: AddItemCategoryBinder,
+    private val addItemCountBinder: AddItemCountBinder,
+    private val addItemAdditionalBinder: AddItemAdditionalBinder,
+    private val addItemExpirationDateBinder: AddItemExpirationDateBinder,
+    private val addItemPurchaseDateBinder: AddItemPurchaseDateBinder,
+    private val addItemImagesBinder: AddItemImagesBinder,
+    private val addItemMemoBinder: AddItemMemoBinder,
     private val addItemLocationBinder: AddItemLocationBinder,
     private val addItemSelectSpaceBinder: AddItemSelectSpaceBinder,
-    private val selectLockerBinder: SelectLockerBinder
+    private val selectLockerBinder: SelectLockerBinder,
+    private val addItemMarkerMapBinder: AddItemMarkerMapBinder,
 ) {
 
     @SuppressLint("CheckResult")
@@ -113,6 +114,9 @@ class DataBindHelper @Inject constructor(
             )
             CellType.SELECT_LOCKER_CELL -> selectLockerBinder.bindData(
                 data as SelectLockerEntity, viewModel
+            )
+            CellType.ADD_ITEM_MARKER_MAP_CELL -> addItemMarkerMapBinder.bindData(
+                data as AddItemMarkerMap, viewModel
             )
             else -> {}
         }
