@@ -55,7 +55,7 @@ class ItemMockRepositoryImpl @Inject constructor() : ItemRepository {
         }
     }
 
-    override fun getItemsByLockerId(lockerId: Long): List<Item> {
+    override suspend fun getItemsByLockerId(lockerId: Long): List<Item> {
         return mutableListOf<Item>().apply {
             add(
                 sampleLongTag.copy(
