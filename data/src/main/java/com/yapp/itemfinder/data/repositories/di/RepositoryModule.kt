@@ -50,8 +50,13 @@ abstract class RepositoryModule {
     @Singleton
     abstract fun bindSelectSpaceRepository(repository: SelectSpaceRepositoryImpl): SelectSpaceRepository
 
+    @ItemRepositoryQualifier
     @Binds
     @Singleton
-    abstract fun bindThingsRepository(repository: ItemMockRepositoryImpl): ItemRepository
-    
+    abstract fun bindItemRepository(repository: ItemRepositoryImpl): ItemRepository
+
+    @ItemMockRepositoryQualifier
+    @Binds
+    @Singleton
+    abstract fun bindItemMockRepository(repository: ItemMockRepositoryImpl): ItemRepository
 }

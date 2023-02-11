@@ -2,6 +2,7 @@ package com.yapp.itemfinder.space.lockerdetail
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
+import com.yapp.itemfinder.data.repositories.di.ItemMockRepositoryQualifier
 import com.yapp.itemfinder.data.repositories.di.LockerRepositoryQualifiers
 import com.yapp.itemfinder.domain.model.Item
 import com.yapp.itemfinder.domain.model.LockerEntity
@@ -18,7 +19,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LockerDetailViewModel @Inject constructor(
-    private val itemRepository: ItemRepository,
+    @ItemMockRepositoryQualifier private val itemRepository: ItemRepository,
     @LockerRepositoryQualifiers private val lockerRepository: LockerRepository,
     private val savedStateHandle: SavedStateHandle
 ) : BaseStateViewModel<LockerDetailState, LockerDetailSideEffect>() {

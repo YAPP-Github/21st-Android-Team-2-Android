@@ -8,4 +8,6 @@ interface ItemRepository {
     fun getItemById(itemId: Long): Item
 
     fun getAllItems(): List<Item>
+
+    fun addItem(): Item
 }

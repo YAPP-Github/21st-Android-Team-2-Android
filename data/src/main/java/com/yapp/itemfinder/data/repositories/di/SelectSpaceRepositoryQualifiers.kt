@@ -7,3 +7,10 @@ annotation class SelectSpaceRepositoryQualifiers
 
 @Qualifier
 annotation class SelectSpaceMockRepositoryQualifiers
+
+
+@Qualifier
+annotation class ItemMockRepositoryQualifier
+
+@Qualifier
+annotation class ItemRepositoryQualifier

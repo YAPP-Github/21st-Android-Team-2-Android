@@ -1,5 +1,6 @@
 package com.yapp.itemfinder.data.repositories
 
+import com.yapp.itemfinder.data.network.api.item.ItemApi
 import com.yapp.itemfinder.domain.model.Tag
 import com.yapp.itemfinder.domain.model.Item
 import com.yapp.itemfinder.domain.model.ItemCategory
@@ -8,7 +9,9 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class ItemMockRepositoryImpl @Inject constructor() : ItemRepository {
+class ItemRepositoryImpl @Inject constructor(
+    val ItemApi: ItemApi
+) : ItemRepository {
 
     private val sample = Item(
         id = (0..100).random().toLong(),
@@ -56,7 +59,8 @@ class ItemMockRepositoryImpl @Inject constructor() : ItemRepository {
     }
 
     override fun addItem(): Item {
-        return sample
+
+        TODO("Not yet implemented")
     }
 
     override fun getItemsByLockerId(lockerId: Long): List<Item> {
