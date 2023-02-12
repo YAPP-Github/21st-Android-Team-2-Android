@@ -6,8 +6,12 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.allViews
+import com.bumptech.glide.Glide
 import com.yapp.itemfinder.domain.model.Item
+import com.yapp.itemfinder.domain.model.LockerEntity
 import com.yapp.itemfinder.feature.common.databinding.LayoutItemsMarkerMapBinding
+import com.yapp.itemfinder.feature.common.extension.invisible
+import com.yapp.itemfinder.feature.common.extension.visible
 
 class ItemsMarkerMapView
 @JvmOverloads constructor(
@@ -24,18 +28,22 @@ class ItemsMarkerMapView
         LayoutItemsMarkerMapBinding.inflate(LayoutInflater.from(context), this, true)
 
     private val itemMarkerViews = mutableListOf<ItemMarkerView>()
-    fun fetchItems(items: List<Item>) = with(binding) {
-        allViews.filterIsInstance<ItemMarkerView>().forEach {
-            removeView(it)
-        }
+    fun fetchItems(lockerEntity: LockerEntity, items: List<Item>) = with(binding) {
+        Glide.with(context)
+            .load(lockerEntity.imageUrl)
+            .into(binding.markerBackgroundImageView)
+
+        allViews.filterIsInstance<ItemMarkerView>().forEach { removeView(it) }
 
         items.forEach { item ->
-            val itemMarkerView = ItemMarkerView(context)
-            addView(itemMarkerView)
-            itemMarkerView.id = item.id.toInt()
-            itemMarkerView.item = item
-            itemMarkerView.position = item.position
-            itemMarkerViews.add(itemMarkerView)
+            addView(
+                ItemMarkerView(context).apply {
+                    this.id = item.id.toInt()
+                    this.item = item
+                    this.position = item.position
+                    itemMarkerViews.add(this)
+                }
+            )
         }
     }
 
@@ -46,6 +54,32 @@ class ItemsMarkerMapView
                 it.bringToFront()
             }
         }
+    }
+
+    fun createFocusMarker(x: Float, y: Float): Item {
+        val mapHorizontalGap = (binding.markerMapContainer.measuredWidth - binding.markerBackgroundImageView.measuredWidth) / 2
+
+        val mapStartX: Int = mapHorizontalGap
+        val mapEndX: Int = binding.markerMapContainer.measuredWidth - mapHorizontalGap
+        val mapStartY = 0
+        val mapEndY: Int = binding.markerMapContainer.measuredHeight
+
+        val xPosition: Int = when {
+            x < mapStartX -> mapStartX
+            x > mapEndX -> mapEndX
+            else -> x.toInt()
+        }
+        val yPosition: Int = when {
+            y < mapStartY -> mapStartY
+            y > mapEndY -> mapEndY
+            else -> y.toInt()
+        }
+
+        val xRatioPosition = (xPosition - mapStartX) / binding.markerBackgroundImageView.measuredWidth.toFloat() * 100
+        val yRatioPosition = yPosition / binding.markerBackgroundImageView.measuredHeight.toFloat() * 100
+
+        val position = Item.Position(xRatioPosition, yRatioPosition)
+        return Item.createEmptyItem(position)
     }
 
     fun getImageHeight() = binding.markerBackgroundImageView.measuredHeight

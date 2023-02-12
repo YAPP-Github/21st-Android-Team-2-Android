@@ -22,6 +22,7 @@ class ItemMarkerView
         LayoutItemMarkerBinding.inflate(LayoutInflater.from(context), this)
 
     init {
+        invisible()
         measure(MeasureSpec.UNSPECIFIED, MeasureSpec.UNSPECIFIED)
     }
 
@@ -101,6 +102,9 @@ class ItemMarkerView
                     )
                 }
                 isDrawn = true
+                post {
+                    visible()
+                }
             }
         }
 

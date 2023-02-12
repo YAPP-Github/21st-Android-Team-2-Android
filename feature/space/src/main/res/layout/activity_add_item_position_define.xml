@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black"
+    android:orientation="vertical">
+
+    <androidx.appcompat.widget.Toolbar
+        style="@style/DefaultToolbar"
+        android:id="@+id/toolbar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <com.yapp.itemfinder.feature.common.views.DefaultTopNavigationView
+            android:id="@+id/defaultNavigationView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </androidx.appcompat.widget.Toolbar>
+
+    <com.yapp.itemfinder.feature.common.views.item.ItemsMarkerMapView
+        android:id="@+id/itemsMarkerMapView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        style="@style/ItemFinderTypography.Subhead"
+        android:id="@+id/initializePinButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="48dp"
+        android:background="@drawable/bg_button_orange_radius_12"
+        android:drawablePadding="@dimen/spacing_sm"
+        android:drawableStart="@drawable/ic_refresh"
+        android:foreground="@drawable/ripple_black_radius_12"
+        android:paddingHorizontal="@dimen/spacing_lsm"
+        android:paddingVertical="@dimen/spacing_sm"
+        android:text="@string/initialize_pin"
+        android:textColor="@color/white"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/itemsMarkerMapView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:visibility="visible" />
+
+    <TextView
+        android:id="@+id/defineItemPositionTextView"
+        style="@style/ItemFinderTypography.Body2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:text="@string/define_item_position_pin_guide"
+        android:textColor="@color/white"
+        app:layout_constraintTop_toBottomOf="@id/itemsMarkerMapView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:visibility="gone"
+        tools:visibility="visible" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

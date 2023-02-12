@@ -47,9 +47,9 @@ class ManageSpaceFragment : BaseStateFragment<ManageSpaceViewModel, FragmentMana
         initToolBar()
         if (dataListAdapter == null) {
             dataListAdapter = DataListAdapter()
-            recyclerView.adapter = dataListAdapter
         }
         recyclerView.itemAnimator = null
+        recyclerView.adapter = dataListAdapter
         setFragmentResultListener(AddSpaceDialog.NEW_SPACE_REQUEST_KEY) { requestKey, bundle ->
             val newSpaceName = bundle.getString(AddSpaceDialog.NEW_SPACE_NAME_BUNDLE_KEY)
             if (newSpaceName != null) {
