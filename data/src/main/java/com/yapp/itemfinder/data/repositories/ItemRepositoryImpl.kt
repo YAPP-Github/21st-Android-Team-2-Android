@@ -60,7 +60,7 @@ class ItemRepositoryImpl @Inject constructor(
         pinY: Float?
     ): Item {
         return  itemApi.addNewItem(
-            AddItemRequest(containerId = 1L,
+            AddItemRequest(containerId = containerId,
                 name = name,
                 quantity = quantity,
                 itemType = itemType,

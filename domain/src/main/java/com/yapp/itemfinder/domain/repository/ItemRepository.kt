@@ -18,10 +18,10 @@ interface ItemRepository {
         quantity: Int,
         imageUrls: List<String>? = null,
         tagIds: List<Long> ? = null,
-        description: String?,
-        purchaseDate: LocalDate?,
-        useByDate: LocalDateTime?,
-        pinX: Float?,
-        pinY: Float?
+        description: String? = null,
+        purchaseDate: LocalDate? = null,
+        useByDate: LocalDateTime? = null,
+        pinX: Float? = null,
+        pinY: Float? = null
         ): Item
 }

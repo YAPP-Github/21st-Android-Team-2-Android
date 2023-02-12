@@ -7,7 +7,10 @@ import com.yapp.itemfinder.data.repositories.di.ItemRepositoryQualifiers
 import com.yapp.itemfinder.domain.model.*
 import com.yapp.itemfinder.domain.repository.ItemRepository
 import com.yapp.itemfinder.feature.common.BaseStateViewModel
+import com.yapp.itemfinder.feature.common.extension.onErrorWithResult
 import com.yapp.itemfinder.feature.common.extension.runCatchingWithErrorHandler
+import com.yapp.itemfinder.space.addlocker.AddLockerSideEffect
+import com.yapp.itemfinder.space.addlocker.AddLockerState
 import com.yapp.itemfinder.space.itemdetail.ItemDetailFragment
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
@@ -312,7 +315,7 @@ class AddItemViewModel @Inject constructor(
         }
     }
 
-    fun saveItem() {
+    fun saveItem() = viewModelScope.launch{
         withState<AddItemState.Success> { state ->
             state.dataList.filterIsInstance<AddItemName>().firstOrNull()?.saveName()
             state.dataList.filterIsInstance<AddItemMemo>().firstOrNull()?.saveMemo()
@@ -320,50 +323,72 @@ class AddItemViewModel @Inject constructor(
         withState<AddItemState.Success> { state ->
             val dataList = state.dataList
             var itemName = ""
-            var itemCategory = ""
+            var itemCategorySelection: ItemCategorySelection? = null
             var itemSpace = ""
-            var itemLocker = ""
+            var itemLockerName = ""
+            var itemLockerId = -1L
             var itemCount = 1
             var itemMemo = ""
             var itemExpiration = ""
             var itemPurchase = ""
+            var tagIds = listOf<Long>()
+            var imageUrls = listOf<String>()
             dataList.forEach {
                 if (it is AddItemName) itemName = it.name
-                if (it is AddItemCategory) itemCategory = it.category.label
+                if (it is AddItemCategory) itemCategorySelection = it.category
                 if (it is AddItemLocation) {
                     itemSpace = it.spaceName
-                    itemLocker = it.lockerName
+                    itemLockerName = it.lockerName
+                    itemLockerId = it.lockerId
                 }
                 if (it is AddItemCount) itemCount = it.count
                 if (it is AddItemMemo) itemMemo = it.memo
                 if (it is AddItemExpirationDate) itemExpiration = it.expirationDate
                 if (it is AddItemPurchaseDate) itemPurchase = it.purchaseDate
             }
-            if (itemName == "" && itemCategory == ItemCategorySelection.DEFAULT.label && itemSpace == "" && itemLocker == "") {
+            if (itemName == "" && itemCategorySelection == ItemCategorySelection.DEFAULT && itemSpace == "" && itemLockerName == "") {
                 postSideEffect(AddItemSideEffect.FillOutRequiredSnackBar)
-                return
+                return@withState
             }
             if (itemName == "") {
                 postSideEffect(AddItemSideEffect.FillOutNameSnackBar)
-                return
+                return@withState
             }
-            if (itemCategory == ItemCategorySelection.DEFAULT.label) {
+            if (itemCategorySelection == ItemCategorySelection.DEFAULT) {
                 postSideEffect(AddItemSideEffect.FillOutCategorySnackBar)
-                return
+                return@withState
             }
             if (itemSpace == "") {
                 postSideEffect(AddItemSideEffect.FillOutLocationSnackBar)
-                return
+                return@withState
             }
             if (itemName.length > 30) {
                 postSideEffect(AddItemSideEffect.NameLengthLimitSnackBar)
-                return
+                return@withState
             }
             if (itemMemo.length > 200) {
                 postSideEffect(AddItemSideEffect.MemoLengthLimitSnackBar)
-                return
+                return@withState
             }
             // save
+            runCatchingWithErrorHandler {
+                itemRepository.addItem(
+                    containerId = itemLockerId,
+                    name = itemName,
+                    itemType = itemCategorySelection.toString(),
+                    quantity = itemCount,
+                    imageUrls = imageUrls,
+                    tagIds = tagIds,
+                    description = itemMemo
+                )
+            }.onSuccess {
+                postSideEffect(AddItemSideEffect.ShowToast("추가성공"))
+                postSideEffect(AddItemSideEffect.AddItemFinished)
+            }.onErrorWithResult { errorWithResult ->
+                val message = errorWithResult.errorResultEntity.message
+                message?.let { postSideEffect(AddItemSideEffect.ShowToast(it)) }
+            }
+
         }
     }
 

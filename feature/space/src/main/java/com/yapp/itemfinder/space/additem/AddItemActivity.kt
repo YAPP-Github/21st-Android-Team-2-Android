@@ -21,6 +21,7 @@ import com.yapp.itemfinder.feature.common.binding.viewBinding
 import com.yapp.itemfinder.feature.common.datalist.adapter.DataListAdapter
 import com.yapp.itemfinder.feature.common.datalist.binder.DataBindHelper
 import com.yapp.itemfinder.feature.common.extension.parcelable
+import com.yapp.itemfinder.feature.common.extension.showShortToast
 import com.yapp.itemfinder.feature.common.views.SnackBarView
 import com.yapp.itemfinder.space.additem.selectspace.AddItemSelectSpaceActivity
 import com.yapp.itemfinder.feature.common.R as CR
@@ -170,6 +171,12 @@ class AddItemActivity : BaseStateActivity<AddItemViewModel, ActivityAddItemBindi
                                     sideEffect.spaceAndLockerEntity
                                 )
                             )
+                        }
+                        is AddItemSideEffect.ShowToast -> {
+                            showShortToast(sideEffect.message)
+                        }
+                        is AddItemSideEffect.AddItemFinished -> {
+                            finish()
                         }
                     }
                 }
