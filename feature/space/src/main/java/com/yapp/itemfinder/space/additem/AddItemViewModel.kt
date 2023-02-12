@@ -1,29 +1,37 @@
 package com.yapp.itemfinder.space.additem
 
+import android.content.Context
 import android.net.Uri
+import androidx.core.net.toUri
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.yapp.itemfinder.data.repositories.di.ItemRepositoryQualifiers
 import com.yapp.itemfinder.domain.model.*
+import com.yapp.itemfinder.domain.repository.ImageRepository
 import com.yapp.itemfinder.domain.repository.ItemRepository
 import com.yapp.itemfinder.feature.common.BaseStateViewModel
+import com.yapp.itemfinder.feature.common.extension.cropToJpeg
 import com.yapp.itemfinder.feature.common.extension.onErrorWithResult
 import com.yapp.itemfinder.feature.common.extension.runCatchingWithErrorHandler
 import com.yapp.itemfinder.space.addlocker.AddLockerSideEffect
 import com.yapp.itemfinder.space.addlocker.AddLockerState
 import com.yapp.itemfinder.space.itemdetail.ItemDetailFragment
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
 class AddItemViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
+    @ApplicationContext private val context: Context,
     @ItemRepositoryQualifiers
     private val itemRepository: ItemRepository,
+    private val imageRepository: ImageRepository
 ) : BaseStateViewModel<AddItemState, AddItemSideEffect>() {
     override val _stateFlow: MutableStateFlow<AddItemState> =
         MutableStateFlow(AddItemState.Uninitialized)
@@ -457,11 +465,15 @@ class AddItemViewModel @Inject constructor(
                 return@withState
             }
             // save
-            var imageUrls = listOf<String>()
-            if (imageUriStringList.isNotEmpty()){
-                // TODO: Uri들을 업로드해서 , url로 바꿔온다.
-            }
+
+
             runCatchingWithErrorHandler {
+                var imageUrls = listOf<String>()
+                setState(AddItemState.Loading)
+                if (imageUriStringList.isNotEmpty()){
+                    val imagePaths = imageUriStringList.map { it.toUri().cropToJpeg(context,1,1) }
+                    imageUrls = imageRepository.addImages(imagePaths)
+                }
 
                 itemRepository.addItem(
                     containerId = itemLockerId,
