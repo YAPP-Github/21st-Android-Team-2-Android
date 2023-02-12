@@ -41,8 +41,8 @@ class SelectSpaceActivity : BaseStateActivity<SelectSpaceViewModel, ActivitySele
         initToolbar()
         if (dataListAdapter == null) {
             dataListAdapter = DataListAdapter()
-            recyclerView.adapter = dataListAdapter
         }
+        recyclerView.adapter = dataListAdapter
     }
 
     private fun initToolbar() = with(binding.defaultNavigationView) {

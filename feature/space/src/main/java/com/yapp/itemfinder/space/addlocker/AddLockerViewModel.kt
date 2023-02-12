@@ -1,14 +1,17 @@
 package com.yapp.itemfinder.space.addlocker
 
+import android.content.Context
 import android.net.Uri
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
-import com.yapp.itemfinder.data.network.api.lockerlist.LockerApi
+import com.yapp.itemfinder.data.repositories.di.LockerRepositoryQualifiers
 import com.yapp.itemfinder.domain.model.*
+import com.yapp.itemfinder.domain.repository.ImageRepository
+import com.yapp.itemfinder.domain.repository.LockerRepository
 import com.yapp.itemfinder.feature.common.BaseStateViewModel
-import com.yapp.itemfinder.feature.common.extension.onErrorWithResult
-import com.yapp.itemfinder.feature.common.extension.runCatchingWithErrorHandler
+import com.yapp.itemfinder.feature.common.extension.*
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,7 +20,10 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AddLockerViewModel @Inject constructor(
-    private val lockerApi: LockerApi,
+    @LockerRepositoryQualifiers
+    private val lockerRepository: LockerRepository,
+    private val imageRepository: ImageRepository,
+    @ApplicationContext private val applicationContext: Context,
     savedStateHandle: SavedStateHandle
 ) : BaseStateViewModel<AddLockerState, AddLockerSideEffect>() {
     override val _stateFlow: MutableStateFlow<AddLockerState> =
@@ -92,7 +98,7 @@ class AddLockerViewModel @Inject constructor(
         }
         withState<AddLockerState.Success> { state ->
             runCatchingWithErrorHandler {
-                lockerApi.addNewLocker(
+                lockerRepository.addLocker(
                     AddLockerRequest(
                         name = state.lockerName,
                         spaceId = state.spaceId,
@@ -100,8 +106,8 @@ class AddLockerViewModel @Inject constructor(
                         url = state.url
                     )
                 )
-            }.onSuccess { result ->
-
+            }.onSuccess { locker ->
+                postSideEffect(AddLockerSideEffect.SuccessRegister)
             }.onErrorWithResult { errorWithResult ->
                 setState(AddLockerState.Error(errorWithResult))
                 val message = errorWithResult.errorResultEntity.message
@@ -117,23 +123,26 @@ class AddLockerViewModel @Inject constructor(
     }
 
     fun uploadImage(uri: Uri): Job = viewModelScope.launch {
-        // 실제구현: 서버 업로드가 성공할 경우
+        // 실제구현: 서버 업로드 성공할 경우 해당 url로 set해주기
+
+//        Log.i("TAG", "uploadImage: $imageUrl")
         withState<AddLockerState.Success> { successState ->
             runCatchingWithErrorHandler {
                 setState(AddLockerState.Loading)
+                val filePath = uri.toBitMap(applicationContext).crop(4,3).reduceSize().toJpeg(applicationContext)
+                val imageUrl = imageRepository.addImages(listOf(filePath)).first()
+                imageUrl
+            }.onSuccess {
 
                 val idx = successState.dataList.indexOfFirst { data -> data is AddLockerPhoto }
                 val newDataList = successState.dataList.toMutableList().apply {
-                    this[idx] = AddLockerPhoto(uriString = uri.toString())
+                    this[idx] = AddLockerPhoto(url = it)
                 }
-
-                newDataList
-            }.onSuccess {
                 setState(
                     successState.copy(
-                        dataList = it,
-                        url = uri.toString(),
-                        isRefreshNeed = true
+                        dataList = newDataList,
+                        isRefreshNeed = true,
+                        url = it
                     )
                 )
             }.onErrorWithResult {

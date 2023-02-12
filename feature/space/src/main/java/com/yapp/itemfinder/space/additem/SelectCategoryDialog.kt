@@ -30,6 +30,16 @@ class SelectCategoryDialog : DialogFragment() {
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        when (arguments?.getString(SELECTED_CATEGORY_KEY)) {
+            ItemCategorySelection.LIFE.label -> binding.lifeRadioButton.isChecked = true
+            ItemCategorySelection.FOOD.label -> binding.foodRadioButton.isChecked = true
+            ItemCategorySelection.FASHION.label -> binding.fashionRadioButton.isChecked = true
+        }
+    }
+
     override fun onCancel(dialog: DialogInterface) {
         super.onCancel(dialog)
         val category = when (binding.categoryRadioGroup.checkedRadioButtonId) {
@@ -51,6 +61,7 @@ class SelectCategoryDialog : DialogFragment() {
     }
 
     companion object {
+        const val SELECTED_CATEGORY_KEY = "SELECTED_CATEGORY_KEY"
         fun getInstance() = SelectCategoryDialog()
     }
 }

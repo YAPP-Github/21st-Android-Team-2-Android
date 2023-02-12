@@ -6,6 +6,7 @@ import com.yapp.itemfinder.data.network.api.managespace.ManageSpaceApi
 import com.yapp.itemfinder.data.network.api.auth.AuthApi
 import com.yapp.itemfinder.data.network.api.home.HomeSpaceApi
 import com.yapp.itemfinder.data.network.api.item.ItemApi
+import com.yapp.itemfinder.data.network.api.image.ImageApi
 import com.yapp.itemfinder.data.network.api.lockerlist.LockerApi
 import com.yapp.itemfinder.data.network.di.okhttp.OkHttpClientQualifier
 import com.yapp.itemfinder.domain.di.ApiGsonQualifier
@@ -63,5 +64,8 @@ class ApiClient @Inject constructor(
 
     fun provideItemApi(): ItemApi =
         apiAdapter.create(ItemApi::class.java)
+
+    fun provideImageApi(): ImageApi =
+        apiAdapter.create(ImageApi::class.java)
 
 }

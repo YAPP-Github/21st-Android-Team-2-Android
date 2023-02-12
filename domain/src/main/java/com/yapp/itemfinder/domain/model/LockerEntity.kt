@@ -10,7 +10,7 @@ data class LockerEntity(
     val name: String,
     val icon: String,
     val spaceId: Long,
-    val imageUrl: String? = null
+    val imageUrl: String? = "https://i.imgur.com/JteRnyp.jpeg"
 ) : Data() {
 
     @IgnoredOnParcel
