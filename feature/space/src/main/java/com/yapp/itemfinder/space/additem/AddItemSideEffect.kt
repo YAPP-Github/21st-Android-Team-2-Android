@@ -2,8 +2,8 @@ package com.yapp.itemfinder.space.additem
 
 import com.yapp.itemfinder.domain.model.SpaceAndLockerEntity
 import com.yapp.itemfinder.domain.model.AddItemImages
+import com.yapp.itemfinder.domain.model.LockerAndItemEntity
 import com.yapp.itemfinder.feature.common.SideEffect
-import com.yapp.itemfinder.space.additem.selectlocker.AddItemSelectLockerSideEffect
 
 sealed class AddItemSideEffect : SideEffect {
     object OpenSelectCategoryDialog : AddItemSideEffect()
@@ -18,6 +18,10 @@ sealed class AddItemSideEffect : SideEffect {
     object MemoLengthLimitSnackBar : AddItemSideEffect()
     data class MoveSelectSpace(
         val spaceAndLockerEntity: SpaceAndLockerEntity? = null
+    ) : AddItemSideEffect()
+
+    data class MoveItemPositionDefine(
+        val lockerAndItemEntity: LockerAndItemEntity
     ) : AddItemSideEffect()
 
     data class ShowToast(val message: String): AddItemSideEffect()

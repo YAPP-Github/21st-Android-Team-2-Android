@@ -60,4 +60,10 @@ abstract class RepositoryModule {
     @Singleton
     abstract fun bindItemMockRepository(repository: ItemMockRepositoryImpl): ItemRepository
 
+    @Binds
+    @Singleton
+    abstract fun bindImageRepository(repository: ImageRepositoryImpl): ImageRepository
+
+
+
 }
