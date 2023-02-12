@@ -3,7 +3,9 @@ package com.yapp.itemfinder.space.additem
 import android.net.Uri
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
+import com.yapp.itemfinder.data.repositories.di.ItemRepositoryQualifiers
 import com.yapp.itemfinder.domain.model.*
+import com.yapp.itemfinder.domain.repository.ItemRepository
 import com.yapp.itemfinder.feature.common.BaseStateViewModel
 import com.yapp.itemfinder.feature.common.extension.runCatchingWithErrorHandler
 import com.yapp.itemfinder.space.itemdetail.ItemDetailFragment
@@ -16,7 +18,9 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AddItemViewModel @Inject constructor(
-    private val savedStateHandle: SavedStateHandle
+    private val savedStateHandle: SavedStateHandle,
+    @ItemRepositoryQualifiers
+    private val itemRepository: ItemRepository,
 ) : BaseStateViewModel<AddItemState, AddItemSideEffect>() {
     override val _stateFlow: MutableStateFlow<AddItemState> =
         MutableStateFlow(AddItemState.Uninitialized)
@@ -56,7 +60,7 @@ class AddItemViewModel @Inject constructor(
                     expirationDate = "2022.12.25.",
                     purchaseDate = null,
                     memo = null,
-                    imageUrl = "http://source.unsplash.com/random/150x150",
+                    imageUrls = listOf("http://source.unsplash.com/random/150x150"),
                     tags = listOf(Tag("생활"), Tag("화장품")),
                     count = 1
                 )

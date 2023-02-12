@@ -26,7 +26,7 @@ class ItemSimpleViewHolder(
     override fun bindData(data: Item) {
         super.bindData(data)
         with(binding) {
-            Glide.with(root.context).load(data.imageUrl).into(imageView)
+            Glide.with(root.context).load(data.representativeImage).into(imageView)
             nameTextView.text = data.name
 
             if (data.count in 2 .. 99){

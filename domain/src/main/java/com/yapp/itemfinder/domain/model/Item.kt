@@ -8,18 +8,21 @@ typealias ItemFocusHandler = (Boolean) -> Unit
 
 data class Item(
     override var id: Long,
-    var lockerId: Long,
+    var lockerId: Long? = null,
     var name: String,
-    var expirationDate: String?,
-    var purchaseDate: String?,
-    var memo: String?,
-    var imageUrl: String?,
-    val itemCategory: ItemCategory?,
-    var tags: List<Tag>?,
+    var expirationDate: String? = null,
+    var purchaseDate: String? =null,
+    var memo: String? = null,
+    var imageUrls: List<String>? = null,
+    val itemCategory: ItemCategory? = null,
+    var tags: List<Tag>? = null,
     val count: Int = 0,
     override var type: CellType = CellType.ITEM_SIMPLE_CELL,
     val position: Position? = null,
 ) : Data(type = CellType.ITEM_SIMPLE_CELL) {
+
+    val representativeImage: String?
+            get() = imageUrls?.first()
 
     data class Position(
         @androidx.annotation.FloatRange(from = 0.0, to = 100.0) val x: Float,

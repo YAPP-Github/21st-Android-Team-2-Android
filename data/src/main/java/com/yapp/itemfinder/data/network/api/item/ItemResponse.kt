@@ -24,7 +24,7 @@ data class ItemResponse(
         expirationDate = useByDate,
         purchaseDate = null,
         memo = null,
-        imageUrl = representativeImageUrl,
+        imageUrls = listOf( representativeImageUrl),
         count = quantity,
         itemCategory = when (itemType) {
             "LIVING" -> ItemCategory.LIVING

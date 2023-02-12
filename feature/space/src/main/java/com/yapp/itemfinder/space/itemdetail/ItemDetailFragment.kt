@@ -90,8 +90,8 @@ class ItemDetailFragment : BaseStateFragment<ItemDetailViewModel, FragmentItemDe
 
     private fun handleSuccess(lockerDetailState: ItemDetailState.Success) = with(binding) {
         val item = lockerDetailState.item
-        if (item.imageUrl != null) {
-            Glide.with(requireContext()).load(item.imageUrl).into(itemMainImage)
+        if (item.representativeImage != null) {
+            Glide.with(requireContext()).load(item.representativeImage).into(itemMainImage)
         }
         itemName.text = item.name
         itemCategory.text = item.itemCategory?.labelResId?.let { getString(it) }
