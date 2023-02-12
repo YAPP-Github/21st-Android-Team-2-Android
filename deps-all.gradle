@@ -21,4 +21,8 @@ dependencies {
     testImplementation "app.cash.turbine:turbine:$turbinVersion"
     testImplementation "com.github.ologe:flow-test-observer:$coroutinesTestObserverVersion"
 
+    implementation platform("com.google.firebase:firebase-bom:$firebaseBomVersion")
+    implementation 'com.google.firebase:firebase-analytics-ktx'
+
+
 }
