@@ -2,12 +2,15 @@ package com.yapp.itemfinder.space.lockerdetail
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
+import com.yapp.itemfinder.data.repositories.di.ItemMockRepositoryQualifiers
+import com.yapp.itemfinder.data.repositories.di.ItemRepositoryQualifiers
 import com.yapp.itemfinder.data.repositories.di.LockerRepositoryQualifiers
 import com.yapp.itemfinder.domain.model.Item
 import com.yapp.itemfinder.domain.model.LockerEntity
 import com.yapp.itemfinder.domain.repository.LockerRepository
 import com.yapp.itemfinder.domain.repository.ItemRepository
 import com.yapp.itemfinder.feature.common.BaseStateViewModel
+import com.yapp.itemfinder.feature.common.extension.onErrorWithResult
 import com.yapp.itemfinder.feature.common.extension.runCatchingWithErrorHandler
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
@@ -18,6 +21,9 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LockerDetailViewModel @Inject constructor(
+    @ItemMockRepositoryQualifiers
+    private val itemMockRepository: ItemRepository,
+    @ItemRepositoryQualifiers
     private val itemRepository: ItemRepository,
     @LockerRepositoryQualifiers
     private val lockerRepository: LockerRepository,
@@ -46,15 +52,16 @@ class LockerDetailViewModel @Inject constructor(
                 )
             )
 
-        }.onFailure {
-            setState(LockerDetailState.Error(it))
+        }.onErrorWithResult { errorWithResult ->
+            val message = errorWithResult.errorResultEntity.message
+            // setState(LockerDetailState.Error(it))
         }
     }
 
     fun moveItemDetail(itemId: Long) {
         postSideEffect(LockerDetailSideEffect.MoveItemDetail(itemId))
     }
-    
+
     fun applyFocusFirstItem(position: Int) {
         withState<LockerDetailState.Success> { state ->
             state.lastFocusedItem?.applyItemFocus(false)
