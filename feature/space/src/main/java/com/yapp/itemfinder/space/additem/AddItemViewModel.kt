@@ -18,6 +18,7 @@ import com.yapp.itemfinder.space.addlocker.AddLockerState
 import com.yapp.itemfinder.space.itemdetail.ItemDetailFragment
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -471,7 +472,9 @@ class AddItemViewModel @Inject constructor(
                 var imageUrls = listOf<String>()
                 setState(AddItemState.Loading)
                 if (imageUriStringList.isNotEmpty()){
-                    val imagePaths = imageUriStringList.map { it.toUri().cropToJpeg(context,1,1) }
+                    val imagePaths = withContext(Dispatchers.IO){
+                        imageUriStringList.map { it.toUri().cropToJpeg(context,1,1) }
+                    }
                     imageUrls = imageRepository.addImages(imagePaths)
                 }
 
