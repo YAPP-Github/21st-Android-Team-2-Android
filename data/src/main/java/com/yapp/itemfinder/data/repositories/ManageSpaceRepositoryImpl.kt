@@ -18,10 +18,10 @@ class ManageSpaceRepositoryImpl @Inject constructor(
     override suspend fun addNewSpace(name: String): ManageSpaceEntity =
         manageSpaceApi.addNewSpace(AddSpaceRequest(name)).toManageSpaceEntity()
 
-    override fun editSpace(): Boolean {
-        // api call
-        return true
-    }
+    override suspend fun editSpace(name: String, spaceId: Long): ManageSpaceEntity =
+        manageSpaceApi.editSpace(spaceId = spaceId, editSpaceRequest = AddSpaceRequest(name))
+            .toManageSpaceEntity()
+
 
     override fun deleteSpace(): Boolean {
         // api call

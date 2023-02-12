@@ -1,6 +1,7 @@
 package com.yapp.itemfinder.space.managespace
 
 import android.app.AlertDialog
+import android.os.Bundle
 import android.view.ContextThemeWrapper
 import android.widget.Toast
 import androidx.core.os.bundleOf
@@ -47,11 +48,19 @@ class ManageSpaceFragment : BaseStateFragment<ManageSpaceViewModel, FragmentMana
         if (dataListAdapter == null) {
             dataListAdapter = DataListAdapter()
         }
+        recyclerView.itemAnimator = null
         recyclerView.adapter = dataListAdapter
         setFragmentResultListener(AddSpaceDialog.NEW_SPACE_REQUEST_KEY) { requestKey, bundle ->
             val newSpaceName = bundle.getString(AddSpaceDialog.NEW_SPACE_NAME_BUNDLE_KEY)
             if (newSpaceName != null) {
-                vm.addItem(newSpaceName)
+                vm.addSpace(newSpaceName)
+            }
+        }
+        setFragmentResultListener(EditSpaceDialog.EDIT_NAME_REQUEST_KEY) { requestKey, bundle ->
+            val newSpaceName = bundle.getString(EditSpaceDialog.NEW_SPACE_NAME_KEY)
+            val spaceId = bundle.getLong(EditSpaceDialog.SPACE_ID_KEY)
+            if (newSpaceName != null) {
+                vm.editSpace(spaceId, newSpaceName)
             }
         }
     }
@@ -93,8 +102,23 @@ class ManageSpaceFragment : BaseStateFragment<ManageSpaceViewModel, FragmentMana
                                     dialog.show(fragmentManager, AddSpaceDialog.TAG)
                                 }
                             }
-                            is ManageSpaceSideEffect.AddSpaceFailedToast -> {
-                                requireContext().showShortToast(getString(R.string.failedToAddSpace))
+                            is ManageSpaceSideEffect.OpenEditSpaceDialog -> {
+                                val dialog: EditSpaceDialog = EditSpaceDialog.newInstance()
+                                val bundle = Bundle().apply {
+                                    putLong(EditSpaceDialog.SPACE_ID, sideEffect.space.id)
+                                    putString(EditSpaceDialog.SPACE_NAME, sideEffect.space.name)
+                                }
+                                dialog.arguments = bundle
+                                activity?.supportFragmentManager?.let { fragmentManager ->
+                                    dialog.show(fragmentManager, EditSpaceDialog.TAG)
+                                }
+                            }
+                            is ManageSpaceSideEffect.ShowToast -> {
+                                Toast.makeText(
+                                    requireContext(),
+                                    sideEffect.message,
+                                    Toast.LENGTH_SHORT
+                                ).show()
                             }
                             is ManageSpaceSideEffect.DeleteDialog -> {
                                 activity?.let {
