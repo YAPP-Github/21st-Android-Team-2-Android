@@ -332,19 +332,22 @@ class AddItemViewModel @Inject constructor(
             var itemExpiration = ""
             var itemPurchase = ""
             var tagIds = listOf<Long>()
-            var imageUrls = listOf<String>()
+            var imageUriStringList = listOf<String>()
             dataList.forEach {
                 if (it is AddItemName) itemName = it.name
-                if (it is AddItemCategory) itemCategorySelection = it.category
-                if (it is AddItemLocation) {
+                else if (it is AddItemCategory) itemCategorySelection = it.category
+                else if (it is AddItemLocation) {
                     itemSpace = it.spaceName
                     itemLockerName = it.lockerName
                     itemLockerId = it.lockerId
                 }
-                if (it is AddItemCount) itemCount = it.count
-                if (it is AddItemMemo) itemMemo = it.memo
-                if (it is AddItemExpirationDate) itemExpiration = it.expirationDate
-                if (it is AddItemPurchaseDate) itemPurchase = it.purchaseDate
+                else if (it is AddItemCount) itemCount = it.count
+                else if (it is AddItemMemo) itemMemo = it.memo
+                else if (it is AddItemExpirationDate) itemExpiration = it.expirationDate
+                else if (it is AddItemPurchaseDate) itemPurchase = it.purchaseDate
+                else if ( it is AddItemImages){
+                    imageUriStringList = it.uriStringList
+                }
             }
             if (itemName == "" && itemCategorySelection == ItemCategorySelection.DEFAULT && itemSpace == "" && itemLockerName == "") {
                 postSideEffect(AddItemSideEffect.FillOutRequiredSnackBar)
@@ -371,7 +374,12 @@ class AddItemViewModel @Inject constructor(
                 return@withState
             }
             // save
+            var imageUrls = listOf<String>()
+            if (imageUriStringList.isNotEmpty()){
+                // TODO: Uri들을 업로드해서 , url로 바꿔온다.
+            }
             runCatchingWithErrorHandler {
+
                 itemRepository.addItem(
                     containerId = itemLockerId,
                     name = itemName,
