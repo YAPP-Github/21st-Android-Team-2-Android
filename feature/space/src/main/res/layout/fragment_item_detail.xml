@@ -121,7 +121,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="4dp"
                     android:layout_marginTop="24dp"
-                    android:text="@string/count"
+                    android:text="@string/countTitle"
                     android:textColor="@color/gray_05" />
 
                 <TextView
