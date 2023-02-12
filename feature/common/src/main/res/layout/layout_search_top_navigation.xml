@@ -9,8 +9,8 @@
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/leftButtonImageView"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
+        android:layout_width="@dimen/toolbar_button_size"
+        android:layout_height="@dimen/toolbar_button_size"
         android:layout_marginStart="16dp"
         android:foreground="@drawable/ripple_black_capsule"
         app:layout_constraintTop_toTopOf="parent"

@@ -17,11 +17,14 @@ class AddItemNameViewHolder(
     override fun bindData(data: AddItemName) {
         super.bindData(data)
         if (data.mode == ScreenMode.EDIT_MODE) binding.itemNameEditText.setText(data.name)
+        data.saveHandler = {
+            data.setItemName(binding.itemNameEditText.text.toString())
+        }
     }
 
     override fun bindViews(data: AddItemName) {
         binding.itemNameEditText.setOnEditorActionListener { textView, actionId, keyEvent ->
-            if (actionId == EditorInfo.IME_ACTION_DONE){
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
                 data.setItemName(textView.text.toString())
             }
             false

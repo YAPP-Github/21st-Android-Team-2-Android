@@ -1,7 +1,8 @@
 package com.yapp.itemfinder.domain.repository
 
-import com.yapp.itemfinder.domain.model.SpaceItem
+import com.yapp.itemfinder.domain.model.SelectSpace
 
 interface SpaceRepository {
-    fun getAllSpace(): List<SpaceItem>
+    suspend fun getAllSpaces(): List<SelectSpace>
+
 }

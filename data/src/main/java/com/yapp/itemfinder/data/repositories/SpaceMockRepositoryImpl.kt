@@ -1,12 +1,12 @@
 package com.yapp.itemfinder.data.repositories
 
 import com.yapp.itemfinder.domain.model.SelectSpace
-import com.yapp.itemfinder.domain.repository.SelectSpaceRepository
+import com.yapp.itemfinder.domain.repository.SpaceRepository
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class SelectSpaceMockRepositoryImpl @Inject constructor() : SelectSpaceRepository {
+class SpaceMockRepositoryImpl @Inject constructor() : SpaceRepository {
     override suspend fun getAllSpaces(): List<SelectSpace> {
         return listOf(
             SelectSpace(id = 1, name = "서재"),

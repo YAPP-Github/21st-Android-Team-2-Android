@@ -3,29 +3,26 @@ package com.yapp.itemfinder.space
 import android.app.Activity
 import android.content.Intent
 import android.widget.Toast
-import android.os.Bundle
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.os.bundleOf
-import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.yapp.itemfinder.domain.model.Data
-import com.yapp.itemfinder.domain.model.SpaceItem
 import com.yapp.itemfinder.domain.model.LockerEntity
+import com.yapp.itemfinder.domain.model.ScreenMode
 import com.yapp.itemfinder.feature.common.BaseStateFragment
+import com.yapp.itemfinder.feature.common.Depth
 import com.yapp.itemfinder.feature.common.R as CR
 import com.yapp.itemfinder.feature.common.FragmentNavigator
 import com.yapp.itemfinder.feature.common.binding.viewBinding
 import com.yapp.itemfinder.feature.common.datalist.adapter.DataListAdapter
 import com.yapp.itemfinder.feature.common.datalist.binder.DataBindHelper
-import com.yapp.itemfinder.feature.common.extension.parcelable
 import com.yapp.itemfinder.space.additem.AddItemActivity
 import com.yapp.itemfinder.space.addlocker.AddLockerActivity
 import com.yapp.itemfinder.space.databinding.FragmentLockerListBinding
-import com.yapp.itemfinder.space.edititem.EditItemActivity
 import com.yapp.itemfinder.space.lockerdetail.LockerDetailFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
@@ -114,7 +111,9 @@ class LockerListFragment : BaseStateFragment<LockerListViewModel, FragmentLocker
                                 resultLauncher.launch(intent)
                             }
                             is LockerListSideEffect.MoveToAddItem -> {
-                                startActivity(AddItemActivity.newIntent(requireContext()))
+                                startActivity(AddItemActivity.newIntent(requireContext()).apply {
+                                    putExtra(AddItemActivity.SCREEN_MODE, ScreenMode.ADD_MODE.label)
+                                })
                             }
                             is LockerListSideEffect.ShowToast -> {
                                 Toast.makeText(

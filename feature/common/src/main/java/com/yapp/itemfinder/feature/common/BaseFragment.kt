@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
-import androidx.annotation.ColorRes
 import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
 import com.yapp.itemfinder.feature.common.extension.setStatusBarColor
@@ -26,9 +25,9 @@ abstract class BaseFragment<VM : BaseViewModel, VB : ViewBinding> : Fragment() {
 
     private lateinit var fetchJob: Job
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? = binding.root
-
     abstract val depth: Depth
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? = binding.root
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -40,10 +39,6 @@ abstract class BaseFragment<VM : BaseViewModel, VB : ViewBinding> : Fragment() {
         initViews()
         fetchJob = vm.fetchData()
         observeData()
-    }
-
-    enum class Depth(@ColorRes val colorId: Int) {
-        FIRST(R.color.white), SECOND(R.color.brown_02), THIRD(R.color.brown_03);
     }
 
     override fun onHiddenChanged(hidden: Boolean) {
