@@ -129,7 +129,7 @@ class AddLockerViewModel @Inject constructor(
         withState<AddLockerState.Success> { successState ->
             runCatchingWithErrorHandler {
                 setState(AddLockerState.Loading)
-                val filePath = uri.toBitMap(applicationContext).crop(4,3).reduceSize().toJpeg(applicationContext)
+                val filePath = uri.cropToJpeg(applicationContext,4,3)
                 val imageUrl = imageRepository.addImages(listOf(filePath)).first()
                 imageUrl
             }.onSuccess {

@@ -43,6 +43,10 @@ fun Uri.toBitMap(context: Context): Bitmap{
     return bitmap
 }
 
+fun Uri.cropToJpeg(context: Context, widthRatio: Int, heightRatio: Int): String{
+    return this.toBitMap(context).crop(widthRatio,heightRatio).reduceSize().toJpeg(context)
+}
+
 fun Bitmap.crop(widthRatio: Int, heightRatio: Int): Bitmap {
     val bitmapWidth = this.width
     val bitmapHeight = this.height
