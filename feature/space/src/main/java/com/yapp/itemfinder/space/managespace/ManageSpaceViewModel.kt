@@ -5,6 +5,7 @@ import com.yapp.itemfinder.domain.model.AddSpace
 import com.yapp.itemfinder.domain.model.ManageSpaceEntity
 import com.yapp.itemfinder.domain.repository.ManageSpaceRepository
 import com.yapp.itemfinder.feature.common.BaseStateViewModel
+import com.yapp.itemfinder.feature.common.extension.onErrorWithResult
 import com.yapp.itemfinder.feature.common.extension.runCatchingWithErrorHandler
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
@@ -32,9 +33,11 @@ class ManageSpaceViewModel @Inject constructor(
                     dataList = listOf(AddSpace()) + spaces
                 )
             )
-        }.onFailure { e ->
-            setState(
-                ManageSpaceState.Error(e)
+        }.onErrorWithResult { errorWithResult ->
+            setState(ManageSpaceState.Error)
+            val message = errorWithResult.errorResultEntity.message ?: return@launch
+            postSideEffect(
+                message.let { ManageSpaceSideEffect.ShowToast(it) }
             )
         }
     }
@@ -47,7 +50,7 @@ class ManageSpaceViewModel @Inject constructor(
         }
     }
 
-    fun addItem(name: String): Job = viewModelScope.launch {
+    fun addSpace(name: String): Job = viewModelScope.launch {
         withState<ManageSpaceState.Success> { state ->
             runCatchingWithErrorHandler {
                 manageSpaceRepository.addNewSpace(name)
@@ -60,20 +63,35 @@ class ManageSpaceViewModel @Inject constructor(
                     )
                 )
                 postSideEffect(ManageSpaceSideEffect.AddSpaceSuccessResult)
-            }.onFailure { e ->
-                setState(ManageSpaceState.Error(e))
+            }.onErrorWithResult { errorWithResult ->
+                val message = errorWithResult.errorResultEntity.message ?: return@launch
                 postSideEffect(
-                    ManageSpaceSideEffect.AddSpaceFailedToast
+                    message.let { ManageSpaceSideEffect.ShowToast(it) }
                 )
             }
         }
     }
 
-    fun editItem(space: ManageSpaceEntity): Job = viewModelScope.launch {
-
+    fun editSpaceDialog(space: ManageSpaceEntity): Job = viewModelScope.launch {
+        postSideEffect(ManageSpaceSideEffect.OpenEditSpaceDialog(space))
     }
 
-    fun deleteItem(space: ManageSpaceEntity): Job = viewModelScope.launch {
+    fun editSpace(spaceId: Long, spaceName: String) = viewModelScope.launch {
+        withState<ManageSpaceState.Success> { state ->
+            runCatchingWithErrorHandler {
+                manageSpaceRepository.editSpace(name = spaceName, spaceId = spaceId)
+            }.onSuccess {
+                fetchData()
+            }.onErrorWithResult { errorWithResult ->
+                val message = errorWithResult.errorResultEntity.message ?: return@withState
+                postSideEffect(
+                    message.let { ManageSpaceSideEffect.ShowToast(it) }
+                )
+            }
+        }
+    }
+
+    fun deleteSpace(space: ManageSpaceEntity): Job = viewModelScope.launch {
         withState<ManageSpaceState.Success> { state ->
             postSideEffect(
                 ManageSpaceSideEffect.DeleteDialog

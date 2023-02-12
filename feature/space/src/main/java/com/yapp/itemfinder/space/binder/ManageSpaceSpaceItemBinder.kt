@@ -17,10 +17,10 @@ class ManageSpaceSpaceItemBinder @Inject constructor(): ManageSpaceItemBinder {
 
     private fun setManageSpaceViewModelHandler(item: ManageSpaceEntity, viewModel: ManageSpaceViewModel){
         item.editSpaceDialogHandler = { data ->
-            viewModel.editItem(data as ManageSpaceEntity)
+            viewModel.editSpaceDialog(data as ManageSpaceEntity)
         }
         item.deleteSpaceDialogHandler = { data ->
-            viewModel.deleteItem(data as ManageSpaceEntity)
+            viewModel.deleteSpace(data as ManageSpaceEntity)
         }
     }
 }

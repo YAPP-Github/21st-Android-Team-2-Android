@@ -6,15 +6,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.setFragmentResult
-import com.yapp.itemfinder.domain.model.Tag
 import com.yapp.itemfinder.space.databinding.AddSpaceDialogBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class AddSpaceDialog : DialogFragment() {
+class EditSpaceDialog : DialogFragment() {
     private var _binding: AddSpaceDialogBinding? = null
     private val binding get() = _binding!!
 
@@ -25,34 +23,43 @@ class AddSpaceDialog : DialogFragment() {
     ): View {
         _binding = AddSpaceDialogBinding.inflate(inflater, container, false)
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        // dialog?.window?.requestFeature(Window.FEATURE_NO_TITLE)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.apply {
+            titleTextView.text = "공간 수정"
+            confirmButton.text = "수정"
+            spaceNameEditText.setText(requireArguments().getString(SPACE_NAME))
             confirmButton.setOnClickListener {
                 val name = spaceNameEditText.text.toString()
-                passName(name)
+                passNewSpace(name, requireArguments().getLong(SPACE_ID))
             }
             cancelButton.setOnClickListener { dismiss() }
         }
     }
 
-    private fun passName(name: String) {
+    private fun passNewSpace(name: String, id: Long) {
+        val bundle = Bundle().apply {
+            putLong(SPACE_ID_KEY, id)
+            putString(NEW_SPACE_NAME_KEY, name)
+        }
         setFragmentResult(
-            NEW_SPACE_REQUEST_KEY,
-            bundleOf(NEW_SPACE_NAME_BUNDLE_KEY to name)
+            EDIT_NAME_REQUEST_KEY,
+            bundle
         )
         dismiss()
     }
 
     companion object {
-        const val NEW_SPACE_REQUEST_KEY = "new space request"
-        const val NEW_SPACE_NAME_BUNDLE_KEY = "new space name"
-        const val TAG = "add space dialog"
-        fun newInstance(): AddSpaceDialog = AddSpaceDialog()
+        const val EDIT_NAME_REQUEST_KEY = "EDIT_NAME_REQUEST_KEY"
+        const val NEW_SPACE_NAME_KEY = "NEW_SPACE_NAME_KEY"
+        const val SPACE_ID_KEY = "NEW_SPACE_ID_KEY"
+        const val TAG = "EDIT_SPACE_DIALOG"
+        const val SPACE_ID = "SPACE_ID"
+        const val SPACE_NAME = "SPACE_NAME"
+        fun newInstance(): EditSpaceDialog = EditSpaceDialog()
     }
 
 }

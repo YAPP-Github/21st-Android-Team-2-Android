@@ -23,8 +23,7 @@
                 style="@style/ItemFinderTypography.Subhead"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/addSpaceDialogTitle"
-                android:textSize="16sp" />
+                android:text="@string/addSpaceDialogTitle" />
 
             <EditText
                 android:id="@+id/spaceNameEditText"
@@ -34,11 +33,10 @@
                 android:layout_below="@+id/titleTextView"
                 android:layout_marginVertical="12dp"
                 android:backgroundTint="@color/gray_02"
-                android:hint="@string/space_name"
-                android:textSize="16sp" />
+                android:hint="@string/space_name" />
 
-            <Button
-                android:id="@+id/addNewSpaceButton"
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/confirmButton"
                 style="@style/ItemFinderTypography.Body2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -46,22 +44,25 @@
                 android:layout_alignParentEnd="true"
                 android:backgroundTint="@android:color/transparent"
                 android:outlineProvider="none"
+                android:paddingHorizontal="12dp"
+                android:paddingVertical="10dp"
                 android:text="@string/create"
-                android:textColor="@color/orange"
-                android:textSize="14sp" />
+                android:textColor="@color/orange" />
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/cancelButton"
                 style="@style/ItemFinderTypography.Body2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/spaceNameEditText"
-                android:layout_toStartOf="@id/addNewSpaceButton"
+                android:layout_marginEnd="8dp"
+                android:layout_toStartOf="@id/confirmButton"
                 android:backgroundTint="@android:color/transparent"
                 android:outlineProvider="none"
+                android:paddingHorizontal="12dp"
+                android:paddingVertical="10dp"
                 android:text="@string/cancel"
-                android:textColor="@color/orange"
-                android:textSize="14sp" />
+                android:textColor="@color/orange" />
         </RelativeLayout>
     </androidx.cardview.widget.CardView>
 

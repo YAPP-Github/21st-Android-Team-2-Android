@@ -5,6 +5,7 @@ import com.yapp.itemfinder.data.network.api.managespace.ManageSpaceApi
 import com.yapp.itemfinder.data.network.api.auth.AuthApi
 import com.yapp.itemfinder.data.network.api.auth.AuthWithoutTokenApi
 import com.yapp.itemfinder.data.network.api.home.HomeSpaceApi
+import com.yapp.itemfinder.data.network.api.item.ItemApi
 import com.yapp.itemfinder.data.network.api.image.ImageApi
 import com.yapp.itemfinder.data.network.api.lockerlist.LockerApi
 import dagger.Module
@@ -67,9 +68,18 @@ internal class ApiCoroutinesModule {
 
     @Provides
     @Singleton
+    fun provideItemApi(
+        apiClient: ApiClient
+    ): ItemApi {
+        return apiClient.provideItemApi()
+    }
+
+    @Provides
+    @Singleton
     fun provideImageApi(
         apiClient: ApiClient
     ): ImageApi{
         return apiClient.provideImageApi()
     }
+    
 }
