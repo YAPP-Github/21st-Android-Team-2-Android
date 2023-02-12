@@ -13,7 +13,7 @@ data class AddItemResponse(
     val imageUrls: List<String>,
     val tags: List<String>,
     val description: String?,
-    val purchaseDate: LocalDate?,
+    val purchaseDate: String?,
     val useByDate: LocalDateTime?,
     val pinX: Float?,
     val pinY: Float?
@@ -26,7 +26,8 @@ data class AddItemResponse(
             imageUrls = imageUrls,
             tags= tags.map { Tag(it) },
             memo = description,
-            position = if (pinX != null && pinY != null) Item.Position(pinX, pinY) else null
+            position = if (pinX != null && pinY != null) Item.Position(pinX, pinY) else null,
+            purchaseDate = purchaseDate
         )
     }
 

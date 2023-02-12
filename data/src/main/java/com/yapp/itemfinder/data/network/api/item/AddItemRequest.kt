@@ -11,7 +11,7 @@ data class AddItemRequest(
     val imageUrls: List<String>? = null,
     val tagIds: List<Long>? = null,
     val description: String?,
-    val purchaseDate: LocalDate?,
+    val purchaseDate: String?,
     val useByDate: LocalDateTime?,
     val pinX: Float?,
     val pinY: Float?

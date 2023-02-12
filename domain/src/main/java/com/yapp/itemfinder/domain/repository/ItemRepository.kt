@@ -19,7 +19,7 @@ interface ItemRepository {
         imageUrls: List<String>? = null,
         tagIds: List<Long> ? = null,
         description: String? = null,
-        purchaseDate: LocalDate? = null,
+        purchaseDate: String? = null,
         useByDate: LocalDateTime? = null,
         pinX: Float? = null,
         pinY: Float? = null

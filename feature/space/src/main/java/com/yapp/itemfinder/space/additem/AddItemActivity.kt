@@ -135,7 +135,7 @@ class AddItemActivity : BaseStateActivity<AddItemViewModel, ActivityAddItemBindi
                             val dateListener =
                                 DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
                                     val date =
-                                        String.format("%d.%02d.%02d.", year, month + 1, dayOfMonth)
+                                        String.format("%d.%02d.%02d", year, month + 1, dayOfMonth)
                                     vm.setExpirationDate(date)
                                 }
                             openDatePickerDialog(dateListener, "소비기한")
@@ -144,7 +144,7 @@ class AddItemActivity : BaseStateActivity<AddItemViewModel, ActivityAddItemBindi
                             val dateListener =
                                 DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
                                     val date =
-                                        String.format("%d.%02d.%02d.", year, month + 1, dayOfMonth)
+                                        String.format("%d.%02d.%02d", year, month + 1, dayOfMonth)
                                     vm.setPurchaseDate(date)
                                 }
                             openDatePickerDialog(dateListener, "구매일")

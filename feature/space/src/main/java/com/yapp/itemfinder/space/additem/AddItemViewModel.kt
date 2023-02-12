@@ -24,6 +24,7 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.time.LocalDate
 import javax.inject.Inject
 
 @HiltViewModel
@@ -470,7 +471,6 @@ class AddItemViewModel @Inject constructor(
 
             runCatchingWithErrorHandler {
                 var imageUrls = listOf<String>()
-                setState(AddItemState.Loading)
                 if (imageUriStringList.isNotEmpty()){
                     val imagePaths = withContext(Dispatchers.IO){
                         imageUriStringList.map { it.toUri().cropToJpeg(context,1,1) }
@@ -485,7 +485,8 @@ class AddItemViewModel @Inject constructor(
                     quantity = itemCount,
                     imageUrls = imageUrls,
                     tagIds = tagIds,
-                    description = itemMemo
+                    description = itemMemo,
+                    purchaseDate = itemPurchase.replace(".","-")
                 )
             }.onSuccess {
                 postSideEffect(AddItemSideEffect.ShowToast("추가성공"))

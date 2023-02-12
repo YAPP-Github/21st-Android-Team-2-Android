@@ -54,7 +54,7 @@ class ItemRepositoryImpl @Inject constructor(
         imageUrls: List<String>?,
         tagIds: List<Long>?,
         description: String?,
-        purchaseDate: LocalDate?,
+        purchaseDate: String?,
         useByDate: LocalDateTime?,
         pinX: Float?,
         pinY: Float?

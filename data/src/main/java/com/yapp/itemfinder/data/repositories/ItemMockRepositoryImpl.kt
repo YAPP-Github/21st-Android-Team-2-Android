@@ -65,7 +65,7 @@ class ItemMockRepositoryImpl @Inject constructor() : ItemRepository {
         imageUrls: List<String>?,
         tagIds: List<Long>?,
         description: String?,
-        purchaseDate: LocalDate?,
+        purchaseDate: String?,
         useByDate: LocalDateTime?,
         pinX: Float?,
         pinY: Float?
