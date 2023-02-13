@@ -8,9 +8,9 @@
     <application
         android:allowBackup="true"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@drawable/ic_launcher_beta_round"
+        android:icon="@mipmap/ic_launcher_beta"
         android:label="${appLabel}"
-        android:roundIcon="@drawable/ic_launcher_beta_round"
+        android:roundIcon="@mipmap/ic_launcher_beta_round"
         android:supportsRtl="true"
         android:usesCleartextTraffic="true"
         android:name=".ItemFinderApp">
