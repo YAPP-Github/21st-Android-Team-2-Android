@@ -14,6 +14,7 @@ import com.yapp.itemfinder.domain.provider.UrlProvider
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.create
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -60,6 +61,9 @@ class ApiClient @Inject constructor(
 
     fun provideLockerListApi(): LockerApi =
         apiAdapter.create(LockerApi::class.java)
+
+    fun provideItemApi(): ItemApi =
+        apiAdapter.create(ItemApi::class.java)
 
     fun provideImageApi(): ImageApi =
         apiAdapter.create(ImageApi::class.java)

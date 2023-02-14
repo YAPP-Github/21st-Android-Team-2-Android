@@ -28,6 +28,10 @@ data class ItemResponse(
         count = quantity,
         itemCategory = when (itemType) {
             "LIVING" -> ItemCategory.LIFE
+        imageUrl = representativeImageUrl,
+        count = quantity,
+        itemCategory = when (itemType) {
+            "LIVING" -> ItemCategory.LIVING
             "FOOD" -> ItemCategory.FOOD
             else -> ItemCategory.FASHION
         },

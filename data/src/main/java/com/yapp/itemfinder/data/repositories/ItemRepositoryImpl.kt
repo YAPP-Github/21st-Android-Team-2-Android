@@ -26,8 +26,8 @@ class ItemRepositoryImpl @Inject constructor(
         )
         return response.data.map { it.toItem(lockerId) }
     }
-    //fixme : 서버에 연결
-    override suspend fun getItemById(itemId: Long): Item {
+
+    override fun getItemById(itemId: Long): Item {
         return Item(
             id = (0..100).random().toLong(),
             lockerId = 1,

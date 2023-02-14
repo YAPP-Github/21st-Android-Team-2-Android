@@ -27,6 +27,9 @@ ext {
 
     /* Firebase */
     firebaseCrashlyticsVersion = '18.3.2'
+    firebaseCrashlyticsGradleVersion = '2.9.4'
+    firebaseVersion = '4.3.15'
+    firebaseBomVersion = '31.2.0'
 
     /* Test */
     junit5Version = '5.8.2'

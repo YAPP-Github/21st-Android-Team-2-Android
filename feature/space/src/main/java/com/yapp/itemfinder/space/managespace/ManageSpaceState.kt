@@ -12,7 +12,5 @@ sealed class ManageSpaceState : State {
         val dataList: List<Data>
     ) : ManageSpaceState()
 
-    data class Error(
-        val e: Throwable
-    ) : ManageSpaceState()
+    object Error : ManageSpaceState()
 }
