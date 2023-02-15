@@ -67,5 +67,4 @@ class ApiClient @Inject constructor(
 
     fun provideImageApi(): ImageApi =
         apiAdapter.create(ImageApi::class.java)
-
 }

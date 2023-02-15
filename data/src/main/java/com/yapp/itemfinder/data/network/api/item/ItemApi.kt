@@ -11,4 +11,8 @@ interface ItemApi {
         @Query("page") page: Int = 0,
         @Query("size") size: Int = 20
     ): ItemSearchResponse
+
+    @POST("/items")
+    suspend fun addNewItem(@Body addItemRequest:AddItemRequest):  AddItemResponse
+    
 }

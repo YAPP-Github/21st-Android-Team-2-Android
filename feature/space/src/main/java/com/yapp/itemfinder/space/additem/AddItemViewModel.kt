@@ -1,22 +1,39 @@
 package com.yapp.itemfinder.space.additem
 
+import android.content.Context
 import android.net.Uri
+import androidx.core.net.toUri
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
+import com.yapp.itemfinder.data.repositories.di.ItemRepositoryQualifiers
 import com.yapp.itemfinder.domain.model.*
+import com.yapp.itemfinder.domain.repository.ImageRepository
+import com.yapp.itemfinder.domain.repository.ItemRepository
 import com.yapp.itemfinder.feature.common.BaseStateViewModel
+import com.yapp.itemfinder.feature.common.extension.cropToJpeg
+import com.yapp.itemfinder.feature.common.extension.onErrorWithResult
 import com.yapp.itemfinder.feature.common.extension.runCatchingWithErrorHandler
+import com.yapp.itemfinder.space.addlocker.AddLockerSideEffect
+import com.yapp.itemfinder.space.addlocker.AddLockerState
 import com.yapp.itemfinder.space.itemdetail.ItemDetailFragment
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.time.LocalDate
 import javax.inject.Inject
 
 @HiltViewModel
 class AddItemViewModel @Inject constructor(
-    private val savedStateHandle: SavedStateHandle
+    private val savedStateHandle: SavedStateHandle,
+    @ApplicationContext private val context: Context,
+    @ItemRepositoryQualifiers
+    private val itemRepository: ItemRepository,
+    private val imageRepository: ImageRepository
 ) : BaseStateViewModel<AddItemState, AddItemSideEffect>() {
     override val _stateFlow: MutableStateFlow<AddItemState> =
         MutableStateFlow(AddItemState.Uninitialized)
@@ -56,7 +73,7 @@ class AddItemViewModel @Inject constructor(
                     expirationDate = "2022.12.25.",
                     purchaseDate = null,
                     memo = null,
-                    imageUrl = "http://source.unsplash.com/random/150x150",
+                    imageUrls = listOf("http://source.unsplash.com/random/150x150"),
                     tags = listOf(Tag("생활"), Tag("화장품")),
                     count = 1
                 )
@@ -391,7 +408,7 @@ class AddItemViewModel @Inject constructor(
         }
     }
 
-    fun saveItem() {
+    fun saveItem() = viewModelScope.launch{
         withState<AddItemState.Success> { state ->
             state.dataList.filterIsInstance<AddItemName>().firstOrNull()?.saveName()
             state.dataList.filterIsInstance<AddItemMemo>().firstOrNull()?.saveMemo()
@@ -399,50 +416,86 @@ class AddItemViewModel @Inject constructor(
         withState<AddItemState.Success> { state ->
             val dataList = state.dataList
             var itemName = ""
-            var itemCategory = ""
+            var itemCategorySelection: ItemCategorySelection? = null
             var itemSpace = ""
-            var itemLocker = ""
+            var itemLockerName = ""
+            var itemLockerId = -1L
             var itemCount = 1
             var itemMemo = ""
             var itemExpiration = ""
             var itemPurchase = ""
+            var tagIds = listOf<Long>()
+            var imageUriStringList = listOf<String>()
             dataList.forEach {
                 if (it is AddItemName) itemName = it.name
-                if (it is AddItemCategory) itemCategory = it.category.label
-                if (it is AddItemLocation) {
+                else if (it is AddItemCategory) itemCategorySelection = it.category
+                else if (it is AddItemLocation) {
                     itemSpace = it.spaceName
-                    itemLocker = it.lockerName
+                    itemLockerName = it.lockerName
+                    itemLockerId = it.lockerId
                 }
-                if (it is AddItemCount) itemCount = it.count
-                if (it is AddItemMemo) itemMemo = it.memo
-                if (it is AddItemExpirationDate) itemExpiration = it.expirationDate
-                if (it is AddItemPurchaseDate) itemPurchase = it.purchaseDate
+                else if (it is AddItemCount) itemCount = it.count
+                else if (it is AddItemMemo) itemMemo = it.memo
+                else if (it is AddItemExpirationDate) itemExpiration = it.expirationDate
+                else if (it is AddItemPurchaseDate) itemPurchase = it.purchaseDate
+                else if ( it is AddItemImages){
+                    imageUriStringList = it.uriStringList
+                }
             }
-            if (itemName == "" && itemCategory == ItemCategorySelection.DEFAULT.label && itemSpace == "" && itemLocker == "") {
+            if (itemName == "" && itemCategorySelection == ItemCategorySelection.DEFAULT && itemSpace == "" && itemLockerName == "") {
                 postSideEffect(AddItemSideEffect.FillOutRequiredSnackBar)
-                return
+                return@withState
             }
             if (itemName == "") {
                 postSideEffect(AddItemSideEffect.FillOutNameSnackBar)
-                return
+                return@withState
             }
-            if (itemCategory == ItemCategorySelection.DEFAULT.label) {
+            if (itemCategorySelection == ItemCategorySelection.DEFAULT) {
                 postSideEffect(AddItemSideEffect.FillOutCategorySnackBar)
-                return
+                return@withState
             }
             if (itemSpace == "") {
                 postSideEffect(AddItemSideEffect.FillOutLocationSnackBar)
-                return
+                return@withState
             }
             if (itemName.length > 30) {
                 postSideEffect(AddItemSideEffect.NameLengthLimitSnackBar)
-                return
+                return@withState
             }
             if (itemMemo.length > 200) {
                 postSideEffect(AddItemSideEffect.MemoLengthLimitSnackBar)
-                return
+                return@withState
             }
             // save
+
+
+            runCatchingWithErrorHandler {
+                var imageUrls = listOf<String>()
+                if (imageUriStringList.isNotEmpty()){
+                    val imagePaths = withContext(Dispatchers.IO){
+                        imageUriStringList.map { it.toUri().cropToJpeg(context,1,1) }
+                    }
+                    imageUrls = imageRepository.addImages(imagePaths)
+                }
+
+                itemRepository.addItem(
+                    containerId = itemLockerId,
+                    name = itemName,
+                    itemType = itemCategorySelection.toString(),
+                    quantity = itemCount,
+                    imageUrls = imageUrls,
+                    tagIds = tagIds,
+                    description = itemMemo,
+                    purchaseDate = itemPurchase.replace(".","-")
+                )
+            }.onSuccess {
+                postSideEffect(AddItemSideEffect.ShowToast("추가성공"))
+                postSideEffect(AddItemSideEffect.AddItemFinished)
+            }.onErrorWithResult { errorWithResult ->
+                val message = errorWithResult.errorResultEntity.message
+                message?.let { postSideEffect(AddItemSideEffect.ShowToast(it)) }
+            }
+
         }
     }
 

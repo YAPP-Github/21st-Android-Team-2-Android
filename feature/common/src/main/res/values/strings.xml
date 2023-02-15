@@ -12,7 +12,6 @@
     <string name="itemName">물건 이름</string>
     <string name="location">위치</string>
     <string name="selectItemLocation">보관할 위치를 선택해주세요</string>
-    <string name="countTitle">개수</string>
     <string name="add">추가</string>
     <string name="tag">태그</string>
     <string name="memo">메모</string>
@@ -21,6 +20,7 @@
     <string name="enterMemo">메모를 입력해주세요</string>
     <string name="date_hint">YYYY.MM.DD.</string>
     <string name="count">%d개</string>
+    <string name="countTitle">개수</string>
     <string name="totalCount">전체 %d개</string>
     <string name="request_denied">권한을 거부하셨습니다.</string>
     <string name="pin_place">물건 위치</string>

@@ -16,7 +16,7 @@ enum class ItemCategorySelection(val label: String) {
 
     fun toItemCateogry(): ItemCategory = when(this) {
         DEFAULT -> ItemCategory.NONE
-        LIFE -> ItemCategory.LIVING
+        LIFE -> ItemCategory.LIFE
         FOOD -> ItemCategory.FOOD
         FASHION -> ItemCategory.FASHION
     }

@@ -19,6 +19,7 @@ import com.yapp.itemfinder.feature.common.binding.viewBinding
 import com.yapp.itemfinder.feature.common.datalist.adapter.DataListAdapter
 import com.yapp.itemfinder.feature.common.datalist.binder.DataBindHelper
 import com.yapp.itemfinder.feature.common.extension.parcelable
+import com.yapp.itemfinder.feature.common.extension.showShortToast
 import com.yapp.itemfinder.feature.common.views.SnackBarView
 import com.yapp.itemfinder.space.additem.itemposition.AddItemPositionDefineActivity
 import com.yapp.itemfinder.space.additem.selectspace.AddItemSelectSpaceActivity
@@ -134,7 +135,7 @@ class AddItemActivity : BaseStateActivity<AddItemViewModel, ActivityAddItemBindi
                             val dateListener =
                                 DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
                                     val date =
-                                        String.format("%d.%02d.%02d.", year, month + 1, dayOfMonth)
+                                        String.format("%d.%02d.%02d", year, month + 1, dayOfMonth)
                                     vm.setExpirationDate(date)
                                 }
                             openDatePickerDialog(dateListener, "소비기한")
@@ -143,7 +144,7 @@ class AddItemActivity : BaseStateActivity<AddItemViewModel, ActivityAddItemBindi
                             val dateListener =
                                 DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
                                     val date =
-                                        String.format("%d.%02d.%02d.", year, month + 1, dayOfMonth)
+                                        String.format("%d.%02d.%02d", year, month + 1, dayOfMonth)
                                     vm.setPurchaseDate(date)
                                 }
                             openDatePickerDialog(dateListener, "구매일")
@@ -183,6 +184,12 @@ class AddItemActivity : BaseStateActivity<AddItemViewModel, ActivityAddItemBindi
                                     sideEffect.spaceAndLockerEntity
                                 )
                             )
+                        }
+                        is AddItemSideEffect.ShowToast -> {
+                            showShortToast(sideEffect.message)
+                        }
+                        is AddItemSideEffect.AddItemFinished -> {
+                            finish()
                         }
                         is AddItemSideEffect.MoveItemPositionDefine -> {
                             itemPositionDefineLauncher.launch(

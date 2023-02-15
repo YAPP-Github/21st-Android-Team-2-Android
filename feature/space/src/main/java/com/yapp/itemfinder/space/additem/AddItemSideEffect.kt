@@ -24,4 +24,8 @@ sealed class AddItemSideEffect : SideEffect {
         val lockerAndItemEntity: LockerAndItemEntity
     ) : AddItemSideEffect()
 
+    data class ShowToast(val message: String): AddItemSideEffect()
+
+    object AddItemFinished: AddItemSideEffect()
+
 }

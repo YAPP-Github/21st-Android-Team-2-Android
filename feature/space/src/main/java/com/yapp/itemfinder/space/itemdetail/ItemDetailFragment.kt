@@ -13,11 +13,11 @@ import com.yapp.itemfinder.feature.common.Depth
 import com.yapp.itemfinder.feature.common.binding.viewBinding
 import com.yapp.itemfinder.feature.common.extension.visible
 import com.yapp.itemfinder.space.R
+import com.yapp.itemfinder.feature.common.R as CR
 import com.yapp.itemfinder.space.additem.AddItemActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import com.yapp.itemfinder.feature.common.R as CR
 import com.yapp.itemfinder.space.databinding.FragmentItemDetailBinding
 
 @AndroidEntryPoint
@@ -90,14 +90,14 @@ class ItemDetailFragment : BaseStateFragment<ItemDetailViewModel, FragmentItemDe
 
     private fun handleSuccess(lockerDetailState: ItemDetailState.Success) = with(binding) {
         val item = lockerDetailState.item
-        if (item.imageUrl != null) {
-            Glide.with(requireContext()).load(item.imageUrl).into(itemMainImage)
+        if (item.representativeImage != null) {
+            Glide.with(requireContext()).load(item.representativeImage).into(itemMainImage)
         }
         itemName.text = item.name
         itemCategory.text = item.itemCategory?.labelResId?.let { getString(it) }
         itemSpace.text = arguments?.getString(SPACE_NAME_KEY)
         itemLocker.text = arguments?.getString(LOCKER_NAME_KEY)
-        itemCount.text = getString(R.string.countText, item.count)
+        itemCount.text = getString(CR.string.count, item.count)
         item.tags?.let {
             itemTagsLayout.visible()
             itemTagTitle.visible()
