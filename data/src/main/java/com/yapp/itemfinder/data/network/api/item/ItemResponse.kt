@@ -27,11 +27,7 @@ data class ItemResponse(
         imageUrls = listOf( representativeImageUrl),
         count = quantity,
         itemCategory = when (itemType) {
-            "LIVING" -> ItemCategory.LIFE
-        imageUrl = representativeImageUrl,
-        count = quantity,
-        itemCategory = when (itemType) {
-            "LIVING" -> ItemCategory.LIVING
+            "LIFE" -> ItemCategory.LIFE
             "FOOD" -> ItemCategory.FOOD
             else -> ItemCategory.FASHION
         },
