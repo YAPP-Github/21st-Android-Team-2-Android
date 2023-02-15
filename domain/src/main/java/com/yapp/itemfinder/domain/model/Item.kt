@@ -72,7 +72,7 @@ enum class ItemCategory(
     @StringRes val labelResId: Int,
     @DrawableRes val iconResId: Int
 ) {
-    LIFE(R.string.item_category_living, R.drawable.ic_marker_living),
+    LIFE(R.string.item_category_life, R.drawable.ic_marker_life),
     FOOD(R.string.item_category_food, R.drawable.ic_marker_food),
     FASHION(R.string.item_category_fashion, R.drawable.ic_marker_fashion),
     NONE(R.string.item_category_none, R.drawable.ic_marker_none);
