@@ -7,6 +7,7 @@ import com.yapp.itemfinder.domain.R
 import kotlinx.parcelize.Parcelize
 
 typealias ItemFocusHandler = (Boolean) -> Unit
+typealias ItemDetailHandler = () -> Unit
 
 @Parcelize
 data class Item(
@@ -63,8 +64,10 @@ data class Item(
     ): Parcelable
 
     var itemFocusHandler: ItemFocusHandler = { }
+    var itemDetailHandler: ItemDetailHandler = {}
 
     fun applyItemFocus(isFocused: Boolean) = itemFocusHandler(isFocused)
+    fun moveItemDetail() = itemDetailHandler.invoke()
 
 }
 
