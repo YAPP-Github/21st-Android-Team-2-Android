@@ -37,6 +37,7 @@ class EditSpaceDialog : DialogFragment() {
                 passNewSpace(name, requireArguments().getLong(SPACE_ID))
             }
             cancelButton.setOnClickListener { dismiss() }
+            spaceNameEditText.setSelection(spaceNameEditText.length())
         }
     }
 

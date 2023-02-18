@@ -25,7 +25,6 @@ class AddSpaceDialog : DialogFragment() {
     ): View {
         _binding = AddSpaceDialogBinding.inflate(inflater, container, false)
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        // dialog?.window?.requestFeature(Window.FEATURE_NO_TITLE)
         return binding.root
     }
 
@@ -37,6 +36,8 @@ class AddSpaceDialog : DialogFragment() {
                 passName(name)
             }
             cancelButton.setOnClickListener { dismiss() }
+
+            spaceNameEditText.setSelection(spaceNameEditText.length())
         }
     }
 
