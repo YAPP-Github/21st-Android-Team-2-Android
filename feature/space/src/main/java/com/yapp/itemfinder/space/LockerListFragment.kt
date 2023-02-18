@@ -44,7 +44,8 @@ class LockerListFragment : BaseStateFragment<LockerListViewModel, FragmentLocker
     @Inject
     lateinit var dataBindHelper: DataBindHelper
 
-    private lateinit var resultLauncher: ActivityResultLauncher<Intent>
+    private lateinit var addResultLauncher: ActivityResultLauncher<Intent>
+    private lateinit var editResultLauncher: ActivityResultLauncher<Intent>
 
     override fun initViews() = with(binding) {
         initToolBar()
@@ -112,7 +113,7 @@ class LockerListFragment : BaseStateFragment<LockerListViewModel, FragmentLocker
                                         ScreenMode.ADD_MODE.label
                                     )
                                 }
-                                resultLauncher.launch(intent)
+                                addResultLauncher.launch(intent)
                             }
                             is LockerListSideEffect.MoveToAddItem -> {
                                 startActivity(AddItemActivity.newIntent(requireContext()).apply {
@@ -139,7 +140,7 @@ class LockerListFragment : BaseStateFragment<LockerListViewModel, FragmentLocker
                                         sideEffect.locker
                                     )
                                 }
-                                resultLauncher.launch(intent)
+                                editResultLauncher.launch(intent)
                             }
                             is LockerListSideEffect.ShowToast -> {
                                 Toast.makeText(
@@ -180,7 +181,13 @@ class LockerListFragment : BaseStateFragment<LockerListViewModel, FragmentLocker
     }
 
     private fun setResultLauncher() {
-        resultLauncher =
+        addResultLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+                if (result.resultCode == Activity.RESULT_OK) {
+                    vm.fetchData()
+                }
+            }
+        editResultLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
                 if (result.resultCode == Activity.RESULT_OK) {
                     vm.fetchData()

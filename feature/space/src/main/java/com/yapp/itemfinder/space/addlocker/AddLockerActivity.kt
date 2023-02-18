@@ -65,12 +65,16 @@ class AddLockerActivity : BaseStateActivity<AddLockerViewModel, ActivityAddLocke
                 titleText = "보관함 추가"
                 rightFirstIconClickListener = {
                     vm.addNewLocker()
+                    setResult(Activity.RESULT_OK)
+                    finish()
                 }
             }
             ScreenMode.EDIT_MODE.label -> {
                 titleText = "보관함 수정"
                 rightFirstIconClickListener = {
-                    // vm.editLocker
+                    vm.editLocker()
+                    setResult(Activity.RESULT_OK)
+                    finish()
                 }
             }
         }

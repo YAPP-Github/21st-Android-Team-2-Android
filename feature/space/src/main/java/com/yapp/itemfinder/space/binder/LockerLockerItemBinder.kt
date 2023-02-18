@@ -23,7 +23,7 @@ class LockerLockerItemBinder @Inject constructor() : LockerItemBinder {
             viewModel.deleteItem(data as LockerEntity)
         }
         lockerItem.editHandler = { data ->
-            viewModel.editItem(data as LockerEntity)
+            viewModel.moveEditLocker(data as LockerEntity)
         }
         lockerItem.moveLockerDetailHandler = { data ->
             viewModel.moveLockerDetail(data as LockerEntity)

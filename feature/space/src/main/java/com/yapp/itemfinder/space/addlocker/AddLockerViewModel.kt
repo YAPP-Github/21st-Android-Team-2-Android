@@ -11,7 +11,6 @@ import com.yapp.itemfinder.domain.repository.ImageRepository
 import com.yapp.itemfinder.domain.repository.LockerRepository
 import com.yapp.itemfinder.feature.common.BaseStateViewModel
 import com.yapp.itemfinder.feature.common.extension.*
-import com.yapp.itemfinder.space.additem.AddItemActivity
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Job
@@ -51,7 +50,8 @@ class AddLockerViewModel @Inject constructor(
                         lockerName = "",
                         spaceId = savedStateHandle.get<Long>(AddLockerActivity.SPACE_ID_KEY) ?: 0,
                         icon = LockerIconId.LOCKER_ICON1.iconId,
-                        url = null
+                        url = null,
+                        lockerId = null
                     )
                 )
             }
@@ -69,10 +69,11 @@ class AddLockerViewModel @Inject constructor(
                             LockerIcons(icon = locker.icon, mode = ScreenMode.EDIT_MODE),
                             AddLockerPhoto(url = locker.imageUrl, mode = ScreenMode.EDIT_MODE)
                         ),
-                        lockerName = "",
+                        lockerName = locker.name,
                         spaceId = savedStateHandle.get<Long>(AddLockerActivity.SPACE_ID_KEY) ?: 0,
                         icon = LockerIconId.LOCKER_ICON1.iconId,
-                        url = null
+                        url = locker.imageUrl,
+                        lockerId = locker.id
                     )
                 )
             }
@@ -95,13 +96,13 @@ class AddLockerViewModel @Inject constructor(
 
     fun setLockerName(name: String) {
         withState<AddLockerState.Success> { state ->
-            setState(state.copy(lockerName = name, isRefreshNeed = false))
+            setState(state.copy(lockerName = name))
         }
     }
 
     fun setLockerIcon(icon: String) {
         withState<AddLockerState.Success> { state ->
-            setState(state.copy(icon = icon, isRefreshNeed = false))
+            setState(state.copy(icon = icon))
         }
     }
 
@@ -129,15 +130,36 @@ class AddLockerViewModel @Inject constructor(
         withState<AddLockerState.Success> { state ->
             runCatchingWithErrorHandler {
                 lockerRepository.addLocker(
-                    AddLockerRequest(
-                        name = state.lockerName,
-                        spaceId = state.spaceId,
-                        icon = state.icon,
-                        url = state.url
-                    )
+                    name = state.lockerName,
+                    spaceId = state.spaceId,
+                    icon = state.icon,
+                    url = state.url
                 )
             }.onSuccess { locker ->
                 postSideEffect(AddLockerSideEffect.SuccessRegister)
+            }.onErrorWithResult { errorWithResult ->
+                setState(AddLockerState.Error(errorWithResult))
+                val message = errorWithResult.errorResultEntity.message
+                message?.let { postSideEffect(AddLockerSideEffect.ShowToast(it)) }
+            }
+        }
+    }
+
+    fun editLocker() = viewModelScope.launch {
+        withState<AddLockerState.Success> { state ->
+            state.dataList
+                .filterIsInstance<AddLockerNameInput>()
+                .firstOrNull()?.saveName()
+        }
+        withState<AddLockerState.Success> { state ->
+            runCatchingWithErrorHandler {
+                lockerRepository.editLocker(
+                    name = state.lockerName,
+                    spaceId = state.spaceId,
+                    icon = state.icon,
+                    url = state.url,
+                    lockerId = state.lockerId!!
+                )
             }.onErrorWithResult { errorWithResult ->
                 setState(AddLockerState.Error(errorWithResult))
                 val message = errorWithResult.errorResultEntity.message
