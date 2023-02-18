@@ -10,6 +10,7 @@ dependencies {
     implementation "com.google.android.material:material:$materialVersion"
 
     implementation "androidx.activity:activity-ktx:$androidxActivityTTXVersion"
+    implementation "androidx.appcompat:appcompat:$androidxAppCompatVersion"
 
     // KTX
     implementation "androidx.core:core-ktx:$androidxCoreVersion"
