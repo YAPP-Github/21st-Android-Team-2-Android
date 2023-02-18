@@ -47,7 +47,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="72dp"
                     android:orientation="horizontal"
-                    android:paddingTop="16dp">
+                    android:layout_marginTop="16dp">
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/imageRecyclerView"
                         tools:listitem="@layout/item_image_viewholder_item"
