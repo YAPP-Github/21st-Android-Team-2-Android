@@ -1,7 +1,7 @@
 package com.yapp.itemfinder.data.repositories
 
-import com.yapp.itemfinder.domain.model.AddLockerRequest
-import com.yapp.itemfinder.data.network.api.lockerlist.LockerApi
+import com.yapp.itemfinder.data.network.api.locker.AddEditLockerRequest
+import com.yapp.itemfinder.data.network.api.locker.LockerApi
 import com.yapp.itemfinder.domain.model.LockerEntity
 import com.yapp.itemfinder.domain.repository.LockerRepository
 import javax.inject.Inject
@@ -15,7 +15,31 @@ class LockerRepositoryImpl @Inject constructor(
     override suspend fun getLockers(spaceId: Long): List<LockerEntity> =
         lockerApi.getLockersBySpaceId(spaceId).map { it.refineToLocker() }
 
-    override suspend fun addLocker(locker: AddLockerRequest): LockerEntity =
-        lockerApi.addNewLocker(locker).refineToLocker()
-    
+    override suspend fun addLocker(
+        name: String,
+        url: String?,
+        spaceId: Long,
+        icon: String
+    ): LockerEntity {
+        return lockerApi.addNewLocker(
+            AddEditLockerRequest(
+                name, url, spaceId, icon
+            )
+        ).refineToLocker()
+    }
+
+    override suspend fun editLocker(
+        name: String,
+        url: String?,
+        spaceId: Long,
+        icon: String,
+        lockerId: Long
+    ): LockerEntity {
+        return lockerApi.editLocker(
+            AddEditLockerRequest(
+                name, url, spaceId, icon
+            ),
+            lockerId
+        ).refineToLocker()
+    }
 }

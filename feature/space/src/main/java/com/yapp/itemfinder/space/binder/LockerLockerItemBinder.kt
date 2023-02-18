@@ -8,19 +8,22 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class LockerLockerItemBinder @Inject constructor(): LockerItemBinder {
+class LockerLockerItemBinder @Inject constructor() : LockerItemBinder {
     override fun bindData(data: LockerEntity, viewModel: BaseViewModel) {
-        when (viewModel){
+        when (viewModel) {
             is LockerListViewModel -> setLockerListViewModelHandler(data, viewModel)
         }
     }
 
-    private fun setLockerListViewModelHandler(lockerItem: LockerEntity, viewModel: LockerListViewModel){
+    private fun setLockerListViewModelHandler(
+        lockerItem: LockerEntity,
+        viewModel: LockerListViewModel
+    ) {
         lockerItem.deleteHandler = { data ->
             viewModel.deleteItem(data as LockerEntity)
         }
         lockerItem.editHandler = { data ->
-
+            viewModel.moveEditLocker(data as LockerEntity)
         }
         lockerItem.moveLockerDetailHandler = { data ->
             viewModel.moveLockerDetail(data as LockerEntity)

@@ -5,6 +5,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.yapp.itemfinder.domain.model.AddLockerPhoto
+import com.yapp.itemfinder.domain.model.ScreenMode
 import com.yapp.itemfinder.feature.common.R
 import com.yapp.itemfinder.feature.common.databinding.AddLockerPhotoBinding
 import com.yapp.itemfinder.feature.common.datalist.adapter.DataViewHolder
@@ -31,7 +32,9 @@ class AddLockerPhotoViewHolder(
                 Glide.with(photoImageView).load(Uri.parse(it))
                     .transform(
                         CenterCrop(),
-                        RoundedCorners(context.resources.getDimension(R.dimen.add_locker_image_radius).toInt())
+                        RoundedCorners(
+                            context.resources.getDimension(R.dimen.add_locker_image_radius).toInt()
+                        )
                     )
                     .into(photoImageView)
             } ?: kotlin.run {

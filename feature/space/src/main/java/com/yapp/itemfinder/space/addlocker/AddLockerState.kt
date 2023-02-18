@@ -14,7 +14,8 @@ sealed class AddLockerState : State {
         val icon: String,
         val spaceId: Long,
         val url: String?,
-        var isRefreshNeed: Boolean = true
+        var isRefreshNeed: Boolean = true,
+        var lockerId: Long?
     ) : AddLockerState()
 
     data class Error(
