@@ -4,7 +4,6 @@ plugins {
 }
 
 apply from: "$rootDir/module.gradle"
-apply from: "$rootDir/deps-feature.gradle"
 
 android {
     lint {
@@ -18,7 +17,6 @@ dependencies {
 
     // Kotlin
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
-    implementation "androidx.arch.core:core-runtime:2.1.0"
 
     // JUnit 5
     implementation(platform("org.junit:junit-bom:$junit5Version"))
