@@ -1,6 +1,5 @@
 package com.yapp.itemfinder.feature.common.datalist.adapter.viewholder
 
-import android.view.inputmethod.EditorInfo
 import com.yapp.itemfinder.domain.model.AddLockerNameInput
 import com.yapp.itemfinder.feature.common.databinding.AddLockerNameInputBinding
 import com.yapp.itemfinder.feature.common.datalist.adapter.DataViewHolder
@@ -19,13 +18,5 @@ class AddLockerNameInputViewHolder(
         }
     }
 
-    override fun bindViews(data: AddLockerNameInput) {
-        binding.lockerNameEditText.setOnEditorActionListener { textView, actionId, keyEvent ->
-            if (actionId == EditorInfo.IME_ACTION_DONE) {
-                data.enterName(textView.text.toString())
-                return@setOnEditorActionListener true
-            }
-            false
-        }
-    }
+    override fun bindViews(data: AddLockerNameInput) = Unit
 }

@@ -167,8 +167,7 @@ class AddItemViewModel @Inject constructor(
                 (newDataList[nameIndex] as AddItemName).copy(name = newName)
             setState(
                 state.copy(
-                    dataList = newDataList,
-                    isRefreshNeed = false
+                    dataList = newDataList
                 )
             )
         }

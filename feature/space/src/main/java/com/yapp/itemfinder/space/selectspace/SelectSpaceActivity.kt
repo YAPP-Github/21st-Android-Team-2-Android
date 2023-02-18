@@ -2,7 +2,6 @@ package com.yapp.itemfinder.space.selectspace
 
 import android.content.Context
 import android.content.Intent
-import android.view.KeyEvent
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.lifecycle.Lifecycle
