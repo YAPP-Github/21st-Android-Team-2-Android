@@ -104,7 +104,7 @@ class ItemDetailFragment : BaseStateFragment<ItemDetailViewModel, FragmentItemDe
             Glide.with(requireContext()).load(item.representativeImage).into(itemMainImage)
 
             if (item.otherImages.isNullOrEmpty()){
-                imageRecyclerView.gone()
+                itemImagesLayout.gone()
             }else{
                 imageRecyclerView.adapter = itemImageAdapter
                 itemImageAdapter.submitList(item.otherImages)

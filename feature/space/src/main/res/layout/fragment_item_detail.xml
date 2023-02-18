@@ -45,7 +45,7 @@
                 <LinearLayout
                     android:id="@+id/itemImagesLayout"
                     android:layout_width="match_parent"
-                    android:layout_height="72dp"
+                    android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:layout_marginTop="16dp">
                     <androidx.recyclerview.widget.RecyclerView
@@ -54,7 +54,7 @@
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                         android:orientation="horizontal"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"/>
+                        android:layout_height="72dp"/>
 
                 </LinearLayout>
 
