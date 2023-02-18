@@ -17,7 +17,7 @@ data class ItemResponse(
     val spaceName: String,
     val containerName: String
 ) {
-    fun toItem(lockerId: Long) = Item(
+    fun toItem(lockerId: Long? = null) = Item(
         id = id,
         lockerId = lockerId,
         name = name,
