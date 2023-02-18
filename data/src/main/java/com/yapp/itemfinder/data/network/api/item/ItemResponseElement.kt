@@ -4,7 +4,7 @@ import com.yapp.itemfinder.domain.model.Item
 import com.yapp.itemfinder.domain.model.ItemCategory
 import com.yapp.itemfinder.domain.model.Tag
 
-data class ItemResponse(
+data class ItemResponseElement(
     val id: Long,
     val name: String,
     val quantity: Int,

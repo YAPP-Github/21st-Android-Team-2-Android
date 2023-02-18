@@ -18,6 +18,6 @@ interface ItemApi {
     suspend fun addNewItem(@Body addItemRequest:AddItemRequest):  AddItemResponse
 
     @GET("/items/{itemId}")
-    suspend fun getItemById(@Path("itemId") itemId: Long): ItemResponse
+    suspend fun getItemById(@Path("itemId") itemId: Long): ItemResponseElement
     
 }
