@@ -5,5 +5,5 @@ data class ItemSearchResponse(
     val totalPages: Int,
     val currentPageNumber: Int,
     val hasNext: Boolean,
-    val data: List<ItemResponse>
+    val data: List<ItemResponseElement>
 )

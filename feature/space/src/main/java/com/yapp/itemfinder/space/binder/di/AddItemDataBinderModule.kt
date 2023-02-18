@@ -63,7 +63,6 @@ abstract class AddItemDataBinderModule {
         addItemMemoBinder: AddItemScreenMemoBinder
     ): AddItemMemoBinder
 
-
     @Binds
     @Singleton
     abstract fun bindAddItemSelectSpaceBinder(
@@ -75,7 +74,6 @@ abstract class AddItemDataBinderModule {
     abstract fun bindAddItemSelectLockerBinder(
         addItemSelectLockerBinder: AddItemSelectLockerBinder
     ): SelectLockerBinder
-
 
     @Binds
     @Singleton
@@ -89,4 +87,9 @@ abstract class AddItemDataBinderModule {
         addItemMarkerMapBinder: AddItemScreenMarkerMapBinder
     ): AddItemMarkerMapBinder
 
+    @Binds
+    @Singleton
+    abstract fun bindItemBinder(
+        itemBinder: SimpleItemBinder
+    ): ItemBinder
 }

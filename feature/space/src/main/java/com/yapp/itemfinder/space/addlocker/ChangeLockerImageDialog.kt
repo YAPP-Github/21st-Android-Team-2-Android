@@ -14,15 +14,14 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class ChangeLockerImageDialog : DialogFragment() {
-    private var _binding: ChangeLockerImageDialogBinding? = null
-    private val binding get() = _binding!!
+    private lateinit var binding: ChangeLockerImageDialogBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = ChangeLockerImageDialogBinding.inflate(inflater, container, false)
+        binding = ChangeLockerImageDialogBinding.inflate(inflater, container, false)
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         return binding.root
     }

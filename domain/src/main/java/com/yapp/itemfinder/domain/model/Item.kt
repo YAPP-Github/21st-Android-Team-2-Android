@@ -7,6 +7,7 @@ import com.yapp.itemfinder.domain.R
 import kotlinx.parcelize.Parcelize
 
 typealias ItemFocusHandler = (Boolean) -> Unit
+typealias ItemDetailHandler = () -> Unit
 
 @Parcelize
 data class Item(
@@ -17,6 +18,7 @@ data class Item(
     var purchaseDate: String? =null,
     var memo: String? = null,
     var imageUrls: List<String>? = null,
+    var containerImageUrl: String? = null,
     val itemCategory: ItemCategory? = null,
     var tags: List<Tag>? = null,
     val count: Int = 0,
@@ -24,7 +26,12 @@ data class Item(
     val position: Position? = null,
 ) : Data(type = CellType.ITEM_SIMPLE_CELL), Parcelable {
     val representativeImage: String?
-        get() = imageUrls?.first()
+        get() = imageUrls?.firstOrNull()
+    val otherImages: List<String>?
+        get() = if (imageUrls != null && imageUrls!!.size > 1)
+                imageUrls!!.drop(1)
+        else
+            null
 
     companion object {
         fun createEmptyItem() = Item(
@@ -63,8 +70,10 @@ data class Item(
     ): Parcelable
 
     var itemFocusHandler: ItemFocusHandler = { }
+    var itemDetailHandler: ItemDetailHandler = {}
 
     fun applyItemFocus(isFocused: Boolean) = itemFocusHandler(isFocused)
+    fun moveItemDetail() = itemDetailHandler.invoke()
 
 }
 

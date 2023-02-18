@@ -56,6 +56,23 @@ class ItemsMarkerMapView
         }
     }
 
+    fun setBackgroundImage(url: String){
+        Glide.with(context).load(url).into(binding.markerBackgroundImageView)
+    }
+
+    fun addMarkerAndBringToFront(item: Item){
+        addView(
+            ItemMarkerView(context).apply {
+                this.id = item.id.toInt()
+                this.item = item
+                this.position = item.position
+                isFocused = true
+                itemMarkerViews.add(this)
+                bringToFront()
+            }
+        )
+    }
+
     fun createFocusMarker(x: Float, y: Float): Item {
         val mapHorizontalGap = (binding.markerMapContainer.measuredWidth - binding.markerBackgroundImageView.measuredWidth) / 2
 

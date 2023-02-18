@@ -6,12 +6,17 @@ import android.widget.Toast
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.*
+import androidx.recyclerview.widget.RecyclerView.ItemDecoration
 import com.bumptech.glide.Glide
 import com.yapp.itemfinder.domain.model.ScreenMode
 import com.yapp.itemfinder.feature.common.BaseStateFragment
 import com.yapp.itemfinder.feature.common.Depth
+import com.yapp.itemfinder.feature.common.adaper.ItemImageAdapter
 import com.yapp.itemfinder.feature.common.binding.viewBinding
+import com.yapp.itemfinder.feature.common.extension.dpToPx
+import com.yapp.itemfinder.feature.common.extension.gone
 import com.yapp.itemfinder.feature.common.extension.visible
+import com.yapp.itemfinder.feature.common.utility.ImagesItemDecoration
 import com.yapp.itemfinder.space.R
 import com.yapp.itemfinder.feature.common.R as CR
 import com.yapp.itemfinder.space.additem.AddItemActivity
@@ -24,6 +29,8 @@ import com.yapp.itemfinder.space.databinding.FragmentItemDetailBinding
 class ItemDetailFragment : BaseStateFragment<ItemDetailViewModel, FragmentItemDetailBinding>() {
 
     override val vm by viewModels<ItemDetailViewModel>()
+    private val itemImageAdapter by lazy { ItemImageAdapter() }
+    private val imageItemDecoration by lazy { ImagesItemDecoration(4.dpToPx(requireContext())) }
 
     override val depth: Depth
         get() = Depth.SECOND
@@ -32,6 +39,7 @@ class ItemDetailFragment : BaseStateFragment<ItemDetailViewModel, FragmentItemDe
 
     override fun initViews() = with(binding) {
         initToolBar()
+        imageRecyclerView.addItemDecoration(imageItemDecoration)
     }
 
     private fun initToolBar() = with(binding.defaultTopNavigationView) {
@@ -90,8 +98,20 @@ class ItemDetailFragment : BaseStateFragment<ItemDetailViewModel, FragmentItemDe
 
     private fun handleSuccess(lockerDetailState: ItemDetailState.Success) = with(binding) {
         val item = lockerDetailState.item
-        if (item.representativeImage != null) {
+        if (item.imageUrls.isNullOrEmpty()) {
+            itemMainImage.gone()
+            itemImagesLayout.gone()
+        }else{
             Glide.with(requireContext()).load(item.representativeImage).into(itemMainImage)
+
+            if (item.otherImages.isNullOrEmpty()){
+                itemImagesLayout.gone()
+            }else{
+                imageRecyclerView.adapter = itemImageAdapter
+                itemImageAdapter.submitList(item.otherImages)
+              // 이미지 넣기
+            }
+
         }
         itemName.text = item.name
         itemCategory.text = item.itemCategory?.labelResId?.let { getString(it) }
@@ -128,9 +148,11 @@ class ItemDetailFragment : BaseStateFragment<ItemDetailViewModel, FragmentItemDe
         }
 
         item.memo?.let {
-            itemMemo.visible()
-            itemMemoTitle.visible()
-            itemMemo.text = it
+            if (it.isNotEmpty()){
+                itemMemo.visible()
+                itemMemoTitle.visible()
+                itemMemo.text = it
+            }
         }
         item.expirationDate?.let {
             itemExpirationDateTitle.visible()
@@ -141,6 +163,11 @@ class ItemDetailFragment : BaseStateFragment<ItemDetailViewModel, FragmentItemDe
             itemPurchaseDate.visible()
             itemPurchaseDateTitle.visible()
             itemPurchaseDate.text = it
+        }
+        item.position?.let {
+            lockerMarkerMap.visible()
+            lockerMarkerMap.setBackgroundImage(item.containerImageUrl!!)
+            lockerMarkerMap.addMarkerAndBringToFront(item)
         }
     }
 

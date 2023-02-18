@@ -45,11 +45,18 @@
                 <LinearLayout
                     android:id="@+id/itemImagesLayout"
                     android:layout_width="match_parent"
-                    android:layout_height="72dp"
-                    android:layout_marginStart="16dp"
+                    android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:paddingTop="16dp"
-                    android:visibility="gone" />
+                    android:layout_marginTop="16dp">
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/imageRecyclerView"
+                        tools:listitem="@layout/item_image_viewholder_item"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="72dp"/>
+
+                </LinearLayout>
 
                 <TextView
                     android:id="@+id/itemName"
@@ -221,10 +228,11 @@
                     android:visibility="gone"
                     tools:text="2023.01.09." />
 
-                <ImageView
-                    android:id="@+id/lockerImageView"
+                <com.yapp.itemfinder.feature.common.views.item.ItemsMarkerMapView
+                    android:id="@+id/lockerMarkerMap"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    tools:visibility="visible"
                     android:visibility="gone" />
 
                 <Space

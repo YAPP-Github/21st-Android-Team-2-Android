@@ -3,6 +3,7 @@ package com.yapp.itemfinder.space.itemdetail
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.yapp.itemfinder.data.repositories.di.ItemMockRepositoryQualifiers
+import com.yapp.itemfinder.data.repositories.di.ItemRepositoryQualifiers
 import com.yapp.itemfinder.domain.repository.ItemRepository
 import com.yapp.itemfinder.feature.common.BaseStateViewModel
 import com.yapp.itemfinder.feature.common.extension.runCatchingWithErrorHandler
@@ -16,6 +17,8 @@ import javax.inject.Inject
 @HiltViewModel
 class ItemDetailViewModel @Inject constructor(
     @ItemMockRepositoryQualifiers
+    private val itemMockRepository: ItemRepository,
+    @ItemRepositoryQualifiers
     private val itemRepository: ItemRepository,
     private val savedStateHandle: SavedStateHandle
 ) : BaseStateViewModel<ItemDetailState, ItemDetailSideEffect>() {
