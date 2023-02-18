@@ -160,6 +160,8 @@ class AddLockerViewModel @Inject constructor(
                     url = state.url,
                     lockerId = state.lockerId!!
                 )
+            }.onSuccess {
+                postSideEffect(AddLockerSideEffect.SuccessRegister)
             }.onErrorWithResult { errorWithResult ->
                 setState(AddLockerState.Error(errorWithResult))
                 val message = errorWithResult.errorResultEntity.message
@@ -178,7 +180,7 @@ class AddLockerViewModel @Inject constructor(
         }
     }
 
-    fun changeImage(){
+    fun changeImage() {
         withState<AddLockerState.Success> { state ->
             postSideEffect(AddLockerSideEffect.UploadImage)
         }
