@@ -107,6 +107,10 @@ class LockerListFragment : BaseStateFragment<LockerListViewModel, FragmentLocker
                                         AddLockerActivity.SPACE_NAME_KEY,
                                         requireArguments().getString(SPACE_NAME_KEY)
                                     )
+                                    putExtra(
+                                        AddLockerActivity.SCREEN_MODE,
+                                        ScreenMode.ADD_MODE.label
+                                    )
                                 }
                                 resultLauncher.launch(intent)
                             }
@@ -114,6 +118,28 @@ class LockerListFragment : BaseStateFragment<LockerListViewModel, FragmentLocker
                                 startActivity(AddItemActivity.newIntent(requireContext()).apply {
                                     putExtra(AddItemActivity.SCREEN_MODE, ScreenMode.ADD_MODE.label)
                                 })
+                            }
+                            is LockerListSideEffect.MoveToEditLocker -> {
+                                val intent = AddLockerActivity.newIntent(requireActivity())
+                                intent.apply {
+                                    putExtra(
+                                        AddLockerActivity.SPACE_ID_KEY,
+                                        requireArguments().getLong(SPACE_ID_KEY)
+                                    )
+                                    putExtra(
+                                        AddLockerActivity.SPACE_NAME_KEY,
+                                        requireArguments().getString(SPACE_NAME_KEY)
+                                    )
+                                    putExtra(
+                                        AddLockerActivity.SCREEN_MODE,
+                                        ScreenMode.EDIT_MODE.label
+                                    )
+                                    putExtra(
+                                        AddLockerActivity.LOCKER_ENTITY_KEY,
+                                        sideEffect.locker
+                                    )
+                                }
+                                resultLauncher.launch(intent)
                             }
                             is LockerListSideEffect.ShowToast -> {
                                 Toast.makeText(

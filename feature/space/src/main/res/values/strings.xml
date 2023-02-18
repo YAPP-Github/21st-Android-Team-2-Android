@@ -23,4 +23,7 @@
     <string name="item_position">물건 위치</string>
     <string name="define_item_position_pin_guide">물건의 위치를 핀으로 찍어보세요.</string>
     <string name="initialize_pin">핀 초기화</string>
+    <string name="changeLockerImage">사진 변경</string>
+    <string name="confirm">확인</string>
+    <string name="changeImageMessage">정말 보관함 사진을 변경하시겠어요? (이전에 찍어둔 핀이 있다면 그대로 남아있을 예정이에요.)</string>
 </resources>

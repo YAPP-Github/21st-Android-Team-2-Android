@@ -1,6 +1,6 @@
-package com.yapp.itemfinder.domain.model
+package com.yapp.itemfinder.data.network.api.locker
 
-data class AddLockerRequest(
+data class AddEditLockerRequest(
     val name: String,
     val url: String? = null,
     val spaceId: Long,

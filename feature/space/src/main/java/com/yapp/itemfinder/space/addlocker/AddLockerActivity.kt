@@ -10,6 +10,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.yapp.itemfinder.domain.model.Data
+import com.yapp.itemfinder.domain.model.ScreenMode
 import com.yapp.itemfinder.feature.common.BaseStateActivity
 import com.yapp.itemfinder.feature.common.Depth
 import com.yapp.itemfinder.feature.common.R
@@ -17,6 +18,7 @@ import com.yapp.itemfinder.feature.common.binding.viewBinding
 import com.yapp.itemfinder.feature.common.datalist.adapter.DataListAdapter
 import com.yapp.itemfinder.feature.common.datalist.binder.DataBindHelper
 import com.yapp.itemfinder.feature.common.extension.showShortToast
+import com.yapp.itemfinder.space.additem.AddItemActivity
 import com.yapp.itemfinder.space.databinding.ActivityAddLockerBinding
 import com.yapp.itemfinder.space.selectspace.SelectSpaceActivity
 import dagger.hilt.android.AndroidEntryPoint
@@ -48,6 +50,12 @@ class AddLockerActivity : BaseStateActivity<AddLockerViewModel, ActivityAddLocke
         }
         recyclerView.adapter = dataListAdapter
         setResultNext()
+        supportFragmentManager.setFragmentResultListener(
+            ChangeLockerImageDialog.CONFIRM_KEY,
+            this@AddLockerActivity
+        ) { _, _ ->
+            vm.changeImage()
+        }
     }
 
     private fun initToolbar() = with(binding.defaultNavigationView) {
@@ -57,10 +65,20 @@ class AddLockerActivity : BaseStateActivity<AddLockerViewModel, ActivityAddLocke
             setResult(Activity.RESULT_CANCELED)
             finish()
         }
-        titleText = "보관함 추가"
         rightFirstIcon = R.drawable.ic_done
-        rightFirstIconClickListener = {
-            vm.addNewLocker()
+        when (intent.getStringExtra(AddItemActivity.SCREEN_MODE)) {
+            ScreenMode.ADD_MODE.label -> {
+                titleText = "보관함 추가"
+                rightFirstIconClickListener = {
+                    vm.addNewLocker()
+                }
+            }
+            ScreenMode.EDIT_MODE.label -> {
+                titleText = "보관함 수정"
+                rightFirstIconClickListener = {
+                    vm.editLocker()
+                }
+            }
         }
     }
 
@@ -94,6 +112,12 @@ class AddLockerActivity : BaseStateActivity<AddLockerViewModel, ActivityAddLocke
                         is AddLockerSideEffect.SuccessRegister -> {
                             setResult(Activity.RESULT_OK)
                             finish()
+                        }
+                        is AddLockerSideEffect.OpenChangeImageDialog -> {
+                            val dialog = ChangeLockerImageDialog.newInstance()
+                            this@AddLockerActivity.supportFragmentManager.let { fm ->
+                                dialog.show(fm, CHANGE_IMAGE_DIALOG)
+                            }
                         }
                     }
                 }
@@ -136,6 +160,9 @@ class AddLockerActivity : BaseStateActivity<AddLockerViewModel, ActivityAddLocke
         const val SPACE_NAME_KEY = "SPACE_NAME_KEY"
         const val NEW_SPACE_NAME = "NEW_SPACE_NAME_KEY"
         const val NEW_SPACE_ID = "NEW_SPACE_ID"
+        const val SCREEN_MODE = "SCREEN_MODE"
+        const val LOCKER_ENTITY_KEY = "LOCKER_ENTITY_KEY"
+        const val CHANGE_IMAGE_DIALOG = "CHANGE_IMAGE_DIALOG"
         fun newIntent(context: Context) = Intent(context, AddLockerActivity::class.java)
     }
 }

@@ -1,4 +1,4 @@
-package com.yapp.itemfinder.data.network.api.lockerlist
+package com.yapp.itemfinder.data.network.api.locker
 
 import com.yapp.itemfinder.domain.model.LockerEntity
 

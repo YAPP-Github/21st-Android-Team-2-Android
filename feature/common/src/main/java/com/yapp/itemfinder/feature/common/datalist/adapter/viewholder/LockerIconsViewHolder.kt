@@ -4,6 +4,7 @@ import android.widget.RadioGroup
 import android.widget.RadioGroup.OnCheckedChangeListener
 import com.yapp.itemfinder.domain.model.LockerIconId
 import com.yapp.itemfinder.domain.model.LockerIcons
+import com.yapp.itemfinder.domain.model.ScreenMode
 import com.yapp.itemfinder.feature.common.R
 import com.yapp.itemfinder.feature.common.databinding.LockerIconsBinding
 import com.yapp.itemfinder.feature.common.datalist.adapter.DataViewHolder
@@ -23,6 +24,23 @@ class LockerIconsViewHolder(
 
         radioGroup1.setOnCheckedChangeListener(RadioGroup1Listener(data))
         radioGroup2.setOnCheckedChangeListener(RadioGroup2Listener(data))
+
+        if (data.mode == ScreenMode.EDIT_MODE) {
+            binding.apply {
+                radioGroup1.clearCheck()
+                radioGroup2.clearCheck()
+                when (data.icon) {
+                    LockerIconId.LOCKER_ICON1.iconId -> radioButton1.isChecked = true
+                    LockerIconId.LOCKER_ICON2.iconId -> radioButton2.isChecked = true
+                    LockerIconId.LOCKER_ICON3.iconId -> radioButton3.isChecked = true
+                    LockerIconId.LOCKER_ICON4.iconId -> radioButton4.isChecked = true
+                    LockerIconId.LOCKER_ICON5.iconId -> radioButton5.isChecked = true
+                    LockerIconId.LOCKER_ICON6.iconId -> radioButton6.isChecked = true
+                    LockerIconId.LOCKER_ICON7.iconId -> radioButton7.isChecked = true
+                    LockerIconId.LOCKER_ICON8.iconId -> radioButton8.isChecked = true
+                }
+            }
+        }
 
     }
 
