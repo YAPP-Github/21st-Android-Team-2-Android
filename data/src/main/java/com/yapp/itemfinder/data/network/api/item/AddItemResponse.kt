@@ -14,7 +14,7 @@ data class AddItemResponse(
     val tags: List<String>,
     val description: String?,
     val purchaseDate: String?,
-    val useByDate: LocalDateTime?,
+    val useByDate: String?,
     val pinX: Float?,
     val pinY: Float?
 ){

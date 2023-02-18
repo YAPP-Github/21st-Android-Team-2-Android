@@ -20,7 +20,7 @@ interface ItemRepository {
         tagIds: List<Long> ? = null,
         description: String? = null,
         purchaseDate: String? = null,
-        useByDate: LocalDateTime? = null,
+        useByDate: String? = null,
         pinX: Float? = null,
         pinY: Float? = null
         ): Item

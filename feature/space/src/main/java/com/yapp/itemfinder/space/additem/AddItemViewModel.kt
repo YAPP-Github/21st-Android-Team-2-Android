@@ -485,7 +485,9 @@ class AddItemViewModel @Inject constructor(
                     imageUrls = imageUrls,
                     tagIds = tagIds,
                     description = itemMemo,
-                    purchaseDate = itemPurchase.replace(".","-")
+                    purchaseDate = itemPurchase.replace(".","-"),
+                    // UTC 시간대의 오전 0시 (한국시간 기준으로 09시) 추후 UI 변경사항 고려해서 값 대입할 것.
+                    useByDate = itemExpiration.replace(".","-") + "T00:00:00.000Z",
                 )
             }.onSuccess {
                 postSideEffect(AddItemSideEffect.ShowToast("추가성공"))

@@ -45,7 +45,7 @@ class ItemRepositoryImpl @Inject constructor(
         tagIds: List<Long>?,
         description: String?,
         purchaseDate: String?,
-        useByDate: LocalDateTime?,
+        useByDate: String?,
         pinX: Float?,
         pinY: Float?
     ): Item {

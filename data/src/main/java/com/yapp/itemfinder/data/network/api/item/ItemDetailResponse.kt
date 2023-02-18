@@ -16,7 +16,6 @@ data class ItemDetailResponse(
     val quantity: Int,
     val tags: List<String>,
     val itemType: String,
-    val useByDate: String,
     val imageUrls: List<String>,
     val containerImageUrl: String,
     val description: String,
@@ -24,7 +23,8 @@ data class ItemDetailResponse(
     val pinY: Float,
     val spaceName: String,
     val containerName: String,
-    val purchaseDate: String
+    val purchaseDate: String,
+    val useByDate: String,
 ) {
     fun toItem(lockerId: Long? = null) = Item(
         id = id,

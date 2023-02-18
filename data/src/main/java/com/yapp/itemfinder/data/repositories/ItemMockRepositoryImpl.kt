@@ -67,7 +67,7 @@ class ItemMockRepositoryImpl @Inject constructor() : ItemRepository {
         tagIds: List<Long>?,
         description: String?,
         purchaseDate: String?,
-        useByDate: LocalDateTime?,
+        useByDate: String?,
         pinX: Float?,
         pinY: Float?
     ): Item {
