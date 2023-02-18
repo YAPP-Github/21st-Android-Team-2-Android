@@ -228,10 +228,11 @@
                     android:visibility="gone"
                     tools:text="2023.01.09." />
 
-                <ImageView
-                    android:id="@+id/lockerImageView"
+                <com.yapp.itemfinder.feature.common.views.item.ItemsMarkerMapView
+                    android:id="@+id/lockerMarkerMap"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    tools:visibility="visible"
                     android:visibility="gone" />
 
                 <Space

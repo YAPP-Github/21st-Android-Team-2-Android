@@ -425,6 +425,7 @@ class AddItemViewModel @Inject constructor(
             var itemPurchase = ""
             var tagIds = listOf<Long>()
             var imageUriStringList = listOf<String>()
+            var position = state.lockerAndItemEntity?.item?.position
             dataList.forEach {
                 if (it is AddItemName) itemName = it.name
                 else if (it is AddItemCategory) itemCategorySelection = it.category
@@ -491,7 +492,9 @@ class AddItemViewModel @Inject constructor(
                     description = itemMemo,
                     purchaseDate = itemPurchase.replace(".","-"),
                     // UTC 시간대의 오전 0시 (한국시간 기준으로 09시) 추후 UI 변경사항 고려해서 값 대입할 것.
-                    useByDate = itemExpiration
+                    useByDate = itemExpiration,
+                    pinX = position?.x,
+                    pinY = position?.y
                 )
             }.onSuccess {
                 postSideEffect(AddItemSideEffect.ShowToast("추가성공"))

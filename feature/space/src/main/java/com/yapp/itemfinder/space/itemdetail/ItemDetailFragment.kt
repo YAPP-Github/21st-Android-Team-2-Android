@@ -164,6 +164,11 @@ class ItemDetailFragment : BaseStateFragment<ItemDetailViewModel, FragmentItemDe
             itemPurchaseDateTitle.visible()
             itemPurchaseDate.text = it
         }
+        item.position?.let {
+            lockerMarkerMap.visible()
+            lockerMarkerMap.setBackgroundImage(item.containerImageUrl!!)
+            lockerMarkerMap.addMarkerAndBringToFront(item)
+        }
     }
 
     companion object {
