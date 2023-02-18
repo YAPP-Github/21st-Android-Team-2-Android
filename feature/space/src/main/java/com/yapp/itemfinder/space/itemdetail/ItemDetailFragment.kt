@@ -11,6 +11,7 @@ import com.yapp.itemfinder.domain.model.ScreenMode
 import com.yapp.itemfinder.feature.common.BaseStateFragment
 import com.yapp.itemfinder.feature.common.Depth
 import com.yapp.itemfinder.feature.common.binding.viewBinding
+import com.yapp.itemfinder.feature.common.extension.gone
 import com.yapp.itemfinder.feature.common.extension.visible
 import com.yapp.itemfinder.space.R
 import com.yapp.itemfinder.feature.common.R as CR
@@ -92,6 +93,8 @@ class ItemDetailFragment : BaseStateFragment<ItemDetailViewModel, FragmentItemDe
         val item = lockerDetailState.item
         if (item.representativeImage != null) {
             Glide.with(requireContext()).load(item.representativeImage).into(itemMainImage)
+        }else{
+            itemMainImage.gone()
         }
         itemName.text = item.name
         itemCategory.text = item.itemCategory?.labelResId?.let { getString(it) }
