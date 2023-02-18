@@ -100,6 +100,7 @@ class ItemDetailFragment : BaseStateFragment<ItemDetailViewModel, FragmentItemDe
         val item = lockerDetailState.item
         if (item.imageUrls.isNullOrEmpty()) {
             itemMainImage.gone()
+            itemImagesLayout.gone()
         }else{
             Glide.with(requireContext()).load(item.representativeImage).into(itemMainImage)
 
