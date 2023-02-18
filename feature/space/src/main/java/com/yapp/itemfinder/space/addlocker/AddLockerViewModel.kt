@@ -2,6 +2,7 @@ package com.yapp.itemfinder.space.addlocker
 
 import android.content.Context
 import android.net.Uri
+import android.os.Parcelable
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.yapp.itemfinder.data.repositories.di.LockerRepositoryQualifiers
@@ -10,6 +11,7 @@ import com.yapp.itemfinder.domain.repository.ImageRepository
 import com.yapp.itemfinder.domain.repository.LockerRepository
 import com.yapp.itemfinder.feature.common.BaseStateViewModel
 import com.yapp.itemfinder.feature.common.extension.*
+import com.yapp.itemfinder.space.additem.AddItemActivity
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Job
@@ -24,29 +26,57 @@ class AddLockerViewModel @Inject constructor(
     private val lockerRepository: LockerRepository,
     private val imageRepository: ImageRepository,
     @ApplicationContext private val applicationContext: Context,
-    savedStateHandle: SavedStateHandle
+    val savedStateHandle: SavedStateHandle
 ) : BaseStateViewModel<AddLockerState, AddLockerSideEffect>() {
     override val _stateFlow: MutableStateFlow<AddLockerState> =
         MutableStateFlow(AddLockerState.Uninitialized)
     override val _sideEffectFlow: MutableSharedFlow<AddLockerSideEffect> = MutableSharedFlow()
 
-    init {
-        setState(
-            AddLockerState.Success(
-                listOf(
-                    AddLockerNameInput(),
-                    AddLockerSpace(
-                        name = savedStateHandle.get<String>(AddLockerActivity.SPACE_NAME_KEY) ?: ""
-                    ),
-                    LockerIcons(),
-                    AddLockerPhoto()
-                ),
-                lockerName = "",
-                spaceId = savedStateHandle.get<Long>(AddLockerActivity.SPACE_ID_KEY) ?: 0,
-                icon = LockerIconId.LOCKER_ICON1.iconId,
-                url = null
-            )
-        )
+    override fun fetchData(): Job = viewModelScope.launch {
+        setState(AddLockerState.Loading)
+        val screenMode = savedStateHandle.get<String>(AddLockerActivity.SCREEN_MODE)
+        when (screenMode) {
+            ScreenMode.ADD_MODE.label -> {
+                setState(
+                    AddLockerState.Success(
+                        listOf(
+                            AddLockerNameInput(mode = ScreenMode.ADD_MODE),
+                            AddLockerSpace(
+                                name = savedStateHandle.get<String>(AddLockerActivity.SPACE_NAME_KEY)
+                                    ?: ""
+                            ),
+                            LockerIcons(mode = ScreenMode.ADD_MODE),
+                            AddLockerPhoto(mode = ScreenMode.ADD_MODE)
+                        ),
+                        lockerName = "",
+                        spaceId = savedStateHandle.get<Long>(AddLockerActivity.SPACE_ID_KEY) ?: 0,
+                        icon = LockerIconId.LOCKER_ICON1.iconId,
+                        url = null
+                    )
+                )
+            }
+            ScreenMode.EDIT_MODE.label -> {
+                val locker =
+                    savedStateHandle.get<Parcelable>(AddLockerActivity.LOCKER_ENTITY_KEY) as LockerEntity
+                setState(
+                    AddLockerState.Success(
+                        listOf(
+                            AddLockerNameInput(name = locker.name, mode = ScreenMode.EDIT_MODE),
+                            AddLockerSpace(
+                                name = savedStateHandle.get<String>(AddLockerActivity.SPACE_NAME_KEY)
+                                    ?: ""
+                            ),
+                            LockerIcons(icon = locker.icon, mode = ScreenMode.EDIT_MODE),
+                            AddLockerPhoto(url = locker.imageUrl, mode = ScreenMode.EDIT_MODE)
+                        ),
+                        lockerName = "",
+                        spaceId = savedStateHandle.get<Long>(AddLockerActivity.SPACE_ID_KEY) ?: 0,
+                        icon = LockerIconId.LOCKER_ICON1.iconId,
+                        url = null
+                    )
+                )
+            }
+        }
     }
 
     fun openSelectSpace() {
@@ -129,14 +159,14 @@ class AddLockerViewModel @Inject constructor(
         withState<AddLockerState.Success> { successState ->
             runCatchingWithErrorHandler {
                 setState(AddLockerState.Loading)
-                val filePath = uri.cropToJpeg(applicationContext,4,3)
+                val filePath = uri.cropToJpeg(applicationContext, 4, 3)
                 val imageUrl = imageRepository.addImages(listOf(filePath)).first()
                 imageUrl
             }.onSuccess {
 
                 val idx = successState.dataList.indexOfFirst { data -> data is AddLockerPhoto }
                 val newDataList = successState.dataList.toMutableList().apply {
-                    this[idx] = AddLockerPhoto(url = it)
+                    this[idx] = AddLockerPhoto(url = it, mode = ScreenMode.EDIT_MODE)
                 }
                 setState(
                     successState.copy(

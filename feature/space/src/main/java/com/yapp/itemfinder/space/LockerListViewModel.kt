@@ -56,7 +56,7 @@ class LockerListViewModel @Inject constructor(
     }
 
     fun editItem(item: LockerEntity): Job = viewModelScope.launch {
-
+        postSideEffect(LockerListSideEffect.MoveToEditLocker(item))
     }
 
     fun deleteItem(item: LockerEntity): Job = viewModelScope.launch {

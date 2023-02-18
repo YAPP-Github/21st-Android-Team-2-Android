@@ -1,7 +1,9 @@
 package com.yapp.itemfinder.domain.model
 
 data class LockerIcons(
-    override var type: CellType = CellType.LOCKER_ICONS_CELL
+    var icon: String = LockerIconId.LOCKER_ICON1.iconId,
+    override var type: CellType = CellType.LOCKER_ICONS_CELL,
+    var mode: ScreenMode
 ) : Data() {
     var changeIconHandler: IconHandler = {}
     fun changeIcon(icon: String) = changeIconHandler.invoke(icon)
