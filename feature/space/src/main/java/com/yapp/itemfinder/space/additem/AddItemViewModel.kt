@@ -477,6 +477,10 @@ class AddItemViewModel @Inject constructor(
                     imageUrls = imageRepository.addImages(imagePaths)
                 }
 
+                if (itemExpiration.isNotEmpty()){
+                    itemExpiration = itemExpiration.replace(".","-") + "T00:00:00.000Z"
+                }
+
                 itemRepository.addItem(
                     containerId = itemLockerId,
                     name = itemName,
@@ -487,7 +491,7 @@ class AddItemViewModel @Inject constructor(
                     description = itemMemo,
                     purchaseDate = itemPurchase.replace(".","-"),
                     // UTC 시간대의 오전 0시 (한국시간 기준으로 09시) 추후 UI 변경사항 고려해서 값 대입할 것.
-                    useByDate = itemExpiration.replace(".","-") + "T00:00:00.000Z",
+                    useByDate = itemExpiration
                 )
             }.onSuccess {
                 postSideEffect(AddItemSideEffect.ShowToast("추가성공"))
