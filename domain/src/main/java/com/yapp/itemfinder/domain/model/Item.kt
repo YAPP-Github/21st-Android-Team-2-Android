@@ -27,6 +27,11 @@ data class Item(
 ) : Data(type = CellType.ITEM_SIMPLE_CELL), Parcelable {
     val representativeImage: String?
         get() = imageUrls?.firstOrNull()
+    val otherImages: List<String>?
+        get() = if (imageUrls != null && imageUrls!!.size > 1)
+                imageUrls!!.drop(1)
+        else
+            null
 
     companion object {
         fun createEmptyItem() = Item(

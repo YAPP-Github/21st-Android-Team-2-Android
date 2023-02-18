@@ -46,10 +46,17 @@
                     android:id="@+id/itemImagesLayout"
                     android:layout_width="match_parent"
                     android:layout_height="72dp"
-                    android:layout_marginStart="16dp"
                     android:orientation="horizontal"
-                    android:paddingTop="16dp"
-                    android:visibility="gone" />
+                    android:paddingTop="16dp">
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/imageRecyclerView"
+                        tools:listitem="@layout/item_image_viewholder_item"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"/>
+
+                </LinearLayout>
 
                 <TextView
                     android:id="@+id/itemName"
