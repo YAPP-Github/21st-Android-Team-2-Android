@@ -1,5 +1,6 @@
 package com.yapp.itemfinder.data.network.api.item
 
+import com.yapp.itemfinder.domain.model.AddItemPurchaseDate
 import com.yapp.itemfinder.domain.model.Item
 import com.yapp.itemfinder.domain.model.ItemCategory
 import com.yapp.itemfinder.domain.model.Tag
@@ -22,14 +23,15 @@ data class ItemDetailResponse(
     val pinX: Float,
     val pinY: Float,
     val spaceName: String,
-    val containerName: String
+    val containerName: String,
+    val purchaseDate: String
 ) {
     fun toItem(lockerId: Long? = null) = Item(
         id = id,
         lockerId = lockerId,
         name = name,
         expirationDate = useByDate,
-        purchaseDate = null,
+        purchaseDate = purchaseDate,
         memo = description,
         imageUrls = imageUrls,
         containerImageUrl =containerImageUrl,
