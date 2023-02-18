@@ -128,9 +128,11 @@ class ItemDetailFragment : BaseStateFragment<ItemDetailViewModel, FragmentItemDe
         }
 
         item.memo?.let {
-            itemMemo.visible()
-            itemMemoTitle.visible()
-            itemMemo.text = it
+            if (it.isNotEmpty()){
+                itemMemo.visible()
+                itemMemoTitle.visible()
+                itemMemo.text = it
+            }
         }
         item.expirationDate?.let {
             itemExpirationDateTitle.visible()
