@@ -18,6 +18,7 @@ data class Item(
     var purchaseDate: String? =null,
     var memo: String? = null,
     var imageUrls: List<String>? = null,
+    var containerImageUrl: String? = null,
     val itemCategory: ItemCategory? = null,
     var tags: List<Tag>? = null,
     val count: Int = 0,
@@ -25,7 +26,7 @@ data class Item(
     val position: Position? = null,
 ) : Data(type = CellType.ITEM_SIMPLE_CELL), Parcelable {
     val representativeImage: String?
-        get() = imageUrls?.first()
+        get() = imageUrls?.firstOrNull()
 
     companion object {
         fun createEmptyItem() = Item(
