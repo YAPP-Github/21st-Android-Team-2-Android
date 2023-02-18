@@ -12,7 +12,7 @@ data class AddItemRequest(
     val tagIds: List<Long>? = null,
     val description: String?,
     val purchaseDate: String?,
-    val useByDate: LocalDateTime?,
+    val useByDate: String?,
     val pinX: Float?,
     val pinY: Float?
 )

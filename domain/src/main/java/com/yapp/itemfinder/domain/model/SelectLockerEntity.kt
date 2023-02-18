@@ -13,7 +13,7 @@ data class SelectLockerEntity(
     var selectLockerHandler: DataHandler = {}
     fun selectLocker() = selectLockerHandler.invoke(this)
 
-    fun toLockerEntity() = LockerEntity(id, type, name, icon, spaceId)
+    fun toLockerEntity() = LockerEntity(id, type, name, icon, spaceId, imageUrl?: "https://i.imgur.com/JteRnyp.jpeg")
 
     companion object {
 

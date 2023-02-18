@@ -35,6 +35,7 @@ class AddItemMarkerMapViewHolder(
             items = if (item?.position != null) listOf(item) else listOf()
         )
         item?.let { itemsMarkerMapView.applyFocusMarker(it) }
+        lockerEntity.imageUrl?.let { itemsMarkerMapView.setBackgroundImage(it) }
     }
 
 }

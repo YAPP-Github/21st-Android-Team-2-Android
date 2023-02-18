@@ -96,6 +96,7 @@ class ItemSimpleViewHolder(
 
     override fun bindViews(data: Item) {
         binding.root.setOnClickListener {
+            data.moveItemDetail()
             return@setOnClickListener
         }
     }

@@ -28,18 +28,8 @@ class ItemRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getItemById(itemId: Long): Item {
-        return Item(
-            id = (0..100).random().toLong(),
-            lockerId = 1,
-            itemCategory = ItemCategory.FOOD,
-            name = "선크림",
-            expirationDate = "2022.12.25.",
-            purchaseDate = null,
-            memo = null,
-            imageUrls = listOf("http://source.unsplash.com/random/150x150"),
-            tags = listOf(Tag("생활"), Tag("화장품")),
-            count = 1
-        )
+        val response = itemApi.getItemById(itemId)
+        return response.toItem()
     }
 
     override suspend fun getAllItems(): List<Item> {
@@ -55,7 +45,7 @@ class ItemRepositoryImpl @Inject constructor(
         tagIds: List<Long>?,
         description: String?,
         purchaseDate: String?,
-        useByDate: LocalDateTime?,
+        useByDate: String?,
         pinX: Float?,
         pinY: Float?
     ): Item {
