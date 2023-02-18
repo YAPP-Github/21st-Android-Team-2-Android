@@ -34,7 +34,6 @@
                 android:layout_below="@+id/titleTextView"
                 android:layout_marginVertical="12dp"
                 android:backgroundTint="@color/gray_02"
-                android:maxLength="9"
                 android:hint="@string/space_name" />
 
             <androidx.appcompat.widget.AppCompatButton
