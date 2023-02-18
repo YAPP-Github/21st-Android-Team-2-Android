@@ -3,6 +3,8 @@ package com.yapp.itemfinder.space.managespace
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -25,7 +27,6 @@ class AddSpaceDialog : DialogFragment() {
     ): View {
         _binding = AddSpaceDialogBinding.inflate(inflater, container, false)
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        // dialog?.window?.requestFeature(Window.FEATURE_NO_TITLE)
         return binding.root
     }
 
@@ -37,6 +38,22 @@ class AddSpaceDialog : DialogFragment() {
                 passName(name)
             }
             cancelButton.setOnClickListener { dismiss() }
+
+            spaceNameEditText.addTextChangedListener(object : TextWatcher {
+
+                override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                    if (p0 != null) {
+                        if ((p0.length) > 9) {
+                            spaceNameEditText.setText(spaceNameEditText.text.substring(0, 9))
+                            spaceNameEditText.setSelection(spaceNameEditText.length())
+                        }
+                    }
+                }
+
+                override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) = Unit
+
+                override fun afterTextChanged(p0: Editable?) = Unit
+            })
         }
     }
 
