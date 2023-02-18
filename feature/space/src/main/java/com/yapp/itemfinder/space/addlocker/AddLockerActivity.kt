@@ -50,6 +50,12 @@ class AddLockerActivity : BaseStateActivity<AddLockerViewModel, ActivityAddLocke
         }
         recyclerView.adapter = dataListAdapter
         setResultNext()
+        supportFragmentManager.setFragmentResultListener(
+            ChangeLockerImageDialog.CONFIRM_KEY,
+            this@AddLockerActivity
+        ){ _, _ ->
+            vm.changeImage()
+        }
     }
 
     private fun initToolbar() = with(binding.defaultNavigationView) {
@@ -111,6 +117,12 @@ class AddLockerActivity : BaseStateActivity<AddLockerViewModel, ActivityAddLocke
                             setResult(Activity.RESULT_OK)
                             finish()
                         }
+                        is AddLockerSideEffect.OpenChangeImageDialog -> {
+                            val dialog = ChangeLockerImageDialog.newInstance()
+                            this@AddLockerActivity.supportFragmentManager.let { fm ->
+                                dialog.show(fm, CHANGE_IMAGE_DIALOG)
+                            }
+                        }
                     }
                 }
             }
@@ -154,6 +166,7 @@ class AddLockerActivity : BaseStateActivity<AddLockerViewModel, ActivityAddLocke
         const val NEW_SPACE_ID = "NEW_SPACE_ID"
         const val SCREEN_MODE = "SCREEN_MODE"
         const val LOCKER_ENTITY_KEY = "LOCKER_ENTITY_KEY"
+        const val CHANGE_IMAGE_DIALOG = "CHANGE_IMAGE_DIALOG"
         fun newIntent(context: Context) = Intent(context, AddLockerActivity::class.java)
     }
 }

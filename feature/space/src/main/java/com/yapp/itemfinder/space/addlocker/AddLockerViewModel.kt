@@ -169,7 +169,17 @@ class AddLockerViewModel @Inject constructor(
     }
 
     fun addImage() {
-        withState<AddLockerState.Success> {
+        withState<AddLockerState.Success> { state ->
+            if (state.url != null) {
+                postSideEffect(AddLockerSideEffect.OpenChangeImageDialog)
+            } else {
+                postSideEffect(AddLockerSideEffect.UploadImage)
+            }
+        }
+    }
+
+    fun changeImage(){
+        withState<AddLockerState.Success> { state ->
             postSideEffect(AddLockerSideEffect.UploadImage)
         }
     }
