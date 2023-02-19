@@ -37,6 +37,7 @@ class DataBindHelper @Inject constructor(
     private val selectLockerBinder: SelectLockerBinder,
     private val addItemMarkerMapBinder: AddItemMarkerMapBinder,
     private val simpleItemBinder: ItemBinder,
+    private val tagBinder: TagBinder
 ) {
 
     @SuppressLint("CheckResult")
@@ -123,8 +124,11 @@ class DataBindHelper @Inject constructor(
             CellType.ADD_ITEM_MARKER_MAP_CELL -> addItemMarkerMapBinder.bindData(
                 data as AddItemMarkerMap, viewModel
             )
-            CellType.ITEM_SIMPLE_CELL ->  simpleItemBinder.bindData(
+            CellType.ITEM_SIMPLE_CELL -> simpleItemBinder.bindData(
                 data as Item, viewModel
+            )
+            CellType.TAG_CELL -> tagBinder.bindData(
+                data as Tag, viewModel
             )
             else -> {}
         }

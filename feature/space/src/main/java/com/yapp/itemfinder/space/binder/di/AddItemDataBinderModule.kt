@@ -98,4 +98,11 @@ abstract class AddItemDataBinderModule {
     abstract fun bindItemBinder(
         itemBinder: SimpleItemBinder
     ): ItemBinder
+
+    @Binds
+    @Singleton
+    abstract fun bindTagBinder(
+        addTagBinder: AddTagBinder
+    ): TagBinder
+
 }

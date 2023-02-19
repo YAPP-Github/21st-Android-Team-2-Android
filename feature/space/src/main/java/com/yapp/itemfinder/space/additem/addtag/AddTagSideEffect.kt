@@ -5,6 +5,8 @@ import com.yapp.itemfinder.feature.common.SideEffect
 
 sealed class AddTagSideEffect : SideEffect {
 
-    data class AddTags(val tagList: List<Tag>): AddTagSideEffect()
+    data class ShowToast(val message: String) : AddTagSideEffect()
+
+    data class Save(val tagList: List<Tag>): AddTagSideEffect()
 
 }

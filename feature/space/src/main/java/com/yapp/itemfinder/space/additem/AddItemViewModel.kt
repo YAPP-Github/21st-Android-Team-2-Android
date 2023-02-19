@@ -404,7 +404,7 @@ class AddItemViewModel @Inject constructor(
         }
     }
 
-    fun saveItem() = viewModelScope.launch{
+    fun saveItem() = viewModelScope.launch {
         withState<AddItemState.Success> { state ->
             state.dataList.filterIsInstance<AddItemName>().firstOrNull()?.saveName()
             state.dataList.filterIsInstance<AddItemMemo>().firstOrNull()?.saveMemo()
@@ -430,12 +430,11 @@ class AddItemViewModel @Inject constructor(
                     itemSpace = it.spaceName
                     itemLockerName = it.lockerName
                     itemLockerId = it.lockerId
-                }
-                else if (it is AddItemCount) itemCount = it.count
+                } else if (it is AddItemCount) itemCount = it.count
                 else if (it is AddItemMemo) itemMemo = it.memo
                 else if (it is AddItemExpirationDate) itemExpiration = it.expirationDate
                 else if (it is AddItemPurchaseDate) itemPurchase = it.purchaseDate
-                else if ( it is AddItemImages){
+                else if (it is AddItemImages) {
                     imageUriStringList = it.uriStringList
                 }
             }
@@ -468,15 +467,15 @@ class AddItemViewModel @Inject constructor(
 
             runCatchingWithErrorHandler {
                 var imageUrls = listOf<String>()
-                if (imageUriStringList.isNotEmpty()){
-                    val imagePaths = withContext(Dispatchers.IO){
-                        imageUriStringList.map { it.toUri().cropToJpeg(context,1,1) }
+                if (imageUriStringList.isNotEmpty()) {
+                    val imagePaths = withContext(Dispatchers.IO) {
+                        imageUriStringList.map { it.toUri().cropToJpeg(context, 1, 1) }
                     }
                     imageUrls = imageRepository.addImages(imagePaths)
                 }
 
-                if (itemExpiration.isNotEmpty()){
-                    itemExpiration = itemExpiration.replace(".","-") + "T00:00:00.000Z"
+                if (itemExpiration.isNotEmpty()) {
+                    itemExpiration = itemExpiration.replace(".", "-") + "T00:00:00.000Z"
                 }
 
                 itemRepository.addItem(
@@ -487,7 +486,7 @@ class AddItemViewModel @Inject constructor(
                     imageUrls = imageUrls,
                     tagIds = tagIds,
                     description = itemMemo,
-                    purchaseDate = itemPurchase.replace(".","-"),
+                    purchaseDate = itemPurchase.replace(".", "-"),
                     // UTC 시간대의 오전 0시 (한국시간 기준으로 09시) 추후 UI 변경사항 고려해서 값 대입할 것.
                     useByDate = itemExpiration,
                     pinX = position?.x,
@@ -571,7 +570,21 @@ class AddItemViewModel @Inject constructor(
     }
 
     fun setSelectedTags(tagList: List<Tag>) {
-
+        withState<AddItemState.Success> { state ->
+            val addItemTags = state.dataList.find { it is AddItemTags } as AddItemTags
+            val newDataList = state.dataList.toMutableList().apply {
+                set(
+                    state.dataList.indexOf(addItemTags), addItemTags.copy(
+                        tagList = tagList
+                    )
+                )
+            }
+            setState(
+                state.copy(
+                    dataList =newDataList,
+                )
+            )
+        }
     }
 
 }

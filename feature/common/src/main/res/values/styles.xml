@@ -154,7 +154,7 @@
         <item name="chipStartPadding">@dimen/spacing_sm</item>
     </style>
 
-    <style name="SelectedTagChip" parent="Widget.MaterialComponents.Chip.Entry">
+    <style name="SelectedTagChip" parent="Widget.MaterialComponents.Chip.Action">
         <item name="chipBackgroundColor">@color/white</item>
         <item name="chipCornerRadius">4dp</item>
         <item name="chipStrokeColor">@color/orange</item>
@@ -162,6 +162,7 @@
         <item name="android:textColor">@color/gray_05</item>
         <item name="android:textSize">@dimen/typography_body1</item>
         <item name="ensureMinTouchTargetSize">false</item>
+        <item name="chipIcon">@drawable/ic_close</item>
         <item name="height">32dp</item>
     </style>
 

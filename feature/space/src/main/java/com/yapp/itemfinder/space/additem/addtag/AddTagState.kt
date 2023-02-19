@@ -10,7 +10,7 @@ sealed class AddTagState : State {
     object Loading : AddTagState()
 
     data class Success(
-        val selectedTagList: List<Tag>,
+        val selectedTagList: List<Tag>?,
         val dataList: List<Data>,
     ) : AddTagState()
 

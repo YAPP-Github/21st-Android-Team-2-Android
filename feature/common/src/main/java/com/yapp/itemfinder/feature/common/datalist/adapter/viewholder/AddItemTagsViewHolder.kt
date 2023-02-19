@@ -27,6 +27,7 @@ class AddItemTagsViewHolder(
                     id = ViewCompat.generateViewId()
                     setChipDrawable(chipDrawable)
                     setTextColor(ContextCompat.getColor(context, R.color.gray_05))
+                    setEnsureMinTouchTargetSize(false)
                     text = it.name
                 }
             )
@@ -43,6 +44,7 @@ class AddItemTagsViewHolder(
                 setChipDrawable(chipDrawable)
                 text = binding.root.context.getText(R.string.add)
                 setTextColor(ContextCompat.getColor(context, R.color.white))
+                setEnsureMinTouchTargetSize(false)
                 setOnClickListener {
                     data.moveAddTag()
                 }

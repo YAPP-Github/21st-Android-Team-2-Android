@@ -55,6 +55,10 @@
             android:textColorHint="@color/gray_03"
             android:background="@android:color/transparent"
             app:layout_constraintStart_toEndOf="@id/tagLogoImageView"
+            android:maxLines="1"
+            android:lines="1"
+            android:inputType="text"
+            android:imeOptions="actionDone"
             app:layout_constraintEnd_toEndOf="@id/tagInputBackgroundView"
             app:layout_constraintTop_toTopOf="@id/tagInputBackgroundView"
             app:layout_constraintBottom_toBottomOf="@id/tagInputBackgroundView" />
@@ -70,7 +74,7 @@
             android:layout_marginTop="@dimen/spacing_llg"
             android:paddingHorizontal="@dimen/spacing"
             app:chipSpacing="@dimen/spacing_lsm">
-            <!--<com.google.android.material.chip.Chip
+            <com.google.android.material.chip.Chip
                 style="@style/TagChip"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -91,7 +95,7 @@
                 android:layout_height="wrap_content"
                 android:text="테스트"/>
             <com.google.android.material.chip.Chip
-                style="@style/TagChip"
+                style="@style/SelectedTagChip"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="테스트"/>
@@ -99,7 +103,7 @@
                 style="@style/AddTagChip"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="테스트"/>-->
+                android:text="테스트"/>
         </com.google.android.material.chip.ChipGroup>
 
         <TextView
@@ -121,6 +125,9 @@
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        android:paddingHorizontal="@dimen/spacing_md"
+        android:paddingVertical="10dp"
+        android:clipToPadding="false"/>
 
 </LinearLayout>
