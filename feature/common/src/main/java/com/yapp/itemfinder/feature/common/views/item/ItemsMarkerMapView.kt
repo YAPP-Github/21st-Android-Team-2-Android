@@ -31,7 +31,11 @@ class ItemsMarkerMapView
             .load(lockerEntity.imageUrl)
             .into(binding.markerBackgroundImageView)
 
-        removeAllMarkers(items)
+        if (itemMarkerViews.size == 1) {
+            allViews.filterIsInstance<ItemMarkerView>().forEach { removeView(it) }
+        } else {
+            removeAllMarkers()
+        }
 
         items.forEach { item ->
             addView(
@@ -42,6 +46,10 @@ class ItemsMarkerMapView
                     itemMarkerViews.add(this)
                 }
             )
+        }
+
+        items.forEach { item ->
+            applyFocusMarker(item)
         }
     }
 
@@ -104,10 +112,8 @@ class ItemsMarkerMapView
 
     fun getImageHeight() = binding.markerBackgroundImageView.measuredHeight
 
-    private fun removeAllMarkers(newItems: List<Item> = listOf()) {
-        val markerViews =
-            allViews.filterIsInstance<ItemMarkerView>()
-                .filterNot { newItems.map { item -> item.id }.contains(it.id.toLong()) }.toList()
+    private fun removeAllMarkers() {
+        val markerViews = itemMarkerViews.toList()
         markerViews.forEach { removeView(it) }
         itemMarkerViews.clear()
     }

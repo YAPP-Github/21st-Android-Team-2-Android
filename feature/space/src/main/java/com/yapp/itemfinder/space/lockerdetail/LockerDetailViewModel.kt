@@ -65,24 +65,37 @@ class LockerDetailViewModel @Inject constructor(
     }
 
     fun reFetchData(): Job = viewModelScope.launch {
-        runCatchingWithErrorHandler {
-            setState(LockerDetailState.Loading)
-            locker?.let { locker ->
-                lockerRepository.getLockers(locker.spaceId).find { it.id == locker.id }?.let { foundLocker ->
-                    foundLocker to itemRepository.getItemsByLockerId(foundLocker.id)
+        withState<LockerDetailState.Success> { prevState ->
+            runCatchingWithErrorHandler {
+                setState(LockerDetailState.Loading)
+                locker?.let { locker ->
+                    lockerRepository.getLockers(locker.spaceId).find { it.id == locker.id }?.let { foundLocker ->
+                        foundLocker to itemRepository.getItemsByLockerId(foundLocker.id)
+                    } ?: throw IllegalArgumentException("보관함 정보를 불러올 수 없습니다.")
                 } ?: throw IllegalArgumentException("보관함 정보를 불러올 수 없습니다.")
-            } ?: throw IllegalArgumentException("보관함 정보를 불러올 수 없습니다.")
-        }.onSuccess { (locker, items) ->
-            setState(
-                LockerDetailState.Success(
-                    locker = locker,
-                    dataList = items
+            }.onSuccess { (locker, items) ->
+                setState(
+                    LockerDetailState.Success(
+                        locker = locker,
+                        dataList = items
+                    )
                 )
-            )
+                withState<LockerDetailState.Success> { state ->
+                    val item = state.dataList.find { it.id == prevState.lastFocusedItem?.id } as Item
+                    setState(
+                        state.copy(
+                            needToFetch = false,
+                            lastFocusedItem = item,
+                            focusIndex = prevState.focusIndex
+                        )
+                    )
 
-        }.onErrorWithResult { errorWithResult ->
-            val message = errorWithResult.errorResultEntity.message
-            // setState(LockerDetailState.Error(it))
+                    item.applyItemFocus(true)
+                }
+            }.onErrorWithResult { errorWithResult ->
+                val message = errorWithResult.errorResultEntity.message
+                // setState(LockerDetailState.Error(it))
+            }
         }
     }
 
@@ -115,7 +128,8 @@ class LockerDetailViewModel @Inject constructor(
                 setState(
                     state.copy(
                         needToFetch = false,
-                        lastFocusedItem = focusItem
+                        lastFocusedItem = focusItem,
+                        focusIndex = position
                     )
                 )
             }

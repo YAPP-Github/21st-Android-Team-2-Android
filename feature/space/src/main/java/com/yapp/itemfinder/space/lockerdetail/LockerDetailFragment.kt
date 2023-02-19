@@ -68,7 +68,7 @@ class LockerDetailFragment :
         super.initState()
         setFragmentResultListener(FETCH_REQUEST_KEY) { _, result ->
             if (result.getBoolean(FETCH_RESULT_KEY)) {
-                vm.fetchData()
+                vm.reFetchData()
             }
         }
     }
