@@ -8,19 +8,23 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class ManageSpaceSpaceItemBinder @Inject constructor(): ManageSpaceItemBinder {
+class ManageSpaceSpaceItemBinder @Inject constructor() : ManageSpaceItemBinder {
     override fun bindData(data: ManageSpaceEntity, viewModel: BaseViewModel) {
         when (viewModel) {
             is ManageSpaceViewModel -> setManageSpaceViewModelHandler(data, viewModel)
         }
     }
 
-    private fun setManageSpaceViewModelHandler(item: ManageSpaceEntity, viewModel: ManageSpaceViewModel){
+    private fun setManageSpaceViewModelHandler(
+        item: ManageSpaceEntity,
+        viewModel: ManageSpaceViewModel
+    ) {
         item.editSpaceDialogHandler = { data ->
             viewModel.editSpaceDialog(data as ManageSpaceEntity)
         }
         item.deleteSpaceDialogHandler = { data ->
-            viewModel.deleteSpace(data as ManageSpaceEntity)
+            val space = data as ManageSpaceEntity
+            viewModel.openDeleteSpaceDialog(spaceId = space.id, spaceName = space.name)
         }
     }
 }

@@ -1,6 +1,7 @@
 package com.yapp.itemfinder.data.network.api.managespace
 
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.PUT
@@ -18,4 +19,7 @@ interface ManageSpaceApi {
         @Path("spaceId") spaceId: Long,
         @Body editSpaceRequest: AddSpaceRequest
     ): SpaceResponse
+
+    @DELETE("spaces/{spaceId}")
+    suspend fun deleteSpace(@Path("spaceId") spaceId: Long)
 }

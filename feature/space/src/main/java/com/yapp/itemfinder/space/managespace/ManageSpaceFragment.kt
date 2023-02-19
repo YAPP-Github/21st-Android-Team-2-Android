@@ -1,8 +1,6 @@
 package com.yapp.itemfinder.space.managespace
 
-import android.app.AlertDialog
 import android.os.Bundle
-import android.view.ContextThemeWrapper
 import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
@@ -17,8 +15,6 @@ import com.yapp.itemfinder.feature.common.Depth
 import com.yapp.itemfinder.feature.common.binding.viewBinding
 import com.yapp.itemfinder.feature.common.datalist.adapter.DataListAdapter
 import com.yapp.itemfinder.feature.common.datalist.binder.DataBindHelper
-import com.yapp.itemfinder.feature.common.extension.showShortToast
-import com.yapp.itemfinder.space.R
 import com.yapp.itemfinder.feature.common.R as CR
 import com.yapp.itemfinder.space.databinding.FragmentManageSpaceBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -62,6 +58,10 @@ class ManageSpaceFragment : BaseStateFragment<ManageSpaceViewModel, FragmentMana
             if (newSpaceName != null) {
                 vm.editSpace(spaceId, newSpaceName)
             }
+        }
+        setFragmentResultListener(DeleteSpaceDialog.DELETE_SPACE_REQUEST) { _, bundle ->
+            val spaceId = bundle.getLong(DeleteSpaceDialog.SPACE_ID)
+            vm.deleteSpace(spaceId)
         }
     }
 
@@ -120,24 +120,14 @@ class ManageSpaceFragment : BaseStateFragment<ManageSpaceViewModel, FragmentMana
                                     Toast.LENGTH_SHORT
                                 ).show()
                             }
-                            is ManageSpaceSideEffect.DeleteDialog -> {
-                                activity?.let {
-                                    val builder = AlertDialog.Builder(
-                                        ContextThemeWrapper(
-                                            it,
-                                            CR.style.AlertDialog
-                                        )
-                                    )
-                                    builder.setMessage("공간 삭제")
-                                        .setPositiveButton("삭제") { dialog, id ->
-                                            Toast.makeText(context, "삭제", Toast.LENGTH_SHORT)
-                                                .show()
-                                        }
-                                        .setNegativeButton("취소") { dialog, id ->
-                                            // User cancelled the dialog
-                                        }
-                                    val dialog = builder.create()
-                                    dialog.show()
+                            is ManageSpaceSideEffect.OpenDeleteSpaceDialog -> {
+                                val dialog = DeleteSpaceDialog.newInstance()
+                                dialog.arguments = Bundle().apply {
+                                    putLong(DeleteSpaceDialog.SPACE_ID, sideEffect.spaceId)
+                                    putString(DeleteSpaceDialog.SPACE_NAME, sideEffect.spaceName)
+                                }
+                                activity?.supportFragmentManager?.let { fm ->
+                                    dialog.show(fm, DeleteSpaceDialog.TAG)
                                 }
                             }
                             is ManageSpaceSideEffect.AddSpaceSuccessResult -> {

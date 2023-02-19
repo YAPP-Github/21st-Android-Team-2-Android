@@ -5,7 +5,10 @@ import com.yapp.itemfinder.feature.common.SideEffect
 
 sealed class ManageSpaceSideEffect : SideEffect {
 
-    object DeleteDialog : ManageSpaceSideEffect()
+    data class OpenDeleteSpaceDialog(
+        val spaceId: Long,
+        val spaceName: String
+    ) : ManageSpaceSideEffect()
 
     object OpenAddSpaceDialog : ManageSpaceSideEffect()
 
