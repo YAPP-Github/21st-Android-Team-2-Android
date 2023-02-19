@@ -10,8 +10,6 @@ import com.bumptech.glide.Glide
 import com.yapp.itemfinder.domain.model.Item
 import com.yapp.itemfinder.domain.model.LockerEntity
 import com.yapp.itemfinder.feature.common.databinding.LayoutItemsMarkerMapBinding
-import com.yapp.itemfinder.feature.common.extension.invisible
-import com.yapp.itemfinder.feature.common.extension.visible
 
 class ItemsMarkerMapView
 @JvmOverloads constructor(
@@ -33,7 +31,7 @@ class ItemsMarkerMapView
             .load(lockerEntity.imageUrl)
             .into(binding.markerBackgroundImageView)
 
-        allViews.filterIsInstance<ItemMarkerView>().forEach { removeView(it) }
+        removeAllMarkers(items)
 
         items.forEach { item ->
             addView(
@@ -56,12 +54,13 @@ class ItemsMarkerMapView
         }
     }
 
-    fun setBackgroundImage(url: String){
+    fun setBackgroundImage(url: String) {
         Glide.with(context).load(url).into(binding.markerBackgroundImageView)
     }
 
-    fun addMarkerAndBringToFront(item: Item){
-        allViews.filterIsInstance<ItemMarkerView>().forEach { removeView(it) }
+    fun addMarkerAndBringToFront(item: Item) {
+        removeAllMarkers()
+
         addView(
             ItemMarkerView(context).apply {
                 this.id = item.id.toInt()
@@ -69,9 +68,12 @@ class ItemsMarkerMapView
                 this.position = item.position
                 isFocused = true
                 itemMarkerViews.add(this)
-                bringToFront()
             }
         )
+
+        postDelayed({
+            itemMarkerViews.forEach { it.bringToFront() }
+        }, 100)
     }
 
     fun createFocusMarker(x: Float, y: Float): Item {
@@ -101,5 +103,13 @@ class ItemsMarkerMapView
     }
 
     fun getImageHeight() = binding.markerBackgroundImageView.measuredHeight
+
+    private fun removeAllMarkers(newItems: List<Item> = listOf()) {
+        val markerViews =
+            allViews.filterIsInstance<ItemMarkerView>()
+                .filterNot { newItems.map { item -> item.id }.contains(it.id.toLong()) }.toList()
+        markerViews.forEach { removeView(it) }
+        itemMarkerViews.clear()
+    }
 
 }

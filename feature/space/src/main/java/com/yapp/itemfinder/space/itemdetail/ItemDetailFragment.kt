@@ -4,7 +4,9 @@ import android.app.Activity
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
+import androidx.core.os.bundleOf
 import androidx.core.view.ViewCompat
+import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.*
 import com.bumptech.glide.Glide
@@ -25,6 +27,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import com.yapp.itemfinder.space.databinding.FragmentItemDetailBinding
+import com.yapp.itemfinder.space.lockerdetail.LockerDetailFragment
 
 @AndroidEntryPoint
 class ItemDetailFragment : BaseStateFragment<ItemDetailViewModel, FragmentItemDetailBinding>() {
@@ -38,10 +41,13 @@ class ItemDetailFragment : BaseStateFragment<ItemDetailViewModel, FragmentItemDe
 
     override val binding by viewBinding(FragmentItemDetailBinding::inflate)
 
+    private var isEditSucceed: Boolean = false
+
     private val editItemLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
                 vm.reFetchData()
+                isEditSucceed = true
             }
         }
 
@@ -183,6 +189,18 @@ class ItemDetailFragment : BaseStateFragment<ItemDetailViewModel, FragmentItemDe
 
         item.containerImageUrl?.let { imageUrl ->
             lockerMarkerMap.setBackgroundImage(imageUrl)
+        }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        if (isEditSucceed) {
+            setFragmentResult(
+                LockerDetailFragment.FETCH_REQUEST_KEY,
+                bundleOf(
+                    LockerDetailFragment.FETCH_RESULT_KEY to true
+                )
+            )
         }
     }
 

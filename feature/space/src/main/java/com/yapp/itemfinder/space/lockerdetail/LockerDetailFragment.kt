@@ -15,6 +15,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updateLayoutParams
 import androidx.core.view.updatePadding
+import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.*
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -62,6 +63,15 @@ class LockerDetailFragment :
     private lateinit var resultLauncher: ActivityResultLauncher<Intent>
 
     private var inset: Insets? = null
+
+    override fun initState() {
+        super.initState()
+        setFragmentResultListener(FETCH_REQUEST_KEY) { _, result ->
+            if (result.getBoolean(FETCH_RESULT_KEY)) {
+                vm.fetchData()
+            }
+        }
+    }
     override fun initViews() = with(binding) {
         ViewCompat.setOnApplyWindowInsetsListener(requireView()) { v, insets ->
             inset = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -300,7 +310,7 @@ class LockerDetailFragment :
                     bundle = bundleOf(
                         ItemDetailFragment.ITEM_ID_KEY to itemId,
                         SPACE_AND_LOCKER_KEY to spaceAndLockerEntity
-                    )
+                    ),
                 )
             }
         }
@@ -373,6 +383,9 @@ class LockerDetailFragment :
         const val LOCKER_ENTITY_KEY = "LOCKER_ENTITY_KEY"
 
         const val BOTTOM_SHEET_TRANSITION_DURATION = 150L
+
+        const val FETCH_REQUEST_KEY = "FETCH_REQUEST_KEY"
+        const val FETCH_RESULT_KEY = "FETCH_RESULT_KEY"
 
         fun newInstance() = LockerDetailFragment()
     }

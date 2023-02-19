@@ -89,14 +89,6 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/collapsing_toolbar_container_height">
 
-            <com.yapp.itemfinder.feature.common.views.item.ItemsMarkerMapView
-                android:id="@+id/itemsMarkerMapView"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
-
             <View
                 android:id="@+id/emptyMarkerMapBackgroundView"
                 android:layout_width="0dp"
@@ -168,6 +160,14 @@
                 app:constraint_referenced_ids="emptyMarkerMapBackgroundView,emptyMarkerMapTitleTextView,emptyMarkerMapDescriptionTextView,emptyMarkerMapImageView,emptySpaceAddButton"
                 android:visibility="gone"
                 tools:visibility="visible"/>
+
+            <com.yapp.itemfinder.feature.common.views.item.ItemsMarkerMapView
+                android:id="@+id/itemsMarkerMapView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -42,6 +42,7 @@ class LockerDetailViewModel @Inject constructor(
 
     private val locker by lazy { savedStateHandle.get<LockerEntity>(LockerDetailFragment.LOCKER_ENTITY_KEY) }
 
+
     override fun fetchData(): Job = viewModelScope.launch {
         // api를 붙일 경우, args의 id를 활용하세요
         runCatchingWithErrorHandler {
