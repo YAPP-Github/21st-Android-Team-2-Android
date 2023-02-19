@@ -18,6 +18,10 @@ data class LockerEntity(
     fun moveLockerDetail() = moveLockerDetailHandler.invoke(this)
 
     @IgnoredOnParcel
+    var openDeleteDialogHandler: DataHandler = {}
+    fun openDeleteDialog() = openDeleteDialogHandler.invoke(this)
+
+    @IgnoredOnParcel
     var editHandler: DataHandler = {}
     fun editLocker() = editHandler.invoke(this)
 

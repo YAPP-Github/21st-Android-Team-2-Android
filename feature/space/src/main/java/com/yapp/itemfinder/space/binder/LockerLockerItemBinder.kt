@@ -20,7 +20,11 @@ class LockerLockerItemBinder @Inject constructor() : LockerItemBinder {
         viewModel: LockerListViewModel
     ) {
         lockerItem.deleteHandler = { data ->
-            viewModel.deleteItem(data as LockerEntity)
+            viewModel.deleteLocker(data.id)
+        }
+        lockerItem.openDeleteDialogHandler = { data ->
+            val locker = data as LockerEntity
+            viewModel.openDeleteDialog(locker.name, locker.id)
         }
         lockerItem.editHandler = { data ->
             viewModel.moveEditLocker(data as LockerEntity)

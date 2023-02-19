@@ -34,4 +34,6 @@ class LockerMockRepositoryImpl @Inject constructor() : LockerRepository {
     ): LockerEntity {
         return LockerEntity(id = 1L, name = "화장대", icon = "ic_container_1", spaceId = 999)
     }
+
+    override suspend fun deleteLocker(lockerId: Long) = Unit
 }

@@ -23,19 +23,25 @@ class LockerViewHolder(
 
     override fun bindViews(data: LockerEntity) {
         binding.spinnerImageButton.setOnClickListener {
-            val popupMenu = PopupMenu(itemView.context, binding.spinnerImageButton, Gravity.END, 0, R.style.PopupMenu)
+            val popupMenu = PopupMenu(
+                itemView.context,
+                binding.spinnerImageButton,
+                Gravity.END,
+                0,
+                R.style.PopupMenu
+            )
             popupMenu.inflate(R.menu.pop_up_menu)
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q){
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                 popupMenu.setForceShowIcon(true)
             }
             popupMenu.setOnMenuItemClickListener { menuItem ->
-                when(menuItem.itemId){
+                when (menuItem.itemId) {
                     R.id.edit_menu -> {
                         data.editLocker()
                         true
                     }
                     R.id.delete_menu -> {
-                        data.deleteLocker()
+                        data.openDeleteDialog()
                         true
                     }
                     else -> false
