@@ -7,6 +7,9 @@ import retrofit2.http.PUT
 import retrofit2.http.Path
 
 interface LockerApi {
+
+    @GET("containers/{containerId}")
+    suspend fun getLockerById(@Path("containerId") containerId: Long): LockerResponse
     @GET("containers/by-space-id/{spaceId}")
     suspend fun getLockersBySpaceId(@Path("spaceId") spaceId: Long): List<LockerResponse>
 

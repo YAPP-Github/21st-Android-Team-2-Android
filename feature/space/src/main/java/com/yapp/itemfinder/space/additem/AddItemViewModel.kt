@@ -36,9 +36,11 @@ class AddItemViewModel @Inject constructor(
         MutableStateFlow(AddItemState.Uninitialized)
     override val _sideEffectFlow: MutableSharedFlow<AddItemSideEffect> = MutableSharedFlow()
 
+    val screenMode by lazy { savedStateHandle.get<String>(AddItemActivity.SCREEN_MODE) }
+    val itemId by lazy { savedStateHandle.get<Long>(AddItemActivity.ITEM_ID_KEY) }
+
     override fun fetchData(): Job = viewModelScope.launch {
         setState(AddItemState.Loading)
-        val screenMode = savedStateHandle.get<String>(AddItemActivity.SCREEN_MODE)
         when (screenMode) {
             ScreenMode.ADD_MODE.label -> {
                 setState(
@@ -57,58 +59,64 @@ class AddItemViewModel @Inject constructor(
                 )
             }
             ScreenMode.EDIT_MODE.label -> {
-                val itemId = savedStateHandle.get<Long>(ItemDetailFragment.ITEM_ID_KEY)
-                runCatchingWithErrorHandler {
-                    // itemId로 api call
-                }
-                // api 연결하면서 sampleItem 제거
-                val sampleItem = Item(
-                    id = 1,
-                    lockerId = 1,
-                    itemCategory = ItemCategory.FOOD,
-                    name = "선크림",
-                    expirationDate = "2022.12.25.",
-                    purchaseDate = null,
-                    memo = null,
-                    imageUrls = listOf("http://source.unsplash.com/random/150x150"),
-                    tags = listOf(Tag(0, "생활"), Tag(1, "화장품")),
-                    count = 1
-                )
-                val dataList = mutableListOf<Data>(
-                    AddItemName(name = sampleItem.name, mode = ScreenMode.EDIT_MODE),
-                    AddItemCategory(category = ItemCategorySelection.FOOD),
-                    AddItemLocation(
-                        spaceName = "주방",
-                        spaceId = 111,
-                        lockerName = "냉장고",
-                        lockerId = 222
-                    ),
-                    AddItemCount(count = sampleItem.count)
-                ).apply {
-                    sampleItem.tags?.let { add(AddItemTags(it)) }
-                    sampleItem.memo?.let {
-                        add(
-                            AddItemMemo(
-                                memo = sampleItem.memo!!,
-                                mode = ScreenMode.EDIT_MODE
+                val spaceAndLockerEntity =
+                    savedStateHandle.get<SpaceAndLockerEntity>(AddItemActivity.SELECTED_SPACE_AND_LOCKER_KEY)
+                savedStateHandle.get<Long>(ItemDetailFragment.ITEM_ID_KEY)?.let { itemId ->
+                    runCatchingWithErrorHandler {
+                        itemRepository.getItemById(itemId)
+                    }.onSuccess { item ->
+                        val addItemLocation = spaceAndLockerEntity?.let { (space, locker) ->
+                            AddItemLocation(
+                                spaceName = space.name,
+                                spaceId = space.id,
+                                lockerName = locker?.name ?: "",
+                                lockerId = locker?.id ?: 0
+                            )
+                        } ?: kotlin.run {
+                            postSideEffect(AddItemSideEffect.AddItemFinished)
+                            return@launch
+                        }
+                        val dataList = mutableListOf<Data>(
+                            AddItemName(name = item.name, mode = ScreenMode.EDIT_MODE),
+                            AddItemCategory(category = item.itemCategory?.toItemCateogrySelection() ?: ItemCategorySelection.DEFAULT),
+                            addItemLocation,
+                            AddItemCount(count = item.count)
+                        ).apply {
+                            item.tags?.let { add(AddItemTags(it)) }
+                            item.memo?.let {
+                                add(
+                                    AddItemMemo(
+                                        memo = item.memo!!,
+                                        mode = ScreenMode.EDIT_MODE
+                                    )
+                                )
+                            }
+                            item.expirationDate?.let { add(AddItemExpirationDate(it)) }
+                            item.purchaseDate?.let { add(AddItemPurchaseDate(it)) }
+                            add(
+                                AddItemAdditional(
+                                    hasMemo = (item.memo != null),
+                                    hasExpirationDate = item.expirationDate != null,
+                                    hasPurchaseDate = item.purchaseDate != null
+                                )
+                            )
+                        }
+                        setState(
+                            AddItemState.Success(
+                                dataList = dataList
                             )
                         )
-                    }
-                    sampleItem.expirationDate?.let { add(AddItemExpirationDate(it)) }
-                    sampleItem.purchaseDate?.let { add(AddItemPurchaseDate(it)) }
-                    add(
-                        AddItemAdditional(
-                            hasMemo = (sampleItem.memo != null),
-                            hasExpirationDate = sampleItem.expirationDate != null,
-                            hasPurchaseDate = sampleItem.purchaseDate != null
+                        setSelectedSpaceAndLocker(spaceAndLockerEntity)
+                        setDefinedLockerAndItem(
+                            LockerAndItemEntity(
+                                lockerEntity = requireNotNull(spaceAndLockerEntity.lockerEntity),
+                                item = item
+                            )
                         )
-                    )
-                }
-                setState(
-                    AddItemState.Success(
-                        dataList = dataList
-                    )
-                )
+                    }.onFailure {
+                        setState(AddItemState.Error(it))
+                    }
+                } ?: postSideEffect(AddItemSideEffect.AddItemFinished)
             }
             else -> {}
         }
@@ -478,23 +486,43 @@ class AddItemViewModel @Inject constructor(
                     itemExpiration = itemExpiration.replace(".", "-") + "T00:00:00.000Z"
                 }
 
-                itemRepository.addItem(
-                    containerId = itemLockerId,
-                    name = itemName,
-                    itemType = itemCategorySelection.toString(),
-                    quantity = itemCount,
-                    imageUrls = imageUrls,
-                    tagIds = tagIds,
-                    description = itemMemo,
-                    purchaseDate = itemPurchase.replace(".", "-"),
-                    // UTC 시간대의 오전 0시 (한국시간 기준으로 09시) 추후 UI 변경사항 고려해서 값 대입할 것.
-                    useByDate = itemExpiration,
-                    pinX = position?.x,
-                    pinY = position?.y
-                )
+                if (screenMode == ScreenMode.ADD_MODE.label) {
+                    itemRepository.addItem(
+                        containerId = itemLockerId,
+                        name = itemName,
+                        itemType = itemCategorySelection.toString(),
+                        quantity = itemCount,
+                        imageUrls = imageUrls,
+                        tagIds = tagIds,
+                        description = itemMemo,
+                        purchaseDate = itemPurchase.replace(".", "-"),
+                        // UTC 시간대의 오전 0시 (한국시간 기준으로 09시) 추후 UI 변경사항 고려해서 값 대입할 것.
+                        useByDate = itemExpiration,
+                        pinX = position?.x,
+                        pinY = position?.y
+                    )
+                } else {
+                    itemId?.let { id ->
+                        itemRepository.editItem(
+                            itemId = id,
+                            containerId = itemLockerId,
+                            name = itemName,
+                            itemType = itemCategorySelection.toString(),
+                            quantity = itemCount,
+                            imageUrls = imageUrls,
+                            tagIds = tagIds,
+                            description = itemMemo,
+                            purchaseDate = itemPurchase.replace(".", "-"),
+                            // UTC 시간대의 오전 0시 (한국시간 기준으로 09시) 추후 UI 변경사항 고려해서 값 대입할 것.
+                            useByDate = itemExpiration,
+                            pinX = position?.x,
+                            pinY = position?.y
+                        )
+                    }
+                }
             }.onSuccess {
-                postSideEffect(AddItemSideEffect.ShowToast("추가성공"))
-                postSideEffect(AddItemSideEffect.AddItemFinished)
+                postSideEffect(AddItemSideEffect.ShowToast("저장되었습니다."))
+                postSideEffect(AddItemSideEffect.AddItemSucceed)
             }.onErrorWithResult { errorWithResult ->
                 val message = errorWithResult.errorResultEntity.message
                 message?.let { postSideEffect(AddItemSideEffect.ShowToast(it)) }
@@ -516,6 +544,10 @@ class AddItemViewModel @Inject constructor(
     }
 
     fun moveSelectSpace() {
+        if (screenMode == ScreenMode.EDIT_MODE.label) {
+            postSideEffect(AddItemSideEffect.ShowToast("수정모드에서는 위치 변경이 불가합니다."))
+            return
+        }
         withState<AddItemState.Success> { state ->
             postSideEffect(
                 AddItemSideEffect.MoveSelectSpace(

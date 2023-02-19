@@ -201,6 +201,10 @@ class AddItemActivity : BaseStateActivity<AddItemViewModel, ActivityAddItemBindi
                         is AddItemSideEffect.AddItemFinished -> {
                             finish()
                         }
+                        is AddItemSideEffect.AddItemSucceed -> {
+                            setResult(Activity.RESULT_OK)
+                            finish()
+                        }
                         is AddItemSideEffect.MoveItemPositionDefine -> {
                             itemPositionDefineLauncher.launch(
                                 AddItemPositionDefineActivity.newIntent(this@AddItemActivity, sideEffect.lockerAndItemEntity)
@@ -266,6 +270,8 @@ class AddItemActivity : BaseStateActivity<AddItemViewModel, ActivityAddItemBindi
         const val SCREEN_MODE = "SCREEN_MODE"
         const val LOCKER_AND_ITEM_KEY = "LOCKER_AND_ITEM_KEY"
         const val SELECTED_TAGS_KEY = "SELECTED_TAGS_KEY"
+
+        const val ITEM_ID_KEY = "ITEM_ID_KEY"
 
         fun newIntent(context: Context) = Intent(context, AddItemActivity::class.java)
 

@@ -31,6 +31,8 @@ sealed class AddItemSideEffect : SideEffect {
 
     data class ShowToast(val message: String): AddItemSideEffect()
 
+    object AddItemSucceed: AddItemSideEffect()
+
     object AddItemFinished: AddItemSideEffect()
 
 }

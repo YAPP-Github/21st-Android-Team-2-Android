@@ -1,6 +1,5 @@
 package com.yapp.itemfinder.space.lockerdetail
 
-import android.os.Bundle
 import android.animation.Animator
 import android.animation.ValueAnimator
 import android.app.Activity
@@ -11,6 +10,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.graphics.Insets
+import androidx.core.os.bundleOf
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updateLayoutParams
@@ -22,10 +22,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetBehavior.BottomSheetCallback
 import com.google.android.material.divider.MaterialDividerItemDecoration
-import com.yapp.itemfinder.domain.model.Data
-import com.yapp.itemfinder.domain.model.Item
-import com.yapp.itemfinder.domain.model.LockerEntity
-import com.yapp.itemfinder.domain.model.ScreenMode
+import com.yapp.itemfinder.domain.model.*
 import com.yapp.itemfinder.feature.common.BaseStateFragment
 import com.yapp.itemfinder.feature.common.FragmentNavigator
 import com.yapp.itemfinder.feature.common.Depth
@@ -44,6 +41,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 import com.yapp.itemfinder.feature.common.R as CR
 import com.yapp.itemfinder.space.itemdetail.ItemDetailFragment
+import com.yapp.itemfinder.space.itemdetail.ItemDetailFragment.Companion.SPACE_AND_LOCKER_KEY
 
 @AndroidEntryPoint
 class LockerDetailFragment :
@@ -201,9 +199,9 @@ class LockerDetailFragment :
                         binding.filterContainer.updateLayoutParams<CoordinatorLayout.LayoutParams> {
                             height = value
                         }
-//                        binding.itemsMarkerMapView.updateLayoutParams<ConstraintLayout.LayoutParams> {
-//                            topMargin = value
-//                        }
+                        binding.itemsMarkerContainer.updateLayoutParams<CoordinatorLayout.LayoutParams> {
+                            topMargin = value
+                        }
                     }
                     start()
                     isFilterExpanded = isExpand
@@ -281,7 +279,10 @@ class LockerDetailFragment :
                     vm.sideEffectFlow.collect { sideEffect ->
                         when (sideEffect) {
                             is LockerDetailSideEffect.MoveItemDetail -> {
-                                moveItemDetail(itemId = sideEffect.itemId)
+                                moveItemDetail(
+                                    itemId = sideEffect.itemId,
+                                    spaceAndLockerEntity = sideEffect.spaceAndLockerEntity
+                                )
                             }
                         }
                     }
@@ -291,18 +292,15 @@ class LockerDetailFragment :
         return job
     }
 
-    private fun moveItemDetail(itemId: Long) {
+    private fun moveItemDetail(itemId: Long, spaceAndLockerEntity: SpaceAndLockerEntity) {
         when (val activity = requireActivity()) {
             is FragmentNavigator -> {
-                val bundle = Bundle()
-                bundle.apply {
-                    putString(ItemDetailFragment.SPACE_NAME_KEY, "주방")
-                    putString(ItemDetailFragment.LOCKER_NAME_KEY, "냉장고")
-                    putLong(ItemDetailFragment.ITEM_ID_KEY, itemId)
-                }
                 activity.addFragmentBackStack(
                     ItemDetailFragment.TAG,
-                    bundle = bundle
+                    bundle = bundleOf(
+                        ItemDetailFragment.ITEM_ID_KEY to itemId,
+                        SPACE_AND_LOCKER_KEY to spaceAndLockerEntity
+                    )
                 )
             }
         }
@@ -352,7 +350,6 @@ class LockerDetailFragment :
 
         val itemCount: Int = dataListAdapter?.itemCount ?: 0
         binding.bottomSheet.totalItemCount.text = getString(string.totalCount, itemCount)
-        //binding.floatingActionButton.setOnClickListener { vm.moveItemDetail(1L) } // 각 물건별로 동작하도록 Item, ItemSimpleViewHolder 쪽에 핸들러 설정이 필요합니다.
         binding.bottomSheet.totalItemCount.text = getString(string.totalCount, dataList.size)
     }
 

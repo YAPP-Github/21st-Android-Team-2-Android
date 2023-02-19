@@ -61,6 +61,7 @@ class ItemsMarkerMapView
     }
 
     fun addMarkerAndBringToFront(item: Item){
+        allViews.filterIsInstance<ItemMarkerView>().forEach { removeView(it) }
         addView(
             ItemMarkerView(context).apply {
                 this.id = item.id.toInt()

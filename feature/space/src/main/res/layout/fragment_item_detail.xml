@@ -36,6 +36,12 @@
                 android:layout_height="270dp"
                 android:scaleType="centerCrop"/>
 
+            <View
+                android:id="@+id/itemMarginView"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:visibility="gone"/>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -152,14 +158,12 @@
                     android:textColor="@color/gray_05"
                     android:visibility="gone" />
 
-                <LinearLayout
-                    android:id="@+id/itemTagsLayout"
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/tagChipGroup"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="4dp"
-                    android:layout_marginTop="8dp"
-                    android:orientation="horizontal"
-                    android:visibility="gone" />
+                    app:singleSelection="true"
+                    app:chipSpacing="@dimen/spacing_sm" />
 
                 <TextView
                     android:id="@+id/itemMemoTitle"
