@@ -3,8 +3,12 @@ package com.yapp.itemfinder.space.lockerdetail
 import android.os.Bundle
 import android.animation.Animator
 import android.animation.ValueAnimator
+import android.app.Activity
+import android.content.Intent
 import android.view.View
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.graphics.Insets
 import androidx.core.view.ViewCompat
@@ -21,6 +25,7 @@ import com.google.android.material.divider.MaterialDividerItemDecoration
 import com.yapp.itemfinder.domain.model.Data
 import com.yapp.itemfinder.domain.model.Item
 import com.yapp.itemfinder.domain.model.LockerEntity
+import com.yapp.itemfinder.domain.model.ScreenMode
 import com.yapp.itemfinder.feature.common.BaseStateFragment
 import com.yapp.itemfinder.feature.common.FragmentNavigator
 import com.yapp.itemfinder.feature.common.Depth
@@ -56,6 +61,8 @@ class LockerDetailFragment :
     @Inject
     lateinit var dataBindHelper: DataBindHelper
 
+    private lateinit var resultLauncher: ActivityResultLauncher<Intent>
+
     private var inset: Insets? = null
     override fun initViews() = with(binding) {
         ViewCompat.setOnApplyWindowInsetsListener(requireView()) { v, insets ->
@@ -71,6 +78,7 @@ class LockerDetailFragment :
 
         initBottomSheet()
         handleRecyclerViewListener()
+        setResultLauncher()
     }
 
     private fun initToolBar() = with(binding.defaultTopNavigationView) {
@@ -193,9 +201,9 @@ class LockerDetailFragment :
                         binding.filterContainer.updateLayoutParams<CoordinatorLayout.LayoutParams> {
                             height = value
                         }
-                        binding.itemsMarkerMapView.updateLayoutParams<CoordinatorLayout.LayoutParams> {
-                            topMargin = value
-                        }
+//                        binding.itemsMarkerMapView.updateLayoutParams<ConstraintLayout.LayoutParams> {
+//                            topMargin = value
+//                        }
                     }
                     start()
                     isFilterExpanded = isExpand
@@ -319,9 +327,21 @@ class LockerDetailFragment :
         } else {
             binding.emptyMarkerMapGroup.visible()
             binding.emptySpaceAddButton.setOnClickListener {
-                startActivity(
-                    AddLockerActivity.newIntent(requireContext())
-                )
+                val intent = AddLockerActivity.newIntent(requireActivity()).apply {
+                    putExtra(
+                        AddLockerActivity.LOCKER_ENTITY_KEY,
+                        lockerDetailState.locker
+                    )
+                    putExtra(
+                        AddLockerActivity.SPACE_ID_KEY,
+                        lockerDetailState.locker.spaceId
+                    )
+                    putExtra(
+                        AddLockerActivity.SCREEN_MODE,
+                        ScreenMode.EDIT_MODE.label
+                    )
+                }
+                resultLauncher.launch(intent)
             }
         }
 
@@ -338,6 +358,15 @@ class LockerDetailFragment :
 
     private fun handleItemMarkers(lockerEntity: LockerEntity, items: List<Item>) = with(binding) {
         itemsMarkerMapView.fetchItems(lockerEntity, items)
+    }
+
+    private fun setResultLauncher() {
+        resultLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+                if (result.resultCode == Activity.RESULT_OK) {
+                    vm.reFetchData()
+                }
+            }
     }
 
     companion object {

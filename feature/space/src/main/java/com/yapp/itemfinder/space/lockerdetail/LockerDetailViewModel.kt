@@ -5,10 +5,12 @@ import androidx.lifecycle.viewModelScope
 import com.yapp.itemfinder.data.repositories.di.ItemMockRepositoryQualifiers
 import com.yapp.itemfinder.data.repositories.di.ItemRepositoryQualifiers
 import com.yapp.itemfinder.data.repositories.di.LockerRepositoryQualifiers
+import com.yapp.itemfinder.data.repositories.di.SpaceRepositoryQualifiers
 import com.yapp.itemfinder.domain.model.Item
 import com.yapp.itemfinder.domain.model.LockerEntity
 import com.yapp.itemfinder.domain.repository.LockerRepository
 import com.yapp.itemfinder.domain.repository.ItemRepository
+import com.yapp.itemfinder.domain.repository.SpaceRepository
 import com.yapp.itemfinder.feature.common.BaseStateViewModel
 import com.yapp.itemfinder.feature.common.extension.onErrorWithResult
 import com.yapp.itemfinder.feature.common.extension.runCatchingWithErrorHandler
@@ -27,6 +29,8 @@ class LockerDetailViewModel @Inject constructor(
     private val itemRepository: ItemRepository,
     @LockerRepositoryQualifiers
     private val lockerRepository: LockerRepository,
+    @SpaceRepositoryQualifiers
+    private val spaceRepository: SpaceRepository,
     private val savedStateHandle: SavedStateHandle
 ) : BaseStateViewModel<LockerDetailState, LockerDetailSideEffect>() {
 
@@ -43,6 +47,28 @@ class LockerDetailViewModel @Inject constructor(
             setState(LockerDetailState.Loading)
             locker?.let {
                 it to itemRepository.getItemsByLockerId(it.id)
+            } ?: throw IllegalArgumentException("보관함 정보를 불러올 수 없습니다.")
+        }.onSuccess { (locker, items) ->
+            setState(
+                LockerDetailState.Success(
+                    locker = locker,
+                    dataList = items
+                )
+            )
+
+        }.onErrorWithResult { errorWithResult ->
+            val message = errorWithResult.errorResultEntity.message
+            // setState(LockerDetailState.Error(it))
+        }
+    }
+
+    fun reFetchData(): Job = viewModelScope.launch {
+        runCatchingWithErrorHandler {
+            setState(LockerDetailState.Loading)
+            locker?.let { locker ->
+                lockerRepository.getLockers(locker.spaceId).find { it.id == locker.id }?.let { foundLocker ->
+                    foundLocker to itemRepository.getItemsByLockerId(foundLocker.id)
+                } ?: throw IllegalArgumentException("보관함 정보를 불러올 수 없습니다.")
             } ?: throw IllegalArgumentException("보관함 정보를 불러올 수 없습니다.")
         }.onSuccess { (locker, items) ->
             setState(
