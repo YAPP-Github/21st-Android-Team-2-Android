@@ -13,8 +13,6 @@ import com.yapp.itemfinder.feature.common.BaseStateViewModel
 import com.yapp.itemfinder.feature.common.extension.cropToJpeg
 import com.yapp.itemfinder.feature.common.extension.onErrorWithResult
 import com.yapp.itemfinder.feature.common.extension.runCatchingWithErrorHandler
-import com.yapp.itemfinder.space.addlocker.AddLockerSideEffect
-import com.yapp.itemfinder.space.addlocker.AddLockerState
 import com.yapp.itemfinder.space.itemdetail.ItemDetailFragment
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -24,7 +22,6 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.time.LocalDate
 import javax.inject.Inject
 
 @HiltViewModel
@@ -74,7 +71,7 @@ class AddItemViewModel @Inject constructor(
                     purchaseDate = null,
                     memo = null,
                     imageUrls = listOf("http://source.unsplash.com/random/150x150"),
-                    tags = listOf(Tag("생활"), Tag("화장품")),
+                    tags = listOf(Tag(0, "생활"), Tag(1, "화장품")),
                     count = 1
                 )
                 val dataList = mutableListOf<Data>(
@@ -560,6 +557,21 @@ class AddItemViewModel @Inject constructor(
                 )
             }
         }
+    }
+
+    fun moveAddTag() {
+        withState<AddItemState.Success> { state ->
+            val addItemTags = state.dataList.find { it is AddItemTags } as AddItemTags
+            postSideEffect(
+                AddItemSideEffect.MoveAddTag(
+                    selectedTagList = addItemTags.tagList
+                )
+            )
+        }
+    }
+
+    fun setSelectedTags(tagList: List<Tag>) {
+
     }
 
 }

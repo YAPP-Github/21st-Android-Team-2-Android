@@ -1,8 +1,9 @@
 package com.yapp.itemfinder.feature.common.datalist.adapter.viewholder
 
-import android.widget.LinearLayout
-import android.widget.TextView
-import androidx.core.content.res.ResourcesCompat
+import androidx.core.content.ContextCompat
+import androidx.core.view.ViewCompat
+import com.google.android.material.chip.Chip
+import com.google.android.material.chip.ChipDrawable
 import com.yapp.itemfinder.domain.model.AddItemTags
 import com.yapp.itemfinder.feature.common.R
 import com.yapp.itemfinder.feature.common.databinding.AddItemTagsBinding
@@ -10,41 +11,43 @@ import com.yapp.itemfinder.feature.common.datalist.adapter.DataViewHolder
 
 class AddItemTagsViewHolder(
     val binding: AddItemTagsBinding
-) : DataViewHolder<AddItemTags>(binding){
+) : DataViewHolder<AddItemTags>(binding) {
     override fun reset() {
-        return
+        binding.tagChipGroup.removeAllViews()
     }
 
     override fun bindData(data: AddItemTags) {
         super.bindData(data)
+        val context = binding.root.context
         data.tagList.asReversed().forEach {
-            val tv = TextView(binding.root.context)
-            val params = LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
+            val tagChip = Chip(context)
+            val chipDrawable = ChipDrawable.createFromAttributes(context, null, 0, R.style.TagChip)
+            binding.tagChipGroup.addView(
+                tagChip.apply {
+                    id = ViewCompat.generateViewId()
+                    setChipDrawable(chipDrawable)
+                    setTextColor(ContextCompat.getColor(context, R.color.gray_05))
+                    text = it.name
+                }
             )
-            params.setMargins(0, 0, 8, 0)
-            tv.apply {
-                text = it.name
-                setTextColor(
-                    ResourcesCompat.getColor(
-                        binding.root.resources, R.color.gray_05, null
-                    )
-                )
-                background = ResourcesCompat.getDrawable(
-                    binding.root.resources,
-                    R.drawable.bg_chip_tag,
-                    null
-                )
-                setTextAppearance(R.style.ItemFinderTypography)
-                layoutParams = params
-            }
-            binding.itemTagsLayout.addView(tv, 0)
         }
     }
 
     override fun bindViews(data: AddItemTags) {
-        return
+        val context = binding.root.context
+        val addTagChip = Chip(context)
+        val chipDrawable = ChipDrawable.createFromAttributes(context, null, 0, R.style.AddTagChip)
+        binding.tagChipGroup.addView(
+            addTagChip.apply {
+                id = ViewCompat.generateViewId()
+                setChipDrawable(chipDrawable)
+                text = binding.root.context.getText(R.string.add)
+                setTextColor(ContextCompat.getColor(context, R.color.white))
+                setOnClickListener {
+                    data.moveAddTag()
+                }
+            }
+        )
     }
 
 }

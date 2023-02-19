@@ -1,5 +1,10 @@
 package com.yapp.itemfinder.domain.model
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
 data class Tag(
-    var name: String
-) : Data()
+    override val id: Long,
+    val name: String,
+) : Data(id), Parcelable

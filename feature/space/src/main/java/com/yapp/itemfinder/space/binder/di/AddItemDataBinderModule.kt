@@ -83,6 +83,12 @@ abstract class AddItemDataBinderModule {
 
     @Binds
     @Singleton
+    abstract fun bindAddItemScreenTagsBinder(
+        addItemScreenTagsBinder: AddItemScreenTagsBinder
+    ): AddItemTagsBinder
+
+    @Binds
+    @Singleton
     abstract fun bindAddItemMarkerMapBinder(
         addItemMarkerMapBinder: AddItemScreenMarkerMapBinder
     ): AddItemMarkerMapBinder

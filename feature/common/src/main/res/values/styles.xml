@@ -132,4 +132,37 @@
         <item name="android:textColor">@color/brown_05</item>
     </style>
 
+    <style name="TagChip" parent="Widget.MaterialComponents.Chip.Choice">
+        <item name="chipBackgroundColor">@color/brown_03</item>
+        <item name="chipCornerRadius">4dp</item>
+        <item name="android:textColor">@color/gray_05</item>
+        <item name="android:textSize">@dimen/typography_body3</item>
+        <item name="ensureMinTouchTargetSize">false</item>
+        <item name="height">32dp</item>
+    </style>
+
+    <style name="AddTagChip" parent="Widget.MaterialComponents.Chip.Action">
+        <item name="chipBackgroundColor">@color/orange</item>
+        <item name="chipCornerRadius">4dp</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">@dimen/typography_body3</item>
+        <item name="ensureMinTouchTargetSize">false</item>
+        <item name="height">32dp</item>
+        <item name="chipIcon">@drawable/ic_plus_10</item>
+        <item name="chipIconTint">@color/white</item>
+        <item name="chipIconSize">10dp</item>
+        <item name="chipStartPadding">@dimen/spacing_sm</item>
+    </style>
+
+    <style name="SelectedTagChip" parent="Widget.MaterialComponents.Chip.Entry">
+        <item name="chipBackgroundColor">@color/white</item>
+        <item name="chipCornerRadius">4dp</item>
+        <item name="chipStrokeColor">@color/orange</item>
+        <item name="chipStrokeWidth">1.5dp</item>
+        <item name="android:textColor">@color/gray_05</item>
+        <item name="android:textSize">@dimen/typography_body1</item>
+        <item name="ensureMinTouchTargetSize">false</item>
+        <item name="height">32dp</item>
+    </style>
+
 </resources>

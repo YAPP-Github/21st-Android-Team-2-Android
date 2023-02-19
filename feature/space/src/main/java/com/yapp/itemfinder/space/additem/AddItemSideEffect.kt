@@ -3,6 +3,7 @@ package com.yapp.itemfinder.space.additem
 import com.yapp.itemfinder.domain.model.SpaceAndLockerEntity
 import com.yapp.itemfinder.domain.model.AddItemImages
 import com.yapp.itemfinder.domain.model.LockerAndItemEntity
+import com.yapp.itemfinder.domain.model.Tag
 import com.yapp.itemfinder.feature.common.SideEffect
 
 sealed class AddItemSideEffect : SideEffect {
@@ -22,6 +23,10 @@ sealed class AddItemSideEffect : SideEffect {
 
     data class MoveItemPositionDefine(
         val lockerAndItemEntity: LockerAndItemEntity
+    ) : AddItemSideEffect()
+
+    data class MoveAddTag(
+        val selectedTagList: List<Tag>,
     ) : AddItemSideEffect()
 
     data class ShowToast(val message: String): AddItemSideEffect()

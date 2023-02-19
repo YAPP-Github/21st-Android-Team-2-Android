@@ -30,6 +30,7 @@ class DataBindHelper @Inject constructor(
     private val addItemExpirationDateBinder: AddItemExpirationDateBinder,
     private val addItemPurchaseDateBinder: AddItemPurchaseDateBinder,
     private val addItemImagesBinder: AddItemImagesBinder,
+    private val addItemTagsBinder: AddItemTagsBinder,
     private val addItemMemoBinder: AddItemMemoBinder,
     private val addItemLocationBinder: AddItemLocationBinder,
     private val addItemSelectSpaceBinder: AddItemSelectSpaceBinder,
@@ -109,6 +110,9 @@ class DataBindHelper @Inject constructor(
             }
             CellType.ADD_ITEM_IMAGES_CELL -> addItemImagesBinder.bindData(
                 data as AddItemImages, viewModel
+            )
+            CellType.ADD_ITEM_TAGS_CELL -> addItemTagsBinder.bindData(
+                data as AddItemTags, viewModel
             )
             CellType.ADD_ITEM_SELECT_SPACE_CELL -> addItemSelectSpaceBinder.bindData(
                 data as AddItemSelectSpaceEntity, viewModel
