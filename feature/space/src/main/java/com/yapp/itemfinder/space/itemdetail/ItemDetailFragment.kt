@@ -6,7 +6,6 @@ import android.widget.Toast
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.*
-import androidx.recyclerview.widget.RecyclerView.ItemDecoration
 import com.bumptech.glide.Glide
 import com.yapp.itemfinder.domain.model.ScreenMode
 import com.yapp.itemfinder.feature.common.BaseStateFragment
@@ -17,7 +16,6 @@ import com.yapp.itemfinder.feature.common.extension.dpToPx
 import com.yapp.itemfinder.feature.common.extension.gone
 import com.yapp.itemfinder.feature.common.extension.visible
 import com.yapp.itemfinder.feature.common.utility.ImagesItemDecoration
-import com.yapp.itemfinder.space.R
 import com.yapp.itemfinder.feature.common.R as CR
 import com.yapp.itemfinder.space.additem.AddItemActivity
 import dagger.hilt.android.AndroidEntryPoint
@@ -166,8 +164,11 @@ class ItemDetailFragment : BaseStateFragment<ItemDetailViewModel, FragmentItemDe
         }
         item.position?.let {
             lockerMarkerMap.visible()
-            lockerMarkerMap.setBackgroundImage(item.containerImageUrl!!)
             lockerMarkerMap.addMarkerAndBringToFront(item)
+        }
+
+        item.containerImageUrl?.let { imageUrl ->
+            lockerMarkerMap.setBackgroundImage(imageUrl)
         }
     }
 

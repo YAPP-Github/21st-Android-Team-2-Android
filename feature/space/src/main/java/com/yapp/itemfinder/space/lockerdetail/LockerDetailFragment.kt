@@ -28,11 +28,10 @@ import com.yapp.itemfinder.feature.common.R.string
 import com.yapp.itemfinder.feature.common.binding.viewBinding
 import com.yapp.itemfinder.feature.common.datalist.adapter.DataListAdapter
 import com.yapp.itemfinder.feature.common.datalist.binder.DataBindHelper
-import com.yapp.itemfinder.feature.common.extension.dimen
-import com.yapp.itemfinder.feature.common.extension.screenHeight
-import com.yapp.itemfinder.feature.common.extension.screenWidth
+import com.yapp.itemfinder.feature.common.extension.*
 import com.yapp.itemfinder.feature.common.views.behavior.CustomDraggableBottomSheetBehaviour
 import com.yapp.itemfinder.space.R
+import com.yapp.itemfinder.space.addlocker.AddLockerActivity
 import com.yapp.itemfinder.space.databinding.FragmentLockerDetailBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
@@ -314,7 +313,17 @@ class LockerDetailFragment :
         }
 
         val dataList = lockerDetailState.dataList
-        handleItemMarkers(lockerDetailState.locker , dataList.map { it as Item })
+        if (lockerDetailState.locker.imageUrl != null) {
+            handleItemMarkers(lockerDetailState.locker , dataList.map { it as Item })
+            binding.emptyMarkerMapGroup.gone()
+        } else {
+            binding.emptyMarkerMapGroup.visible()
+            binding.emptySpaceAddButton.setOnClickListener {
+                startActivity(
+                    AddLockerActivity.newIntent(requireContext())
+                )
+            }
+        }
 
         binding.defaultTopNavigationView.titleText = lockerDetailState.locker.name
 
@@ -323,7 +332,7 @@ class LockerDetailFragment :
 
         val itemCount: Int = dataListAdapter?.itemCount ?: 0
         binding.bottomSheet.totalItemCount.text = getString(string.totalCount, itemCount)
-        binding.floatingActionButton.setOnClickListener { vm.moveItemDetail(1L) } // 각 물건별로 동작하도록 Item, ItemSimpleViewHolder 쪽에 핸들러 설정이 필요합니다.
+        //binding.floatingActionButton.setOnClickListener { vm.moveItemDetail(1L) } // 각 물건별로 동작하도록 Item, ItemSimpleViewHolder 쪽에 핸들러 설정이 필요합니다.
         binding.bottomSheet.totalItemCount.text = getString(string.totalCount, dataList.size)
     }
 

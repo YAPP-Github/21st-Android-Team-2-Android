@@ -22,6 +22,7 @@
     <dimen name="spacing_sm">8dp</dimen>
     <dimen name="spacing_lsm">12dp</dimen>
     <dimen name="spacing">16dp</dimen>
+    <dimen name="spacing_md">20dp</dimen>
     <dimen name="spacing_llg">24dp</dimen>
     <dimen name="spacing_lg">32dp</dimen>
     <dimen name="spacing_xlg">64dp</dimen>

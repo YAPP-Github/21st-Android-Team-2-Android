@@ -26,4 +26,7 @@
     <string name="changeLockerImage">사진 변경</string>
     <string name="confirm">확인</string>
     <string name="changeImageMessage">정말 보관함 사진을 변경하시겠어요? (이전에 찍어둔 핀이 있다면 그대로 남아있을 예정이에요.)</string>
+    <string name="not_exist_locker_image">보관함 사진이 없어요</string>
+    <string name="add_locker_image_guidance">사진을 등록하고 핀을 찍어보세요!</string>
+    <string name="go_to_add_locker_image">보관함 사진 등록하러 가기</string>
 </resources>

@@ -20,11 +20,11 @@
                 android:id="@+id/filterBackground"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/toolbar_container_height"
+                app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="1"/>
+                app:layout_constraintVertical_bias="1" />
 
             <ImageView
                 android:id="@+id/filterImageView"
@@ -39,8 +39,8 @@
             <androidx.appcompat.widget.AppCompatButton
                 style="@style/ChipButton.Order"
                 android:id="@+id/orderButton"
-                android:drawableEnd="@drawable/ic_down"
                 android:layout_marginStart="16dp"
+                android:drawableEnd="@drawable/ic_down"
                 android:text="최근등록순"
                 app:layout_constraintTop_toTopOf="@id/filterBackground"
                 app:layout_constraintStart_toEndOf="@id/filterImageView"
@@ -49,8 +49,8 @@
             <androidx.appcompat.widget.AppCompatButton
                 style="@style/ChipButton.Condition"
                 android:id="@+id/conditionButton"
-                android:drawableEnd="@drawable/ic_down"
                 android:layout_marginStart="8dp"
+                android:drawableEnd="@drawable/ic_down"
                 android:text="카테고리2"
                 app:layout_constraintTop_toTopOf="@id/filterBackground"
                 app:layout_constraintStart_toEndOf="@id/orderButton"
@@ -59,8 +59,8 @@
             <androidx.appcompat.widget.AppCompatButton
                 style="@style/ChipButton.Condition"
                 android:id="@+id/tagButton"
-                android:drawableEnd="@drawable/ic_down"
                 android:layout_marginStart="8dp"
+                android:drawableEnd="@drawable/ic_down"
                 android:text="태그2"
                 app:layout_constraintTop_toTopOf="@id/filterBackground"
                 app:layout_constraintStart_toEndOf="@id/conditionButton"
@@ -83,11 +83,93 @@
 
         </androidx.appcompat.widget.Toolbar>
 
-        <com.yapp.itemfinder.feature.common.views.item.ItemsMarkerMapView
-            android:layout_marginTop="@dimen/collapsing_toolbar_container_height"
-            android:id="@+id/itemsMarkerMapView"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/itemsMarkerContainer"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/collapsing_toolbar_container_height">
+
+            <com.yapp.itemfinder.feature.common.views.item.ItemsMarkerMapView
+                android:id="@+id/itemsMarkerMapView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <View
+                android:id="@+id/emptyMarkerMapBackgroundView"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:background="@color/brown_02"
+                app:layout_constraintTop_toTopOf="@id/itemsMarkerMapView"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="@id/itemsMarkerMapView" />
+
+            <TextView
+                style="@style/ItemFinderTypography.Subhead"
+                android:id="@+id/emptyMarkerMapTitleTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/not_exist_locker_image"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="@id/emptyMarkerMapBackgroundView"
+                app:layout_constraintEnd_toEndOf="@id/emptyMarkerMapBackgroundView"
+                app:layout_constraintBottom_toTopOf="@id/emptyMarkerMapDescriptionTextView"
+                app:layout_constraintVertical_chainStyle="packed"
+                app:layout_constraintVertical_bias="0.5"/>
+
+            <TextView
+                style="@style/ItemFinderTypography.Body3"
+                android:id="@+id/emptyMarkerMapDescriptionTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_sm"
+                android:text="@string/add_locker_image_guidance"
+                android:textColor="@color/gray_03"
+                app:layout_constraintTop_toBottomOf="@id/emptyMarkerMapTitleTextView"
+                app:layout_constraintBottom_toTopOf="@id/emptyMarkerMapImageView"
+                app:layout_constraintStart_toStartOf="@id/emptyMarkerMapBackgroundView"
+                app:layout_constraintEnd_toEndOf="@id/emptyMarkerMapBackgroundView" />
+
+            <ImageView
+                android:id="@+id/emptyMarkerMapImageView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing"
+                android:src="@drawable/ic_empty_locker"
+                app:layout_constraintTop_toBottomOf="@id/emptyMarkerMapDescriptionTextView"
+                app:layout_constraintBottom_toTopOf="@id/emptySpaceAddButton"
+                app:layout_constraintStart_toStartOf="@id/emptyMarkerMapDescriptionTextView"
+                app:layout_constraintEnd_toEndOf="@id/emptyMarkerMapDescriptionTextView" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                style="@style/ItemFinderTypography.Body1"
+                android:id="@+id/emptySpaceAddButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing"
+                android:background="@drawable/bg_button_orange_radius_12"
+                android:foreground="@drawable/ripple_black_radius_12"
+                android:paddingHorizontal="38dp"
+                android:paddingVertical="16dp"
+                android:text="@string/go_to_add_locker_image"
+                android:textColor="@color/white"
+                app:layout_constraintTop_toBottomOf="@id/emptyMarkerMapImageView"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+            <androidx.constraintlayout.widget.Group
+                android:id="@+id/emptyMarkerMapGroup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:constraint_referenced_ids="emptyMarkerMapBackgroundView,emptyMarkerMapTitleTextView,emptyMarkerMapDescriptionTextView,emptyMarkerMapImageView,emptySpaceAddButton"
+                android:visibility="gone"
+                tools:visibility="visible"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <include
             layout="@layout/fragment_locker_detail_bottom_sheet"
@@ -98,12 +180,13 @@
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
+    <!--<com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/floatingActionButton"
         android:layout_width="56dp"
         android:layout_height="56dp"
         android:layout_marginEnd="32dp"
         android:layout_marginBottom="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent" />-->
+
 </androidx.constraintlayout.widget.ConstraintLayout>
