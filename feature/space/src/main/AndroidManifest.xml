@@ -23,6 +23,9 @@
         <activity
             android:name=".additem.itemposition.AddItemPositionDefineActivity"
             android:theme="@style/ItemFinderTheme" />
+        <activity
+            android:name=".lockerdetail.itemfilter.ItemFilterActivity"
+            android:theme="@style/ItemFinderTheme" />
     </application>
 
 </manifest>

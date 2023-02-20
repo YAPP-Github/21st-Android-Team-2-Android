@@ -43,6 +43,8 @@ import javax.inject.Inject
 import com.yapp.itemfinder.feature.common.R as CR
 import com.yapp.itemfinder.space.itemdetail.ItemDetailFragment
 import com.yapp.itemfinder.space.itemdetail.ItemDetailFragment.Companion.SPACE_AND_LOCKER_KEY
+import com.yapp.itemfinder.space.lockerdetail.itemfilter.ItemFilterActivity
+import com.yapp.itemfinder.space.lockerdetail.itemfilter.ItemFilterCondition
 
 @AndroidEntryPoint
 class LockerDetailFragment :
@@ -61,6 +63,7 @@ class LockerDetailFragment :
     lateinit var dataBindHelper: DataBindHelper
 
     private lateinit var resultLauncher: ActivityResultLauncher<Intent>
+    private lateinit var filterLauncher: ActivityResultLauncher<Intent>
 
     private var inset: Insets? = null
 
@@ -84,9 +87,13 @@ class LockerDetailFragment :
             dataListAdapter = DataListAdapter()
         }
 
+        orderFilterButton.setOnClickListener { vm.moveToItemFilter() }
+        categoriesConditionButton.setOnClickListener { vm.moveToItemFilter() }
+        tagFilterButton.setOnClickListener { vm.moveToItemFilter() }
+
         initBottomSheet()
         handleRecyclerViewListener()
-        setResultLauncher()
+        setResultLaunchers()
     }
 
     private fun initToolBar() = with(binding.defaultTopNavigationView) {
@@ -129,9 +136,9 @@ class LockerDetailFragment :
 
     private fun setBottomSheetBehavior() {
         fun setFilterActive(isActive: Boolean) = with(binding) {
-            orderButton.isClickable = isActive
-            conditionButton.isClickable = isActive
-            tagButton.isClickable = isActive
+            orderFilterButton.isClickable = isActive
+            categoriesConditionButton.isClickable = isActive
+            tagFilterButton.isClickable = isActive
         }
 
         val behavior =
@@ -292,6 +299,14 @@ class LockerDetailFragment :
                                     spaceAndLockerEntity = sideEffect.spaceAndLockerEntity
                                 )
                             }
+                            is LockerDetailSideEffect.MoveItemFilter -> {
+                                filterLauncher.launch(
+                                    ItemFilterActivity.newIntent(
+                                        context = requireContext(),
+                                        sideEffect.itemFilterCondition
+                                    )
+                                )
+                            }
                         }
                     }
                 }
@@ -365,10 +380,19 @@ class LockerDetailFragment :
         itemsMarkerMapView.fetchItems(lockerEntity, items)
     }
 
-    private fun setResultLauncher() {
+    private fun setResultLaunchers() {
         resultLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
                 if (result.resultCode == Activity.RESULT_OK) {
+                    vm.reFetchData()
+                }
+            }
+        filterLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+                if (result.resultCode == Activity.RESULT_OK) {
+                    val itemFilterCondition =
+                        result.data?.parcelable<ItemFilterCondition>(FILTER_RESULT_KEY)
+                    vm.setItemFilterCondition(itemFilterCondition)
                     vm.reFetchData()
                 }
             }
@@ -384,6 +408,9 @@ class LockerDetailFragment :
 
         const val FETCH_REQUEST_KEY = "FETCH_REQUEST_KEY"
         const val FETCH_RESULT_KEY = "FETCH_RESULT_KEY"
+
+        const val FILTER_REQUEST_KEY = "FILTER_REQUEST_KEY"
+        const val FILTER_RESULT_KEY = "FILTER_RESULT_KEY"
 
         fun newInstance() = LockerDetailFragment()
     }

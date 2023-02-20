@@ -13,7 +13,7 @@ abstract class BaseFragment<VM : BaseViewModel, VB : ViewBinding> : Fragment() {
 
     /**
      * Fragment에서 onBackPressed 이벤트가 발생했을 때 처리할 동작을 구현합니다.
-     * @return onBackPressedAction 이벤트를 처리했으면 true를 반환합니다.
+     * @return [onBackPressedAction]] 이벤트를 처리했으면 true를 반환합니다.
      */
     open fun onBackPressedAction(): Boolean {
         return false

@@ -15,6 +15,7 @@ import com.yapp.itemfinder.domain.repository.SpaceRepository
 import com.yapp.itemfinder.feature.common.BaseStateViewModel
 import com.yapp.itemfinder.feature.common.extension.onErrorWithResult
 import com.yapp.itemfinder.feature.common.extension.runCatchingWithErrorHandler
+import com.yapp.itemfinder.space.lockerdetail.itemfilter.ItemFilterCondition
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -84,6 +85,7 @@ class LockerDetailViewModel @Inject constructor(
                     val item = state.dataList.find { it.id == prevState.lastFocusedItem?.id } as Item
                     setState(
                         state.copy(
+                            itemFilterCondition = prevState.itemFilterCondition,
                             needToFetch = false,
                             lastFocusedItem = item,
                             focusIndex = prevState.focusIndex
@@ -133,6 +135,26 @@ class LockerDetailViewModel @Inject constructor(
                     )
                 )
             }
+        }
+    }
+
+    fun moveToItemFilter() {
+        withState<LockerDetailState.Success> { state ->
+            postSideEffect(
+                LockerDetailSideEffect.MoveItemFilter(
+                    state.itemFilterCondition
+                )
+            )
+        }
+    }
+
+    fun setItemFilterCondition(itemFilterCondition: ItemFilterCondition?) {
+        withState<LockerDetailState.Success> { state ->
+            setState(
+                state.copy(
+                    itemFilterCondition = itemFilterCondition ?: state.itemFilterCondition
+                )
+            )
         }
     }
 

@@ -104,6 +104,21 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="테스트"/>
+
+            <com.google.android.material.chip.Chip
+                style="@style/CheckTagChip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="체크"/>
+
+            <com.google.android.material.chip.Chip
+                style="@style/CheckTagChip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:chipStrokeColor="@color/gray_02"
+                android:checked="false"
+                android:text="체크"/>
         </com.google.android.material.chip.ChipGroup>
 
         <TextView
