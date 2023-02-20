@@ -58,9 +58,7 @@ class ItemDetailFragment : BaseStateFragment<ItemDetailViewModel, FragmentItemDe
 
     private fun initToolBar() = with(binding.defaultTopNavigationView) {
         backButtonImageResId = CR.drawable.ic_back_white
-        backButtonClickListener = {
-            onBackPressedCallback.handleOnBackPressed()
-        }
+        backButtonClickListener = { backPressed() }
         containerColor = depth.colorId
 
         rightFirstIcon = CR.drawable.ic_delete_white
