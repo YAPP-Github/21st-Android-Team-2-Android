@@ -8,6 +8,7 @@ import com.yapp.itemfinder.data.network.api.home.HomeSpaceApi
 import com.yapp.itemfinder.data.network.api.item.ItemApi
 import com.yapp.itemfinder.data.network.api.image.ImageApi
 import com.yapp.itemfinder.data.network.api.locker.LockerApi
+import com.yapp.itemfinder.data.network.api.tag.TagApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -78,8 +79,16 @@ internal class ApiCoroutinesModule {
     @Singleton
     fun provideImageApi(
         apiClient: ApiClient
-    ): ImageApi{
+    ): ImageApi {
         return apiClient.provideImageApi()
     }
-    
+
+    @Provides
+    @Singleton
+    fun provideTagApi(
+        apiClient: ApiClient
+    ): TagApi {
+        return apiClient.provideTagApi()
+    }
+
 }

@@ -26,12 +26,8 @@ data class ItemResponseElement(
         memo = null,
         imageUrls = listOf( representativeImageUrl),
         count = quantity,
-        itemCategory = when (itemType) {
-            "LIFE" -> ItemCategory.LIFE
-            "FOOD" -> ItemCategory.FOOD
-            else -> ItemCategory.FASHION
-        },
+        itemCategory = ItemCategory.values().find { it.name == itemType },
         position = Item.Position(pinX, pinY),
-        tags = tags.map { Tag(it) }
+        tags = tags.map { Tag(it.hashCode().toLong(), it) }
     )
 }

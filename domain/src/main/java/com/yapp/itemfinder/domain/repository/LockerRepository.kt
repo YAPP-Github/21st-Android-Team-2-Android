@@ -3,8 +3,9 @@ package com.yapp.itemfinder.domain.repository
 import com.yapp.itemfinder.domain.model.LockerEntity
 
 interface LockerRepository {
-    suspend fun getLockers(spaceId: Long): List<LockerEntity>
 
+    suspend fun getLockerById(lockerId: Long): LockerEntity?
+    suspend fun getLockers(spaceId: Long): List<LockerEntity>
     suspend fun addLocker(
         name: String,
         url: String?,

@@ -21,13 +21,13 @@ class ItemMockRepositoryImpl @Inject constructor() : ItemRepository {
         purchaseDate = null,
         memo = null,
         imageUrls = listOf("http://source.unsplash.com/random/150x150"),
-        tags = listOf(Tag("생활"), Tag("화장품")),
+        tags = listOf(Tag(0, "생활"), Tag(1, "화장품")),
         count = 1
     )
     private val sampleLongTag = sample.copy(
         tags = mutableListOf<Tag>().apply {
             for (i in 1..5) {
-                addAll(listOf(Tag("생활"), Tag("화장품")))
+                addAll(listOf(Tag(0, "생활"), Tag(1, "화장품")))
             }
         },
         count = 3
@@ -59,6 +59,23 @@ class ItemMockRepositoryImpl @Inject constructor() : ItemRepository {
 
 
     override suspend fun addItem(
+        containerId: Long,
+        name: String,
+        itemType: String,
+        quantity: Int,
+        imageUrls: List<String>?,
+        tagIds: List<Long>?,
+        description: String?,
+        purchaseDate: String?,
+        useByDate: String?,
+        pinX: Float?,
+        pinY: Float?
+    ): Item {
+        return sample
+    }
+
+    override suspend fun editItem(
+        itemId: Long,
         containerId: Long,
         name: String,
         itemType: String,

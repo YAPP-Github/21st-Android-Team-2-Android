@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".additem.addtag.AddTagActivity">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        style="@style/DefaultToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.yapp.itemfinder.feature.common.views.DefaultTopNavigationView
+            android:id="@+id/defaultNavigationView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </androidx.appcompat.widget.Toolbar>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <View
+            android:id="@+id/tagInputBackgroundView"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/tagChipGroup"
+            android:layout_marginHorizontal="@dimen/spacing"
+            android:layout_marginTop="@dimen/spacing"
+            android:background="@drawable/bg_button_brown_02_radius_8"/>
+
+        <ImageView
+            android:id="@+id/tagLogoImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_tag"
+            app:layout_constraintTop_toTopOf="@id/tagInputBackgroundView"
+            app:layout_constraintBottom_toBottomOf="@id/tagInputBackgroundView"
+            app:layout_constraintStart_toStartOf="@id/tagInputBackgroundView"
+            android:layout_marginStart="@dimen/spacing" />
+
+        <EditText
+            style="@style/ItemFinderTypography.Body1"
+            android:id="@+id/tagInput"
+            android:layout_width="0dp"
+            android:layout_margin="@dimen/spacing_sm"
+            android:layout_height="wrap_content"
+            android:hint="@string/please_input_tag_name"
+            android:textColorHint="@color/gray_03"
+            android:background="@android:color/transparent"
+            app:layout_constraintStart_toEndOf="@id/tagLogoImageView"
+            android:maxLines="1"
+            android:lines="1"
+            android:inputType="text"
+            android:imeOptions="actionDone"
+            app:layout_constraintEnd_toEndOf="@id/tagInputBackgroundView"
+            app:layout_constraintTop_toTopOf="@id/tagInputBackgroundView"
+            app:layout_constraintBottom_toBottomOf="@id/tagInputBackgroundView" />
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/tagChipGroup"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:singleSelection="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tagInputBackgroundView"
+            android:layout_marginTop="@dimen/spacing_llg"
+            android:paddingHorizontal="@dimen/spacing"
+            app:chipSpacing="@dimen/spacing_lsm">
+            <com.google.android.material.chip.Chip
+                style="@style/TagChip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="테스트"/>
+            <com.google.android.material.chip.Chip
+                style="@style/TagChip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="테스트ㄴㅇㄹ"/>
+            <com.google.android.material.chip.Chip
+                style="@style/TagChip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="테스트ㅁㄴㅇ"/>
+            <com.google.android.material.chip.Chip
+                style="@style/TagChip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="테스트"/>
+            <com.google.android.material.chip.Chip
+                style="@style/SelectedTagChip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="테스트"/>
+            <com.google.android.material.chip.Chip
+                style="@style/AddTagChip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="테스트"/>
+        </com.google.android.material.chip.ChipGroup>
+
+        <TextView
+            android:id="@+id/addedTagListTextView"
+            android:text="@string/added_tag_list"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/tagChipGroup"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0"
+            android:layout_marginStart="@dimen/spacing"
+            android:layout_marginTop="@dimen/spacing_llg"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        android:paddingHorizontal="@dimen/spacing_md"
+        android:paddingVertical="10dp"
+        android:clipToPadding="false"/>
+
+</LinearLayout>

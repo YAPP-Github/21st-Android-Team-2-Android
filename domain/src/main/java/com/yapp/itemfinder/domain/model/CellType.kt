@@ -30,5 +30,5 @@ enum class CellType {
     ADD_ITEM_SELECT_SPACE_CELL,
     ADD_LOCKER_IMAGE_CELL,
     ITEM_SIMPLE_CELL,
-    
+    TAG_CELL,
 }

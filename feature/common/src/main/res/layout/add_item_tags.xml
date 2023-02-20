@@ -13,32 +13,48 @@
         android:layout_height="wrap_content"
         android:text="@string/tag" />
 
-    <LinearLayout
-        android:id="@+id/itemTagsLayout"
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/tagChipGroup"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginVertical="8dp"
-        android:orientation="horizontal">
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/addTagButton"
-            style="@style/ItemFinderTypography.Body3"
+        app:singleSelection="true"
+        app:chipSpacing="@dimen/spacing_sm">
+        <!--<com.google.android.material.chip.Chip
+            style="@style/TagChip"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/bg_add_tag_button"
-            android:drawableStart="@drawable/ic_plus_10"
-            android:drawablePadding="4dp"
-            android:minHeight="0dp"
-            android:paddingHorizontal="8dp"
-            android:paddingVertical="4dp"
-            android:text="@string/add"
-            android:textColor="@color/white" />
+            android:text="테스트"/>
+        <com.google.android.material.chip.Chip
+            style="@style/TagChip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="테스트ㄴㅇㄹ"/>
+        <com.google.android.material.chip.Chip
+            style="@style/TagChip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="테스트ㅁㄴㅇ"/>
+        <com.google.android.material.chip.Chip
+            style="@style/TagChip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="테스트"/>
+        <com.google.android.material.chip.Chip
+            style="@style/TagChip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="테스트"/>-->
+        <!--<com.google.android.material.chip.Chip
+            android:id="@+id/addTagChip"
+            style="@style/AddTagChip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/add"/>-->
+    </com.google.android.material.chip.ChipGroup>
 
-    </LinearLayout>
-
-    <com.google.android.material.divider.MaterialDivider
+    <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        app:dividerColor="@color/gray_02" />
+        android:background="@color/gray_02" />
 
 </LinearLayout>

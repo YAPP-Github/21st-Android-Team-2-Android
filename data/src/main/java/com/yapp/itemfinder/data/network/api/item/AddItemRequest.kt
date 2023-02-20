@@ -1,8 +1,5 @@
 package com.yapp.itemfinder.data.network.api.item
 
-import java.time.LocalDate
-import java.time.LocalDateTime
-
 data class AddItemRequest(
     val containerId: Long,
     val name: String,

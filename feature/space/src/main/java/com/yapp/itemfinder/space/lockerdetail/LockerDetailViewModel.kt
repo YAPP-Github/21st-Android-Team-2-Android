@@ -5,10 +5,13 @@ import androidx.lifecycle.viewModelScope
 import com.yapp.itemfinder.data.repositories.di.ItemMockRepositoryQualifiers
 import com.yapp.itemfinder.data.repositories.di.ItemRepositoryQualifiers
 import com.yapp.itemfinder.data.repositories.di.LockerRepositoryQualifiers
+import com.yapp.itemfinder.data.repositories.di.SpaceRepositoryQualifiers
 import com.yapp.itemfinder.domain.model.Item
 import com.yapp.itemfinder.domain.model.LockerEntity
+import com.yapp.itemfinder.domain.model.SpaceAndLockerEntity
 import com.yapp.itemfinder.domain.repository.LockerRepository
 import com.yapp.itemfinder.domain.repository.ItemRepository
+import com.yapp.itemfinder.domain.repository.SpaceRepository
 import com.yapp.itemfinder.feature.common.BaseStateViewModel
 import com.yapp.itemfinder.feature.common.extension.onErrorWithResult
 import com.yapp.itemfinder.feature.common.extension.runCatchingWithErrorHandler
@@ -27,6 +30,8 @@ class LockerDetailViewModel @Inject constructor(
     private val itemRepository: ItemRepository,
     @LockerRepositoryQualifiers
     private val lockerRepository: LockerRepository,
+    @SpaceRepositoryQualifiers
+    private val spaceRepository: SpaceRepository,
     private val savedStateHandle: SavedStateHandle
 ) : BaseStateViewModel<LockerDetailState, LockerDetailSideEffect>() {
 
@@ -36,6 +41,7 @@ class LockerDetailViewModel @Inject constructor(
     override val _sideEffectFlow: MutableSharedFlow<LockerDetailSideEffect> = MutableSharedFlow()
 
     private val locker by lazy { savedStateHandle.get<LockerEntity>(LockerDetailFragment.LOCKER_ENTITY_KEY) }
+
 
     override fun fetchData(): Job = viewModelScope.launch {
         // api를 붙일 경우, args의 id를 활용하세요
@@ -58,8 +64,59 @@ class LockerDetailViewModel @Inject constructor(
         }
     }
 
-    fun moveItemDetail(itemId: Long) {
-        postSideEffect(LockerDetailSideEffect.MoveItemDetail(itemId))
+    fun reFetchData(): Job = viewModelScope.launch {
+        withState<LockerDetailState.Success> { prevState ->
+            runCatchingWithErrorHandler {
+                setState(LockerDetailState.Loading)
+                locker?.let { locker ->
+                    lockerRepository.getLockers(locker.spaceId).find { it.id == locker.id }?.let { foundLocker ->
+                        foundLocker to itemRepository.getItemsByLockerId(foundLocker.id)
+                    } ?: throw IllegalArgumentException("보관함 정보를 불러올 수 없습니다.")
+                } ?: throw IllegalArgumentException("보관함 정보를 불러올 수 없습니다.")
+            }.onSuccess { (locker, items) ->
+                setState(
+                    LockerDetailState.Success(
+                        locker = locker,
+                        dataList = items
+                    )
+                )
+                withState<LockerDetailState.Success> { state ->
+                    val item = state.dataList.find { it.id == prevState.lastFocusedItem?.id } as Item
+                    setState(
+                        state.copy(
+                            needToFetch = false,
+                            lastFocusedItem = item,
+                            focusIndex = prevState.focusIndex
+                        )
+                    )
+
+                    item.applyItemFocus(true)
+                }
+            }.onErrorWithResult { errorWithResult ->
+                val message = errorWithResult.errorResultEntity.message
+                // setState(LockerDetailState.Error(it))
+            }
+        }
+    }
+
+    fun moveItemDetail(itemId: Long) = viewModelScope.launch {
+        withState<LockerDetailState.Success> { state ->
+            runCatchingWithErrorHandler {
+                val spaces = spaceRepository.getAllSpaces()
+                val space = spaces.find { it.id == state.locker.spaceId }
+                space ?: throw IllegalArgumentException("공간을 찾을 수 없습니다.")
+                space to locker
+            }.onSuccess { (space, locker) ->
+                postSideEffect(
+                    LockerDetailSideEffect.MoveItemDetail(
+                        itemId,
+                        SpaceAndLockerEntity(space.toManageSpaceEntity(), locker)
+                    )
+                )
+            }.onFailure {
+                setState(LockerDetailState.Error(it))
+            }
+        }
     }
 
     fun applyFocusFirstItem(position: Int) {
@@ -71,7 +128,8 @@ class LockerDetailViewModel @Inject constructor(
                 setState(
                     state.copy(
                         needToFetch = false,
-                        lastFocusedItem = focusItem
+                        lastFocusedItem = focusItem,
+                        focusIndex = position
                     )
                 )
             }

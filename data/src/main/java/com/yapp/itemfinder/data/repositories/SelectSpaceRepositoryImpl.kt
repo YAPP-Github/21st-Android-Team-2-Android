@@ -2,6 +2,7 @@ package com.yapp.itemfinder.data.repositories
 
 import com.yapp.itemfinder.data.network.api.managespace.ManageSpaceApi
 import com.yapp.itemfinder.domain.model.SelectSpace
+import com.yapp.itemfinder.domain.model.SpaceItem
 import com.yapp.itemfinder.domain.repository.SpaceRepository
 import javax.inject.Inject
 import javax.inject.Singleton

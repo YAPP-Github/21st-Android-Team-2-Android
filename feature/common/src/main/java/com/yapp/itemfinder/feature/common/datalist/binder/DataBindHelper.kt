@@ -30,12 +30,14 @@ class DataBindHelper @Inject constructor(
     private val addItemExpirationDateBinder: AddItemExpirationDateBinder,
     private val addItemPurchaseDateBinder: AddItemPurchaseDateBinder,
     private val addItemImagesBinder: AddItemImagesBinder,
+    private val addItemTagsBinder: AddItemTagsBinder,
     private val addItemMemoBinder: AddItemMemoBinder,
     private val addItemLocationBinder: AddItemLocationBinder,
     private val addItemSelectSpaceBinder: AddItemSelectSpaceBinder,
     private val selectLockerBinder: SelectLockerBinder,
     private val addItemMarkerMapBinder: AddItemMarkerMapBinder,
     private val simpleItemBinder: ItemBinder,
+    private val tagBinder: TagBinder
 ) {
 
     @SuppressLint("CheckResult")
@@ -110,6 +112,9 @@ class DataBindHelper @Inject constructor(
             CellType.ADD_ITEM_IMAGES_CELL -> addItemImagesBinder.bindData(
                 data as AddItemImages, viewModel
             )
+            CellType.ADD_ITEM_TAGS_CELL -> addItemTagsBinder.bindData(
+                data as AddItemTags, viewModel
+            )
             CellType.ADD_ITEM_SELECT_SPACE_CELL -> addItemSelectSpaceBinder.bindData(
                 data as AddItemSelectSpaceEntity, viewModel
             )
@@ -119,8 +124,11 @@ class DataBindHelper @Inject constructor(
             CellType.ADD_ITEM_MARKER_MAP_CELL -> addItemMarkerMapBinder.bindData(
                 data as AddItemMarkerMap, viewModel
             )
-            CellType.ITEM_SIMPLE_CELL ->  simpleItemBinder.bindData(
+            CellType.ITEM_SIMPLE_CELL -> simpleItemBinder.bindData(
                 data as Item, viewModel
+            )
+            CellType.TAG_CELL -> tagBinder.bindData(
+                data as Tag, viewModel
             )
             else -> {}
         }

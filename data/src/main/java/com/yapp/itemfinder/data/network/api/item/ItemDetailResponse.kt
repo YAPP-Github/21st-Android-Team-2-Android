@@ -42,6 +42,6 @@ data class ItemDetailResponse(
             else -> ItemCategory.FASHION
         },
         position = Item.Position(pinX, pinY),
-        tags = tags.map { Tag(it) }
+        tags = tags.map { Tag(it.hashCode().toLong(), it) }
     )
 }
