@@ -14,7 +14,8 @@ sealed class LockerDetailState : State {
         val locker: LockerEntity,
         val dataList: List<Data>,
         val needToFetch: Boolean = true,
-        val lastFocusedItem: Item? = null
+        val lastFocusedItem: Item? = null,
+        val focusIndex: Int? = null,
     ) : LockerDetailState()
 
     data class Error(

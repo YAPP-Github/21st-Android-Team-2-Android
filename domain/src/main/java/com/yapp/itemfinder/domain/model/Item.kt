@@ -85,4 +85,11 @@ enum class ItemCategory(
     FOOD(R.string.item_category_food, R.drawable.ic_marker_food),
     FASHION(R.string.item_category_fashion, R.drawable.ic_marker_fashion),
     NONE(R.string.item_category_none, R.drawable.ic_marker_none);
+
+    fun toItemCateogrySelection(): ItemCategorySelection = when(this) {
+        NONE -> ItemCategorySelection.DEFAULT
+        LIFE -> ItemCategorySelection.LIFE
+        FOOD -> ItemCategorySelection.FOOD
+        FASHION -> ItemCategorySelection.FASHION
+    }
 }

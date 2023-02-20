@@ -6,9 +6,11 @@ import android.os.Parcelable
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.yapp.itemfinder.data.repositories.di.LockerRepositoryQualifiers
+import com.yapp.itemfinder.data.repositories.di.SpaceRepositoryQualifiers
 import com.yapp.itemfinder.domain.model.*
 import com.yapp.itemfinder.domain.repository.ImageRepository
 import com.yapp.itemfinder.domain.repository.LockerRepository
+import com.yapp.itemfinder.domain.repository.SpaceRepository
 import com.yapp.itemfinder.feature.common.BaseStateViewModel
 import com.yapp.itemfinder.feature.common.extension.*
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -24,6 +26,8 @@ class AddLockerViewModel @Inject constructor(
     @LockerRepositoryQualifiers
     private val lockerRepository: LockerRepository,
     private val imageRepository: ImageRepository,
+    @SpaceRepositoryQualifiers
+    private val spaceRepository: SpaceRepository,
     @ApplicationContext private val applicationContext: Context,
     val savedStateHandle: SavedStateHandle
 ) : BaseStateViewModel<AddLockerState, AddLockerSideEffect>() {
@@ -33,6 +37,11 @@ class AddLockerViewModel @Inject constructor(
 
     override fun fetchData(): Job = viewModelScope.launch {
         setState(AddLockerState.Loading)
+        val spaceId = savedStateHandle.get<Long>(AddLockerActivity.SPACE_ID_KEY) ?: 0
+        val spaces = spaceRepository.getAllSpaces()
+        val space = spaces.find { it.id == spaceId }
+        val spaceName = savedStateHandle.get<String>(AddLockerActivity.SPACE_NAME_KEY) ?: space?.name ?: ""
+
         val screenMode = savedStateHandle.get<String>(AddLockerActivity.SCREEN_MODE)
         when (screenMode) {
             ScreenMode.ADD_MODE.label -> {
@@ -41,14 +50,13 @@ class AddLockerViewModel @Inject constructor(
                         listOf(
                             AddLockerNameInput(mode = ScreenMode.ADD_MODE),
                             AddLockerSpace(
-                                name = savedStateHandle.get<String>(AddLockerActivity.SPACE_NAME_KEY)
-                                    ?: ""
+                                name = spaceName
                             ),
                             LockerIcons(mode = ScreenMode.ADD_MODE),
                             AddLockerPhoto(mode = ScreenMode.ADD_MODE)
                         ),
                         lockerName = "",
-                        spaceId = savedStateHandle.get<Long>(AddLockerActivity.SPACE_ID_KEY) ?: 0,
+                        spaceId = spaceId,
                         icon = LockerIconId.LOCKER_ICON1.iconId,
                         url = null,
                         lockerId = null
@@ -63,14 +71,13 @@ class AddLockerViewModel @Inject constructor(
                         listOf(
                             AddLockerNameInput(name = locker.name, mode = ScreenMode.EDIT_MODE),
                             AddLockerSpace(
-                                name = savedStateHandle.get<String>(AddLockerActivity.SPACE_NAME_KEY)
-                                    ?: ""
+                                name = spaceName
                             ),
                             LockerIcons(icon = locker.icon, mode = ScreenMode.EDIT_MODE),
                             AddLockerPhoto(url = locker.imageUrl, mode = ScreenMode.EDIT_MODE)
                         ),
                         lockerName = locker.name,
-                        spaceId = savedStateHandle.get<Long>(AddLockerActivity.SPACE_ID_KEY) ?: 0,
+                        spaceId = spaceId,
                         icon = LockerIconId.LOCKER_ICON1.iconId,
                         url = locker.imageUrl,
                         lockerId = locker.id

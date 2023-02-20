@@ -64,6 +64,8 @@ abstract class RepositoryModule {
     @Singleton
     abstract fun bindImageRepository(repository: ImageRepositoryImpl): ImageRepository
 
-
+    @Binds
+    @Singleton
+    abstract fun bindTagRepository(repository: TagRepositoryImpl): TagRepository
 
 }

@@ -95,9 +95,6 @@ class HomeActivity : BaseActivity<HomeViewModel, ActivityHomeBinding>(), Fragmen
         with(supportFragmentManager) {
             val foundFragment = findFragmentByTag(tag) ?: getFragmentByTag(tag)
             foundFragment?.let {
-                it.arguments = Bundle().apply {
-
-                }
                 if (bundle != null) {
                     it.arguments = bundle
                 }

@@ -15,7 +15,8 @@ data class HomeSpaceTopLockerResponse(
             id = id,
             icon = icon,
             name = name,
-            spaceId = spaceId
+            spaceId = spaceId,
+            imageUrl = imageUrl
         )
     }
 }

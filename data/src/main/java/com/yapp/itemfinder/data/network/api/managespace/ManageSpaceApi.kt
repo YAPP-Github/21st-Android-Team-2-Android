@@ -22,4 +22,5 @@ interface ManageSpaceApi {
 
     @DELETE("spaces/{spaceId}")
     suspend fun deleteSpace(@Path("spaceId") spaceId: Long)
+    
 }

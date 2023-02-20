@@ -10,4 +10,6 @@ data class SelectSpace(
     var checkHandler: ActionHandler = {}
     fun checkSelectSpace() = checkHandler.invoke()
 
+    fun toManageSpaceEntity() = ManageSpaceEntity(name, id)
+
 }
