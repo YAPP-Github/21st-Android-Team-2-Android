@@ -38,7 +38,7 @@ class ItemSimpleViewHolder(
 
 
             data.expirationDate?.let {
-                expireDateTextView.text = it
+                expireDateTextView.text = root.context.getString(R.string.until_expired_date, it)
             } ?: kotlin.run {
                 expireDateTextView.gone()
             }

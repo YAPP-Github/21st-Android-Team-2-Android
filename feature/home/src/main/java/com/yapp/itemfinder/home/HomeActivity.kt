@@ -3,11 +3,11 @@ package com.yapp.itemfinder.home
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.os.Parcelable
 import androidx.activity.viewModels
-import androidx.core.os.bundleOf
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import com.yapp.itemfinder.domain.model.ScreenMode
 import com.yapp.itemfinder.feature.common.BaseActivity
 import com.yapp.itemfinder.feature.common.Depth
 import com.yapp.itemfinder.feature.common.FragmentNavigator
@@ -19,11 +19,13 @@ import com.yapp.itemfinder.home.tabs.home.HomeTabFragment
 import com.yapp.itemfinder.home.tabs.like.LikeTabFragment
 import com.yapp.itemfinder.home.tabs.reminder.ReminderTabFragment
 import com.yapp.itemfinder.space.LockerListFragment
+import com.yapp.itemfinder.space.additem.AddItemActivity
 import com.yapp.itemfinder.space.itemdetail.ItemDetailFragment
 import com.yapp.itemfinder.space.lockerdetail.LockerDetailFragment
 import com.yapp.itemfinder.space.managespace.ManageSpaceFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -36,8 +38,23 @@ class HomeActivity : BaseActivity<HomeViewModel, ActivityHomeBinding>(), Fragmen
     override val depth: Depth
         get() = Depth.FIRST
 
+    override fun onBackPressedAction() {
+        super.onBackPressedAction()
+        lifecycleScope.launch {
+            delay(100)
+            checkCurrentFragment()
+        }
+    }
+
     override fun initViews() {
         initNavigationBar()
+        binding.addItemButton.setOnClickListener {
+            startActivity(
+                AddItemActivity.newIntent(this).apply {
+                    putExtra(AddItemActivity.SCREEN_MODE, ScreenMode.ADD_MODE.label)
+                }
+            )
+        }
     }
 
     override fun initState() {
@@ -95,9 +112,6 @@ class HomeActivity : BaseActivity<HomeViewModel, ActivityHomeBinding>(), Fragmen
         with(supportFragmentManager) {
             val foundFragment = findFragmentByTag(tag) ?: getFragmentByTag(tag)
             foundFragment?.let {
-                it.arguments = Bundle().apply {
-
-                }
                 if (bundle != null) {
                     it.arguments = bundle
                 }
@@ -114,17 +128,34 @@ class HomeActivity : BaseActivity<HomeViewModel, ActivityHomeBinding>(), Fragmen
         }
     }
 
-    private fun getFragmentByTag(tag: String): Fragment? =
-        when (tag) {
-            ReminderTabFragment.TAG -> ReminderTabFragment.newInstance()
-            HomeTabFragment.TAG -> HomeTabFragment.newInstance()
-            LikeTabFragment.TAG -> LikeTabFragment.newInstance()
-            LockerListFragment.TAG -> LockerListFragment.newInstance()
-            ManageSpaceFragment.TAG -> ManageSpaceFragment.newInstance()
-            LockerDetailFragment.TAG -> LockerDetailFragment.newInstance()
-            ItemDetailFragment.TAG -> ItemDetailFragment.newInstance()
-            else -> null
+    private fun getFragmentByTag(tag: String): Fragment? {
+        val (fragment, fabVisible) = when (tag) {
+            ReminderTabFragment.TAG -> ReminderTabFragment.newInstance() to true
+            HomeTabFragment.TAG -> HomeTabFragment.newInstance() to true
+            LikeTabFragment.TAG -> LikeTabFragment.newInstance() to true
+            LockerListFragment.TAG -> LockerListFragment.newInstance() to true
+            ManageSpaceFragment.TAG -> ManageSpaceFragment.newInstance() to true
+            LockerDetailFragment.TAG -> LockerDetailFragment.newInstance() to true
+            ItemDetailFragment.TAG -> ItemDetailFragment.newInstance() to false
+            else -> null to false
         }
+        binding.addItemButton.isVisible = fabVisible
+        return fragment
+    }
+
+    private fun checkCurrentFragment() {
+        val fabVisible = when (supportFragmentManager.findFragmentById(R.id.fragmentContainer)) {
+            is ReminderTabFragment -> true
+            is HomeTabFragment -> true
+            is LikeTabFragment -> true
+            is LockerListFragment -> true
+            is ManageSpaceFragment -> true
+            is LockerDetailFragment -> true
+            is ItemDetailFragment -> false
+            else -> false
+        }
+        binding.addItemButton.isVisible = fabVisible
+    }
 
     companion object {
 

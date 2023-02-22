@@ -19,8 +19,10 @@ import com.yapp.itemfinder.feature.common.binding.viewBinding
 import com.yapp.itemfinder.feature.common.datalist.adapter.DataListAdapter
 import com.yapp.itemfinder.feature.common.datalist.binder.DataBindHelper
 import com.yapp.itemfinder.feature.common.extension.parcelable
+import com.yapp.itemfinder.feature.common.extension.parcelableList
 import com.yapp.itemfinder.feature.common.extension.showShortToast
 import com.yapp.itemfinder.feature.common.views.SnackBarView
+import com.yapp.itemfinder.space.additem.addtag.AddTagActivity
 import com.yapp.itemfinder.space.additem.itemposition.AddItemPositionDefineActivity
 import com.yapp.itemfinder.space.additem.selectspace.AddItemSelectSpaceActivity
 import com.yapp.itemfinder.feature.common.R as CR
@@ -60,6 +62,14 @@ class AddItemActivity : BaseStateActivity<AddItemViewModel, ActivityAddItemBindi
         if (result.resultCode == Activity.RESULT_OK) {
             result.data?.parcelable<LockerAndItemEntity>(LOCKER_AND_ITEM_KEY)?.let {
                 vm.setDefinedLockerAndItem(it)
+            }
+        }
+    }
+
+    private val addTagsLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            result.data?.parcelableList<Tag>(SELECTED_TAGS_KEY)?.let {
+                vm.setSelectedTags(it)
             }
         }
     }
@@ -191,9 +201,18 @@ class AddItemActivity : BaseStateActivity<AddItemViewModel, ActivityAddItemBindi
                         is AddItemSideEffect.AddItemFinished -> {
                             finish()
                         }
+                        is AddItemSideEffect.AddItemSucceed -> {
+                            setResult(Activity.RESULT_OK)
+                            finish()
+                        }
                         is AddItemSideEffect.MoveItemPositionDefine -> {
                             itemPositionDefineLauncher.launch(
                                 AddItemPositionDefineActivity.newIntent(this@AddItemActivity, sideEffect.lockerAndItemEntity)
+                            )
+                        }
+                        is AddItemSideEffect.MoveAddTag -> {
+                            addTagsLauncher.launch(
+                                AddTagActivity.newIntent(this@AddItemActivity, sideEffect.selectedTagList)
                             )
                         }
                     }
@@ -250,6 +269,9 @@ class AddItemActivity : BaseStateActivity<AddItemViewModel, ActivityAddItemBindi
         const val SELECTED_SPACE_AND_LOCKER_KEY = "SELECTED_SPACE_AND_LOCKER_KEY"
         const val SCREEN_MODE = "SCREEN_MODE"
         const val LOCKER_AND_ITEM_KEY = "LOCKER_AND_ITEM_KEY"
+        const val SELECTED_TAGS_KEY = "SELECTED_TAGS_KEY"
+
+        const val ITEM_ID_KEY = "ITEM_ID_KEY"
 
         fun newIntent(context: Context) = Intent(context, AddItemActivity::class.java)
 

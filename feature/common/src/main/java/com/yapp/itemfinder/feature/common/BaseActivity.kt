@@ -17,15 +17,26 @@ abstract class BaseActivity<VM: BaseViewModel, VB: ViewBinding>: AppCompatActivi
 
     abstract val depth: Depth
 
-    open val onBackPressedCallback = object : OnBackPressedCallback(true) {
-        override fun handleOnBackPressed() {
+    lateinit var onBackPressedCallback: OnBackPressedCallback
+
+    protected open fun onBackPressedAction() {
+        if (supportFragmentManager.backStackEntryCount == 0) {
             finish()
+        } else {
+            supportFragmentManager.popBackStack()
         }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initState()
+        onBackPressedCallback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if (!handleFragmentOnBackPressed()) {
+                    onBackPressedAction()
+                }
+            }
+        }
         this.onBackPressedDispatcher.addCallback(this, onBackPressedCallback)
     }
 
@@ -45,6 +56,26 @@ abstract class BaseActivity<VM: BaseViewModel, VB: ViewBinding>: AppCompatActivi
         if (fetchJob.isActive) {
             fetchJob.cancel()
         }
+    }
+
+    /**
+     * 현재 back stack에 포함된 Fragment들의 onBackPressed 이벤트를 호출합니다.
+     * @return onBackPressed 이벤트를 처리한 Fragment가 있으면 true를 반환합니다.
+     */
+    private fun handleFragmentOnBackPressed(): Boolean {
+        val fragmentManager = supportFragmentManager
+        val backStackEntryCount = fragmentManager.backStackEntryCount
+        for (i in backStackEntryCount - 1 downTo 0) {
+            val backStackEntry = fragmentManager.getBackStackEntryAt(i)
+            val fragmentTag = backStackEntry.name
+            val fragment = fragmentManager.findFragmentByTag(fragmentTag)
+            if (fragment is BaseFragment<*, *>) {
+                if (fragment.onBackPressedAction()) {
+                    return true
+                }
+            }
+        }
+        return false
     }
 
 }

@@ -50,6 +50,9 @@ object DataViewHolderMapper {
                 SelectLockerViewHolder(ViewholderSelectLockerBinding.inflate(inflater, parent, false))
             CellType.ADD_ITEM_MARKER_MAP_CELL ->
                 AddItemMarkerMapViewHolder(ViewholderAddItemMarkerMapBinding.inflate(inflater, parent, false))
+            CellType.TAG_CELL ->
+                TagViewHolder(ViewholderTagBinding.inflate(inflater, parent, false))
+
 
         }
 

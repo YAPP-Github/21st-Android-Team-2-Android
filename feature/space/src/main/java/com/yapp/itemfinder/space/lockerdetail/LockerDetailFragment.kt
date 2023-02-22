@@ -1,16 +1,21 @@
 package com.yapp.itemfinder.space.lockerdetail
 
-import android.os.Bundle
 import android.animation.Animator
 import android.animation.ValueAnimator
+import android.app.Activity
+import android.content.Intent
 import android.view.View
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.graphics.Insets
+import androidx.core.os.bundleOf
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updateLayoutParams
 import androidx.core.view.updatePadding
+import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.*
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -18,9 +23,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetBehavior.BottomSheetCallback
 import com.google.android.material.divider.MaterialDividerItemDecoration
-import com.yapp.itemfinder.domain.model.Data
-import com.yapp.itemfinder.domain.model.Item
-import com.yapp.itemfinder.domain.model.LockerEntity
+import com.yapp.itemfinder.domain.model.*
 import com.yapp.itemfinder.feature.common.BaseStateFragment
 import com.yapp.itemfinder.feature.common.FragmentNavigator
 import com.yapp.itemfinder.feature.common.Depth
@@ -28,11 +31,10 @@ import com.yapp.itemfinder.feature.common.R.string
 import com.yapp.itemfinder.feature.common.binding.viewBinding
 import com.yapp.itemfinder.feature.common.datalist.adapter.DataListAdapter
 import com.yapp.itemfinder.feature.common.datalist.binder.DataBindHelper
-import com.yapp.itemfinder.feature.common.extension.dimen
-import com.yapp.itemfinder.feature.common.extension.screenHeight
-import com.yapp.itemfinder.feature.common.extension.screenWidth
+import com.yapp.itemfinder.feature.common.extension.*
 import com.yapp.itemfinder.feature.common.views.behavior.CustomDraggableBottomSheetBehaviour
 import com.yapp.itemfinder.space.R
+import com.yapp.itemfinder.space.addlocker.AddLockerActivity
 import com.yapp.itemfinder.space.databinding.FragmentLockerDetailBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
@@ -40,6 +42,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 import com.yapp.itemfinder.feature.common.R as CR
 import com.yapp.itemfinder.space.itemdetail.ItemDetailFragment
+import com.yapp.itemfinder.space.itemdetail.ItemDetailFragment.Companion.SPACE_AND_LOCKER_KEY
 
 @AndroidEntryPoint
 class LockerDetailFragment :
@@ -57,7 +60,18 @@ class LockerDetailFragment :
     @Inject
     lateinit var dataBindHelper: DataBindHelper
 
+    private lateinit var resultLauncher: ActivityResultLauncher<Intent>
+
     private var inset: Insets? = null
+
+    override fun initState() {
+        super.initState()
+        setFragmentResultListener(FETCH_REQUEST_KEY) { _, result ->
+            if (result.getBoolean(FETCH_RESULT_KEY)) {
+                vm.reFetchData()
+            }
+        }
+    }
     override fun initViews() = with(binding) {
         ViewCompat.setOnApplyWindowInsetsListener(requireView()) { v, insets ->
             inset = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -72,13 +86,12 @@ class LockerDetailFragment :
 
         initBottomSheet()
         handleRecyclerViewListener()
+        setResultLauncher()
     }
 
     private fun initToolBar() = with(binding.defaultTopNavigationView) {
         backButtonImageResId = CR.drawable.ic_back
-        backButtonClickListener = {
-            onBackPressedCallback.handleOnBackPressed()
-        }
+        backButtonClickListener = { backPressed() }
         containerColor = depth.colorId
 
         rightFirstIcon = CR.drawable.ic_search
@@ -194,7 +207,7 @@ class LockerDetailFragment :
                         binding.filterContainer.updateLayoutParams<CoordinatorLayout.LayoutParams> {
                             height = value
                         }
-                        binding.itemsMarkerMapView.updateLayoutParams<CoordinatorLayout.LayoutParams> {
+                        binding.itemsMarkerContainer.updateLayoutParams<CoordinatorLayout.LayoutParams> {
                             topMargin = value
                         }
                     }
@@ -274,7 +287,10 @@ class LockerDetailFragment :
                     vm.sideEffectFlow.collect { sideEffect ->
                         when (sideEffect) {
                             is LockerDetailSideEffect.MoveItemDetail -> {
-                                moveItemDetail(itemId = sideEffect.itemId)
+                                moveItemDetail(
+                                    itemId = sideEffect.itemId,
+                                    spaceAndLockerEntity = sideEffect.spaceAndLockerEntity
+                                )
                             }
                         }
                     }
@@ -284,18 +300,15 @@ class LockerDetailFragment :
         return job
     }
 
-    private fun moveItemDetail(itemId: Long) {
+    private fun moveItemDetail(itemId: Long, spaceAndLockerEntity: SpaceAndLockerEntity) {
         when (val activity = requireActivity()) {
             is FragmentNavigator -> {
-                val bundle = Bundle()
-                bundle.apply {
-                    putString(ItemDetailFragment.SPACE_NAME_KEY, "주방")
-                    putString(ItemDetailFragment.LOCKER_NAME_KEY, "냉장고")
-                    putLong(ItemDetailFragment.ITEM_ID_KEY, itemId)
-                }
                 activity.addFragmentBackStack(
                     ItemDetailFragment.TAG,
-                    bundle = bundle
+                    bundle = bundleOf(
+                        ItemDetailFragment.ITEM_ID_KEY to itemId,
+                        SPACE_AND_LOCKER_KEY to spaceAndLockerEntity
+                    ),
                 )
             }
         }
@@ -314,7 +327,29 @@ class LockerDetailFragment :
         }
 
         val dataList = lockerDetailState.dataList
-        handleItemMarkers(lockerDetailState.locker , dataList.map { it as Item })
+        if (lockerDetailState.locker.imageUrl != null) {
+            handleItemMarkers(lockerDetailState.locker , dataList.map { it as Item })
+            binding.emptyMarkerMapGroup.gone()
+        } else {
+            binding.emptyMarkerMapGroup.visible()
+            binding.emptySpaceAddButton.setOnClickListener {
+                val intent = AddLockerActivity.newIntent(requireActivity()).apply {
+                    putExtra(
+                        AddLockerActivity.LOCKER_ENTITY_KEY,
+                        lockerDetailState.locker
+                    )
+                    putExtra(
+                        AddLockerActivity.SPACE_ID_KEY,
+                        lockerDetailState.locker.spaceId
+                    )
+                    putExtra(
+                        AddLockerActivity.SCREEN_MODE,
+                        ScreenMode.EDIT_MODE.label
+                    )
+                }
+                resultLauncher.launch(intent)
+            }
+        }
 
         binding.defaultTopNavigationView.titleText = lockerDetailState.locker.name
 
@@ -323,12 +358,20 @@ class LockerDetailFragment :
 
         val itemCount: Int = dataListAdapter?.itemCount ?: 0
         binding.bottomSheet.totalItemCount.text = getString(string.totalCount, itemCount)
-        binding.floatingActionButton.setOnClickListener { vm.moveItemDetail(1L) } // 각 물건별로 동작하도록 Item, ItemSimpleViewHolder 쪽에 핸들러 설정이 필요합니다.
         binding.bottomSheet.totalItemCount.text = getString(string.totalCount, dataList.size)
     }
 
     private fun handleItemMarkers(lockerEntity: LockerEntity, items: List<Item>) = with(binding) {
         itemsMarkerMapView.fetchItems(lockerEntity, items)
+    }
+
+    private fun setResultLauncher() {
+        resultLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+                if (result.resultCode == Activity.RESULT_OK) {
+                    vm.reFetchData()
+                }
+            }
     }
 
     companion object {
@@ -338,6 +381,9 @@ class LockerDetailFragment :
         const val LOCKER_ENTITY_KEY = "LOCKER_ENTITY_KEY"
 
         const val BOTTOM_SHEET_TRANSITION_DURATION = 150L
+
+        const val FETCH_REQUEST_KEY = "FETCH_REQUEST_KEY"
+        const val FETCH_RESULT_KEY = "FETCH_RESULT_KEY"
 
         fun newInstance() = LockerDetailFragment()
     }

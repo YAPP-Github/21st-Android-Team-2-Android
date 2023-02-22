@@ -52,10 +52,6 @@ class HomeTabFragment : BaseStateFragment<HomeTabViewModel, FragmentHomeTabBindi
 
     lateinit var dataListWithSpan: List<DataWithSpan<Data>>
 
-    override fun onBackPressedAction() {
-        requireActivity().finish()
-    }
-
     @Inject
     lateinit var dataBindHelper: DataBindHelper
 

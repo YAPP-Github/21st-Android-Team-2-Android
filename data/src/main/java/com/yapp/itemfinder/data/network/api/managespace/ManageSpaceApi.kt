@@ -18,4 +18,5 @@ interface ManageSpaceApi {
         @Path("spaceId") spaceId: Long,
         @Body editSpaceRequest: AddSpaceRequest
     ): SpaceResponse
+
 }

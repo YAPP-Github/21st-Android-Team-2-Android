@@ -29,4 +29,9 @@
     <string name="deleteLocker">보관함 삭제</string>
     <string name="deleteLockerMessage">%s 보관함을 삭제하시겠어요?\n등록하신 물건이 모두 삭제돼요.</string>
     <style name="delete">삭제</style>
+    <string name="not_exist_locker_image">보관함 사진이 없어요</string>
+    <string name="add_locker_image_guidance">사진을 등록하고 핀을 찍어보세요!</string>
+    <string name="go_to_add_locker_image">보관함 사진 등록하러 가기</string>
+    <string name="please_input_tag_name">태그를 등록해보세요.</string>
+    <string name="added_tag_list">등록된 태그 목록 (%d개)</string>
 </resources>

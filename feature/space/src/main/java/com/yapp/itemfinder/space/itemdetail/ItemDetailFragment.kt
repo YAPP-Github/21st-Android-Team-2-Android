@@ -1,13 +1,17 @@
 package com.yapp.itemfinder.space.itemdetail
 
-import android.widget.LinearLayout
-import android.widget.TextView
+import android.app.Activity
 import android.widget.Toast
-import androidx.core.content.res.ResourcesCompat
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
+import androidx.core.os.bundleOf
+import androidx.core.view.ViewCompat
+import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.*
-import androidx.recyclerview.widget.RecyclerView.ItemDecoration
 import com.bumptech.glide.Glide
+import com.google.android.material.chip.Chip
+import com.google.android.material.chip.ChipDrawable
 import com.yapp.itemfinder.domain.model.ScreenMode
 import com.yapp.itemfinder.feature.common.BaseStateFragment
 import com.yapp.itemfinder.feature.common.Depth
@@ -17,13 +21,13 @@ import com.yapp.itemfinder.feature.common.extension.dpToPx
 import com.yapp.itemfinder.feature.common.extension.gone
 import com.yapp.itemfinder.feature.common.extension.visible
 import com.yapp.itemfinder.feature.common.utility.ImagesItemDecoration
-import com.yapp.itemfinder.space.R
 import com.yapp.itemfinder.feature.common.R as CR
 import com.yapp.itemfinder.space.additem.AddItemActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import com.yapp.itemfinder.space.databinding.FragmentItemDetailBinding
+import com.yapp.itemfinder.space.lockerdetail.LockerDetailFragment
 
 @AndroidEntryPoint
 class ItemDetailFragment : BaseStateFragment<ItemDetailViewModel, FragmentItemDetailBinding>() {
@@ -37,6 +41,16 @@ class ItemDetailFragment : BaseStateFragment<ItemDetailViewModel, FragmentItemDe
 
     override val binding by viewBinding(FragmentItemDetailBinding::inflate)
 
+    private var isEditSucceed: Boolean = false
+
+    private val editItemLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                vm.reFetchData()
+                isEditSucceed = true
+            }
+        }
+
     override fun initViews() = with(binding) {
         initToolBar()
         imageRecyclerView.addItemDecoration(imageItemDecoration)
@@ -44,9 +58,7 @@ class ItemDetailFragment : BaseStateFragment<ItemDetailViewModel, FragmentItemDe
 
     private fun initToolBar() = with(binding.defaultTopNavigationView) {
         backButtonImageResId = CR.drawable.ic_back_white
-        backButtonClickListener = {
-            onBackPressedCallback.handleOnBackPressed()
-        }
+        backButtonClickListener = { backPressed() }
         containerColor = depth.colorId
 
         rightFirstIcon = CR.drawable.ic_delete_white
@@ -55,13 +67,8 @@ class ItemDetailFragment : BaseStateFragment<ItemDetailViewModel, FragmentItemDe
         }
         rightSecondIcon = CR.drawable.ic_edit_white
         rightSecondIconClickListener = {
-            val intent = AddItemActivity.newIntent(requireContext()).apply {
-                putExtra(ITEM_ID_KEY, requireArguments().getLong(ITEM_ID_KEY))
-                putExtra(AddItemActivity.SCREEN_MODE, ScreenMode.EDIT_MODE.label)
-            }
-            startActivity(intent)
+            vm.moveToEdit()
         }
-        containerColor = CR.color.transparent
     }
 
 
@@ -82,7 +89,12 @@ class ItemDetailFragment : BaseStateFragment<ItemDetailViewModel, FragmentItemDe
                     vm.sideEffectFlow.collect { sideEffect ->
                         when (sideEffect) {
                             is ItemDetailSideEffect.MoveToEditItem -> {
-                                // EditItemActivity
+                                val intent = AddItemActivity.newIntent(requireContext()).apply {
+                                    putExtra(AddItemActivity.ITEM_ID_KEY, requireArguments().getLong(ITEM_ID_KEY))
+                                    putExtra(AddItemActivity.SCREEN_MODE, ScreenMode.EDIT_MODE.label)
+                                    putExtra(AddItemActivity.SELECTED_SPACE_AND_LOCKER_KEY, sideEffect.spaceAndLockerEntity)
+                                }
+                                editItemLauncher.launch(intent)
                             }
                         }
                     }
@@ -101,7 +113,22 @@ class ItemDetailFragment : BaseStateFragment<ItemDetailViewModel, FragmentItemDe
         if (item.imageUrls.isNullOrEmpty()) {
             itemMainImage.gone()
             itemImagesLayout.gone()
+            binding.itemMarginView.visible()
+            with(binding.defaultTopNavigationView) {
+                containerColor = depth.colorId
+                backButtonImageResId = CR.drawable.ic_back
+                rightFirstIcon = CR.drawable.ic_delete
+                rightSecondIcon = CR.drawable.ic_edit
+            }
         }else{
+            with(binding.defaultTopNavigationView) {
+                containerColor = CR.color.transparent
+                backButtonImageResId = CR.drawable.ic_back_white
+                rightFirstIcon = CR.drawable.ic_delete_white
+                rightSecondIcon = CR.drawable.ic_edit_white
+            }
+            itemMainImage.visible()
+            binding.itemMarginView.gone()
             Glide.with(requireContext()).load(item.representativeImage).into(itemMainImage)
 
             if (item.otherImages.isNullOrEmpty()){
@@ -115,35 +142,24 @@ class ItemDetailFragment : BaseStateFragment<ItemDetailViewModel, FragmentItemDe
         }
         itemName.text = item.name
         itemCategory.text = item.itemCategory?.labelResId?.let { getString(it) }
-        itemSpace.text = arguments?.getString(SPACE_NAME_KEY)
-        itemLocker.text = arguments?.getString(LOCKER_NAME_KEY)
+        lockerDetailState.spaceAndLockerEntity?.let { (space, locker) ->
+            itemSpace.text = space.name
+            itemLocker.text = locker?.name
+        }
         itemCount.text = getString(CR.string.count, item.count)
-        item.tags?.let {
-            itemTagsLayout.visible()
-            itemTagTitle.visible()
-            it.forEach {
-                val tv = TextView(context)
-                val params = LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.WRAP_CONTENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT
+        item.tags?.let { tags ->
+            tags.asReversed().forEach {
+                val tagChip = Chip(context)
+                val chipDrawable = ChipDrawable.createFromAttributes(requireContext(), null, 0, com.yapp.itemfinder.feature.common.R.style.TagChip)
+                binding.tagChipGroup.addView(
+                    tagChip.apply {
+                        id = ViewCompat.generateViewId()
+                        setChipDrawable(chipDrawable)
+                        setTextColor(ContextCompat.getColor(context, CR.color.gray_05))
+                        setEnsureMinTouchTargetSize(false)
+                        text = it.name
+                    }
                 )
-                params.setMargins(0, 0, 8, 0)
-                tv.apply {
-                    text = it.name
-                    setTextColor(
-                        ResourcesCompat.getColor(
-                            requireActivity().resources, CR.color.gray_05, null
-                        )
-                    )
-                    background = ResourcesCompat.getDrawable(
-                        requireActivity().resources,
-                        CR.drawable.bg_chip_tag,
-                        null
-                    )
-                    setTextAppearance(CR.style.ItemFinderTypography)
-                    layoutParams = params
-                }
-                itemTagsLayout.addView(tv)
             }
         }
 
@@ -166,8 +182,23 @@ class ItemDetailFragment : BaseStateFragment<ItemDetailViewModel, FragmentItemDe
         }
         item.position?.let {
             lockerMarkerMap.visible()
-            lockerMarkerMap.setBackgroundImage(item.containerImageUrl!!)
             lockerMarkerMap.addMarkerAndBringToFront(item)
+        }
+
+        item.containerImageUrl?.let { imageUrl ->
+            lockerMarkerMap.setBackgroundImage(imageUrl)
+        }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        if (isEditSucceed) {
+            setFragmentResult(
+                LockerDetailFragment.FETCH_REQUEST_KEY,
+                bundleOf(
+                    LockerDetailFragment.FETCH_RESULT_KEY to true
+                )
+            )
         }
     }
 
@@ -176,8 +207,7 @@ class ItemDetailFragment : BaseStateFragment<ItemDetailViewModel, FragmentItemDe
         val TAG = ItemDetailFragment::class.simpleName.toString()
 
         const val ITEM_ID_KEY = "ITEM_ID_KEY"
-        const val SPACE_NAME_KEY = "SPACE_NAME_KEY"
-        const val LOCKER_NAME_KEY = "LOCKER_NAME_KEY"
+        const val SPACE_AND_LOCKER_KEY = "SPACE_AND_LOCKER_KEY"
 
         fun newInstance() = ItemDetailFragment()
     }

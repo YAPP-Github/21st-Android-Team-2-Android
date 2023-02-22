@@ -66,9 +66,7 @@ class LockerListFragment : BaseStateFragment<LockerListViewModel, FragmentLocker
 
     private fun initToolBar() = with(binding.defaultTopNavigationView) {
         backButtonImageResId = CR.drawable.ic_back
-        backButtonClickListener = {
-            onBackPressedCallback.handleOnBackPressed()
-        }
+        backButtonClickListener = { backPressed() }
 
         containerColor = CR.color.brown_02
         titleText = requireArguments().getString(SPACE_NAME_KEY)
