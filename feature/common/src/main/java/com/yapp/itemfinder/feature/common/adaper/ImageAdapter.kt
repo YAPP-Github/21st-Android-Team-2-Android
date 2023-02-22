@@ -40,6 +40,11 @@ class ItemImageViewHolder(val binding: ItemImageViewholderItemBinding) :
     fun bind(data: String) {
         var a : Int = 0
         var b: Int=0
-        
+        Glide.with(context).load(data).into(binding.imageView).getSize { width, height ->
+//            a = width.also { println() }
+//            b = height.also { println() }
+        }
+//        a++
+//        b++
     }
 }
