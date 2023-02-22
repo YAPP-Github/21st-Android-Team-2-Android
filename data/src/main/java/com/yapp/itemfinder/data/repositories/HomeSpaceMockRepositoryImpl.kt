@@ -17,7 +17,8 @@ class HomeSpaceMockRepositoryImpl @Inject constructor() : HomeSpaceRepository {
                 name = "1 번째 공간",
                 lockerList = listOf(
                     LockerEntity(spaceId = 1, id = 1L, name = "화장대", icon = "box"),
-                )
+                ),
+                lockerCount = 1
             ),
             SpaceItem(
                 id = 2,
@@ -25,7 +26,8 @@ class HomeSpaceMockRepositoryImpl @Inject constructor() : HomeSpaceRepository {
                 lockerList = listOf(
                     LockerEntity(spaceId = 2, id = 2L, name = "화장대", icon = "box"),
                     LockerEntity(spaceId = 2, id = 3L, name = "냉장고", icon = "box"),
-                )
+                ),
+                2
             ),
             SpaceItem(
                 id = 3,
@@ -34,7 +36,8 @@ class HomeSpaceMockRepositoryImpl @Inject constructor() : HomeSpaceRepository {
                     LockerEntity(spaceId = 3, id = 4L, name = "화장대", icon = "box"),
                     LockerEntity(spaceId = 3, id = 5L, name = "냉장고", icon = "box"),
                     LockerEntity(spaceId = 3, id = 6L, name = "옷장", icon = "box"),
-                )
+                ),
+                3
             ),
             SpaceItem(
                 id = 4,
@@ -44,7 +47,8 @@ class HomeSpaceMockRepositoryImpl @Inject constructor() : HomeSpaceRepository {
                     LockerEntity(spaceId = 4, id = 8L, name = "냉장고", icon = "box"),
                     LockerEntity(spaceId = 4, id = 9L, name = "옷장", icon = "box"),
                     LockerEntity(spaceId = 4, id = 10L, name = "옷장", icon = "box"),
-                )
+                ),
+                4
             ),
             SpaceItem(
                 id = 5,
@@ -80,7 +84,8 @@ class HomeSpaceMockRepositoryImpl @Inject constructor() : HomeSpaceRepository {
                         id = 4L,
                         icon = "box"
                     )
-                )
+                ),
+                5
             ),
             SpaceItem(
                 id = 6,
@@ -110,7 +115,8 @@ class HomeSpaceMockRepositoryImpl @Inject constructor() : HomeSpaceRepository {
                         id = 4L,
                         icon = "box"
                     )
-                )
+                ),
+                4
             ),
             SpaceItem(
                 id = 7,
@@ -135,8 +141,9 @@ class HomeSpaceMockRepositoryImpl @Inject constructor() : HomeSpaceRepository {
                         icon = "box"
                     ),
 
-                    )
-            )
+                    ),
+                3
+            ),
         )
     }
 }

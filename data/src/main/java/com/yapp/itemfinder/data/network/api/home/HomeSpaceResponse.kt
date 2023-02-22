@@ -14,7 +14,8 @@ data class HomeSpaceResponse(
     fun refineToSpaceItem() = SpaceItem(
         id = spaceId,
         name = spaceName,
-        lockerList = topContainers.map { it.refineToLocker() }
+        lockerList = topContainers.map { it.refineToLocker() },
+        lockerCount = containerCount
     )
 }
 
