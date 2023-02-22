@@ -9,6 +9,7 @@ import com.yapp.itemfinder.domain.repository.LockerRepository
 import com.yapp.itemfinder.feature.common.BaseStateViewModel
 import com.yapp.itemfinder.feature.common.extension.onErrorWithResult
 import com.yapp.itemfinder.feature.common.extension.runCatchingWithErrorHandler
+import com.yapp.itemfinder.space.addlocker.AddLockerState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -59,15 +60,21 @@ class LockerListViewModel @Inject constructor(
         postSideEffect(LockerListSideEffect.MoveToEditLocker(item))
     }
 
-    fun deleteItem(item: LockerEntity): Job = viewModelScope.launch {
+    fun openDeleteDialog(lockerName: String, lockerId: Long) {
+        postSideEffect(LockerListSideEffect.OpenDeleteLockerDialog(lockerName, lockerId))
+    }
+
+    fun deleteLocker(lockerId: Long) = viewModelScope.launch {
         withState<LockerListState.Success> { state ->
-            setState(
-                state.copy(
-                    state.dataList.toMutableList().apply {
-                        remove(item)
-                    }
-                )
-            )
+            runCatchingWithErrorHandler {
+                lockerRepository.deleteLocker(lockerId)
+            }.onSuccess {
+                fetchData()
+            }.onErrorWithResult { errorWithResult ->
+                setState(LockerListState.Error(errorWithResult))
+                val message = errorWithResult.errorResultEntity.message
+                message?.let { postSideEffect(LockerListSideEffect.ShowToast(it)) }
+            }
         }
     }
 

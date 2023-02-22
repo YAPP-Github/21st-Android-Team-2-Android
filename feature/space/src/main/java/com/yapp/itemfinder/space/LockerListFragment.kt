@@ -2,10 +2,12 @@ package com.yapp.itemfinder.space
 
 import android.app.Activity
 import android.content.Intent
+import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.os.bundleOf
+import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -24,6 +26,7 @@ import com.yapp.itemfinder.space.additem.AddItemActivity
 import com.yapp.itemfinder.space.addlocker.AddLockerActivity
 import com.yapp.itemfinder.space.databinding.FragmentLockerListBinding
 import com.yapp.itemfinder.space.lockerdetail.LockerDetailFragment
+import com.yapp.itemfinder.space.lockerlist.DeleteLockerDialog
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
@@ -52,8 +55,13 @@ class LockerListFragment : BaseStateFragment<LockerListViewModel, FragmentLocker
             dataListAdapter = DataListAdapter()
         }
         recyclerView.adapter = dataListAdapter
+        recyclerView.itemAnimator = null
         addItemFAB.setOnClickListener { vm.moveAddItemActivity() }
         setResultLauncher()
+        setFragmentResultListener(DeleteLockerDialog.CONFIRM_KEY) { _, bundle ->
+            val lockerId = bundle.getLong(DeleteLockerDialog.DELETE_LOCKER_ID)
+            vm.deleteLocker(lockerId)
+        }
     }
 
     private fun initToolBar() = with(binding.defaultTopNavigationView) {
@@ -139,6 +147,22 @@ class LockerListFragment : BaseStateFragment<LockerListViewModel, FragmentLocker
                                 }
                                 resultLauncher.launch(intent)
                             }
+                            is LockerListSideEffect.OpenDeleteLockerDialog -> {
+                                val dialog = DeleteLockerDialog.newInstance()
+                                dialog.arguments = Bundle().apply {
+                                    putString(
+                                        DeleteLockerDialog.DELETE_LOCKER_NAME,
+                                        sideEffect.lockerName
+                                    )
+                                    putLong(
+                                        DeleteLockerDialog.DELETE_LOCKER_ID,
+                                        sideEffect.lockerId
+                                    )
+                                }
+                                requireActivity().supportFragmentManager.let { fm ->
+                                    dialog.show(fm, DELETE_LOCKER_DIALOG)
+                                }
+                            }
                             is LockerListSideEffect.ShowToast -> {
                                 Toast.makeText(
                                     requireContext(),
@@ -193,6 +217,7 @@ class LockerListFragment : BaseStateFragment<LockerListViewModel, FragmentLocker
         const val SPACE_ID_KEY = "spaceId"
         const val SPACE_NAME_KEY = "SPACE_NAME_KEY"
         const val SPACE_ITEM_KEY = "SPACE_ITEM_KEY"
+        const val DELETE_LOCKER_DIALOG = "DELETE_LOCKER_DIALOG"
 
         fun newInstance() = LockerListFragment()
 

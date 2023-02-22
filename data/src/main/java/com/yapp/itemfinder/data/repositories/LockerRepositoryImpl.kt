@@ -45,4 +45,8 @@ class LockerRepositoryImpl @Inject constructor(
             lockerId
         ).refineToLocker()
     }
+
+    override suspend fun deleteLocker(lockerId: Long) {
+        lockerApi.deleteLocker(lockerId)
+    }
 }

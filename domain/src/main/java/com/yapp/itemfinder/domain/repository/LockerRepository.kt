@@ -20,4 +20,6 @@ interface LockerRepository {
         icon: String,
         lockerId: Long
     ): LockerEntity
+
+    suspend fun deleteLocker(lockerId: Long)
 }
