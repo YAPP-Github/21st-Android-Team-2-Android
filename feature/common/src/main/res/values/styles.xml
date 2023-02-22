@@ -166,4 +166,15 @@
         <item name="height">32dp</item>
     </style>
 
+    <style name="CheckTagChip" parent="Widget.MaterialComponents.Chip.Action">
+        <item name="chipBackgroundColor">@color/white</item>
+        <item name="chipCornerRadius">4dp</item>
+        <item name="chipStrokeColor">@color/color_check_chip_state_list</item>
+        <item name="chipStrokeWidth">1.5dp</item>
+        <item name="android:textColor">@color/gray_05</item>
+        <item name="android:textSize">@dimen/typography_body1</item>
+        <item name="ensureMinTouchTargetSize">false</item>
+        <item name="height">32dp</item>
+    </style>
+
 </resources>

@@ -36,4 +36,13 @@
     <string name="go_to_add_locker_image">보관함 사진 등록하러 가기</string>
     <string name="please_input_tag_name">태그를 등록해보세요.</string>
     <string name="added_tag_list">등록된 태그 목록 (%d개)</string>
+    <string name="item_filter">필터</string>
+    <string name="item_filter_order">정렬</string>
+    <string name="order_recent">최근등록순</string>
+    <string name="order_old">과거등록순</string>
+    <string name="order_asc">오름차순</string>
+    <string name="order_desc">내림차순</string>
+    <string name="item_filter_category">카테고리</string>
+    <string name="item_filter_reset">초기화</string>
+    <string name="item_filter_apply">적용하기</string>
 </resources>

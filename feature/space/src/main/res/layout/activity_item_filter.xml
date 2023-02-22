@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".additem.addtag.AddTagActivity">
+
+    <androidx.appcompat.widget.Toolbar
+        style="@style/DefaultToolbar"
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.yapp.itemfinder.feature.common.views.DefaultTopNavigationView
+            android:id="@+id/defaultNavigationView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </androidx.appcompat.widget.Toolbar>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ScrollView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/optionBackgroundView">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/spacing_md"
+                android:layout_marginVertical="@dimen/spacing_llg"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/ItemFinderTypography.Body1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/item_filter_order"
+                    android:textColor="@color/gray_03" />
+
+                <RadioGroup
+                    android:id="@+id/orderRadioGroup"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_sm"
+                    android:checkedButton="@+id/orderRecentButton">
+
+                    <RadioButton
+                        android:id="@+id/orderRecentButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/spacing_lg"
+                        android:buttonTint="@color/orange"
+                        android:text="@string/order_recent" />
+
+                    <RadioButton
+                        android:id="@+id/orderOldButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/spacing_lg"
+                        android:buttonTint="@color/orange"
+                        android:text="@string/order_recent" />
+
+                    <RadioButton
+                        android:id="@+id/orderAscButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/spacing_lg"
+                        android:buttonTint="@color/orange"
+                        android:text="@string/order_asc" />
+
+                    <RadioButton
+                        android:id="@+id/orderDescButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/spacing_lg"
+                        android:buttonTint="@color/orange"
+                        android:text="@string/order_desc" />
+                </RadioGroup>
+
+                <TextView
+                    style="@style/ItemFinderTypography.Body1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_llg"
+                    android:text="@string/item_filter_category"
+                    android:textColor="@color/gray_03" />
+
+                <CheckBox
+                    android:id="@+id/lifeCheckBox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/spacing_lg"
+                    android:buttonTint="@color/orange"
+                    android:text="@string/life" />
+
+                <CheckBox
+                    android:id="@+id/foodCheckBox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/spacing_lg"
+                    android:buttonTint="@color/orange"
+                    android:text="@string/food" />
+
+                <CheckBox
+                    android:id="@+id/fashionCheckBox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/spacing_lg"
+                    android:buttonTint="@color/orange"
+                    android:text="@string/fashion" />
+
+                <TextView
+                    android:id="@+id/tagTitleTextView"
+                    style="@style/ItemFinderTypography.Body1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_llg"
+                    android:text="@string/tag"
+                    android:textColor="@color/gray_03" />
+
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/tagChipGroup"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_lsm"
+                    app:chipSpacing="@dimen/spacing_lsm"
+                    app:singleSelection="true">
+
+                    <com.google.android.material.chip.Chip
+                        style="@style/CheckTagChip"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="체크"
+                        app:chipStrokeColor="@color/orange" />
+
+                    <com.google.android.material.chip.Chip
+                        style="@style/CheckTagChip"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="체크"
+                        app:chipStrokeColor="@color/orange" />
+
+                    <com.google.android.material.chip.Chip
+                        style="@style/CheckTagChip"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="체크" />
+
+                </com.google.android.material.chip.ChipGroup>
+
+            </LinearLayout>
+        </ScrollView>
+
+        <View
+            android:id="@+id/optionBackgroundView"
+            android:layout_width="0dp"
+            android:layout_height="80dp"
+            android:background="@color/white"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            style="@style/ItemFinderTypography.Body1"
+            android:id="@+id/resetButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing_md"
+            android:background="@drawable/bg_button_white_stroke_gray02_radius_8"
+            android:drawablePadding="@dimen/spacing_sm"
+            android:drawableStart="@drawable/ic_refresh"
+            android:drawableTint="@color/gray_04"
+            android:foreground="@drawable/ripple_black_radius_12"
+            android:paddingHorizontal="@dimen/spacing"
+            android:paddingVertical="16dp"
+            android:text="@string/item_filter_reset"
+            android:textColor="@color/gray_04"
+            app:layout_constraintTop_toTopOf="@id/optionBackgroundView"
+            app:layout_constraintStart_toStartOf="@id/optionBackgroundView"
+            app:layout_constraintBottom_toBottomOf="@id/optionBackgroundView" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            style="@style/ItemFinderTypography.Body1"
+            android:id="@+id/applyButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="@dimen/spacing_md"
+            android:background="@drawable/bg_button_orange_radius_8"
+            android:foreground="@drawable/ripple_black_radius_8"
+            android:paddingVertical="16dp"
+            android:text="@string/item_filter_apply"
+            android:textColor="@color/white"
+            app:layout_constraintTop_toTopOf="@id/optionBackgroundView"
+            app:layout_constraintStart_toEndOf="@id/resetButton"
+            app:layout_constraintEnd_toEndOf="@id/optionBackgroundView"
+            app:layout_constraintBottom_toBottomOf="@id/optionBackgroundView" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</LinearLayout>

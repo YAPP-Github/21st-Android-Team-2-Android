@@ -38,7 +38,7 @@
 
             <androidx.appcompat.widget.AppCompatButton
                 style="@style/ChipButton.Order"
-                android:id="@+id/orderButton"
+                android:id="@+id/orderFilterButton"
                 android:layout_marginStart="16dp"
                 android:drawableEnd="@drawable/ic_down"
                 android:text="최근등록순"
@@ -48,22 +48,22 @@
 
             <androidx.appcompat.widget.AppCompatButton
                 style="@style/ChipButton.Condition"
-                android:id="@+id/conditionButton"
+                android:id="@+id/categoriesConditionButton"
                 android:layout_marginStart="8dp"
                 android:drawableEnd="@drawable/ic_down"
                 android:text="카테고리2"
                 app:layout_constraintTop_toTopOf="@id/filterBackground"
-                app:layout_constraintStart_toEndOf="@id/orderButton"
+                app:layout_constraintStart_toEndOf="@id/orderFilterButton"
                 app:layout_constraintBottom_toBottomOf="parent" />
 
             <androidx.appcompat.widget.AppCompatButton
                 style="@style/ChipButton.Condition"
-                android:id="@+id/tagButton"
+                android:id="@+id/tagFilterButton"
                 android:layout_marginStart="8dp"
                 android:drawableEnd="@drawable/ic_down"
                 android:text="태그2"
                 app:layout_constraintTop_toTopOf="@id/filterBackground"
-                app:layout_constraintStart_toEndOf="@id/conditionButton"
+                app:layout_constraintStart_toEndOf="@id/categoriesConditionButton"
                 app:layout_constraintBottom_toBottomOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
