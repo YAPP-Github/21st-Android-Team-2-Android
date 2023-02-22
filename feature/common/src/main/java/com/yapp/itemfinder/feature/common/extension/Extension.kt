@@ -13,10 +13,9 @@ import java.io.File
 import java.io.FileOutputStream
 import java.util.UUID
 
-fun Int.dpToPx(context: Context): Int{
+fun Int.dpToPx(context: Context): Int {
     return this * (context.resources.displayMetrics.densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT).toInt()
 }
-
 
 fun IntRange.size() = this.last - this.first + 1
 
@@ -33,18 +32,18 @@ fun List<String>.toUriList() = this.map { Uri.parse(it) }
 
 fun List<Uri>.toStringList() = this.map { it.toString() }
 
-fun Uri.toBitMap(context: Context): Bitmap{
+fun Uri.toBitMap(context: Context): Bitmap {
     val bitmap = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-        val source =ImageDecoder.createSource(context.contentResolver, this)
+        val source = ImageDecoder.createSource(context.contentResolver, this)
         ImageDecoder.decodeBitmap(source)
     } else {
-        MediaStore.Images.Media.getBitmap(context.contentResolver,this)
+        MediaStore.Images.Media.getBitmap(context.contentResolver, this)
     }
     return bitmap
 }
 
-fun Uri.cropToJpeg(context: Context, widthRatio: Int, heightRatio: Int): String{
-    return this.toBitMap(context).crop(widthRatio,heightRatio).reduceSize().toJpeg(context)
+fun Uri.cropToJpeg(context: Context, widthRatio: Int, heightRatio: Int): String {
+    return this.toBitMap(context).crop(widthRatio, heightRatio).reduceSize().toJpeg(context)
 }
 
 fun Bitmap.crop(widthRatio: Int, heightRatio: Int): Bitmap {
@@ -52,19 +51,35 @@ fun Bitmap.crop(widthRatio: Int, heightRatio: Int): Bitmap {
     val bitmapHeight = this.height
     var cropStartX = 0
     var cropStartY = 0
-    var cropWidth = bitmapWidth
-    var cropHeight = (bitmapWidth * (heightRatio.toFloat().div(widthRatio.toFloat()))).toInt()
+    var cropWidth = 0
+    var cropHeight = 0
 
-    if (cropHeight > bitmapHeight){
+    if (widthRatio < heightRatio) { // 세로가 더 길게 크롭하는 경우, 예를 들어 가로 : 세로 = 3 : 4
         cropHeight = bitmapHeight
-        cropWidth = (bitmapHeight * (heightRatio.toFloat().div(widthRatio.toFloat()))).toInt()
-        cropStartX = (bitmapWidth - cropWidth).div(2.0).toInt()
-    }else{
-        cropStartY = (bitmapHeight - cropHeight).div(2.0).toInt()
+        cropWidth = (cropHeight * (widthRatio.toFloat().div(heightRatio.toFloat()))).toInt() // 높이 * 3/4
+
+        if (cropWidth <= bitmapWidth) { // 정상적으로 크로핑될수 있는 경우
+            cropStartX = (bitmapWidth - cropWidth).div(2.0).toInt()
+
+        }else{ // 크로핑 후, 가로길이가 커진 경우 가로길이 기준으로 다시 설정해준다.
+            cropWidth = bitmapWidth
+            cropHeight = (cropWidth * (heightRatio.toFloat().div(widthRatio.toFloat()))).toInt() // 높이 * 4/3
+            cropStartY = (bitmapHeight - cropHeight).div(2.0).toInt()
+        }
+    }else{ // widthRatio > heightRatio, 가로가 더 길게 크롭하는 경우. 예를 들어서 16: 9
+        cropWidth = bitmapWidth
+        cropHeight = (cropWidth * (heightRatio.toFloat().div(widthRatio.toFloat()))).toInt() // 높이 * 9/16
+
+        if (cropHeight <= bitmapHeight){ // 정상적으로 크로핑되는 경우
+            cropStartY = (bitmapHeight - cropHeight).div(2.0).toInt()
+        }else{// 크로핑 후, 세로길이가 커진 경우 세로길이 기준으로 다시 설정해준다.
+            cropHeight = bitmapHeight
+            cropWidth = (cropHeight * (widthRatio.toFloat().div(heightRatio.toFloat()))).toInt() // 높이 * 16 / 9
+            cropStartX = (bitmapWidth - cropWidth).div(2.0).toInt()
+        }
+
     }
-
-
-    val croppedBitmap = Bitmap.createBitmap(
+    return Bitmap.createBitmap(
         this,
         cropStartX,
         cropStartY,
@@ -72,22 +87,20 @@ fun Bitmap.crop(widthRatio: Int, heightRatio: Int): Bitmap {
         cropHeight
     )
 
-    return croppedBitmap
-
 }
 
-fun Bitmap.reduceSize(): Bitmap{
+fun Bitmap.reduceSize(): Bitmap {
     val isSquare = this.width == this.height
 
-    if (isSquare && this.width>1024){
-        return Bitmap.createScaledBitmap(this,1080,1080,false)
+    if (isSquare && this.width > 1024) {
+        return Bitmap.createScaledBitmap(this, 1080, 1080, false)
     }
 
     val ratio = this.height.toFloat().div(this.width.toFloat())
     val is4to3 = ratio in 0.72..0.78
 
     if (is4to3 && this.width > 1440) {
-        return Bitmap.createScaledBitmap(this,1440,1080,false)
+        return Bitmap.createScaledBitmap(this, 1440, 1080, false)
     }
 
     return this
