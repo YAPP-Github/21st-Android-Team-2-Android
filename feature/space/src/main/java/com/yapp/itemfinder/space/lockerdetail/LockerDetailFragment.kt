@@ -91,9 +91,7 @@ class LockerDetailFragment :
 
     private fun initToolBar() = with(binding.defaultTopNavigationView) {
         backButtonImageResId = CR.drawable.ic_back
-        backButtonClickListener = {
-            onBackPressedCallback.handleOnBackPressed()
-        }
+        backButtonClickListener = { backPressed() }
         containerColor = depth.colorId
 
         rightFirstIcon = CR.drawable.ic_search

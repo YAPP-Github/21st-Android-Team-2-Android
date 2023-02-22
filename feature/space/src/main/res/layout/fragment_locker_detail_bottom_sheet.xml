@@ -2,19 +2,19 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/lockerDetailBottomSheetContainer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/brown_01"
     android:orientation="vertical"
-    android:paddingHorizontal="16dp"
     app:layout_behavior="com.yapp.itemfinder.feature.common.views.behavior.CustomDraggableBottomSheetBehaviour"
-    tools:behavior_peekHeight="294dp"
-    android:id="@+id/lockerDetailBottomSheetContainer">
+    tools:behavior_peekHeight="294dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/itemsDraggableContainer"
         android:layout_width="match_parent"
-        android:layout_height="58dp">
+        android:layout_height="58dp"
+        android:paddingHorizontal="@dimen/spacing">
 
         <ImageView
             android:id="@+id/toggleImageView"
@@ -23,20 +23,19 @@
             android:layout_marginTop="16dp"
             android:clickable="false"
             android:src="@drawable/toggle_up"
+            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintRight_toRightOf="parent" />
 
         <TextView
-            android:id="@+id/totalItemCount"
             style="@style/ItemFinderTypography.Body4"
+            android:id="@+id/totalItemCount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
             android:layout_marginBottom="10dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
             tools:text="전체10" />
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -47,7 +46,7 @@
         android:layout_weight="1"
         android:clipToPadding="false"
         android:nestedScrollingEnabled="false"
+        android:paddingHorizontal="@dimen/spacing"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
-
 
 </LinearLayout>

@@ -30,7 +30,6 @@
     <string name="deleteLockerMessage">%s 보관함을 삭제하시겠어요?\n등록하신 물건이 모두 삭제돼요.</string>
     <string name="deleteSpace">공간 삭제</string>
     <string name="deleteSpaceMessage">%s 공간을 삭제하시겠어요?\n등록하신 보관함과 물건이 모두 삭제돼요.</string>
-
     <style name="delete">삭제</style>
     <string name="not_exist_locker_image">보관함 사진이 없어요</string>
     <string name="add_locker_image_guidance">사진을 등록하고 핀을 찍어보세요!</string>

@@ -41,6 +41,7 @@
     <dimen name="filter_radius">8dp</dimen>
 
     <dimen name="toolbar_container_height">56dp</dimen>
+    <dimen name="fab_size">56dp</dimen>
 
     <dimen name="collapsing_toolbar_container_height">112dp</dimen>
 

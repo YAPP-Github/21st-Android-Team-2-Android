@@ -78,7 +78,7 @@ ext {
     glideVersion = '4.12.0'
 
     /* Theme */
-    materialVersion = '1.6.0'
+    materialVersion = '1.8.0'
 
     /* Network */
     okHttpVersion = '4.9.3'
