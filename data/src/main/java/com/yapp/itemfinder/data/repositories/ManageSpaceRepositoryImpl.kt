@@ -23,8 +23,8 @@ class ManageSpaceRepositoryImpl @Inject constructor(
             .toManageSpaceEntity()
 
 
-    override fun deleteSpace(): Boolean {
-        // api call
+    override suspend fun deleteSpace(spaceId: Long): Boolean {
+        manageSpaceApi.deleteSpace(spaceId)
         return true
     }
 }

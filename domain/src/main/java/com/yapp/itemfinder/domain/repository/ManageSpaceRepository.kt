@@ -10,5 +10,5 @@ interface ManageSpaceRepository {
 
     suspend fun editSpace(name: String, spaceId: Long): ManageSpaceEntity
 
-    fun deleteSpace(): Boolean
+    suspend fun deleteSpace(spaceId: Long): Boolean
 }

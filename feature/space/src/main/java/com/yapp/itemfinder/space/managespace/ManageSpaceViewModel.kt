@@ -91,11 +91,22 @@ class ManageSpaceViewModel @Inject constructor(
         }
     }
 
-    fun deleteSpace(space: ManageSpaceEntity): Job = viewModelScope.launch {
+    fun openDeleteSpaceDialog(spaceId: Long, spaceName: String) {
+        postSideEffect(ManageSpaceSideEffect.OpenDeleteSpaceDialog(spaceId, spaceName))
+    }
+
+    fun deleteSpace(spaceId: Long): Job = viewModelScope.launch {
         withState<ManageSpaceState.Success> { state ->
-            postSideEffect(
-                ManageSpaceSideEffect.DeleteDialog
-            )
+            runCatchingWithErrorHandler {
+                manageSpaceRepository.deleteSpace(spaceId)
+            }.onSuccess {
+                fetchData()
+            }.onErrorWithResult { errorWithResult ->
+                val message = errorWithResult.errorResultEntity.message ?: return@withState
+                postSideEffect(
+                    message.let { ManageSpaceSideEffect.ShowToast(it) }
+                )
+            }
         }
     }
 }
