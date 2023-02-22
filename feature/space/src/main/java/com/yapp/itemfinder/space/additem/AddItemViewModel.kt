@@ -2,6 +2,7 @@ package com.yapp.itemfinder.space.additem
 
 import android.content.Context
 import android.net.Uri
+import android.webkit.URLUtil
 import androidx.core.net.toUri
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
@@ -77,11 +78,13 @@ class AddItemViewModel @Inject constructor(
                             return@launch
                         }
                         val dataList = mutableListOf<Data>(
+                            AddItemImages(item.imageUrls ?: mutableListOf()),
                             AddItemName(name = item.name, mode = ScreenMode.EDIT_MODE),
                             AddItemCategory(category = item.itemCategory?.toItemCateogrySelection() ?: ItemCategorySelection.DEFAULT),
                             addItemLocation,
                             AddItemCount(count = item.count)
                         ).apply {
+
                             item.tags?.let { add(AddItemTags(it)) }
                             item.memo?.let {
                                 add(
@@ -476,10 +479,25 @@ class AddItemViewModel @Inject constructor(
             runCatchingWithErrorHandler {
                 var imageUrls = listOf<String>()
                 if (imageUriStringList.isNotEmpty()) {
-                    val imagePaths = withContext(Dispatchers.IO) {
-                        imageUriStringList.map { it.toUri().cropToJpeg(context, 1, 1) }
+                    if (screenMode == ScreenMode.ADD_MODE.label){
+                        val imagePaths = withContext(Dispatchers.IO) {
+                            imageUriStringList.map { it.toUri().cropToJpeg(context, 1, 1) }
+                        }
+                        imageUrls = imageRepository.addImages(imagePaths)
+                    }else{ // 수정 모드일 경우
+                        imageUrls = withContext(Dispatchers.IO){
+                            imageUriStringList.map {
+                                if (URLUtil.isContentUrl(it)){
+                                    val jpeg = it.toUri().cropToJpeg(context,1,1)
+                                    imageRepository
+                                        .addImages(listOf(jpeg))
+                                        .first()
+                                }else{
+                                    it
+                                }
+                            }
+                        }
                     }
-                    imageUrls = imageRepository.addImages(imagePaths)
                 }
 
                 if (itemExpiration.isNotEmpty()) {
