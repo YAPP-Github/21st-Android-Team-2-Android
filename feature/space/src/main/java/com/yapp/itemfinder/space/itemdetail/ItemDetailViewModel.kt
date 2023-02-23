@@ -10,6 +10,7 @@ import com.yapp.itemfinder.domain.repository.ItemRepository
 import com.yapp.itemfinder.domain.repository.LockerRepository
 import com.yapp.itemfinder.domain.repository.SpaceRepository
 import com.yapp.itemfinder.feature.common.BaseStateViewModel
+import com.yapp.itemfinder.feature.common.extension.onErrorWithResult
 import com.yapp.itemfinder.feature.common.extension.runCatchingWithErrorHandler
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
@@ -51,8 +52,12 @@ class ItemDetailViewModel @Inject constructor(
                     spaceAndLockerEntity = spaceAndLockerEntity
                 )
             )
-        }.onFailure {
-            setState(ItemDetailState.Error(it))
+        }.onErrorWithResult { errorWithResult ->
+            setState(ItemDetailState.Error)
+            val message = errorWithResult.errorResultEntity.message ?: return@launch
+            postSideEffect(
+                message.let { ItemDetailSideEffect.ShowToast(it) }
+            )
         }
     }
 
@@ -61,10 +66,12 @@ class ItemDetailViewModel @Inject constructor(
             runCatchingWithErrorHandler {
                 setState(ItemDetailState.Loading)
                 val item = itemId.let { itemRepository.getItemById(itemId) }
-                val lockerId = item.lockerId ?: state.spaceAndLockerEntity?.lockerEntity?.id ?: throw IllegalArgumentException("보관함을 찾을 수 없습니다.")
+                val lockerId = item.lockerId ?: state.spaceAndLockerEntity?.lockerEntity?.id
+                ?: throw IllegalArgumentException("보관함을 찾을 수 없습니다.")
                 val locker = lockerRepository.getLockerById(lockerId)
                 val spaces = spaceRepository.getAllSpaces()
-                val space = spaces.find { it.id == locker?.spaceId } ?: throw IllegalArgumentException("공간을 찾을 수 없습니다.")
+                val space = spaces.find { it.id == locker?.spaceId }
+                    ?: throw IllegalArgumentException("공간을 찾을 수 없습니다.")
                 val spaceAndLockerEntity = SpaceAndLockerEntity(space.toManageSpaceEntity(), locker)
                 item to spaceAndLockerEntity
             }.onSuccess { (item, spaceAndLockerEntity) ->
@@ -74,8 +81,12 @@ class ItemDetailViewModel @Inject constructor(
                         spaceAndLockerEntity = spaceAndLockerEntity
                     )
                 )
-            }.onFailure {
-                setState(ItemDetailState.Error(it))
+            }.onErrorWithResult { errorWithResult ->
+                setState(ItemDetailState.Error)
+                val message = errorWithResult.errorResultEntity.message ?: return@launch
+                postSideEffect(
+                    message.let { ItemDetailSideEffect.ShowToast(it) }
+                )
             }
         }
     }
@@ -88,6 +99,28 @@ class ItemDetailViewModel @Inject constructor(
                     spaceAndLockerEntity = state.spaceAndLockerEntity
                 )
             )
+        }
+    }
+
+    fun openDeleteDialog() = viewModelScope.launch {
+        postSideEffect(ItemDetailSideEffect.OpenDeleteDialog)
+    }
+
+    fun deleteItem() = viewModelScope.launch {
+        withState<ItemDetailState.Success> { state ->
+            runCatchingWithErrorHandler {
+                itemRepository.deleteItem(state.item.id)
+            }.onSuccess {
+                postSideEffect(
+                    ItemDetailSideEffect.Finish
+                )
+            }.onErrorWithResult { errorWithResult ->
+                setState(ItemDetailState.Error)
+                val message = errorWithResult.errorResultEntity.message ?: return@launch
+                postSideEffect(
+                    message.let { ItemDetailSideEffect.ShowToast(it) }
+                )
+            }
         }
     }
 }

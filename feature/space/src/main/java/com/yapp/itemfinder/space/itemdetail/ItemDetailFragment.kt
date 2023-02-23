@@ -7,6 +7,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.core.view.ViewCompat
 import androidx.fragment.app.setFragmentResult
+import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.*
 import com.bumptech.glide.Glide
@@ -54,6 +55,9 @@ class ItemDetailFragment : BaseStateFragment<ItemDetailViewModel, FragmentItemDe
     override fun initViews() = with(binding) {
         initToolBar()
         imageRecyclerView.addItemDecoration(imageItemDecoration)
+        setFragmentResultListener(DeleteItemDialog.DELETE_ITEM_REQUEST) { _, _ ->
+            vm.deleteItem()
+        }
     }
 
     private fun initToolBar() = with(binding.defaultTopNavigationView) {
@@ -63,7 +67,7 @@ class ItemDetailFragment : BaseStateFragment<ItemDetailViewModel, FragmentItemDe
 
         rightFirstIcon = CR.drawable.ic_delete_white
         rightFirstIconClickListener = {
-            Toast.makeText(requireContext(), "삭제 버튼 클릭", Toast.LENGTH_SHORT).show()
+            vm.openDeleteDialog()
         }
         rightSecondIcon = CR.drawable.ic_edit_white
         rightSecondIconClickListener = {
@@ -90,11 +94,38 @@ class ItemDetailFragment : BaseStateFragment<ItemDetailViewModel, FragmentItemDe
                         when (sideEffect) {
                             is ItemDetailSideEffect.MoveToEditItem -> {
                                 val intent = AddItemActivity.newIntent(requireContext()).apply {
-                                    putExtra(AddItemActivity.ITEM_ID_KEY, requireArguments().getLong(ITEM_ID_KEY))
-                                    putExtra(AddItemActivity.SCREEN_MODE, ScreenMode.EDIT_MODE.label)
-                                    putExtra(AddItemActivity.SELECTED_SPACE_AND_LOCKER_KEY, sideEffect.spaceAndLockerEntity)
+                                    putExtra(
+                                        AddItemActivity.ITEM_ID_KEY,
+                                        requireArguments().getLong(ITEM_ID_KEY)
+                                    )
+                                    putExtra(
+                                        AddItemActivity.SCREEN_MODE,
+                                        ScreenMode.EDIT_MODE.label
+                                    )
+                                    putExtra(
+                                        AddItemActivity.SELECTED_SPACE_AND_LOCKER_KEY,
+                                        sideEffect.spaceAndLockerEntity
+                                    )
                                 }
                                 editItemLauncher.launch(intent)
+                            }
+                            is ItemDetailSideEffect.OpenDeleteDialog -> {
+                                val dialog = DeleteItemDialog.newInstance()
+                                activity?.supportFragmentManager?.let { fm ->
+                                    dialog.show(fm, DeleteItemDialog.TAG)
+                                }
+                            }
+                            is ItemDetailSideEffect.ShowToast -> {
+                                Toast.makeText(
+                                    requireContext(),
+                                    sideEffect.message,
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+                            is ItemDetailSideEffect.Finish -> {
+                                val fm = requireActivity().supportFragmentManager
+                                fm.beginTransaction().remove(this@ItemDetailFragment).commit()
+                                fm.popBackStack()
                             }
                         }
                     }
@@ -120,7 +151,7 @@ class ItemDetailFragment : BaseStateFragment<ItemDetailViewModel, FragmentItemDe
                 rightFirstIcon = CR.drawable.ic_delete
                 rightSecondIcon = CR.drawable.ic_edit
             }
-        }else{
+        } else {
             with(binding.defaultTopNavigationView) {
                 containerColor = CR.color.transparent
                 backButtonImageResId = CR.drawable.ic_back_white
@@ -131,12 +162,12 @@ class ItemDetailFragment : BaseStateFragment<ItemDetailViewModel, FragmentItemDe
             binding.itemMarginView.gone()
             Glide.with(requireContext()).load(item.representativeImage).into(itemMainImage)
 
-            if (item.otherImages.isNullOrEmpty()){
+            if (item.otherImages.isNullOrEmpty()) {
                 itemImagesLayout.gone()
-            }else{
+            } else {
                 imageRecyclerView.adapter = itemImageAdapter
                 itemImageAdapter.submitList(item.otherImages)
-              // 이미지 넣기
+                // 이미지 넣기
             }
 
         }
@@ -150,7 +181,12 @@ class ItemDetailFragment : BaseStateFragment<ItemDetailViewModel, FragmentItemDe
         item.tags?.let { tags ->
             tags.asReversed().forEach {
                 val tagChip = Chip(context)
-                val chipDrawable = ChipDrawable.createFromAttributes(requireContext(), null, 0, com.yapp.itemfinder.feature.common.R.style.TagChip)
+                val chipDrawable = ChipDrawable.createFromAttributes(
+                    requireContext(),
+                    null,
+                    0,
+                    com.yapp.itemfinder.feature.common.R.style.TagChip
+                )
                 binding.tagChipGroup.addView(
                     tagChip.apply {
                         id = ViewCompat.generateViewId()
@@ -164,7 +200,7 @@ class ItemDetailFragment : BaseStateFragment<ItemDetailViewModel, FragmentItemDe
         }
 
         item.memo?.let {
-            if (it.isNotEmpty()){
+            if (it.isNotEmpty()) {
                 itemMemo.visible()
                 itemMemoTitle.visible()
                 itemMemo.text = it
