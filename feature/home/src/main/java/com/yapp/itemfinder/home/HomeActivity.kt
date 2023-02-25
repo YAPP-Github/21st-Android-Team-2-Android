@@ -1,5 +1,6 @@
 package com.yapp.itemfinder.home
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -27,6 +28,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlin.properties.Delegates
 
 @AndroidEntryPoint
 class HomeActivity : BaseActivity<HomeViewModel, ActivityHomeBinding>(), FragmentNavigator {
@@ -62,8 +64,14 @@ class HomeActivity : BaseActivity<HomeViewModel, ActivityHomeBinding>(), Fragmen
         vm.changeNavigation(MainNavigation(R.id.menu_home))
     }
 
+
+    private var selectedItemId = -1
     private fun initNavigationBar() {
         binding.bottomNav.setOnItemSelectedListener { item ->
+            if (selectedItemId != -1 && selectedItemId == item.itemId) {
+                return@setOnItemSelectedListener false
+            }
+            selectedItemId = item.itemId
             when (item.itemId) {
                 R.id.menu_tags -> {
                     showFragment(LikeTabFragment.TAG)
@@ -89,6 +97,7 @@ class HomeActivity : BaseActivity<HomeViewModel, ActivityHomeBinding>(), Fragmen
         }
     }
 
+    @SuppressLint("CommitTransaction")
     override fun showFragment(tag: String) {
         binding.root.hideSoftInput()
         val foundFragment = supportFragmentManager.findFragmentByTag(tag)
