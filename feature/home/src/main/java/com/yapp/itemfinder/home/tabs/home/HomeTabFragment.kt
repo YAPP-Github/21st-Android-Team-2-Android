@@ -78,6 +78,9 @@ class HomeTabFragment : BaseStateFragment<HomeTabViewModel, FragmentHomeTabBindi
         setFragmentResultListener(ManageSpaceFragment.MANAGE_SPACE_REQUEST_KEY){ _, _ ->
             vm.fetchData()
         }
+        setFragmentResultListener(LockerListFragment.LOCKER_CHANGE_REQUEST){ _, _ ->
+            vm.fetchData()
+        }
     }
 
 

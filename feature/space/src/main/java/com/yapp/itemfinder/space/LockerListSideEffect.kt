@@ -10,6 +10,7 @@ sealed class LockerListSideEffect : SideEffect {
     object MoveToAddItem : LockerListSideEffect()
     data class OpenDeleteLockerDialog(val lockerName: String, val lockerId: Long) :
         LockerListSideEffect()
+    object LockersChanged: LockerListSideEffect()
 
     data class ShowToast(val message: String) : LockerListSideEffect()
 }

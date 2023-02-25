@@ -69,7 +69,7 @@ class LockerListViewModel @Inject constructor(
             runCatchingWithErrorHandler {
                 lockerRepository.deleteLocker(lockerId)
             }.onSuccess {
-                fetchData()
+                postSideEffect(LockerListSideEffect.LockersChanged)
             }.onErrorWithResult { errorWithResult ->
                 setState(LockerListState.Error(errorWithResult))
                 val message = errorWithResult.errorResultEntity.message
