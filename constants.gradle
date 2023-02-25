@@ -3,6 +3,16 @@ ext {
     /* Application ID */
     itemFinderApplicationId = 'com.yapp.itemfinder'
 
+    /* Empty String */
+    EMPTY_STRING = "\"\""
+
+    /* Operating System */
+    OS_ANDROID = "android"
+
+    /* Build Types */
+    BUILD_DEBUG = "debug"
+    BUILD_RELEASE = "release"
+
     /* Module */
     moduleCompileSdkVersion = 33
     moduleMinSdkVersion = 24
@@ -90,4 +100,8 @@ ext {
 
     /*Ted ImagePicer */
     tedImagePickerVersion = '1.4.2'
+
+    /* License Plugin */
+    licensePluginVersion = '0.10.6'
+    ossLicenseVersion = '17.0.0'
 }

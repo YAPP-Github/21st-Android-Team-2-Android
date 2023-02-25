@@ -36,6 +36,22 @@ class DefaultAuthRepository @Inject constructor(
         accessTokenJob.join()
     }
 
+    override suspend fun putUserNickname(nickname: String) = withContext(dispatcherProvider.default) {
+        secureLocalDataStore.put(SecureLocalData.Nickname, nickname)
+    }
+
+    override suspend fun getUserNickname(): String {
+        return secureLocalDataStore.get(SecureLocalData.Nickname)
+    }
+
+    override suspend fun putUserSocialId(socialId: String) = withContext(dispatcherProvider.default) {
+        secureLocalDataStore.put(SecureLocalData.SocialId, socialId)
+    }
+
+    override suspend fun getUserSocialId(): String {
+        return secureLocalDataStore.get(SecureLocalData.SocialId)
+    }
+
     override suspend fun refreshAuthToken() {
 
     }
@@ -47,7 +63,18 @@ class DefaultAuthRepository @Inject constructor(
     override suspend fun loginUser(socialId: String, socialType: SocialType): AuthTokenEntity =
         authWithoutTokenApi.login(LoginRequest(socialId, socialType.name)).toAuthTokenEntity()
 
+    override suspend fun logoutUser() {
+        authApi.logout()
+    }
+
     override suspend fun signUpUser(signUpEntity: SignUpEntity): AuthTokenEntity =
         authWithoutTokenApi.signup(SignUpRequest.fromEntity(signUpEntity)).toAuthTokenEntity()
+
+    override suspend fun clearAllPreference() {
+        secureLocalDataStore.clear(SecureLocalData.RefreshToken.prefName)
+        secureLocalDataStore.clear(SecureLocalData.AccessToken.prefName)
+        secureLocalDataStore.clear(SecureLocalData.Nickname.prefName)
+        secureLocalDataStore.clear(SecureLocalData.SocialId.prefName)
+    }
 
 }

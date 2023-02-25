@@ -9,5 +9,8 @@ import javax.inject.Singleton
 class DefaultUrlProvider @Inject constructor() : UrlProvider {
 
     override fun getApiPrefixUrl(): String = BuildConfig.API_URL
+    override fun getPrivacyHandleUrl(): String = BuildConfig.PRIVACY_HANDLE_URL
+
+    override fun getTermsOfUseUrl(): String = BuildConfig.TERMS_OF_USE_URL
 
 }

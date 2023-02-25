@@ -31,4 +31,17 @@ sealed class SecureLocalData<T> {
         override val default: String = ""
     }
 
+    object Nickname : SecureLocalData<String>() {
+        override val prefName: PrefName = PrefName.User
+        override val key: String = "pref_user_nickname"
+        override val default: String = ""
+    }
+
+    object SocialId : SecureLocalData<String>() {
+        override val prefName: PrefName = PrefName.User
+        override val key: String = "pref_user_social_id"
+        override val default: String = ""
+    }
+
+
 }

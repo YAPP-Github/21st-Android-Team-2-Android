@@ -3,6 +3,7 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id 'com.google.gms.google-services'
     id 'com.google.firebase.crashlytics'
+    id 'com.google.android.gms.oss-licenses-plugin'
 }
 
 apply from: "$rootDir/module.gradle"
@@ -61,6 +62,11 @@ android {
 
     applicationVariants.all { variant ->
         variant.buildConfigField "String", "API_URL", "\"http://3.39.124.65/\""
+        variant.buildConfigField "String", "PRIVACY_HANDLE_URL", "\"https://www.notion.so/734968a40f31422dab2259c1bd7198bf?pvs=4\""
+        variant.buildConfigField "String", "TERMS_OF_USE_URL", "\"https://www.notion.so/609b93de11b743eda4502ec1216a5ba1?pvs=4\""
+        variant.buildConfigField "String", "OS_ANDROID", "\"$OS_ANDROID\""
+        variant.buildConfigField "String", "BUILD_DEBUG", "\"$BUILD_DEBUG\""
+        variant.buildConfigField "String", "BUILD_RELEASE", "\"$BUILD_RELEASE\""
     }
 
     flavorDimensions "version"
@@ -98,5 +104,6 @@ dependencies {
     implementation project(':data')
     implementation project(':feature:space')
     implementation "com.kakao.sdk:v2-user:$kakaoUserVersion" // 카카오 로그인
+    implementation "com.google.android.gms:play-services-oss-licenses:$ossLicenseVersion"
 
 }

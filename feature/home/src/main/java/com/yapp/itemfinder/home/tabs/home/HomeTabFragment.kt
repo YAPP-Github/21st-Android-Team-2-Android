@@ -28,6 +28,7 @@ import com.yapp.itemfinder.feature.common.utility.SpaceItemDecoration
 import com.yapp.itemfinder.feature.home.R
 import com.yapp.itemfinder.feature.home.databinding.FragmentHomeTabBinding
 import com.yapp.itemfinder.home.HomeActivity
+import com.yapp.itemfinder.home.settings.SettingsActivity
 import com.yapp.itemfinder.space.LockerListFragment
 import com.yapp.itemfinder.feature.common.R as CR
 import com.yapp.itemfinder.space.lockerdetail.LockerDetailFragment
@@ -103,7 +104,9 @@ class HomeTabFragment : BaseStateFragment<HomeTabViewModel, FragmentHomeTabBindi
         searchBarText = getString(R.string.home_search_bar_text)
         searchBarTextColor = CR.color.gray_03
         leftButtonClickListener = {
-            Toast.makeText(requireContext(), "메뉴버튼 클릭", Toast.LENGTH_SHORT).show()
+            startActivity(
+                SettingsActivity.newIntent(requireContext())
+            )
         }
     }
 
