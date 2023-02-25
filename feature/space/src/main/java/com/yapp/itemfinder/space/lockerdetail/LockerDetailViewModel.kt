@@ -66,7 +66,8 @@ class LockerDetailViewModel @Inject constructor(
                 LockerDetailState.Success(
                     locker = locker,
                     dataList = items,
-                    space = space
+                    space = space,
+                    needToFetch = true
                 )
             )
 
@@ -93,25 +94,23 @@ class LockerDetailViewModel @Inject constructor(
                     )
                 )
                 withState<LockerDetailState.Success> { state ->
-                    val item =
-                        state.dataList.find { it.id == prevState.lastFocusedItem?.id } as Item
                     setState(
                         state.copy(
                             itemFilterCondition = prevState.itemFilterCondition,
                             needToFetch = false,
                         )
                     )
-//                    val item = state.dataList.find { it.id == prevState.lastFocusedItem?.id } as Item
-//                    setState(
-//                        state.copy(
-//                            itemFilterCondition = prevState.itemFilterCondition,
-//                            needToFetch = false,
-//                            lastFocusedItem = item,
-//                            focusIndex = prevState.focusIndex
-//                        )
-//                    )
-//
-//                    item.applyItemFocus(true)
+                    val item = state.dataList.find { it.id == prevState.lastFocusedItem?.id } as? Item
+                    setState(
+                        state.copy(
+                            itemFilterCondition = prevState.itemFilterCondition,
+                            needToFetch = false,
+                            lastFocusedItem = item,
+                            focusIndex = prevState.focusIndex
+                        )
+                    )
+
+                    item?.applyItemFocus(true)
                 }
             }.onErrorWithResult { errorWithResult ->
                 val message = errorWithResult.errorResultEntity.message
