@@ -30,6 +30,8 @@ interface BuildConfigProvider {
      */
     val buildType: String
 
+    val isProd: Boolean
+
     /**
      * Flag for Debug BuildType
      *
