@@ -1,17 +1,19 @@
 package com.yapp.itemfinder.home
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.viewbinding.ViewBinding
 import com.yapp.itemfinder.domain.model.ScreenMode
-import com.yapp.itemfinder.feature.common.BaseActivity
-import com.yapp.itemfinder.feature.common.Depth
-import com.yapp.itemfinder.feature.common.FragmentNavigator
+import com.yapp.itemfinder.feature.common.*
 import com.yapp.itemfinder.feature.common.binding.viewBinding
 import com.yapp.itemfinder.feature.common.extension.hideSoftInput
 import com.yapp.itemfinder.feature.home.R
@@ -23,6 +25,7 @@ import com.yapp.itemfinder.space.LockerListFragment
 import com.yapp.itemfinder.space.additem.AddItemActivity
 import com.yapp.itemfinder.space.itemdetail.ItemDetailFragment
 import com.yapp.itemfinder.space.lockerdetail.LockerDetailFragment
+import com.yapp.itemfinder.space.lockerdetail.LockerDetailViewModel
 import com.yapp.itemfinder.space.managespace.ManageSpaceFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
@@ -40,6 +43,9 @@ class HomeActivity : BaseActivity<HomeViewModel, ActivityHomeBinding>(), Fragmen
     override val depth: Depth
         get() = Depth.FIRST
 
+    private lateinit var addItemLauncher: ActivityResultLauncher<Intent>
+    lateinit var currentFragment: Fragment
+
     override fun onBackPressedAction() {
         super.onBackPressedAction()
         lifecycleScope.launch {
@@ -50,10 +56,36 @@ class HomeActivity : BaseActivity<HomeViewModel, ActivityHomeBinding>(), Fragmen
 
     override fun initViews() {
         initNavigationBar()
+        addItemLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){result ->
+            if (result.resultCode == Activity.RESULT_OK){
+                (currentFragment as BaseFragment<BaseViewModel,ViewBinding>)
+                    .vm.fetchData()
+            }
+
+        }
         binding.addItemButton.setOnClickListener {
+            val lockerDetailFragment =
+                supportFragmentManager.fragments.filter { it is LockerDetailFragment }.firstOrNull()
+
+            val intent = AddItemActivity.newIntent(this)
+
+            if (lockerDetailFragment != null) {
+                val lockerDetailVM = (lockerDetailFragment as LockerDetailFragment).vm
+
+                val locker = lockerDetailVM.getLockerInfo()
+                val space = lockerDetailVM.getSpaceInfo()
+
+                intent.apply {
+                    putExtra(AddItemActivity.CURRENT_LOCKER_ID_KEY, locker?.id)
+                    putExtra(AddItemActivity.CURRENT_LOCKER_NAME_KEY, locker?.name)
+                    putExtra(AddItemActivity.CURRENT_SPACE_ID_KEY, locker?.spaceId)
+                    putExtra(AddItemActivity.CURRENT_SPACE_NAME_KEY, space?.name)
+                }
+            }
             startActivity(
-                AddItemActivity.newIntent(this).apply {
+                intent.apply {
                     putExtra(AddItemActivity.SCREEN_MODE, ScreenMode.ADD_MODE.label)
+
                 }
             )
         }
@@ -106,12 +138,14 @@ class HomeActivity : BaseActivity<HomeViewModel, ActivityHomeBinding>(), Fragmen
         }
         foundFragment?.let {
             supportFragmentManager.beginTransaction().show(it).commitAllowingStateLoss()
+            currentFragment = it
         } ?: kotlin.run {
             val fragment = getFragmentByTag(tag)
             if (fragment != null) {
                 supportFragmentManager.beginTransaction()
                     .add(R.id.fragmentContainer, fragment, tag)
                     .commitAllowingStateLoss()
+                currentFragment = fragment
             }
         }
     }
@@ -121,6 +155,7 @@ class HomeActivity : BaseActivity<HomeViewModel, ActivityHomeBinding>(), Fragmen
         with(supportFragmentManager) {
             val foundFragment = findFragmentByTag(tag) ?: getFragmentByTag(tag)
             foundFragment?.let {
+                currentFragment = it
                 if (bundle != null) {
                     it.arguments = bundle
                 }

@@ -7,6 +7,8 @@ sealed class AddLockerSideEffect : SideEffect {
     object UploadImage: AddLockerSideEffect()
     object OpenChangeImageDialog: AddLockerSideEffect()
 
+    object FillOutNameSnackBar : AddLockerSideEffect()
     object SuccessRegister: AddLockerSideEffect()
     data class ShowToast(val message: String): AddLockerSideEffect()
+
 }

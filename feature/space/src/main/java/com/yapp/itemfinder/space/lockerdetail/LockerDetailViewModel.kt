@@ -8,6 +8,7 @@ import com.yapp.itemfinder.data.repositories.di.LockerRepositoryQualifiers
 import com.yapp.itemfinder.data.repositories.di.SpaceRepositoryQualifiers
 import com.yapp.itemfinder.domain.model.Item
 import com.yapp.itemfinder.domain.model.LockerEntity
+import com.yapp.itemfinder.domain.model.ManageSpaceEntity
 import com.yapp.itemfinder.domain.model.SpaceAndLockerEntity
 import com.yapp.itemfinder.domain.repository.LockerRepository
 import com.yapp.itemfinder.domain.repository.ItemRepository
@@ -18,6 +19,7 @@ import com.yapp.itemfinder.feature.common.extension.runCatchingWithErrorHandler
 import com.yapp.itemfinder.space.lockerdetail.itemfilter.ItemFilterCondition
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
@@ -42,20 +44,29 @@ class LockerDetailViewModel @Inject constructor(
     override val _sideEffectFlow: MutableSharedFlow<LockerDetailSideEffect> = MutableSharedFlow()
 
     private val locker by lazy { savedStateHandle.get<LockerEntity>(LockerDetailFragment.LOCKER_ENTITY_KEY) }
-
+    private lateinit var space: ManageSpaceEntity
 
     override fun fetchData(): Job = viewModelScope.launch {
         // api를 붙일 경우, args의 id를 활용하세요
         runCatchingWithErrorHandler {
             setState(LockerDetailState.Loading)
             locker?.let {
-                it to itemRepository.getItemsByLockerId(it.id)
+                val lockerEntity = async { lockerRepository.getLockerById(it.id)}
+                val items = async { itemRepository.getItemsByLockerId(it.id) }
+                lockerEntity.await() to items.await()
             } ?: throw IllegalArgumentException("보관함 정보를 불러올 수 없습니다.")
         }.onSuccess { (locker, items) ->
+            var space: ManageSpaceEntity = ManageSpaceEntity("")
+            runCatchingWithErrorHandler {
+                spaceRepository.getSpaceById(locker.spaceId)
+            }.onSuccess { s ->
+                space = s
+            }
             setState(
                 LockerDetailState.Success(
                     locker = locker,
-                    dataList = items
+                    dataList = items,
+                    space = space
                 )
             )
 
@@ -82,17 +93,25 @@ class LockerDetailViewModel @Inject constructor(
                     )
                 )
                 withState<LockerDetailState.Success> { state ->
-                    val item = state.dataList.find { it.id == prevState.lastFocusedItem?.id } as Item
+                    val item =
+                        state.dataList.find { it.id == prevState.lastFocusedItem?.id } as Item
                     setState(
                         state.copy(
                             itemFilterCondition = prevState.itemFilterCondition,
                             needToFetch = false,
-                            lastFocusedItem = item,
-                            focusIndex = prevState.focusIndex
                         )
                     )
-
-                    item.applyItemFocus(true)
+//                    val item = state.dataList.find { it.id == prevState.lastFocusedItem?.id } as Item
+//                    setState(
+//                        state.copy(
+//                            itemFilterCondition = prevState.itemFilterCondition,
+//                            needToFetch = false,
+//                            lastFocusedItem = item,
+//                            focusIndex = prevState.focusIndex
+//                        )
+//                    )
+//
+//                    item.applyItemFocus(true)
                 }
             }.onErrorWithResult { errorWithResult ->
                 val message = errorWithResult.errorResultEntity.message
@@ -156,6 +175,22 @@ class LockerDetailViewModel @Inject constructor(
                 )
             )
         }
+    }
+
+    fun getLockerInfo(): LockerEntity? {
+        var locker: LockerEntity? = null
+        withState<LockerDetailState.Success> { state ->
+            locker = state.locker
+        }
+        return locker
+    }
+
+    fun getSpaceInfo(): ManageSpaceEntity? {
+        var space: ManageSpaceEntity? = null
+        withState<LockerDetailState.Success> { state ->
+            space = state.space
+        }
+        return space
     }
 
 }

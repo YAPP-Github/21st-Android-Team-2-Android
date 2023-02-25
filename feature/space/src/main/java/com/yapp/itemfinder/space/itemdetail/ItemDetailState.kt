@@ -14,7 +14,5 @@ sealed class ItemDetailState : State {
         val spaceAndLockerEntity: SpaceAndLockerEntity?,
     ) : ItemDetailState()
 
-    data class Error(
-        val e: Throwable
-    ) : ItemDetailState()
+    object Error : ItemDetailState()
 }

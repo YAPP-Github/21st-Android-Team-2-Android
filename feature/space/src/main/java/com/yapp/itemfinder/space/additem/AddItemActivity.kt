@@ -9,6 +9,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import android.net.Uri
 import android.os.Bundle
 import androidx.activity.viewModels
+import androidx.core.os.bundleOf
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -58,21 +59,23 @@ class AddItemActivity : BaseStateActivity<AddItemViewModel, ActivityAddItemBindi
             }
         }
 
-    private val itemPositionDefineLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-        if (result.resultCode == Activity.RESULT_OK) {
-            result.data?.parcelable<LockerAndItemEntity>(LOCKER_AND_ITEM_KEY)?.let {
-                vm.setDefinedLockerAndItem(it)
+    private val itemPositionDefineLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                result.data?.parcelable<LockerAndItemEntity>(LOCKER_AND_ITEM_KEY)?.let {
+                    vm.setDefinedLockerAndItem(it)
+                }
             }
         }
-    }
 
-    private val addTagsLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-        if (result.resultCode == Activity.RESULT_OK) {
-            result.data?.parcelableList<Tag>(SELECTED_TAGS_KEY)?.let {
-                vm.setSelectedTags(it)
+    private val addTagsLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                result.data?.parcelableList<Tag>(SELECTED_TAGS_KEY)?.let {
+                    vm.setSelectedTags(it)
+                }
             }
         }
-    }
 
     override fun initViews() = with(binding) {
         initToolBar()
@@ -207,12 +210,18 @@ class AddItemActivity : BaseStateActivity<AddItemViewModel, ActivityAddItemBindi
                         }
                         is AddItemSideEffect.MoveItemPositionDefine -> {
                             itemPositionDefineLauncher.launch(
-                                AddItemPositionDefineActivity.newIntent(this@AddItemActivity, sideEffect.lockerAndItemEntity)
+                                AddItemPositionDefineActivity.newIntent(
+                                    this@AddItemActivity,
+                                    sideEffect.lockerAndItemEntity
+                                )
                             )
                         }
                         is AddItemSideEffect.MoveAddTag -> {
                             addTagsLauncher.launch(
-                                AddTagActivity.newIntent(this@AddItemActivity, sideEffect.selectedTagList)
+                                AddTagActivity.newIntent(
+                                    this@AddItemActivity,
+                                    sideEffect.selectedTagList
+                                )
                             )
                         }
                     }
@@ -273,7 +282,13 @@ class AddItemActivity : BaseStateActivity<AddItemViewModel, ActivityAddItemBindi
 
         const val ITEM_ID_KEY = "ITEM_ID_KEY"
 
-        fun newIntent(context: Context) = Intent(context, AddItemActivity::class.java)
+        const val CURRENT_LOCKER_ID_KEY = "CURRENT_LOCKER_ID_KEY"
+        const val CURRENT_SPACE_ID_KEY = "CURRENT_SPACE_ID_KEY"
+        const val CURRENT_LOCKER_NAME_KEY = "CURRENT_LOCKER_NAME_KEY"
+        const val CURRENT_SPACE_NAME_KEY = "CURRENT_SPACE_NAME_KEY"
+
+        fun newIntent(context: Context, bundle: Bundle = bundleOf()) =
+            Intent(context, AddItemActivity::class.java)
 
     }
 

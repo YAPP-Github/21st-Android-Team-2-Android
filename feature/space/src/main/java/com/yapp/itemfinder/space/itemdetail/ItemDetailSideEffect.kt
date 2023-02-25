@@ -9,4 +9,10 @@ sealed class ItemDetailSideEffect : SideEffect {
         val spaceAndLockerEntity: SpaceAndLockerEntity?,
     ) : ItemDetailSideEffect()
 
+    object OpenDeleteDialog : ItemDetailSideEffect()
+
+    data class ShowToast(val message: String) : ItemDetailSideEffect()
+
+    object Finish : ItemDetailSideEffect()
+
 }

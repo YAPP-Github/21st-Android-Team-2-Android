@@ -1,5 +1,6 @@
 package com.yapp.itemfinder.data.repositories
 
+import com.yapp.itemfinder.domain.model.ManageSpaceEntity
 import com.yapp.itemfinder.domain.model.SelectSpace
 import com.yapp.itemfinder.domain.repository.SpaceRepository
 import javax.inject.Inject
@@ -15,5 +16,9 @@ class SpaceMockRepositoryImpl @Inject constructor() : SpaceRepository {
             SelectSpace(id = 4, name = "베란다"),
             SelectSpace(id = 5, name = "드레스룸")
         )
+    }
+
+    override suspend fun getSpaceById(spaceId: Long): ManageSpaceEntity {
+        return ManageSpaceEntity(name = "")
     }
 }
