@@ -345,8 +345,10 @@ class LockerDetailFragment :
         if (lockerDetailState.locker.imageUrl != null) {
             handleItemMarkers(lockerDetailState.locker , dataList.map { it as Item })
             binding.emptyMarkerMapGroup.gone()
+            binding.itemsMarkerMapView.visible()
         } else {
             binding.emptyMarkerMapGroup.visible()
+            binding.itemsMarkerMapView.gone()
             binding.emptySpaceAddButton.setOnClickListener {
                 val intent = AddLockerActivity.newIntent(requireActivity()).apply {
                     putExtra(
