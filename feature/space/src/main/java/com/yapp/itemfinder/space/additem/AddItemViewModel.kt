@@ -61,9 +61,7 @@ class AddItemViewModel @Inject constructor(
                 if (savedStateHandle.get<SpaceAndLockerEntity>(AddItemActivity.SELECTED_SPACE_AND_LOCKER_KEY) != null) {
                     val spaceAndLockerEntity =
                         savedStateHandle.get<SpaceAndLockerEntity>(AddItemActivity.SELECTED_SPACE_AND_LOCKER_KEY)!!
-                    if (spaceAndLockerEntity.lockerEntity?.imageUrl != null) {
-                        setSelectedSpaceAndLocker(spaceAndLockerEntity)
-                    }
+                    setSelectedSpaceAndLocker(spaceAndLockerEntity)
                 }
             }
             ScreenMode.EDIT_MODE.label -> {
@@ -371,13 +369,15 @@ class AddItemViewModel @Inject constructor(
                 val newItem = state.lockerAndItemEntity?.item?.copy(
                     itemCategory = addItemCategory.category.toItemCateogry()
                 )
-
-                newDataList.add(
-                    AddItemMarkerMap(
-                        lockerEntity = locker,
-                        item = newItem
+                state.spaceAndLockerEntity?.lockerEntity?.imageUrl?.let {
+                    newDataList.add(
+                        AddItemMarkerMap(
+                            lockerEntity = locker,
+                            item = newItem
+                        )
                     )
-                )
+                }
+
                 setState(
                     state.copy(
                         dataList = newDataList,
