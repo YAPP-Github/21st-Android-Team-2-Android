@@ -57,7 +57,6 @@ class HomeActivity : BaseActivity<HomeViewModel, ActivityHomeBinding>(), Fragmen
     }
 
     override fun initViews() {
-        initToolBar()
         initNavigationBar()
         addItemLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){result ->
             if (result.resultCode == Activity.RESULT_OK){
@@ -92,22 +91,6 @@ class HomeActivity : BaseActivity<HomeViewModel, ActivityHomeBinding>(), Fragmen
                     putExtra(AddItemActivity.SCREEN_MODE, ScreenMode.ADD_MODE.label)
                 }
             )
-        }
-    }
-
-    private fun initToolBar() = with(binding.searchTopNavigationView) {
-        leftButtonImageResId = CR.drawable.ic_menu
-        searchBarImageResId = CR.drawable.ic_search
-        searchBarBackgroundResId = CR.drawable.bg_button_brown_02_radius_8
-        searchBarText = getString(R.string.home_search_bar_text)
-        searchBarTextColor = CR.color.gray_03
-        leftButtonClickListener = {
-            startActivity(
-                SettingsActivity.newIntent(this@HomeActivity)
-            )
-        }
-        searchBarClickListener = {
-            showShortToast(getString(R.string.prepare_this_feature))
         }
     }
 

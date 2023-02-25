@@ -6,22 +6,6 @@
     android:layout_height="match_parent"
     tools:context="com.yapp.itemfinder.home.HomeActivity">
 
-    <androidx.appcompat.widget.Toolbar
-        style="@style/DefaultToolbar"
-        android:id="@+id/toolbar"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
-
-        <com.yapp.itemfinder.feature.common.views.SearchTopNavigationView
-            android:id="@+id/searchTopNavigationView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-    </androidx.appcompat.widget.Toolbar>
-
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragmentContainer"
         android:layout_width="0dp"
@@ -29,7 +13,7 @@
         app:layout_constraintBottom_toTopOf="@id/bottomNav"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toolbar"
+        app:layout_constraintTop_toTopOf="parent"
         tools:layout="@layout/fragment_home_tab"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
