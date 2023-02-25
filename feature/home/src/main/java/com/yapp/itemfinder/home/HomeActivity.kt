@@ -48,15 +48,16 @@ class HomeActivity : BaseActivity<HomeViewModel, ActivityHomeBinding>(), Fragmen
     private lateinit var addItemLauncher: ActivityResultLauncher<Intent>
     lateinit var currentFragment: Fragment
 
-    override fun onBackPressedAction() {
-        super.onBackPressedAction()
-        lifecycleScope.launch {
-            delay(100)
-            checkCurrentFragment()
-        }
-    }
 
     override fun initViews() {
+
+        supportFragmentManager.addOnBackStackChangedListener {
+            checkCurrentFragment()
+            lifecycleScope.launch {
+                delay(10)
+            }
+        }
+
         initNavigationBar()
         addItemLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){result ->
             if (result.resultCode == Activity.RESULT_OK){
