@@ -14,4 +14,6 @@
     <string name="logout">로그아웃</string>
     <string name="wait_a_moment">잠시만요!</string>
     <string name="do_you_want_logout">정말로 로그아웃 하시겠어요?</string>
+
+    <string name="prepare_this_feature">해당 기능을 준비중입니다.</string>
 </resources>
