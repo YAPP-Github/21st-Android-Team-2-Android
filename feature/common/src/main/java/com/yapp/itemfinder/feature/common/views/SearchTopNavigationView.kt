@@ -69,6 +69,14 @@ class SearchTopNavigationView
             }
         }
 
+    var searchBarClickListener: ActionHandler? = null
+        set(value) {
+            field = value
+            binding.searchBarBackgroundView.setOnClickListener {
+                searchBarClickListener?.invoke()
+            }
+        }
+
     init {
         backgroundColorId = R.color.white
         leftButtonImageResId = R.drawable.ic_menu

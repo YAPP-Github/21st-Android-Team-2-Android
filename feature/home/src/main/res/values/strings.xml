@@ -17,4 +17,6 @@
     <string name="fixingTitle">태그 탭은 현재 공사 중이에요!</string>
     <string name="fixingSubTitle">열심히 만들고 있으니 조금만 기다려주세요 :)</string>
     <string name="fixingReminderTitle">리마인더 탭은 현재 공사 중이에요!</string>
+
+    <string name="prepare_this_feature">해당 기능을 준비중입니다.</string>
 </resources>
