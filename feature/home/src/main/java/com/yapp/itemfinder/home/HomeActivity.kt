@@ -16,8 +16,10 @@ import com.yapp.itemfinder.domain.model.ScreenMode
 import com.yapp.itemfinder.feature.common.*
 import com.yapp.itemfinder.feature.common.binding.viewBinding
 import com.yapp.itemfinder.feature.common.extension.hideSoftInput
+import com.yapp.itemfinder.feature.common.extension.showShortToast
 import com.yapp.itemfinder.feature.home.R
 import com.yapp.itemfinder.feature.home.databinding.ActivityHomeBinding
+import com.yapp.itemfinder.home.settings.SettingsActivity
 import com.yapp.itemfinder.home.tabs.home.HomeTabFragment
 import com.yapp.itemfinder.home.tabs.like.LikeTabFragment
 import com.yapp.itemfinder.home.tabs.reminder.ReminderTabFragment
@@ -25,13 +27,12 @@ import com.yapp.itemfinder.space.LockerListFragment
 import com.yapp.itemfinder.space.additem.AddItemActivity
 import com.yapp.itemfinder.space.itemdetail.ItemDetailFragment
 import com.yapp.itemfinder.space.lockerdetail.LockerDetailFragment
-import com.yapp.itemfinder.space.lockerdetail.LockerDetailViewModel
+import com.yapp.itemfinder.feature.common.R as CR
 import com.yapp.itemfinder.space.managespace.ManageSpaceFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import kotlin.properties.Delegates
 
 @AndroidEntryPoint
 class HomeActivity : BaseActivity<HomeViewModel, ActivityHomeBinding>(), FragmentNavigator {
@@ -55,6 +56,7 @@ class HomeActivity : BaseActivity<HomeViewModel, ActivityHomeBinding>(), Fragmen
     }
 
     override fun initViews() {
+        initToolBar()
         initNavigationBar()
         addItemLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){result ->
             if (result.resultCode == Activity.RESULT_OK){
@@ -88,6 +90,22 @@ class HomeActivity : BaseActivity<HomeViewModel, ActivityHomeBinding>(), Fragmen
 
                 }
             )
+        }
+    }
+
+    private fun initToolBar() = with(binding.searchTopNavigationView) {
+        leftButtonImageResId = CR.drawable.ic_menu
+        searchBarImageResId = CR.drawable.ic_search
+        searchBarBackgroundResId = CR.drawable.bg_button_brown_02_radius_8
+        searchBarText = getString(R.string.home_search_bar_text)
+        searchBarTextColor = CR.color.gray_03
+        leftButtonClickListener = {
+            startActivity(
+                SettingsActivity.newIntent(this@HomeActivity)
+            )
+        }
+        searchBarClickListener = {
+            showShortToast(getString(R.string.prepare_this_feature))
         }
     }
 
@@ -150,6 +168,7 @@ class HomeActivity : BaseActivity<HomeViewModel, ActivityHomeBinding>(), Fragmen
         }
     }
 
+    @SuppressLint("CommitTransaction")
     override fun addFragmentBackStack(tag: String, bundle: Bundle?) {
         binding.root.hideSoftInput()
         with(supportFragmentManager) {
