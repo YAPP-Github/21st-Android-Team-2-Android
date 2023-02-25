@@ -64,9 +64,16 @@ class AddItemViewModel @Inject constructor(
                             AddItemTags(listOf()),
                             AddItemAdditional()
                         ),
-                        spaceAndLockerEntity = null,
+                        spaceAndLockerEntity = null
                     )
                 )
+                if (savedStateHandle.get<SpaceAndLockerEntity>(AddItemActivity.SELECTED_SPACE_AND_LOCKER_KEY) != null) {
+                    val spaceAndLockerEntity =
+                        savedStateHandle.get<SpaceAndLockerEntity>(AddItemActivity.SELECTED_SPACE_AND_LOCKER_KEY)!!
+                    if (spaceAndLockerEntity.lockerEntity?.imageUrl != null) {
+                        setSelectedSpaceAndLocker(spaceAndLockerEntity)
+                    }
+                }
             }
             ScreenMode.EDIT_MODE.label -> {
                 val spaceAndLockerEntity =
