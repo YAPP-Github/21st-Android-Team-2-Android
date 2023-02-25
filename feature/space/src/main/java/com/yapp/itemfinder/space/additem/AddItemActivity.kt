@@ -282,13 +282,7 @@ class AddItemActivity : BaseStateActivity<AddItemViewModel, ActivityAddItemBindi
 
         const val ITEM_ID_KEY = "ITEM_ID_KEY"
 
-        const val CURRENT_LOCKER_ID_KEY = "CURRENT_LOCKER_ID_KEY"
-        const val CURRENT_SPACE_ID_KEY = "CURRENT_SPACE_ID_KEY"
-        const val CURRENT_LOCKER_NAME_KEY = "CURRENT_LOCKER_NAME_KEY"
-        const val CURRENT_SPACE_NAME_KEY = "CURRENT_SPACE_NAME_KEY"
-
-        fun newIntent(context: Context, bundle: Bundle = bundleOf()) =
-            Intent(context, AddItemActivity::class.java)
+        fun newIntent(context: Context) = Intent(context, AddItemActivity::class.java)
 
     }
 

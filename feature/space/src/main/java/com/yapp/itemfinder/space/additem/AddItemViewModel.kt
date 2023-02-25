@@ -39,10 +39,6 @@ class AddItemViewModel @Inject constructor(
 
     private val screenMode by lazy { savedStateHandle.get<String>(AddItemActivity.SCREEN_MODE) }
     private val itemId by lazy { savedStateHandle.get<Long>(AddItemActivity.ITEM_ID_KEY) }
-    private val lockerId by lazy { savedStateHandle.get<Long>(AddItemActivity.CURRENT_LOCKER_ID_KEY) }
-    private val lockerName by lazy { savedStateHandle.get<String>(AddItemActivity.CURRENT_LOCKER_NAME_KEY) }
-    private val spaceId by lazy { savedStateHandle.get<Long>(AddItemActivity.CURRENT_SPACE_ID_KEY) }
-    private val spaceName by lazy { savedStateHandle.get<String>(AddItemActivity.CURRENT_SPACE_NAME_KEY) }
 
     override fun fetchData(): Job = viewModelScope.launch {
         setState(AddItemState.Loading)
@@ -54,19 +50,21 @@ class AddItemViewModel @Inject constructor(
                             AddItemImages(mutableListOf()),
                             AddItemName(mode = ScreenMode.ADD_MODE),
                             AddItemCategory(category = ItemCategorySelection.DEFAULT),
-                            AddItemLocation(
-                                lockerId = lockerId ?: 0,
-                                lockerName = lockerName ?: "",
-                                spaceId = spaceId ?: 0,
-                                spaceName = spaceName ?: ""
-                            ),
+                            AddItemLocation(),
                             AddItemCount(),
                             AddItemTags(listOf()),
                             AddItemAdditional()
                         ),
-                        spaceAndLockerEntity = null,
+                        spaceAndLockerEntity = null
                     )
                 )
+                if (savedStateHandle.get<SpaceAndLockerEntity>(AddItemActivity.SELECTED_SPACE_AND_LOCKER_KEY) != null) {
+                    val spaceAndLockerEntity =
+                        savedStateHandle.get<SpaceAndLockerEntity>(AddItemActivity.SELECTED_SPACE_AND_LOCKER_KEY)!!
+                    if (spaceAndLockerEntity.lockerEntity?.imageUrl != null) {
+                        setSelectedSpaceAndLocker(spaceAndLockerEntity)
+                    }
+                }
             }
             ScreenMode.EDIT_MODE.label -> {
                 val spaceAndLockerEntity =
