@@ -12,7 +12,7 @@ class LockerRepositoryImpl @Inject constructor(
     private val lockerApi: LockerApi
 ) : LockerRepository {
 
-    override suspend fun getLockerById(lockerId: Long): LockerEntity? =
+    override suspend fun getLockerById(lockerId: Long): LockerEntity =
         lockerApi.getLockerById(lockerId).refineToLocker()
 
     override suspend fun getLockers(spaceId: Long): List<LockerEntity> =

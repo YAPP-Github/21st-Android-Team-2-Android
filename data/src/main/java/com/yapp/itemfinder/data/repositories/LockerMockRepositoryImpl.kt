@@ -9,7 +9,7 @@ import javax.inject.Singleton
 @Singleton
 class LockerMockRepositoryImpl @Inject constructor() : LockerRepository {
 
-    override suspend fun getLockerById(lockerId: Long): LockerEntity? {
+    override suspend fun getLockerById(lockerId: Long): LockerEntity {
         TODO("Not yet implemented")
     }
 

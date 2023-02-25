@@ -338,7 +338,6 @@ class LockerDetailFragment :
             lockerDetailState.lastFocusedItem?.let {
                 binding.itemsMarkerMapView.applyFocusMarker(it)
             }
-            return
         }
 
         val dataList = lockerDetailState.dataList
