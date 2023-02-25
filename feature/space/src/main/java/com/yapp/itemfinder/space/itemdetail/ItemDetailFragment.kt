@@ -43,6 +43,7 @@ class ItemDetailFragment : BaseStateFragment<ItemDetailViewModel, FragmentItemDe
     override val binding by viewBinding(FragmentItemDetailBinding::inflate)
 
     private var isEditSucceed: Boolean = false
+    private var isDeleteSucceed: Boolean = false
 
     private val editItemLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -57,6 +58,7 @@ class ItemDetailFragment : BaseStateFragment<ItemDetailViewModel, FragmentItemDe
         imageRecyclerView.addItemDecoration(imageItemDecoration)
         setFragmentResultListener(DeleteItemDialog.DELETE_ITEM_REQUEST) { _, _ ->
             vm.deleteItem()
+            isDeleteSucceed = true
         }
     }
 
@@ -228,7 +230,7 @@ class ItemDetailFragment : BaseStateFragment<ItemDetailViewModel, FragmentItemDe
 
     override fun onDestroyView() {
         super.onDestroyView()
-        if (isEditSucceed) {
+        if (isEditSucceed || isDeleteSucceed) {
             setFragmentResult(
                 LockerDetailFragment.FETCH_REQUEST_KEY,
                 bundleOf(
