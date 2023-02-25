@@ -141,9 +141,9 @@ class ItemDetailFragment : BaseStateFragment<ItemDetailViewModel, FragmentItemDe
 
     private fun handleSuccess(lockerDetailState: ItemDetailState.Success) = with(binding) {
         val item = lockerDetailState.item
+        // 메인 이미지 관련 뷰 초기화
         if (item.imageUrls.isNullOrEmpty()) {
             itemMainImage.gone()
-            itemImagesLayout.gone()
             binding.itemMarginView.visible()
             with(binding.defaultTopNavigationView) {
                 containerColor = depth.colorId
@@ -162,14 +162,14 @@ class ItemDetailFragment : BaseStateFragment<ItemDetailViewModel, FragmentItemDe
             binding.itemMarginView.gone()
             Glide.with(requireContext()).load(item.representativeImage).into(itemMainImage)
 
-            if (item.otherImages.isNullOrEmpty()) {
-                itemImagesLayout.gone()
-            } else {
-                imageRecyclerView.adapter = itemImageAdapter
-                itemImageAdapter.submitList(item.otherImages)
-                // 이미지 넣기
-            }
-
+        }
+        // 나머지 이미지 관련 초기화
+        if (item.otherImages.isNullOrEmpty()){
+            itemImagesLayout.gone()
+        }else{
+            itemImagesLayout.visible()
+            imageRecyclerView.adapter = itemImageAdapter
+            itemImageAdapter.submitList(item.otherImages)
         }
         itemName.text = item.name
         itemCategory.text = item.itemCategory?.labelResId?.let { getString(it) }

@@ -75,7 +75,7 @@ class HomeTabFragment : BaseStateFragment<HomeTabViewModel, FragmentHomeTabBindi
             }
         }
 
-        setFragmentResultListener(ManageSpaceFragment.NEW_SPACE_ADDED_REQUEST_KEY){ _, _ ->
+        setFragmentResultListener(ManageSpaceFragment.MANAGE_SPACE_REQUEST_KEY){ _, _ ->
             vm.fetchData()
         }
     }

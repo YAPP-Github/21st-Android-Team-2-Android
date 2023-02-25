@@ -13,6 +13,7 @@ import com.yapp.itemfinder.feature.common.extension.visible
 class SpaceViewHolder(
     val binding: SpaceItemBinding
 ) : DataViewHolder<SpaceItem>(binding) {
+    private val context = binding.root.context
 
     private enum class State {
         NORMAL, OVER
@@ -47,12 +48,10 @@ class SpaceViewHolder(
                 frame.visible()
                 when (idx) {
                     0, 1, 2 -> {
-                        val context = binding.root.context
                         Glide.with(itemView).load(lockers[idx].icon.toDrawable(context)).into(imageView)
-
                     }
                     3 -> {
-                        if (lockers.size > 4) {
+                        if (data.lockerCount > 4) {
                             spaceFourthTextView.text = "+${lockers.size - 3}"
                             frame.setCardBackgroundColor(frame.context.getColor(R.color.brown_03))
                         } else {

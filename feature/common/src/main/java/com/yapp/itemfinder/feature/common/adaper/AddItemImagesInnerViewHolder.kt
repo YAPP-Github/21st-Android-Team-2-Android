@@ -109,7 +109,8 @@ sealed class AddItemImagesInnerViewHolders(binding: ViewBinding) :
 
         fun bind(data: AddItemImagesInnerData.AddItemImagesInnerImageData, removeHandler: () -> Unit) {
             Glide.with(binding.imageView)
-                .load(Uri.parse(data.uriString))
+//                .load(Uri.parse(data.uriString))
+                .load(data.uriString)
                 .transform(
                     CenterCrop(),
                     RoundedCorners(
