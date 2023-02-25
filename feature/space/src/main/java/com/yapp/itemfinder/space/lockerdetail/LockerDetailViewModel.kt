@@ -65,7 +65,7 @@ class LockerDetailViewModel @Inject constructor(
             setState(
                 LockerDetailState.Success(
                     locker = locker,
-                    dataList = items,
+                    dataList = items.map { it.copy(spaceAndLockerEntity = SpaceAndLockerEntity(space,locker)) },
                     space = space,
                     needToFetch = true
                 )
@@ -90,7 +90,7 @@ class LockerDetailViewModel @Inject constructor(
                 setState(
                     LockerDetailState.Success(
                         locker = locker,
-                        dataList = items
+                        dataList = items.map { it.copy(spaceAndLockerEntity = SpaceAndLockerEntity(space,locker)) },
                     )
                 )
                 withState<LockerDetailState.Success> { state ->

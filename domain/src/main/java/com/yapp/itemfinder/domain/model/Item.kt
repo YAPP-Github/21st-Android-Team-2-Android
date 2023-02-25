@@ -24,6 +24,7 @@ data class Item(
     val count: Int = 0,
     override var type: CellType = CellType.ITEM_SIMPLE_CELL,
     val position: Position? = null,
+    var spaceAndLockerEntity: SpaceAndLockerEntity? = null,
 ) : Data(type = CellType.ITEM_SIMPLE_CELL), Parcelable {
     val representativeImage: String?
         get() = imageUrls?.firstOrNull()
