@@ -64,7 +64,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="@dimen/spacing_lg"
                         android:buttonTint="@color/orange"
-                        android:text="@string/order_recent" />
+                        android:text="@string/order_old" />
 
                     <RadioButton
                         android:id="@+id/orderAscButton"
