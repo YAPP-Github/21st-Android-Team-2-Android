@@ -38,6 +38,7 @@ class ItemsMarkerMapView
         }
 
         items.forEach { item ->
+            if (item.position == null) return@forEach
             addView(
                 ItemMarkerView(context).apply {
                     this.id = item.id.toInt()
@@ -47,7 +48,6 @@ class ItemsMarkerMapView
                 }
             )
         }
-
         items.forEach { item ->
             applyFocusMarker(item)
         }

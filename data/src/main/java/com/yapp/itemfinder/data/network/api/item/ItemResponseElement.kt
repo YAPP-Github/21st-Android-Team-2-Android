@@ -12,8 +12,8 @@ data class ItemResponseElement(
     val itemType: String,
     val useByDate: String,
     val representativeImageUrl: String,
-    val pinX: Float,
-    val pinY: Float,
+    val pinX: Float?,
+    val pinY: Float?,
     val spaceName: String,
     val containerName: String
 ) {
@@ -27,7 +27,7 @@ data class ItemResponseElement(
         imageUrls = listOf( representativeImageUrl),
         count = quantity,
         itemCategory = ItemCategory.values().find { it.name == itemType },
-        position = Item.Position(pinX, pinY),
+        position = if (pinX != null && pinY != null) Item.Position(pinX, pinY) else null,
         tags = tags.map { Tag(it.hashCode().toLong(), it) }
     )
 }

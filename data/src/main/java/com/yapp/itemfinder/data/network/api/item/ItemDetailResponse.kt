@@ -19,8 +19,8 @@ data class ItemDetailResponse(
     val imageUrls: List<String>,
     val containerImageUrl: String,
     val description: String,
-    val pinX: Float,
-    val pinY: Float,
+    val pinX: Float?,
+    val pinY: Float?,
     val spaceName: String,
     val containerName: String,
     val purchaseDate: String,
@@ -41,7 +41,7 @@ data class ItemDetailResponse(
             "FOOD" -> ItemCategory.FOOD
             else -> ItemCategory.FASHION
         },
-        position = Item.Position(pinX, pinY),
+        position = if (pinX != null && pinY != null) Item.Position(pinX, pinY) else null,
         tags = tags.map { Tag(it.hashCode().toLong(), it) }
     )
 }

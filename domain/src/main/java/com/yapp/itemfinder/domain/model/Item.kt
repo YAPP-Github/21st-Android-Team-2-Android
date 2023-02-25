@@ -65,8 +65,8 @@ data class Item(
 
     @Parcelize
     data class Position(
-        @androidx.annotation.FloatRange(from = 0.0, to = 100.0) val x: Float,
-        @androidx.annotation.FloatRange(from = 0.0, to = 100.0) val y: Float
+        @androidx.annotation.FloatRange(from = 0.0, to = 100.0) val x: Float? = null,
+        @androidx.annotation.FloatRange(from = 0.0, to = 100.0) val y: Float? = null
     ): Parcelable
 
     var itemFocusHandler: ItemFocusHandler = { }
