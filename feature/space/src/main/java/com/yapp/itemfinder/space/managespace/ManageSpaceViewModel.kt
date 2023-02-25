@@ -62,7 +62,7 @@ class ManageSpaceViewModel @Inject constructor(
                         }
                     )
                 )
-                postSideEffect(ManageSpaceSideEffect.AddSpaceSuccessResult)
+                postSideEffect(ManageSpaceSideEffect.HaveManageResult)
             }.onErrorWithResult { errorWithResult ->
                 val message = errorWithResult.errorResultEntity.message ?: return@launch
                 postSideEffect(
@@ -80,8 +80,18 @@ class ManageSpaceViewModel @Inject constructor(
         withState<ManageSpaceState.Success> { state ->
             runCatchingWithErrorHandler {
                 manageSpaceRepository.editSpace(name = spaceName, spaceId = spaceId)
-            }.onSuccess {
-                fetchData()
+            }.onSuccess {space ->
+                val editIndex = state.dataList.withIndex().first { indexedValue ->
+                    indexedValue.value.id == space.id
+                }.index
+                setState(
+                    state.copy(
+                        dataList = state.dataList.toMutableList().apply {
+                            this[editIndex] = space
+                        }
+                    )
+                )
+                postSideEffect(ManageSpaceSideEffect.HaveManageResult)
             }.onErrorWithResult { errorWithResult ->
                 val message = errorWithResult.errorResultEntity.message ?: return@withState
                 postSideEffect(
@@ -100,7 +110,17 @@ class ManageSpaceViewModel @Inject constructor(
             runCatchingWithErrorHandler {
                 manageSpaceRepository.deleteSpace(spaceId)
             }.onSuccess {
-                fetchData()
+                val deletedIndex = state.dataList.withIndex().first { indexedValue ->
+                    indexedValue.value.id == spaceId
+                }.index
+                setState(
+                    state.copy(
+                        dataList = state.dataList.toMutableList().apply {
+                            removeAt(deletedIndex)
+                        }
+                    )
+                )
+                postSideEffect(ManageSpaceSideEffect.HaveManageResult)
             }.onErrorWithResult { errorWithResult ->
                 val message = errorWithResult.errorResultEntity.message ?: return@withState
                 postSideEffect(
