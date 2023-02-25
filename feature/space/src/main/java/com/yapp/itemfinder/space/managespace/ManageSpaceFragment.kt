@@ -128,8 +128,8 @@ class ManageSpaceFragment : BaseStateFragment<ManageSpaceViewModel, FragmentMana
                                     dialog.show(fm, DeleteSpaceDialog.TAG)
                                 }
                             }
-                            is ManageSpaceSideEffect.AddSpaceSuccessResult -> {
-                                setFragmentResult(NEW_SPACE_ADDED_REQUEST_KEY, bundleOf())
+                            is ManageSpaceSideEffect.HaveManageResult -> {
+                                setFragmentResult(MANAGE_SPACE_REQUEST_KEY, bundleOf())
                             }
                         }
                     }
@@ -156,7 +156,7 @@ class ManageSpaceFragment : BaseStateFragment<ManageSpaceViewModel, FragmentMana
 
         val TAG = ManageSpaceFragment::class.simpleName.toString()
         const val MY_SPACE_TITLE_KEY = "MY_SPACE_TITLE_KEY"
-        const val NEW_SPACE_ADDED_REQUEST_KEY = "NEW_SPACE_ADDED"
+        const val MANAGE_SPACE_REQUEST_KEY = "NEW_SPACE_ADDED"
 
         fun newInstance() = ManageSpaceFragment()
 

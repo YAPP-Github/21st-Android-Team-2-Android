@@ -20,6 +20,6 @@ sealed class ManageSpaceSideEffect : SideEffect {
         val message: String
     ) : ManageSpaceSideEffect()
 
-    object AddSpaceSuccessResult : ManageSpaceSideEffect()
+    object HaveManageResult : ManageSpaceSideEffect()
 
 }
