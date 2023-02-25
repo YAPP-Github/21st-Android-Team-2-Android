@@ -398,6 +398,11 @@ class LockerDetailFragment :
             }
     }
 
+    override fun onResume() {
+        super.onResume()
+        vm.fetchData()
+    }
+
     companion object {
 
         val TAG = LockerDetailFragment::class.simpleName.toString()
