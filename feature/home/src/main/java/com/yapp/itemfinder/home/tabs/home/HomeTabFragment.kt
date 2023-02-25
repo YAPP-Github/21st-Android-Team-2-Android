@@ -24,9 +24,12 @@ import com.yapp.itemfinder.feature.common.extension.showShortToast
 import com.yapp.itemfinder.feature.common.extension.visible
 import com.yapp.itemfinder.feature.common.utility.DataWithSpan
 import com.yapp.itemfinder.feature.common.utility.SpaceItemDecoration
+import com.yapp.itemfinder.feature.home.R
 import com.yapp.itemfinder.feature.home.databinding.FragmentHomeTabBinding
 import com.yapp.itemfinder.home.HomeActivity
+import com.yapp.itemfinder.home.settings.SettingsActivity
 import com.yapp.itemfinder.space.LockerListFragment
+import com.yapp.itemfinder.feature.common.R as CR
 import com.yapp.itemfinder.space.lockerdetail.LockerDetailFragment
 import com.yapp.itemfinder.space.managespace.AddSpaceDialog
 import com.yapp.itemfinder.space.managespace.ManageSpaceFragment
@@ -79,6 +82,7 @@ class HomeTabFragment : BaseStateFragment<HomeTabViewModel, FragmentHomeTabBindi
 
 
     override fun initViews() = with(binding) {
+        initToolBar()
         if (dataListAdapter == null) {
             dataListAdapter = DataListAdapter()
         }
@@ -90,6 +94,22 @@ class HomeTabFragment : BaseStateFragment<HomeTabViewModel, FragmentHomeTabBindi
             }
         }
         recyclerView.addItemDecoration(gridItemDecoration)
+    }
+
+    private fun initToolBar() = with(binding.searchTopNavigationView) {
+        leftButtonImageResId = CR.drawable.ic_menu
+        searchBarImageResId = CR.drawable.ic_search
+        searchBarBackgroundResId = CR.drawable.bg_button_brown_02_radius_8
+        searchBarText = getString(R.string.home_search_bar_text)
+        searchBarTextColor = CR.color.gray_03
+        leftButtonClickListener = {
+            startActivity(
+                SettingsActivity.newIntent(requireContext())
+            )
+        }
+        searchBarClickListener = {
+            requireContext().showShortToast(getString(R.string.prepare_this_feature))
+        }
     }
 
     override fun observeData(): Job = viewLifecycleOwner.lifecycleScope.launch {
