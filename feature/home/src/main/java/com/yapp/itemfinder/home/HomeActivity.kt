@@ -67,13 +67,11 @@ class HomeActivity : BaseActivity<HomeViewModel, ActivityHomeBinding>(), Fragmen
 
         }
         binding.addItemButton.setOnClickListener {
-            val lockerDetailFragment =
-                supportFragmentManager.fragments.filter { it is LockerDetailFragment }.firstOrNull()
 
             val intent = AddItemActivity.newIntent(this)
 
-            if (lockerDetailFragment != null) {
-                val lockerDetailVM = (lockerDetailFragment as LockerDetailFragment).vm
+            if (currentFragment is LockerDetailFragment) {
+                val lockerDetailVM = (currentFragment as LockerDetailFragment).vm
 
                 val locker = lockerDetailVM.getLockerInfo()
                 val space = lockerDetailVM.getSpaceInfo()
