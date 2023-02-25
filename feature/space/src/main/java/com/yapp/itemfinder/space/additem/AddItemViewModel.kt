@@ -369,7 +369,8 @@ class AddItemViewModel @Inject constructor(
                 val newItem = state.lockerAndItemEntity?.item?.copy(
                     itemCategory = addItemCategory.category.toItemCateogry()
                 )
-                state.spaceAndLockerEntity?.lockerEntity?.imageUrl?.let {
+
+                spaceAndLockerEntity.lockerEntity?.imageUrl?.let {
                     newDataList.add(
                         AddItemMarkerMap(
                             lockerEntity = locker,
