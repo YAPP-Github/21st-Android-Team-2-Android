@@ -17,6 +17,19 @@
         app:layout_constraintBottom_toTopOf="@id/kakaoLoginButton"
         app:layout_constraintVertical_chainStyle="packed" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/prelogin_greet_message"
+        android:gravity="center_horizontal"
+        style="@style/ItemFinderTypography.Subhead"
+        android:textColor="@color/gray_03"
+        app:layout_constraintTop_toBottomOf="@id/logoImageView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="34dp"
+        android:lineHeight="24dp"/>
+
     <ImageView
         android:id="@+id/kakaoLoginButton"
         android:layout_width="328dp"
@@ -37,7 +50,7 @@
         android:layout_height="match_parent"
         android:background="@color/black_15"
         android:visibility="gone"
-        tools:visibility="visible">
+        tools:visibility="gone">
 
         <ProgressBar
             android:layout_width="wrap_content"

@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Item-Finder-Android</string>
     <string name="this_is_beta_version">해당 버전은 베타버전입니다.\n추후 정식 버전으로 업데이트될 예정입니다.</string>
+    <string name="prelogin_greet_message">만나게 되어 정말 반가워요!\n파띵과 함께 집안 물건을 기록해요</string>
 </resources>
