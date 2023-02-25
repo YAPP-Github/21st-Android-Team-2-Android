@@ -17,7 +17,7 @@ interface ItemRepository {
         itemType: String,
         quantity: Int,
         imageUrls: List<String>? = null,
-        tagIds: List<Long> ? = null,
+        tagIds: List<Long>? = null,
         description: String? = null,
         purchaseDate: String? = null,
         useByDate: String? = null,
@@ -32,12 +32,14 @@ interface ItemRepository {
         itemType: String,
         quantity: Int,
         imageUrls: List<String>? = null,
-        tagIds: List<Long> ? = null,
+        tagIds: List<Long>? = null,
         description: String? = null,
         purchaseDate: String? = null,
         useByDate: String? = null,
         pinX: Float? = null,
         pinY: Float? = null
     ): Item
+
+    suspend fun deleteItem(itemId: Long)
 
 }

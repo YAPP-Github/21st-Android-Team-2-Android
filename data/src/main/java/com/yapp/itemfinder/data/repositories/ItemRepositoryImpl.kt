@@ -90,4 +90,8 @@ class ItemRepositoryImpl @Inject constructor(
         )
     ).toItem()
 
+    override suspend fun deleteItem(itemId: Long) {
+        itemApi.deleteItem(itemId)
+    }
+
 }

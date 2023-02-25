@@ -91,6 +91,8 @@ class ItemMockRepositoryImpl @Inject constructor() : ItemRepository {
         return sample
     }
 
+    override suspend fun deleteItem(itemId: Long) = Unit
+
     override suspend fun getItemsByLockerId(lockerId: Long): List<Item> {
         return mutableListOf<Item>().apply {
             add(
