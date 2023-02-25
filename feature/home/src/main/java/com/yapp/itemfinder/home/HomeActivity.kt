@@ -23,6 +23,7 @@ import com.yapp.itemfinder.space.LockerListFragment
 import com.yapp.itemfinder.space.additem.AddItemActivity
 import com.yapp.itemfinder.space.itemdetail.ItemDetailFragment
 import com.yapp.itemfinder.space.lockerdetail.LockerDetailFragment
+import com.yapp.itemfinder.space.lockerdetail.LockerDetailViewModel
 import com.yapp.itemfinder.space.managespace.ManageSpaceFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
@@ -51,8 +52,26 @@ class HomeActivity : BaseActivity<HomeViewModel, ActivityHomeBinding>(), Fragmen
     override fun initViews() {
         initNavigationBar()
         binding.addItemButton.setOnClickListener {
+            val lockerDetailFragment =
+                supportFragmentManager.fragments.filter { it is LockerDetailFragment }.firstOrNull()
+
+            val intent = AddItemActivity.newIntent(this)
+
+            if (lockerDetailFragment != null) {
+                val lockerDetailVM = (lockerDetailFragment as LockerDetailFragment).vm
+
+                val locker = lockerDetailVM.getLockerInfo()
+                val space = lockerDetailVM.getSpaceInfo()
+
+                intent.apply {
+                    putExtra(AddItemActivity.CURRENT_LOCKER_ID_KEY, locker?.id)
+                    putExtra(AddItemActivity.CURRENT_LOCKER_NAME_KEY, locker?.name)
+                    putExtra(AddItemActivity.CURRENT_SPACE_ID_KEY, locker?.spaceId)
+                    putExtra(AddItemActivity.CURRENT_SPACE_NAME_KEY, space?.name)
+                }
+            }
             startActivity(
-                AddItemActivity.newIntent(this).apply {
+                intent.apply {
                     putExtra(AddItemActivity.SCREEN_MODE, ScreenMode.ADD_MODE.label)
                 }
             )

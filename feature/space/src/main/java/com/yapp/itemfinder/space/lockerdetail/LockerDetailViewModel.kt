@@ -6,9 +6,7 @@ import com.yapp.itemfinder.data.repositories.di.ItemMockRepositoryQualifiers
 import com.yapp.itemfinder.data.repositories.di.ItemRepositoryQualifiers
 import com.yapp.itemfinder.data.repositories.di.LockerRepositoryQualifiers
 import com.yapp.itemfinder.data.repositories.di.SpaceRepositoryQualifiers
-import com.yapp.itemfinder.domain.model.Item
-import com.yapp.itemfinder.domain.model.LockerEntity
-import com.yapp.itemfinder.domain.model.SpaceAndLockerEntity
+import com.yapp.itemfinder.domain.model.*
 import com.yapp.itemfinder.domain.repository.LockerRepository
 import com.yapp.itemfinder.domain.repository.ItemRepository
 import com.yapp.itemfinder.domain.repository.SpaceRepository
@@ -42,7 +40,7 @@ class LockerDetailViewModel @Inject constructor(
     override val _sideEffectFlow: MutableSharedFlow<LockerDetailSideEffect> = MutableSharedFlow()
 
     private val locker by lazy { savedStateHandle.get<LockerEntity>(LockerDetailFragment.LOCKER_ENTITY_KEY) }
-
+    private lateinit var space: ManageSpaceEntity
 
     override fun fetchData(): Job = viewModelScope.launch {
         // api를 붙일 경우, args의 id를 활용하세요
@@ -52,10 +50,17 @@ class LockerDetailViewModel @Inject constructor(
                 it to itemRepository.getItemsByLockerId(it.id)
             } ?: throw IllegalArgumentException("보관함 정보를 불러올 수 없습니다.")
         }.onSuccess { (locker, items) ->
+            var space: ManageSpaceEntity = ManageSpaceEntity("")
+            runCatchingWithErrorHandler {
+                spaceRepository.getSpaceById(locker.spaceId)
+            }.onSuccess { s ->
+                space = s
+            }
             setState(
                 LockerDetailState.Success(
                     locker = locker,
-                    dataList = items
+                    dataList = items,
+                    space = space
                 )
             )
 
@@ -70,9 +75,10 @@ class LockerDetailViewModel @Inject constructor(
             runCatchingWithErrorHandler {
                 setState(LockerDetailState.Loading)
                 locker?.let { locker ->
-                    lockerRepository.getLockers(locker.spaceId).find { it.id == locker.id }?.let { foundLocker ->
-                        foundLocker to itemRepository.getItemsByLockerId(foundLocker.id)
-                    } ?: throw IllegalArgumentException("보관함 정보를 불러올 수 없습니다.")
+                    lockerRepository.getLockers(locker.spaceId).find { it.id == locker.id }
+                        ?.let { foundLocker ->
+                            foundLocker to itemRepository.getItemsByLockerId(foundLocker.id)
+                        } ?: throw IllegalArgumentException("보관함 정보를 불러올 수 없습니다.")
                 } ?: throw IllegalArgumentException("보관함 정보를 불러올 수 없습니다.")
             }.onSuccess { (locker, items) ->
                 setState(
@@ -82,7 +88,8 @@ class LockerDetailViewModel @Inject constructor(
                     )
                 )
                 withState<LockerDetailState.Success> { state ->
-                    val item = state.dataList.find { it.id == prevState.lastFocusedItem?.id } as Item
+                    val item =
+                        state.dataList.find { it.id == prevState.lastFocusedItem?.id } as Item
                     setState(
                         state.copy(
                             itemFilterCondition = prevState.itemFilterCondition,
@@ -156,6 +163,22 @@ class LockerDetailViewModel @Inject constructor(
                 )
             )
         }
+    }
+
+    fun getLockerInfo(): LockerEntity? {
+        var locker: LockerEntity? = null
+        withState<LockerDetailState.Success> { state ->
+            locker = state.locker
+        }
+        return locker
+    }
+
+    fun getSpaceInfo(): ManageSpaceEntity? {
+        var space: ManageSpaceEntity? = null
+        withState<LockerDetailState.Success> { state ->
+            space = state.space
+        }
+        return space
     }
 
 }
