@@ -49,5 +49,44 @@
         android:paddingHorizontal="@dimen/spacing"
         tools:listitem="@layout/item_simple_item"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:visibility="gone"
+        android:id="@+id/itemsEmptyLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/itemsEmptyLayoutImageView"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:src="@drawable/housy_empty_happy"
+            android:layout_marginTop="90dp"
+            android:layout_width="140dp"
+            android:layout_height="200dp"/>
+        <TextView
+            android:id="@+id/itemsEmptyLayoutTextView1"
+            style="@style/ItemFinderTypography.Subhead"
+            app:layout_constraintTop_toBottomOf="@id/itemsEmptyLayoutImageView"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_marginTop="38dp"
+            android:text="휑~ 보관함이 텅 비어있어요"
+            android:textColor="@color/gray_04"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:id="@+id/itemsEmptyLayoutTextView2"
+            style="@style/ItemFinderTypography.Body3"
+            android:textColor="@color/gray_03"
+            app:layout_constraintTop_toBottomOf="@id/itemsEmptyLayoutTextView1"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_marginTop="8dp"
+            android:text="물건을 등록해보세요!"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </LinearLayout>

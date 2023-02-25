@@ -368,6 +368,14 @@ class LockerDetailFragment :
             }
         }
 
+        if(dataList.size == 0){
+            binding.bottomSheet.recyclerview.gone()
+            binding.bottomSheet.itemsEmptyLayout.visible()
+        }else{
+            binding.bottomSheet.recyclerview.visible()
+            binding.bottomSheet.itemsEmptyLayout.gone()
+        }
+
         binding.defaultTopNavigationView.titleText = lockerDetailState.locker.name
 
         dataBindHelper.bindList(dataList, vm)
