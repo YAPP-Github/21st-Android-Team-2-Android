@@ -21,6 +21,9 @@ class DefaultBuildConfigProvider @Inject constructor(): BuildConfigProvider {
     override val buildType: String
         get() = if (BuildConfig.DEBUG) BuildConfig.BUILD_DEBUG else BuildConfig.BUILD_RELEASE
 
+    override val isProd: Boolean
+        get() = BuildConfig.FLAVOR == "prod"
+
     override val isBuildTypeDebug: Boolean
         get() = BuildConfig.DEBUG
 
