@@ -1,6 +1,7 @@
 package com.yapp.itemfinder.data.network.api.item
 
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.PUT
@@ -16,12 +17,18 @@ interface ItemApi {
     ): ItemSearchResponse
 
     @POST("/items")
-    suspend fun createItem(@Body addItemRequest:AddItemRequest):  AddItemResponse
+    suspend fun createItem(@Body addItemRequest: AddItemRequest): AddItemResponse
 
     @PUT("/items/{itemId}")
-    suspend fun editItem(@Path("itemId") itemId: Long, @Body addItemRequest:AddItemRequest):  AddItemResponse
+    suspend fun editItem(
+        @Path("itemId") itemId: Long,
+        @Body addItemRequest: AddItemRequest
+    ): AddItemResponse
 
     @GET("/items/{itemId}")
     suspend fun getItemById(@Path("itemId") itemId: Long): ItemDetailResponse
-    
+
+    @DELETE("/items/{itemId}")
+    suspend fun deleteItem(@Path("itemId") itemId: Long)
+
 }

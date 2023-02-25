@@ -52,6 +52,7 @@ class SpaceViewHolder(
                     }
                     3 -> {
                         if (data.lockerCount > 4) {
+                            state = State.OVER
                             spaceFourthTextView.text = "+${lockers.size - 3}"
                             frame.setCardBackgroundColor(frame.context.getColor(R.color.brown_03))
                         } else {
@@ -72,7 +73,7 @@ class SpaceViewHolder(
                 0, 1, 2 -> frames[idx].setOnClickListener { data.moveLockerDetailHandler(locker) }
                 3 -> when (state) {
                     State.NORMAL -> frames[idx].setOnClickListener { data.moveLockerDetailHandler(locker) }
-                    else -> Unit
+                    State.OVER -> frames[idx].setOnClickListener { data.moveSpaceDetailPage() }
 
                 }
                 4 -> return

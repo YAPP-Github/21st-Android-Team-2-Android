@@ -45,4 +45,6 @@
     <string name="item_filter_category">카테고리</string>
     <string name="item_filter_reset">초기화</string>
     <string name="item_filter_apply">적용하기</string>
+    <string name="deleteItem">물건 삭제</string>
+    <string name="deleteItemMessage">물건을 정말 삭제하시겠어요?</string>
 </resources>

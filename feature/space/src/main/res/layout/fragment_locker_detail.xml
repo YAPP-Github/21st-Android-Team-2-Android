@@ -86,7 +86,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/itemsMarkerContainer"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_marginTop="@dimen/collapsing_toolbar_container_height">
 
             <View
@@ -110,7 +110,7 @@
                 app:layout_constraintEnd_toEndOf="@id/emptyMarkerMapBackgroundView"
                 app:layout_constraintBottom_toTopOf="@id/emptyMarkerMapDescriptionTextView"
                 app:layout_constraintVertical_chainStyle="packed"
-                app:layout_constraintVertical_bias="0.5"/>
+                app:layout_constraintVertical_bias="0.1"/>
 
             <TextView
                 style="@style/ItemFinderTypography.Body3"

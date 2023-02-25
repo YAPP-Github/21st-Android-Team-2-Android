@@ -8,6 +8,7 @@ import androidx.appcompat.view.ContextThemeWrapper
 import androidx.core.view.isVisible
 import com.bumptech.glide.Glide
 import com.yapp.itemfinder.domain.model.Item
+import com.yapp.itemfinder.domain.model.ItemCategory
 import com.yapp.itemfinder.feature.common.R
 import com.yapp.itemfinder.feature.common.databinding.ItemSimpleItemBinding
 import com.yapp.itemfinder.feature.common.datalist.adapter.DataViewHolder
@@ -27,7 +28,30 @@ class ItemSimpleViewHolder(
     override fun bindData(data: Item) {
         super.bindData(data)
         with(binding) {
-            Glide.with(root.context).load(data.representativeImage).into(imageView)
+
+            data.representativeImage?.let {
+                Glide.with(context).load(it).into(imageView)
+            } ?: kotlin.run {
+                data.itemCategory?.let {
+                    when(it){
+                        ItemCategory.LIFE ->{
+                            Glide.with(context).load(R.drawable.ic_item_life).into(imageView)
+                        }
+                        ItemCategory.FOOD -> {
+                            Glide.with(context).load(R.drawable.ic_item_food).into(imageView)
+                        }
+                        ItemCategory.FASHION ->{
+                            Glide.with(context).load(R.drawable.ic_item_fashion).into(imageView)
+                        }
+                        ItemCategory.NONE -> {
+
+                        }
+                    }
+                }
+
+            }
+
+
             nameTextView.text = data.name
 
             if (data.count in 2 .. 99){

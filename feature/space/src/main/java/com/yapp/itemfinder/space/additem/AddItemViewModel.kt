@@ -461,11 +461,11 @@ class AddItemViewModel @Inject constructor(
                     imageUriStringList = it.uriStringList
                 }
             }
-            if (itemName == "" && itemCategorySelection == ItemCategorySelection.DEFAULT && itemSpace == "" && itemLockerName == "") {
+            if (itemName.isBlank() && itemCategorySelection == ItemCategorySelection.DEFAULT && itemSpace.isBlank() && itemLockerName.isBlank()) {
                 postSideEffect(AddItemSideEffect.FillOutRequiredSnackBar)
                 return@withState
             }
-            if (itemName == "") {
+            if (itemName.isBlank()) {
                 postSideEffect(AddItemSideEffect.FillOutNameSnackBar)
                 return@withState
             }
@@ -473,7 +473,7 @@ class AddItemViewModel @Inject constructor(
                 postSideEffect(AddItemSideEffect.FillOutCategorySnackBar)
                 return@withState
             }
-            if (itemSpace == "") {
+            if (itemSpace.isBlank()) {
                 postSideEffect(AddItemSideEffect.FillOutLocationSnackBar)
                 return@withState
             }
