@@ -8,6 +8,20 @@
             android:exported="true"
             android:theme="@style/ItemFinderTheme"/>
 
+        <activity
+            android:name="com.yapp.itemfinder.home.settings.SettingsActivity"
+            android:exported="true"
+            android:theme="@style/ItemFinderTheme"/>
+
+        <activity
+            android:name="com.google.android.gms.oss.licenses.OssLicensesActivity"
+            android:exported="true"
+            android:theme="@style/ItemFinderTheme" />
+
+        <activity
+            android:name="com.google.android.gms.oss.licenses.OssLicensesMenuActivity"
+            android:theme="@style/ItemFinderTheme" />
+
     </application>
 
 </manifest>

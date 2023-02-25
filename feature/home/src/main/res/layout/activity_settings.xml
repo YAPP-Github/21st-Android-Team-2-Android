@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.yapp.itemfinder.home.settings.SettingsActivity">
+
+    <View
+        android:id="@+id/toolbarBackgroundView"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/toolbar_container_height"
+        android:background="@color/brown_01"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spacing_llg"
+        android:src="@drawable/ic_find_things_horizontal"
+        app:layout_constraintTop_toTopOf="@id/toolbarBackgroundView"
+        app:layout_constraintStart_toStartOf="@id/toolbarBackgroundView"
+        app:layout_constraintBottom_toBottomOf="@id/toolbarBackgroundView" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/closeButton"
+        android:layout_width="@dimen/toolbar_button_size"
+        android:layout_height="@dimen/toolbar_button_size"
+        android:layout_marginEnd="@dimen/spacing"
+        android:foreground="@drawable/ripple_black_capsule"
+        app:layout_constraintTop_toTopOf="@id/toolbarBackgroundView"
+        app:layout_constraintEnd_toEndOf="@id/toolbarBackgroundView"
+        app:layout_constraintBottom_toBottomOf="@id/toolbarBackgroundView"
+        android:src="@drawable/ic_close" />
+
+    <View
+        android:id="@+id/toolbarDividerView"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/spacing_xsm"
+        android:background="@color/brown_02"
+        app:layout_constraintTop_toBottomOf="@id/toolbarBackgroundView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <ScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/brown_01"
+        app:layout_constraintTop_toBottomOf="@id/toolbarDividerView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="@dimen/spacing"
+            android:paddingVertical="@dimen/spacing_lsm">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="@dimen/spacing_sm"
+                android:paddingVertical="@dimen/spacing_sm">
+
+                <TextView
+                    style="@style/ItemFinderTypography.Subhead"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="@string/app_version"
+                    android:textColor="@color/gray_03" />
+
+                <TextView
+                    style="@style/ItemFinderTypography.Subhead"
+                    android:id="@+id/appVersionValueTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="end"
+                    android:textColor="@color/gray_04"
+                    tools:text="0.0.1" />
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/privacyGuidanceButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?selectableItemBackground"
+                android:paddingHorizontal="@dimen/spacing_sm"
+                android:paddingVertical="@dimen/spacing_sm">
+
+                <TextView
+                    style="@style/ItemFinderTypography.Subhead"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="@string/privacy_guidance"
+                    android:textColor="@color/gray_06" />
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/serviceTermsOfUseButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?selectableItemBackground"
+                android:paddingHorizontal="@dimen/spacing_sm"
+                android:paddingVertical="@dimen/spacing_sm">
+
+                <TextView
+                    style="@style/ItemFinderTypography.Subhead"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="@string/service_terms_of_use"
+                    android:textColor="@color/gray_06" />
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/openSourceButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?selectableItemBackground"
+                android:paddingHorizontal="@dimen/spacing_sm"
+                android:paddingVertical="@dimen/spacing_sm">
+
+                <TextView
+                    style="@style/ItemFinderTypography.Subhead"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="@string/open_source"
+                    android:textColor="@color/gray_06" />
+            </FrameLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginVertical="@dimen/spacing_lsm"
+                android:layout_marginHorizontal="@dimen/spacing_sm"
+                android:background="@color/gray_02" />
+
+            <FrameLayout
+                android:id="@+id/contactUsButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?selectableItemBackground"
+                android:paddingHorizontal="@dimen/spacing_sm"
+                android:paddingVertical="@dimen/spacing_sm">
+
+                <TextView
+                    style="@style/ItemFinderTypography.Subhead"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="@string/contact_us"
+                    android:textColor="@color/gray_06" />
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/logoutButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?selectableItemBackground"
+                android:paddingHorizontal="@dimen/spacing_sm"
+                android:paddingVertical="@dimen/spacing_sm">
+
+                <TextView
+                    style="@style/ItemFinderTypography.Subhead"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="@string/logout"
+                    android:textColor="@color/gray_06" />
+            </FrameLayout>
+        </LinearLayout>
+    </ScrollView>
+
+    <FrameLayout
+        android:id="@+id/loadingContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/black_15"
+        android:visibility="gone"
+        tools:visibility="gone">
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
+    </FrameLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

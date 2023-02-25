@@ -16,7 +16,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class PreloginViewModel @Inject constructor(
-    private val authRepository: AuthRepository
+    private val authRepository: AuthRepository,
 ) : BaseStateViewModel<PreloginState, PreloginSideEffect>() {
 
     override val _stateFlow: MutableStateFlow<PreloginState> = MutableStateFlow(PreloginState.Uninitialized)
@@ -32,6 +32,8 @@ class PreloginViewModel @Inject constructor(
     ) = viewModelScope.launch {
         runCatchingWithErrorHandler {
             setState(PreloginState.Loading)
+            authRepository.putUserNickname(signUpEntity.nickname)
+            authRepository.putUserSocialId(signUpEntity.socialId)
             authRepository.loginUser(signUpEntity.socialId, signUpEntity.socialType)
         }.onSuccess { authToken ->
             authRepository.putAuthTokenToPreference(authToken)

@@ -6,4 +6,12 @@
     <string name="home_spaces_empty_guide">내 공간을 추가해봐요!</string>
     <string name="home_spaces_empty_button">공간 추가하러 가기</string>
     <string name="home_search_bar_text">물건을 검색해보세요.</string>
+    <string name="app_version">앱 버전</string>
+    <string name="privacy_guidance">개인정보 처리방침</string>
+    <string name="service_terms_of_use">서비스 이용약관</string>
+    <string name="open_source">오픈 소스</string>
+    <string name="contact_us">문의하기</string>
+    <string name="logout">로그아웃</string>
+    <string name="wait_a_moment">잠시만요!</string>
+    <string name="do_you_want_logout">정말로 로그아웃 하시겠어요?</string>
 </resources>

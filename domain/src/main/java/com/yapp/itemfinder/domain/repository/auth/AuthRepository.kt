@@ -10,12 +10,24 @@ interface AuthRepository {
 
     suspend fun putAuthTokenToPreference(token: AuthTokenEntity)
 
+    suspend fun putUserNickname(nickname: String)
+
+    suspend fun getUserNickname(): String
+
+    suspend fun putUserSocialId(socialId: String)
+
+    suspend fun getUserSocialId(): String
+
     suspend fun refreshAuthToken()
 
     suspend fun validateMember(token: AuthTokenEntity)
 
     suspend fun loginUser(socialId: String, socialType: SocialType): AuthTokenEntity
 
+    suspend fun logoutUser()
+
     suspend fun signUpUser(signUpEntity: SignUpEntity): AuthTokenEntity
+
+    suspend fun clearAllPreference()
 
 }

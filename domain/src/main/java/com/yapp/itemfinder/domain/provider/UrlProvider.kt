@@ -4,4 +4,8 @@ interface UrlProvider {
 
     fun getApiPrefixUrl(): String
 
+    fun getPrivacyHandleUrl(): String
+
+    fun getTermsOfUseUrl(): String
+
 }
