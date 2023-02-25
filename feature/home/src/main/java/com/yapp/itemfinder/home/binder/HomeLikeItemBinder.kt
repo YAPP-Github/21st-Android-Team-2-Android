@@ -19,12 +19,6 @@ class HomeLikeItemBinder @Inject constructor(): LikeItemBinder {
     }
 
     private fun setLikeTabViewModelHandler(item: LikeItem, viewModel: LikeTabViewModel) {
-        item.deleteHandler = { data ->
-            viewModel.deleteItem(data as LikeItem)
-        }
-        item.updateHandler = { data ->
-            viewModel.updateCount(data as LikeItem)
-        }
     }
 
     private fun setHomeTabViewModelHandler(item: LikeItem, viewModel: HomeTabViewModel) {
