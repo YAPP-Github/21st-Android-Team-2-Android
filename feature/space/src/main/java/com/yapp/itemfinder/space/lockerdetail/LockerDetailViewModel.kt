@@ -56,7 +56,7 @@ class LockerDetailViewModel @Inject constructor(
                 lockerEntity.await() to items.await()
             } ?: throw IllegalArgumentException("보관함 정보를 불러올 수 없습니다.")
         }.onSuccess { (locker, items) ->
-            var space: ManageSpaceEntity = ManageSpaceEntity("")
+            space = ManageSpaceEntity("")
             runCatchingWithErrorHandler {
                 spaceRepository.getSpaceById(locker.spaceId)
             }.onSuccess { s ->
