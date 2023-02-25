@@ -14,4 +14,7 @@
     <string name="logout">로그아웃</string>
     <string name="wait_a_moment">잠시만요!</string>
     <string name="do_you_want_logout">정말로 로그아웃 하시겠어요?</string>
+    <string name="fixingTitle">태그 탭은 현재 공사 중이에요!</string>
+    <string name="fixingSubTitle">열심히 만들고 있으니 조금만 기다려주세요 :)</string>
+    <string name="fixingReminderTitle">리마인더 탭은 현재 공사 중이에요!</string>
 </resources>
