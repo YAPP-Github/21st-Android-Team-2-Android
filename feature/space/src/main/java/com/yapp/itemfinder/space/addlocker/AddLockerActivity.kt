@@ -18,6 +18,7 @@ import com.yapp.itemfinder.feature.common.binding.viewBinding
 import com.yapp.itemfinder.feature.common.datalist.adapter.DataListAdapter
 import com.yapp.itemfinder.feature.common.datalist.binder.DataBindHelper
 import com.yapp.itemfinder.feature.common.extension.showShortToast
+import com.yapp.itemfinder.feature.common.views.SnackBarView
 import com.yapp.itemfinder.space.additem.AddItemActivity
 import com.yapp.itemfinder.space.databinding.ActivityAddLockerBinding
 import com.yapp.itemfinder.space.selectspace.SelectSpaceActivity
@@ -118,6 +119,9 @@ class AddLockerActivity : BaseStateActivity<AddLockerViewModel, ActivityAddLocke
                             this@AddLockerActivity.supportFragmentManager.let { fm ->
                                 dialog.show(fm, CHANGE_IMAGE_DIALOG)
                             }
+                        }
+                        is AddLockerSideEffect.FillOutNameSnackBar -> {
+                            SnackBarView.make(binding.root, "물건의 이름을 입력해주세요.").show()
                         }
                     }
                 }

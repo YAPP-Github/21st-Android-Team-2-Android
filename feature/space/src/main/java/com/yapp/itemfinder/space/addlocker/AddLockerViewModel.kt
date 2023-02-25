@@ -132,7 +132,13 @@ class AddLockerViewModel @Inject constructor(
         withState<AddLockerState.Success> { state ->
             state.dataList
                 .filterIsInstance<AddLockerNameInput>()
-                .firstOrNull()?.saveName()
+                .firstOrNull()
+                ?.apply {
+                    saveName()
+                    if (this.name.isNullOrBlank()){
+                        postSideEffect(AddLockerSideEffect.FillOutNameSnackBar)
+                    }
+                }
         }
         withState<AddLockerState.Success> { state ->
             runCatchingWithErrorHandler {
