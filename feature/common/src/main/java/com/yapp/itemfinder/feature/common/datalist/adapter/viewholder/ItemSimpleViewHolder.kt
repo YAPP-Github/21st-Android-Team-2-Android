@@ -14,6 +14,7 @@ import com.yapp.itemfinder.feature.common.databinding.ItemSimpleItemBinding
 import com.yapp.itemfinder.feature.common.datalist.adapter.DataViewHolder
 import com.yapp.itemfinder.feature.common.extension.dpToPx
 import com.yapp.itemfinder.feature.common.extension.gone
+import com.yapp.itemfinder.feature.common.extension.visible
 
 class ItemSimpleViewHolder(
     val binding: ItemSimpleItemBinding
@@ -23,6 +24,9 @@ class ItemSimpleViewHolder(
 
     override fun reset() {
         binding.tagsLayout.removeAllViews()
+        binding.itemNumTextView.visible()
+        binding.thingCategory.visible()
+        binding.expireDateTextView.visible()
     }
 
     override fun bindData(data: Item) {
@@ -60,9 +64,13 @@ class ItemSimpleViewHolder(
                 itemNumTextView.gone()
             }
 
+            data.spaceAndLockerEntity?.let {
+                spaceAndLockerTextView.text = "${it.manageSpaceEntity.name} > ${it.lockerEntity!!.name}"
+            }
+
 
             data.expirationDate?.let {
-                expireDateTextView.text = root.context.getString(R.string.until_expired_date, it)
+                expireDateTextView.text = "   \u2022  " + root.context.getString(R.string.until_expired_date, it)
             } ?: kotlin.run {
                 expireDateTextView.gone()
             }

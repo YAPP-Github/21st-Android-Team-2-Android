@@ -40,7 +40,8 @@ class AddLockerViewModel @Inject constructor(
         val spaceId = savedStateHandle.get<Long>(AddLockerActivity.SPACE_ID_KEY) ?: 0
         val spaces = spaceRepository.getAllSpaces()
         val space = spaces.find { it.id == spaceId }
-        val spaceName = savedStateHandle.get<String>(AddLockerActivity.SPACE_NAME_KEY) ?: space?.name ?: ""
+        val spaceName =
+            savedStateHandle.get<String>(AddLockerActivity.SPACE_NAME_KEY) ?: space?.name ?: ""
 
         val screenMode = savedStateHandle.get<String>(AddLockerActivity.SCREEN_MODE)
         when (screenMode) {
@@ -132,14 +133,14 @@ class AddLockerViewModel @Inject constructor(
         withState<AddLockerState.Success> { state ->
             state.dataList
                 .filterIsInstance<AddLockerNameInput>()
-                .firstOrNull()
-                ?.apply {
-                    saveName()
-                    if (this.name.isNullOrBlank()){
-                        postSideEffect(AddLockerSideEffect.FillOutNameSnackBar)
-                    }
-                }
+                .firstOrNull()?.saveName()
         }
+        withState<AddLockerState.Success> { state ->
+            if (state.lockerName.isBlank()) {
+                postSideEffect(AddLockerSideEffect.FillOutNameSnackBar)
+            }
+        }
+
         withState<AddLockerState.Success> { state ->
             runCatchingWithErrorHandler {
                 lockerRepository.addLocker(

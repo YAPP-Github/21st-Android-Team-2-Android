@@ -48,15 +48,16 @@ class HomeActivity : BaseActivity<HomeViewModel, ActivityHomeBinding>(), Fragmen
     private lateinit var addItemLauncher: ActivityResultLauncher<Intent>
     lateinit var currentFragment: Fragment
 
-    override fun onBackPressedAction() {
-        super.onBackPressedAction()
-        lifecycleScope.launch {
-            delay(100)
-            checkCurrentFragment()
-        }
-    }
 
     override fun initViews() {
+
+        supportFragmentManager.addOnBackStackChangedListener {
+            checkCurrentFragment()
+            lifecycleScope.launch {
+                delay(10)
+            }
+        }
+
         initNavigationBar()
         addItemLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){result ->
             if (result.resultCode == Activity.RESULT_OK){
@@ -66,13 +67,11 @@ class HomeActivity : BaseActivity<HomeViewModel, ActivityHomeBinding>(), Fragmen
 
         }
         binding.addItemButton.setOnClickListener {
-            val lockerDetailFragment =
-                supportFragmentManager.fragments.filter { it is LockerDetailFragment }.firstOrNull()
 
             val intent = AddItemActivity.newIntent(this)
 
-            if (lockerDetailFragment != null) {
-                val lockerDetailVM = (lockerDetailFragment as LockerDetailFragment).vm
+            if (currentFragment is LockerDetailFragment) {
+                val lockerDetailVM = (currentFragment as LockerDetailFragment).vm
 
                 val locker = lockerDetailVM.getLockerInfo()
                 val space = lockerDetailVM.getSpaceInfo()

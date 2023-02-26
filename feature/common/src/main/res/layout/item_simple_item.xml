@@ -71,15 +71,38 @@
                 tools:text="2개" />
 
         </LinearLayout>
-
-        <TextView
-            style="@style/ItemFinderTypography.Body4"
-            android:id="@+id/expireDateTextView"
+        
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="6dp"
-            android:textColor="@color/gray_04"
-            tools:text="2022.12.25까지" />
+            android:orientation="horizontal">
+            <TextView
+                style="@style/ItemFinderTypography.Body4"
+                android:id="@+id/spaceAndLockerTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:textColor="@color/gray_04"
+                tools:text="드레스룸 > 화장대  \u2022  " />
+
+            <TextView
+                style="@style/ItemFinderTypography.Body4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                />
+            <TextView
+                style="@style/ItemFinderTypography.Body4"
+                android:id="@+id/expireDateTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:textColor="@color/gray_04"
+                tools:text="2022.12.25까지" />
+
+        </LinearLayout>
+
+
 
         <LinearLayout
             android:id="@+id/categoryAndTagsLayout"

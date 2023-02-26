@@ -7,6 +7,7 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.os.bundleOf
+import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -48,6 +49,8 @@ class LockerListFragment : BaseStateFragment<LockerListViewModel, FragmentLocker
     lateinit var dataBindHelper: DataBindHelper
 
     private lateinit var resultLauncher: ActivityResultLauncher<Intent>
+
+    private var lockerChanged = false
 
     override fun initViews() = with(binding) {
         initToolBar()
@@ -170,6 +173,10 @@ class LockerListFragment : BaseStateFragment<LockerListViewModel, FragmentLocker
                                     Toast.LENGTH_SHORT
                                 ).show()
                             }
+                            is LockerListSideEffect.LockersChanged -> {
+                                vm.fetchData()
+                                lockerChanged = true
+                            }
                         }
                     }
                 }
@@ -206,8 +213,15 @@ class LockerListFragment : BaseStateFragment<LockerListViewModel, FragmentLocker
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
                 if (result.resultCode == Activity.RESULT_OK) {
                     vm.fetchData()
+                    lockerChanged = true
                 }
             }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        if (lockerChanged)
+            setFragmentResult(LOCKER_CHANGE_REQUEST, bundleOf())
     }
 
     companion object {
@@ -218,6 +232,7 @@ class LockerListFragment : BaseStateFragment<LockerListViewModel, FragmentLocker
         const val SPACE_NAME_KEY = "SPACE_NAME_KEY"
         const val SPACE_ITEM_KEY = "SPACE_ITEM_KEY"
         const val DELETE_LOCKER_DIALOG = "DELETE_LOCKER_DIALOG"
+        const val LOCKER_CHANGE_REQUEST = "LOCKER_CHANGE_REQUEST"
 
         fun newInstance() = LockerListFragment()
 
