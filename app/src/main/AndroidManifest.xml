@@ -44,6 +44,15 @@
                     android:scheme="@string/kakao_app_key_for_manifest" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name="com.google.android.gms.oss.licenses.OssLicensesActivity"
+            android:exported="true"
+            android:theme="@style/ItemFinderTheme" />
+
+        <activity
+            android:name="com.google.android.gms.oss.licenses.OssLicensesMenuActivity"
+            android:theme="@style/ItemFinderTheme" />
     </application>
 
 </manifest>

@@ -7,4 +7,6 @@ interface AppNavigateProvider {
 
     fun newIntentForPrelogin(context: Context): Intent
 
+    fun newIntentForOssPlugin(context: Context): Intent
+
 }

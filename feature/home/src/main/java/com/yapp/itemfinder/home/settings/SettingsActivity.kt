@@ -37,7 +37,7 @@ class SettingsActivity : BaseStateActivity<SettingsViewModel, ActivitySettingsBi
     override val binding by viewBinding(ActivitySettingsBinding::inflate)
 
     override val depth: Depth
-        get() = Depth.FIRST
+        get() = Depth.SETTINGS
 
     @Inject
     lateinit var navigateProvider: AppNavigateProvider
@@ -111,8 +111,7 @@ class SettingsActivity : BaseStateActivity<SettingsViewModel, ActivitySettingsBi
                 )
             }
             is SettingsScreenSideEffect.Start.OpenSource -> {
-                OssLicensesMenuActivity.setActivityTitle("오픈소스 라이센스 목록")
-                startActivity(Intent(this, OssLicensesMenuActivity::class.java))
+                startActivity(navigateProvider.newIntentForOssPlugin(context = this))
             }
             is SettingsScreenSideEffect.Start.ContactUs -> {
                 val intent = Intent(Intent.ACTION_SEND).apply {
